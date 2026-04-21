@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Security-Rights Divergence' hypothesis using the EO 13960 dataset. With the corrected mapping logic applied to the 'Notice' and 'Opt-Out' columns, the analysis found a statistically significant difference between the groups. The Mann-Whitney U test yielded a p-value of 0.034, supporting the hypothesis that Civilian agencies (Mean Score = 0.094) are slightly more likely to implement rights-preserving controls than Security/Defense agencies (Mean Score = 0.062). \n\nHowever, the visualization and summary statistics reveal a 'floor effect' that is practically more significant than the divergence itself. The median score for both groups is 0, and the box plot shows that positive scores (1 or 2) are outliers. This indicates that while Civilian agencies are statistically 'better', the vast majority of AI systems across the entire U.S. federal government—regardless of sector—lack basic rights-preserving controls like public notice and opt-out mechanisms.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.stats import mannwhitneyu\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        print(\"Dataset not found.\")\n        exit(1)\n\n# Filter for EO 13960\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Define Security vs Civilian Agencies\n# Security agencies: DOD, DHS, DOJ, State\nsecurity_keywords = ['Defense', 'Homeland', 'Justice', 'State']\n\ndef classify_agency(agency_name):\n    if pd.isna(agency_name):\n        return 'Civilian'\n    name = str(agency_name)\n    if any(keyword in name for keyword in security_keywords):\n        return 'Security'\n    return 'Civilian'\n\neo_df['agency_type'] = eo_df['3_agency'].apply(classify_agency)\n\n# Map Notice (59_ai_notice)\n# Identify non-compliance indicators to map to 0; others to 1.\nnegative_notice_starts = [\n    'None of the above',\n    'N/A',\n    'Agency CAIO has waived',\n    'AI is not safety'\n]\n\ndef map_notice(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).strip()\n    # If it starts with any negative phrase, it's a 0\n    for neg in negative_notice_starts:\n        if s.startswith(neg):\n            return 0\n    # Otherwise, assuming it indicates a method of notice (Online, In-person, Email, etc.)\n    return 1\n\neo_df['notice_score'] = eo_df['59_ai_notice'].apply(map_notice)\n\n# Map Opt-out (67_opt_out)\n# Strict mapping: Only 'Yes' is 1.\ndef map_opt_out(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).strip()\n    if s.lower() == 'yes':\n        return 1\n    return 0\n\neo_df['opt_out_score'] = eo_df['67_opt_out'].apply(map_opt_out)\n\n# Calculate Composite Rights Score (0-2)\neo_df['rights_score'] = eo_df['notice_score'] + eo_df['opt_out_score']\n\n# Separate Groups\nsecurity_scores = eo_df[eo_df['agency_type'] == 'Security']['rights_score']\ncivilian_scores = eo_df[eo_df['agency_type'] == 'Civilian']['rights_score']\n\n# Perform Statistical Test (Mann-Whitney U)\nstat, p_val = mannwhitneyu(civilian_scores, security_scores, alternative='two-sided')\n\n# Output Results\nprint(\"--- Experiment Results: Security-Rights Divergence ---\")\nprint(f\"Security/Defense Agencies (N={len(security_scores)}): Mean Rights Score = {security_scores.mean():.3f}\")\nprint(f\"Civilian Agencies (N={len(civilian_scores)}): Mean Rights Score = {civilian_scores.mean():.3f}\")\nprint(f\"Mann-Whitney U Test: Statistic={stat}, p-value={p_val:.5f}\")\n\nif p_val < 0.05:\n    print(\"Conclusion: Significant difference found. The hypothesis is supported.\")\nelse:\n    print(\"Conclusion: No significant difference found. The hypothesis is rejected.\")\n\n# Visualization\ndata_to_plot = [civilian_scores, security_scores]\nplt.figure(figsize=(8, 6))\nplt.boxplot(data_to_plot)\nplt.xticks([1, 2], ['Civilian', 'Security/Defense'])\nplt.title('Rights-Preserving Controls (Notice + Opt-Out) by Agency Type')\nplt.ylabel('Rights Score (0-2)')\nplt.yticks([0, 1, 2])\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- Experiment Results: Security-Rights Divergence ---\nSecurity/Defense Agencies (N=385): Mean Rights Score = 0.062\nCivilian Agencies (N=1372): Mean Rights Score = 0.094\nMann-Whitney U Test: Statistic=271935.0, p-value=0.03411\nConclusion: Significant difference found. The hypothesis is supported.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the analysis of the provided plot, here are the detailed findings:\n\n**1. Plot Type**\n*   **Type:** This is a **Box Plot** (or Box-and-Whisker Plot).\n*   **Purpose:** It is used to compare the distribution of \"Rights Scores\" between two different categories of agencies (\"Civilian\" and \"Security/Defense\"). It is designed to visualize the median, quartiles, and outliers of the data.\n\n**2. Axes**\n*   **Title:** The chart title is \"Rights-Preserving Controls (Notice + Opt-Out) by Agency Type\".\n*   **Y-Axis:**\n    *   **Label:** \"Rights Score (0-2)\".\n    *   **Range:** The axis displays discrete integer values marked at 0, 1, and 2.\n*   **X-Axis:**\n    *   **Label:** The axis categorizes the data by agency type.\n    *   **Categories:** \"Civilian\" and \"Security/Defense\".\n\n**3. Data Trends**\n*   **Median and Quartiles (The Orange Lines):** For both the \"Civilian\" and \"Security/Defense\" categories, there is a solid orange line at the **0** mark on the Y-axis. In a box plot, this line represents the median.\n*   **Collapsed Boxes:** The fact that there are no visible \"boxes\" (rectangles) around the orange median lines suggests that the Interquartile Range (IQR)—the distance between the 25th and 75th percentiles—is zero. This indicates that the vast majority of the data points for both agency types have a score of exactly **0**.\n*   **Outliers:** Both categories display circles at Y-values of **1** and **2**. In box plots, these circles represent outliers. This means that while the norm is a score of 0, there are a few individual agencies in both categories that achieved scores of 1 or 2.\n\n**4. Annotations and Legends**\n*   **Gridlines:** The plot features horizontal dashed gridlines at the values 0, 1, and 2 to assist in reading the discrete scores.\n*   **Markers:** The hollow black circles represent outlier data points that fall outside the typical distribution (which is heavily concentrated at 0).\n\n**5. Statistical Insights**\n*   **Low Baseline Performance:** The primary insight is that the overwhelming majority of agencies, regardless of whether they are Civilian or Security/Defense, received a **Rights Score of 0**. This suggests that \"Rights-Preserving Controls\" (defined as Notice + Opt-Out) are rarely implemented across the board.\n*   **No Disparity:** There appears to be no significant statistical difference between Civilian and Security/Defense agencies regarding this metric. Both exhibit identical medians (0) and similar outlier patterns.\n*   **Exceptions to the Rule:** The presence of outliers at 1 and 2 indicates that it is possible for agencies to implement these controls, but these cases are rare exceptions rather than the standard practice.\n==================================================",
+  "created_at": "2026-02-22T09:01:44.068965+00:00",
+  "creation_idx": 170,
+  "experiment_id": "node_5_65",
+  "experiment_plan": {
+    "deliverables": "Box plot of Rights Scores by Agency Type; T-test/Mann-Whitney results.",
+    "objective": "Compare governance styles between Civilian and Defense/Security agencies.",
+    "steps": "1. Filter for `eo13960_scored`.\n2. Categorize `3_agency` into 'Security' (DOD, DHS, DOJ, State) and 'Civilian' (HHS, DOE, VA, etc.).\n3. Create a composite 'Rights Score' (0-2) summing `59_ai_notice` and `67_opt_out` (mapped to 0/1).\n4. Perform an Independent Samples T-test or Mann-Whitney U test on the Rights Score between the two agency types."
+  },
+  "hypothesis": "The Security-Rights Divergence: 'Civilian' agencies (e.g., Health, Education) demonstrate significantly higher compliance with rights-preserving controls (Notice + Opt-Out) compared to 'Defense/Security' agencies, which prioritize operational opacity.",
+  "id_in_run": 169,
+  "is_surprising": false,
+  "parent_id": "node_4_36",
+  "posterior": 0.7472527472527473,
+  "posterior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 60.0,
+    "mean": 0.7472527472527473,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Security-Rights Divergence' hypothesis using the EO 13960 dataset. With the corrected mapping logic applied to the 'Notice' and 'Opt-Out' columns, the analysis found a statistically significant difference between the groups. The Mann-Whitney U test yielded a p-value of 0.034, supporting the hypothesis that Civilian agencies (Mean Score = 0.094) are slightly more likely to implement rights-preserving controls than Security/Defense agencies (Mean Score = 0.062). \n\nHowever, the visualization and summary statistics reveal a 'floor effect' that is practically more significant than the divergence itself. The median score for both groups is 0, and the box plot shows that positive scores (1 or 2) are outliers. This indicates that while Civilian agencies are statistically 'better', the vast majority of AI systems across the entire U.S. federal government—regardless of sector—lack basic rights-preserving controls like public notice and opt-out mechanisms.",
+  "rich_outputs": null,
+  "runtime_ms": 385990.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.006380716058135416
+}

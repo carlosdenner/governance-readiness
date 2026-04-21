@@ -1,0 +1,26 @@
+exitcode: 0 (execution succeeded)
+Code output: Unique values in '37_custom_code': <StringArray>
+['No', 'Yes', nan, ' ']
+Length: 4, dtype: str
+Unique values in '38_code_access': <StringArray>
+[             'No – agency does not have access to source code.',
+                                                             nan,
+ 'Yes – agency has access to source code, but it is not public.',
+                      'Yes – source code is publicly available.',
+                                                           'Yes',
+                                                           'YES',
+                                                             ' ']
+Length: 7, dtype: str
+
+Data points after cleaning: 950
+
+Contingency Table (Rows: Commercial [0=Custom, 1=Comm], Cols: Access [0=No, 1=Yes]):
+has_code_access  0.0  1.0
+is_commercial            
+0.0              623   90
+1.0              231    6
+
+Chi-Square p-value: 1.4187e-05
+Odds Ratio (Likelihood of Opacity for Commercial vs Custom): 5.5618
+Significant result.
+Commercial systems are significantly more opaque (less code access).

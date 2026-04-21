@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was executed successfully, utilizing a text-mining approach ('title' + 'description') after previous attempts revealed that the structured columns 'Harm Domain' and 'Tangible Harm' contained non-taxonomic boolean/status data (e.g., 'yes', 'maybe', 'near-miss') rather than the expected categories. The text analysis inferred sector and harm categories for a small subset of the data (N=8 incidents). The resulting contingency table was too sparse to yield a statistically significant result (p=1.0). Consequently, the hypothesis that the Government sector is disproportionately associated with Rights/Liberties harms while Healthcare is associated with Physical/Safety harms cannot be validated with this dataset due to the lack of explicit taxonomic coding in the available columns. The null result is primarily a reflection of data limitations.",
+  "child_ids": [
+    "node_7_20"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\n# Prepare text fields for analysis (fill NaNs)\naiid_df['text_content'] = aiid_df['title'].fillna('') + \" \" + aiid_df['description'].fillna('')\naiid_df['text_content'] = aiid_df['text_content'].str.lower()\n\n# --- MAPPING FUNCTIONS ---\n\ndef map_sector(s):\n    s = str(s).lower()\n    # Government/Public Sector\n    if any(x in s for x in ['public administration', 'defense', 'law enforcement', 'justice', 'police', 'government', 'military']):\n        return 'Government'\n    # Healthcare\n    if any(x in s for x in ['human health', 'medical', 'hospital', 'medicine', 'healthcare', 'clinical']):\n        return 'Healthcare'\n    return None\n\ndef map_harm_from_text(text):\n    # Keywords for Rights/Liberties\n    rights_keywords = ['discrimination', 'bias', 'privacy', 'surveillance', 'civil rights', 'liberty', 'racist', 'sexist', 'wrongful arrest', 'false arrest', 'denied', 'unfair']\n    # Keywords for Physical Safety\n    physical_keywords = ['death', 'killed', 'injury', 'injured', 'accident', 'crash', 'collision', 'physical harm', 'safety', 'died', 'fatal']\n    \n    has_rights = any(k in text for k in rights_keywords)\n    has_physical = any(k in text for k in physical_keywords)\n    \n    if has_rights and not has_physical:\n        return 'Rights/Liberties'\n    if has_physical and not has_rights:\n        return 'Physical/Safety'\n    if has_rights and has_physical:\n        return 'Mixed/Both' # Exclude to be clean\n    return None\n\n# Apply mappings\naiid_df['Sector_Group'] = aiid_df['Sector of Deployment'].apply(map_sector)\naiid_df['Harm_Group'] = aiid_df['text_content'].apply(map_harm_from_text)\n\n# Filter for analysis (exclude Mixed or None)\nfinal_df = aiid_df.dropna(subset=['Sector_Group', 'Harm_Group'])\nfinal_df = final_df[final_df['Harm_Group'].isin(['Rights/Liberties', 'Physical/Safety'])]\n\nprint(f\"Total AIID Incidents: {len(aiid_df)}\")\nprint(f\"Incidents with Sector/Harm data (inferred from text): {len(final_df)}\")\n\nif len(final_df) > 0:\n    # Contingency Table\n    contingency_table = pd.crosstab(final_df['Sector_Group'], final_df['Harm_Group'])\n    print(\"\\nContingency Table (Sector vs Harm):\")\n    print(contingency_table)\n\n    # Chi-square test\n    chi2, p, dof, expected = chi2_contingency(contingency_table)\n    print(f\"\\nChi-square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n\n    # Row percentages\n    row_pcts = contingency_table.div(contingency_table.sum(axis=1), axis=0) * 100\n    print(\"\\nRow Percentages:\")\n    print(row_pcts.round(2))\n    \n    # Check hypothesis\n    if p < 0.05:\n        gov_rights = row_pcts.loc['Government', 'Rights/Liberties'] if 'Rights/Liberties' in row_pcts.columns else 0\n        health_phys = row_pcts.loc['Healthcare', 'Physical/Safety'] if 'Physical/Safety' in row_pcts.columns else 0\n        \n        print(f\"\\nGov Rights %: {gov_rights:.1f}%\")\n        print(f\"Health Safety %: {health_phys:.1f}%\")\n        \n        if gov_rights > 50 and health_phys > 50:\n            print(\"\\nRESULT: Hypothesis Supported. Government sector is dominated by Rights/Liberties harms, Healthcare by Physical/Safety harms.\")\n        else:\n            print(\"\\nRESULT: Significant difference found, but proportions may not fully align with hypothesis direction.\")\n    else:\n        print(\"\\nRESULT: No statistically significant association found.\")\nelse:\n    print(\"\\nNo data available after text analysis mapping.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total AIID Incidents: 1362\nIncidents with Sector/Harm data (inferred from text): 8\n\nContingency Table (Sector vs Harm):\nHarm_Group    Physical/Safety  Rights/Liberties\nSector_Group                                   \nGovernment                  0                 4\nHealthcare                  1                 3\n\nChi-square Statistic: 0.0000\nP-value: 1.0000e+00\n\nRow Percentages:\nHarm_Group    Physical/Safety  Rights/Liberties\nSector_Group                                   \nGovernment                0.0             100.0\nHealthcare               25.0              75.0\n\nRESULT: No statistically significant association found.\n",
+  "created_at": "2026-02-22T12:15:40.072801+00:00",
+  "creation_idx": 241,
+  "experiment_id": "node_6_52",
+  "experiment_plan": {
+    "deliverables": "Sector vs. Harm contingency table, Chi-square stats.",
+    "objective": "Compare the distribution of harm domains across Government and Healthcare sectors.",
+    "steps": "1. Filter for 'aiid_incidents'.\n2. Create a 'Sector Group' variable: Map '78_Sector of Deployment' entries containing 'Government', 'Police', 'Military' to 'Government', and 'Healthcare', 'Medical' to 'Healthcare'.\n3. Create a 'Harm Group' variable from '73_Harm Domain': Group into 'Rights/Liberties' vs 'Physical/Safety'.\n4. Create a contingency table for the subset of data matching these groups.\n5. Perform a Chi-square test."
+  },
+  "hypothesis": "Sector-Specific Harm Domains: AI incidents in the 'Government' sector are disproportionately associated with 'Civil Rights' or 'Liberty' harms compared to the 'Healthcare' sector, which is dominated by 'Physical Safety' harms.",
+  "id_in_run": 240,
+  "is_surprising": true,
+  "parent_id": "node_5_44",
+  "posterior": 0.7245762711864406,
+  "posterior_belief": {
+    "_empirical_mean": 0.5,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.7245762711864406,
+    "n": 28.0,
+    "prior_params": [
+      28.75,
+      2.25
+    ],
+    "uncertain": 28.0
+  },
+  "prior": 0.9274193548387096,
+  "prior_belief": {
+    "_empirical_mean": 0.9416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 23.0,
+    "maybe_false": 0.0,
+    "maybe_true": 7.0,
+    "mean": 0.9274193548387096,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed, though the results were limited by data quality issues identified during the process. The initial hypothesis relied on the assumption that the 'Harm Domain' or 'Tangible Harm' columns contained specific taxonomic categories (e.g., 'Civil Rights', 'Physical Safety'). However, the investigation revealed that these columns actually contained status indicators (e.g., 'near-miss', 'definitively occurred') or boolean flags ('yes', 'no'). \n\nThe programmer correctly adapted by attempting to infer these categories from the unstructured 'title' and 'description' text fields using keyword matching. This fallback approach yielded a very small sample size (N=8) suitable for analysis. The resulting Chi-square test (p=1.0) showed no statistically significant difference between the Government and Healthcare sectors regarding harm types in this limited sample. Consequently, the hypothesis cannot be supported, primarily due to the lack of explicit harm-type coding in the available structured data.",
+  "rich_outputs": null,
+  "runtime_ms": 488700.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.24341170038272278
+}

@@ -1,0 +1,74 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded. Shape: (52, 22)
+
+=== Descriptive Statistics ===
+Security Group (n=40):
+  Mean: 7.53
+  Median: 7.00
+  Std Dev: 3.13
+
+Other Group (n=12):
+  Mean: 7.58
+  Median: 7.50
+  Std Dev: 2.27
+
+=== Normality Tests (Shapiro-Wilk) ===
+Security: p=0.0633
+Other:    p=0.8839
+
+=== Hypothesis Tests ===
+Mann-Whitney U Test: U=227.0, p=0.7844
+Welch's T-test:      t=-0.0709, p=0.9440
+
+Result: No statistically significant difference found (p >= 0.05).
+
+STDERR:
+<ipython-input-1-7f1b27da2976>:88: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  box = plt.boxplot(data_to_plot, patch_artist=True, labels=['Security', 'Other'], zorder=3)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot with an overlayed Strip Plot (or Jitter Plot)**.
+*   **Purpose:** The plot compares the distribution of a numerical variable ("Number of Techniques Used") across two distinct categories ("Security" and "Other").
+    *   The **box plot** component visualizes statistical summaries: the median, interquartile range (IQR), and potential outliers.
+    *   The **overlayed points** show the individual data points, allowing the viewer to see the sample size and exact distribution density.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Harm Category"
+    *   **Labels:** Two categorical groups: "Security" and "Other".
+*   **Y-Axis:**
+    *   **Title:** "Number of Techniques Used"
+    *   **Range:** The visual axis ranges from approximately 0 to 17.
+    *   **Gridlines:** Horizontal dashed gridlines appear every 2 units (2, 4, 6... 16).
+
+### 3. Data Trends
+**"Security" Category (Blue):**
+*   **Spread:** This group shows a very wide spread of data, ranging from a minimum of 1 technique to a maximum of 16 techniques.
+*   **Cluster:** There is a heavy concentration (cluster) of data points between 6 and 9 techniques.
+*   **Outliers:** There are distinct outliers plotted as open circles above the top whisker (at values 14, 15, and 16).
+*   **Median:** The median line (orange line inside the box) appears to be at exactly 7.
+
+**"Other" Category (Green):**
+*   **Spread:** This group has a tighter distribution compared to "Security," ranging from 4 to 12 techniques.
+*   **Cluster:** The data is fairly evenly distributed within the interquartile range (the green box), mostly between 6.5 and 9.
+*   **Outliers:** There are no statistically calculated outliers (open circles) visible for this group; all points fall within the whisker range.
+*   **Median:** The median line appears slightly higher than the Security group, sitting around 7.5.
+
+### 4. Annotations and Legends
+*   **Sample Size (n):**
+    *   **"n=40"** is written above the Security plot, indicating a sample size of 40 data points.
+    *   **"n=12"** is written above the Other plot, indicating a sample size of 12 data points.
+*   **Color Coding:**
+    *   **Light Blue Box / Dark Blue Dots:** Represents the "Security" harm category.
+    *   **Light Green Box / Dark Green Dots:** Represents the "Other" harm category.
+
+### 5. Statistical Insights
+*   **Complexity Variance:** The "Security" category exhibits much higher variability in attack complexity. While many security attacks use a moderate number of techniques (6-9), this category includes both the simplest attacks (1 technique) and the most complex attacks (up to 16 techniques).
+*   **Consistency:** The "Other" category is more consistent. Attacks in this category generally require a moderate number of techniques, never dropping below 4 or exceeding 12 in this dataset.
+*   **Median Comparison:** Interestingly, despite the "Security" category containing the highest values, the median complexity for the "Other" category (approx. 7.5) is slightly higher than that of "Security" (7). This suggests that a "typical" attack in the "Other" category might be slightly more complex than a "typical" attack in the "Security" category, even though "Security" has the extreme cases.
+*   **Sample Imbalance:** It is important to note the disparity in sample sizes (40 vs. 12). The "Security" data is more robust, whereas the "Other" category is drawn from a much smaller pool of events.
+==================================================

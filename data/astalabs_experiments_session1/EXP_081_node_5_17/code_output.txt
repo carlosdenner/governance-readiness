@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_incident_coding.csv
+Filtered subset size: 40 rows
+Harm Type counts:
+harm_type
+security       36
+reliability     4
+Name: count, dtype: int64
+Failure Mode counts:
+failure_mode
+prevention_failure    39
+detection_failure      1
+Name: count, dtype: int64
+
+Contingency Table:
+              | Prevention | Other
+Security      | 35         | 1
+Reliability   | 4          | 0
+
+Fisher's Exact Test Results:
+Odds Ratio: 0.0
+P-value: 1.0
+
+Result: No statistically significant difference found.

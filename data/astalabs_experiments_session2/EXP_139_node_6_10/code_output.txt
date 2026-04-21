@@ -1,0 +1,26 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID Incidents: 1362
+Using columns: Autonomy='Autonomy Level', Text='description'
+Rows used for analysis: 185
+Harm Category Distribution:
+Harm_Category
+Non-Physical Harm    142
+Physical Harm         43
+Name: count, dtype: int64
+
+--- Contingency Table (Counts) ---
+Harm_Category        Non-Physical Harm  Physical Harm
+Autonomy_Category                                    
+High Autonomy                       45              8
+Low/Medium Autonomy                 97             35
+
+--- Contingency Table (Percentages) ---
+Harm_Category        Non-Physical Harm  Physical Harm
+Autonomy_Category                                    
+High Autonomy                    84.91          15.09
+Low/Medium Autonomy              73.48          26.52
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 2.1617
+p-value: 1.4149e-01
+Result: No statistically significant relationship found.

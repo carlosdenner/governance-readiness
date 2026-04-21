@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment was successfully executed. The 'step2_competency_statements.csv' dataset was loaded, and the 'control_count' feature was correctly derived by counting semicolon-separated entries in the 'applicable_controls' column. Descriptive statistics revealed that 'Integration Readiness' competencies have a slightly higher mean control count (2.00) compared to 'Trust Readiness' (1.68), but 'Trust Readiness' exhibits higher variance (std=0.75 vs 0.52). The Mann-Whitney U test yielded a p-value of 0.0902, and the T-test yielded a p-value of 0.1308. Both are above the standard alpha of 0.05, leading to the conclusion that there is no statistically significant difference in architectural density between the two bundles. The hypothesis that Integration Readiness requires significantly more controls is therefore not supported by this metric.",
+  "child_ids": [
+    "node_4_19",
+    "node_4_27"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport matplotlib.pyplot as plt\nimport os\n\n# Check file existence before loading\nfile_name = 'step2_competency_statements.csv'\nfile_path = file_name if os.path.exists(file_name) else '../' + file_name\n\nprint(f\"Loading dataset from {file_path}...\")\ntry:\n    df = pd.read_csv(file_path)\nexcept FileNotFoundError:\n    print(f\"Error: Could not find {file_name} in current or parent directory.\")\n    exit(1)\n\n# Verify columns exist\nif 'applicable_controls' not in df.columns or 'bundle' not in df.columns:\n    print(\"Error: Required columns not found.\")\n    print(f\"Available columns: {df.columns.tolist()}\")\n    exit(1)\n\n# Calculate architectural density (control_count)\ndef count_controls(val):\n    if pd.isna(val) or str(val).strip() == '':\n        return 0\n    # Split by semicolon and strip whitespace to count valid entries\n    controls = [c.strip() for c in str(val).split(';') if c.strip()]\n    return len(controls)\n\ndf['control_count'] = df['applicable_controls'].apply(count_controls)\n\n# Group by bundle\ngroup_integration = df[df['bundle'] == 'Integration Readiness']['control_count']\ngroup_trust = df[df['bundle'] == 'Trust Readiness']['control_count']\n\n# Calculate descriptive statistics\nstats_df = df.groupby('bundle')['control_count'].agg(['count', 'mean', 'std', 'median', 'min', 'max'])\nprint(\"\\n=== Descriptive Statistics (Control Count) ===\")\nprint(stats_df)\n\n# Perform Mann-Whitney U Test (Non-parametric test for difference in distributions)\n# We use Mann-Whitney because control counts are discrete and sample sizes are small\nu_stat, p_val_mw = stats.mannwhitneyu(group_integration, group_trust, alternative='two-sided')\n\n# Perform Independent T-test (for comparison)\nt_stat, p_val_t = stats.ttest_ind(group_integration, group_trust, equal_var=False)\n\nprint(\"\\n=== Statistical Test Results ===\")\nprint(f\"Mann-Whitney U Test: U={u_stat:.1f}, p-value={p_val_mw:.4f}\")\nprint(f\"Welch's T-test:      t={t_stat:.4f}, p-value={p_val_t:.4f}\")\n\ninterpretation = \"\"\nif p_val_mw < 0.05:\n    interpretation = \"Result: Statistically significant difference detected.\"\nelse:\n    interpretation = \"Result: No statistically significant difference detected.\"\nprint(f\"\\n{interpretation}\")\n\n# Visualization\nplt.figure(figsize=(10, 6))\ndata_to_plot = [group_integration, group_trust]\nlabels = ['Integration Readiness', 'Trust Readiness']\n\nplt.boxplot(data_to_plot, labels=labels, patch_artist=True, \n            boxprops=dict(facecolor='lightblue', color='blue'),\n            medianprops=dict(color='red'))\n\nplt.title('Distribution of Architecture Control Density by Bundle')\nplt.ylabel('Number of Applicable Controls')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\n\n# Add scatter points\nfor i, data in enumerate(data_to_plot):\n    y = data\n    x = np.random.normal(i + 1, 0.04, size=len(y))\n    plt.plot(x, y, 'r.', alpha=0.5)\n\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from step2_competency_statements.csv...\n\n=== Descriptive Statistics (Control Count) ===\n                       count      mean       std  median  min  max\nbundle                                                            \nIntegration Readiness     23  2.000000  0.522233     2.0    1    3\nTrust Readiness           19  1.684211  0.749269     2.0    1    3\n\n=== Statistical Test Results ===\nMann-Whitney U Test: U=278.5, p-value=0.0902\nWelch's T-test:      t=1.5519, p-value=0.1308\n\nResult: No statistically significant difference detected.\n\nSTDERR:\n<ipython-input-1-f662c3a0d09c>:69: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is a detailed analysis of the plot:\n\n### 1. Plot Type\n**Type:** Box Plot with an overlay of a Jitter/Strip Plot.\n**Purpose:** This plot is designed to visualize and compare the distribution of a numerical variable (\"Number of Applicable Controls\") across two categorical groups (\"Integration Readiness\" and \"Trust Readiness\").\n*   The **box plot** component displays statistical summaries (median, quartiles, and outliers).\n*   The **jitter plot** (red dots) displays the individual data points, revealing the sample size and specific density of data at discrete values.\n\n### 2. Axes\n*   **Title:** \"Distribution of Architecture Control Density by Bundle\"\n*   **Y-Axis:**\n    *   **Label:** \"Number of Applicable Controls\"\n    *   **Range:** The visual axis spans from **1.00 to 3.00**.\n    *   **Scale:** Linear, with major ticks marked every 0.25 units. The data appears to be discrete integers (1, 2, 3).\n*   **X-Axis:**\n    *   **Label:** The axis represents the \"Bundle\" category (though not explicitly labeled \"Bundle\").\n    *   **Categories:** Two specific bundles are compared:\n        1.  **Integration Readiness**\n        2.  **Trust Readiness**\n\n### 3. Data Trends\n**Integration Readiness (Left Group):**\n*   **Clustering/Variance:** The data is extremely concentrated. The vast majority of data points (red dots) are clustered tightly at the value of **2.0**.\n*   **Box Plot Shape:** The box plot appears \"collapsed\" into a single line at y=2. This indicates that the 25th percentile (Q1), Median, and 75th percentile (Q3) are all equal to 2.\n*   **Outliers:** There are distinct outlier points visible at **1.0** and **3.0** (marked by black circles and red dots), but these represent a small minority of the cases.\n\n**Trust Readiness (Right Group):**\n*   **Clustering/Variance:** This group shows significantly higher variance compared to the Integration group. The data points are distributed across values 1, 2, and 3.\n*   **Box Plot Shape:** There is a clearly visible light blue box.\n    *   The bottom of the box is at **1.0** (25th percentile).\n    *   The top of the box is at **2.0** (75th percentile).\n    *   The median line (red horizontal bar inside the box) is at **2.0**.\n*   **Whiskers:** There is an upper whisker extending to **3.0**, indicating data points exist in the upper range within 1.5 times the Interquartile Range (IQR).\n\n### 4. Annotations and Legends\n*   **Red Dots:** Represent individual observations/data points. They are slightly transparent to show density where points overlap.\n*   **Red Horizontal Line:** Represents the median value within the box plots.\n*   **Light Blue Box:** Represents the Interquartile Range (IQR), covering the middle 50% of the data.\n*   **Black Circles:** Represent outliers calculated by the box plot algorithm (visible specifically in the Integration Readiness column).\n*   **Grid Lines:** Horizontal dashed grey lines facilitate easier reading of the y-axis values.\n\n### 5. Statistical Insights\n*   **Central Tendency:** Both bundles have a median \"Number of Applicable Controls\" of **2**.\n*   **Consistency:** The **Integration Readiness** bundle is highly consistent. It is almost strictly standardized to 2 controls, with very few exceptions.\n*   **Variability:** The **Trust Readiness** bundle is much more variable. While its median is also 2, a significant portion of its data falls at 1 (indicated by the box extending down to 1), and there is a notable spread up to 3.\n*   **Distribution Skew:** The Trust Readiness data appears slightly skewed or uniformly distributed across the lower half (1 to 2) compared to the upper half, whereas Integration Readiness is heavily centered (kurtotic) around the mean.\n==================================================",
+  "created_at": "2026-02-20T22:08:58.648356+00:00",
+  "creation_idx": 23,
+  "experiment_id": "node_3_8",
+  "experiment_plan": {
+    "deliverables": "Descriptive statistics (mean, std) per bundle and T-test/Mann-Whitney results.",
+    "objective": "Compare the architectural 'density' (number of required controls) between the two competency bundles.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Create a new column 'control_count' by splitting the 'applicable_controls' string by the delimiter (semicolon) and counting the elements.\n3. Group the data by 'bundle' ('Trust Readiness' vs. 'Integration Readiness') and calculate descriptive statistics for 'control_count'.\n4. Perform an independent sample t-test (or Mann-Whitney U test) to compare the means of 'control_count' between the two bundles."
+  },
+  "hypothesis": "Competencies classified as 'Integration Readiness' require a significantly higher number of distinct architecture controls to implement than those classified as 'Trust Readiness', reflecting a higher technical complexity.",
+  "id_in_run": 22,
+  "is_surprising": true,
+  "parent_id": "node_2_2",
+  "posterior": 0.32083333333333336,
+  "posterior_belief": {
+    "_empirical_mean": 0.25,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 90.0,
+    "maybe_true": 0.0,
+    "mean": 0.32083333333333336,
+    "n": 90.0,
+    "prior_params": [
+      16.0,
+      14.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.5333333333333333,
+  "prior_belief": {
+    "_empirical_mean": 0.5344827586206896,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 12.0,
+    "maybe_true": 16.0,
+    "mean": 0.5333333333333333,
+    "n": 29.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment was successfully executed and faithfully implemented the analysis plan. The dataset 'step2_competency_statements.csv' was correctly loaded (after correcting the file path), and the 'control_count' metric was accurately derived by parsing the semicolon-separated 'applicable_controls' field. The statistical analysis compared the architectural density of 'Integration Readiness' (Mean=2.00, SD=0.52) versus 'Trust Readiness' (Mean=1.68, SD=0.75). Although 'Integration Readiness' competencies showed a slightly higher average number of controls, the Mann-Whitney U test (p=0.0902) and Welch's T-test (p=0.1308) indicated that this difference is not statistically significant at the 0.05 level. Therefore, the hypothesis that Integration Readiness requires a significantly higher number of architecture controls is not supported by the data.",
+  "rich_outputs": null,
+  "runtime_ms": 193100.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.2466266123333684
+}

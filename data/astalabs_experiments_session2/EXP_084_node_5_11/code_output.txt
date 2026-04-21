@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Filtered EO 13960 records: 1757
+Records with valid Development Source: 920
+Distribution of Development Source:
+Development_Source
+Commercial    481
+Government    439
+Name: count, dtype: int64
+
+Contingency Table (Source vs Impact Assessment):
+                    No Assessment  Has Assessment
+Development_Source                               
+Commercial                    460              21
+Government                    410              29
+
+Compliance Rates (%):
+Development_Source
+Commercial    4.365904
+Government    6.605923
+Name: Has_Impact_Assessment, dtype: float64
+
+Chi-square Statistic: 1.8262
+P-value: 0.17658
+Result: Not Statistically Significant.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot, here are the detailed findings:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares the "Impact Assessment Compliance" rates between two distinct categories of development sources: Commercial and Government.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Title:** "Development Source"
+    *   **Labels:** Two categorical labels: "Commercial" and "Government".
+*   **Y-Axis:**
+    *   **Title:** "Compliance Rate (%)"
+    *   **Range:** The axis is marked in increments of 2, starting from 0 and ending at 10. The visual space extends slightly beyond 10, likely up to 12.
+    *   **Units:** Percentage (%).
+
+**3. Data Trends**
+*   **Tallest Bar:** The "Government" category represents the highest value.
+*   **Shortest Bar:** The "Commercial" category represents the lowest value.
+*   **Pattern:** There is a clear trend indicating that government-developed sources have a higher compliance rate compared to commercial sources within the context of this dataset.
+
+**4. Annotations and Legends**
+*   **Value Annotations:** Specific data values are annotated directly above each bar in bold text for clarity:
+    *   Commercial: **4.4%**
+    *   Government: **6.6%**
+*   **Chart Title:** "Impact Assessment Compliance: Commercial vs. Government" is displayed at the top.
+*   **Color Coding:** The Commercial bar is colored blue, and the Government bar is colored orange, serving to visually distinguish the two categories (though no separate legend box is required as the x-axis is labeled).
+
+**5. Statistical Insights**
+*   **Relative Performance:** The Government sector demonstrates a compliance rate that is **2.2 percentage points higher** than the Commercial sector ($6.6\% - 4.4\%$).
+*   **Proportional Difference:** In relative terms, the compliance rate for Government sources is **50% higher** than that of Commercial sources ($6.6 / 4.4 = 1.5$).
+*   **Overall Magnitude:** despite the relative difference, the absolute compliance rates for both sectors are notably low, with neither category reaching even a 7% compliance rate. This suggests a systemic issue with impact assessment compliance regardless of the development source.
+==================================================

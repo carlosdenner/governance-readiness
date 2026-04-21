@@ -1,0 +1,51 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Contingency Table ---
+                Other Harm  Demographic Harm
+target_sector                               
+Financial                5                 2
+Transportation          28                 0
+
+
+Performing Fisher's Exact Test (Min expected count: 0.40)...
+Fisher's Exact Test Results:
+P-value: 0.03529
+
+--- Proportions ---
+                Other Harm  Demographic Harm
+target_sector                               
+Financial         0.714286          0.285714
+Transportation    1.000000          0.000000
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Stacked Bar Plot.
+*   **Purpose:** This plot compares the relative proportions of two categories of "Harm Basis" (Other Harm vs. Demographic Harm) across two distinct sectors (Financial and Transportation). The stacking allows for a visualization of the part-to-whole relationship within each sector.
+
+**2. Axes**
+*   **X-axis:**
+    *   **Label:** "Sector"
+    *   **Categories:** Two discrete categories are displayed: "Financial" and "Transportation". The labels are oriented vertically.
+*   **Y-axis:**
+    *   **Label:** "Proportion of Incidents"
+    *   **Range:** The axis runs from 0.0 to 1.0, representing percentages from 0% to 100%.
+    *   **Ticks:** Increments of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+**3. Data Trends**
+*   **Financial Sector:** The bar shows a mix of harm types. Approximately 70-75% of the incidents fall under "Other Harm" (blue), while the remaining ~25-30% are attributed to "Demographic Harm" (red). This sector shows the highest proportion of Demographic Harm in the plot.
+*   **Transportation Sector:** The bar is almost entirely composed of "Other Harm" (blue), reaching nearly 1.0 (100%). There is virtually no visible "Demographic Harm" (red) component for this sector.
+*   **Comparison:** There is a distinct difference in composition between the two sectors. The Financial sector has a notable presence of Demographic Harm, whereas the Transportation sector is overwhelmingly characterized by Other Harm.
+
+**4. Annotations and Legends**
+*   **Main Title:** "Harm Distribution Basis by Sector"
+*   **Subtitle/Statistical Annotation:** "(Fisher's Exact Test p=0.0353)" is included in the title area, indicating the statistical test used and the resulting p-value.
+*   **Legend:** Located on the right side with the title "Harm Basis".
+    *   **Sky Blue:** Represents "Other Harm".
+    *   **Salmon/Red:** Represents "Demographic Harm".
+
+**5. Statistical Insights**
+*   **Significance:** The p-value provided in the title is **0.0353**. Since this value is less than the standard significance threshold of 0.05 (p < 0.05), the difference in the distribution of harm types between the Financial and Transportation sectors is statistically significant.
+*   **Interpretation:** We can reject the null hypothesis that Sector and Harm Basis are independent. The data suggests that incidents in the Financial sector are significantly more likely to involve "Demographic Harm" compared to the Transportation sector, where such harm appears non-existent or extremely rare based on this dataset.
+==================================================

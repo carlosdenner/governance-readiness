@@ -1,0 +1,17 @@
+sub_competency_id,sub_competency_name,bundle,incident_count,coverage_status,incident_ids,primary_harm_types
+IR-1,Orchestration & Execution Controls,Integration Readiness,8,validated,AML.CS0010; AML.CS0012; AML.CS0013; AML.CS0019; AML.CS0023; AML.CS0028; AML.CS0036; AML.CS0042,security(5); reliability(2); supply_chain(1)
+IR-2,Tool-Use Boundaries & Access Control,Integration Readiness,8,validated,AML.CS0016; AML.CS0021; AML.CS0026; AML.CS0029; AML.CS0038; AML.CS0040; AML.CS0041; AML.CS0045,security(5); privacy(2); supply_chain(1)
+IR-3,Nondeterminism Management,Integration Readiness,18,validated,AML.CS0000; AML.CS0001; AML.CS0002; AML.CS0003; AML.CS0004; AML.CS0005; AML.CS0006; AML.CS0008; AML.CS0009; AML.CS0011,security(14); reliability(2); intellectual_property(1)
+IR-4,RAG Architecture & Data Grounding,Integration Readiness,2,partial,AML.CS0035; AML.CS0049,privacy(1); supply_chain(1)
+IR-5,GenAIOps / MLOps Lifecycle,Integration Readiness,0,uncovered,,
+IR-6,Modular Architecture & Resource Controls,Integration Readiness,7,validated,AML.CS0015; AML.CS0018; AML.CS0022; AML.CS0027; AML.CS0039; AML.CS0044; AML.CS0047,security(5); supply_chain(1); autonomy_misuse(1)
+IR-7,HITL Architecture Patterns,Integration Readiness,1,partial,AML.CS0037,privacy(1)
+IR-8,Evaluation & Monitoring Infrastructure,Integration Readiness,0,uncovered,,
+TR-1,Risk Policy & Accountability,Trust Readiness,19,validated,AML.CS0000; AML.CS0001; AML.CS0002; AML.CS0003; AML.CS0005; AML.CS0006; AML.CS0007; AML.CS0010; AML.CS0016; AML.CS0018,security(16); intellectual_property(2); autonomy_misuse(1)
+TR-2,Threat Mapping & Reconnaissance Defense,Trust Readiness,1,partial,AML.CS0035,privacy(1)
+TR-3,Monitoring & Detection,Trust Readiness,9,validated,AML.CS0008; AML.CS0009; AML.CS0011; AML.CS0014; AML.CS0017; AML.CS0029; AML.CS0038; AML.CS0040; AML.CS0042,security(5); reliability(2); bias_discrimination(1)
+TR-4,Data Governance & Exfiltration Prevention,Trust Readiness,2,partial,AML.CS0012; AML.CS0019,reliability(2)
+TR-5,Regulatory Compliance,Trust Readiness,0,uncovered,,
+TR-6,Incident Response & Recovery,Trust Readiness,9,validated,AML.CS0004; AML.CS0013; AML.CS0020; AML.CS0021; AML.CS0024; AML.CS0026; AML.CS0037; AML.CS0045; AML.CS0046,security(7); privacy(2)
+TR-7,Human Override & Control,Trust Readiness,0,uncovered,,
+TR-8,Supply Chain & Third-Party Risk,Trust Readiness,5,validated,AML.CS0015; AML.CS0022; AML.CS0028; AML.CS0041; AML.CS0049,supply_chain(4); security(1)

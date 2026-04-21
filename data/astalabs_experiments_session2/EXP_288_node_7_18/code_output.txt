@@ -1,0 +1,51 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 subset shape: (1757, 196)
+
+Contingency Table (Count):
+impact_category  Other  Rights-Impacting
+status                                  
+Active            1557                56
+Retired            141                 3
+
+Distribution Rates (%):
+impact_category      Other  Rights-Impacting
+status                                      
+Active           96.528208          3.471792
+Retired          97.916667          2.083333
+
+Chi-Square Test: Statistic=0.4157, p-value=5.190682e-01
+Fisher's Exact Test: Odds Ratio=0.5916, p-value=4.763768e-01
+Interpretation: Retired systems are 0.59x as likely to be Rights-Impacting as Active systems (in terms of odds).
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Stacked Bar Chart (specifically a 100% stacked bar chart).
+*   **Purpose:** This plot compares the proportional composition of system types ("Other" vs. "Rights-Impacting") across two different statuses ("Active" and "Retired"). It allows the viewer to see the relative percentage of rights-impacting systems within each status category.
+
+**2. Axes**
+*   **X-axis:**
+    *   **Label:** "System Status".
+    *   **Categories:** Two categorical variables: "Active" and "Retired".
+*   **Y-axis:**
+    *   **Label:** "Percentage".
+    *   **Range:** 0 to 100, with tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+    *   **Units:** Percent (%).
+
+**3. Data Trends**
+*   **Dominant Category:** In both the "Active" and "Retired" columns, the "Other" category (represented by the red/coral color) makes up the vast majority of the systems. It appears to occupy approximately 95% to 98% of each bar.
+*   **Minority Category:** The "Rights-Impacting" category (represented by the blue color) is a very small minority in both statuses.
+*   **Comparison:** Visually, the proportion of "Rights-Impacting" systems appears slightly larger in the "Active" bar compared to the "Retired" bar, though the difference is minimal. The blue sliver is slightly thicker for "Active" systems.
+
+**4. Annotations and Legends**
+*   **Title:** "Proportion of Rights-Impacting Systems: Active vs. Retired".
+*   **Legend:** Located on the right side with the title "Impact Type".
+    *   **Red Square:** Corresponds to "Other".
+    *   **Blue Square:** Corresponds to "Rights-Impacting".
+
+**5. Statistical Insights**
+*   **Low Prevalence of Rights-Impacting Systems:** The most significant insight is that systems classified as "Rights-Impacting" are rare relative to "Other" systems. They constitute likely less than 5% of the total in both active and retired pools.
+*   **Stability Across Lifecycle:** The proportion of rights-impacting systems does not change drastically between active and retired phases. However, the slightly thinner blue section in the "Retired" bar suggests that rights-impacting systems might be retired at a slightly lower rate or make up a smaller portion of historical systems compared to current active ones.
+==================================================

@@ -1,0 +1,57 @@
+exitcode: 0 (execution succeeded)
+Code output: Filtered for eo13960_scored: 1757 records
+Records for analysis (Commercial vs Custom): 920
+Breakdown by Procurement Type:
+procurement_type
+Commercial (Vendor)    481
+Custom (In-House)      439
+Name: count, dtype: int64
+
+Contingency Table (Count):
+mitigation_status    Documented  Not Documented
+procurement_type                               
+Commercial (Vendor)          39             442
+Custom (In-House)            45             394
+
+Contingency Table (Percentage):
+mitigation_status    Documented  Not Documented
+procurement_type                               
+Commercial (Vendor)    8.108108       91.891892
+Custom (In-House)     10.250569       89.749431
+
+Chi-Square Test Results:
+Statistic: 1.0247
+P-value: 3.1140e-01
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot serves to compare categorical data, specifically contrasting the percentage of AI projects that document disparity mitigation efforts based on how the AI was procured (Commercial Vendor vs. Custom In-House development).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Procurement Method"
+    *   **Categories:** The axis displays two distinct categories: "Commercial (Vendor)" and "Custom (In-House)."
+*   **Y-Axis:**
+    *   **Title:** "Percent with Documented Mitigation (%)"
+    *   **Units:** Percentage points.
+    *   **Value Range:** The axis scale ranges from 0 to 12, with major tick marks at intervals of 2 (0, 2, 4, 6, 8, 10, 12).
+
+### 3. Data Trends
+*   **Highest Value:** The tallest bar represents "Custom (In-House)" AI solutions, reaching a value of **10.3%**.
+*   **Lowest Value:** The shortest bar represents "Commercial (Vendor)" AI solutions, reaching a value of **8.1%**.
+*   **Comparison:** There is a visible trend where in-house (custom) solutions show a higher rate of documentation for disparity mitigation compared to commercial (vendor) solutions.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Disparity Mitigation Documentation Rate: Commercial vs Custom AI" provides the overall context for the data.
+*   **Data Labels:** Each bar is annotated with its exact numerical value directly above it ("8.1%" for Commercial and "10.3%" for Custom), allowing for precise reading without estimating from the y-axis.
+*   **Color Coding:** The bars are distinct in color (salmon/light red for Commercial and light blue for Custom) to visually differentiate the two categories, though no separate legend box is provided or necessary given the clear x-axis labels.
+
+### 5. Statistical Insights
+*   **Performance Gap:** Custom (In-House) AI procurement is associated with a **2.2 percentage point higher** rate of documented disparity mitigation compared to Commercial (Vendor) AI.
+*   **Relative Difference:** Custom solutions are approximately **27% more likely** (2.2 / 8.1) to have documented mitigation than commercial solutions.
+*   **Overall Low Compliance:** Despite the difference between the two methods, the most significant insight is that both rates are quite low. Approximately **90%** of AI projects (89.7% of Custom and 91.9% of Commercial) do **not** have documented disparity mitigation, indicating a widespread lack of documentation regarding fairness and bias mitigation across the industry, regardless of the procurement source.
+==================================================

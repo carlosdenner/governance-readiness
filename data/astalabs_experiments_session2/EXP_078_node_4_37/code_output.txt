@@ -1,0 +1,64 @@
+exitcode: 0 (execution succeeded)
+Code output: ATO Status Distribution:
+ato_status
+No ATO     1119
+Has ATO     638
+Name: count, dtype: int64
+
+Monitoring Status Distribution:
+monitoring_status
+Not Monitored    1611
+Monitored         146
+Name: count, dtype: int64
+
+Contingency Table:
+monitoring_status  Monitored  Not Monitored
+ato_status                                 
+Has ATO                   92            546
+No ATO                    54           1065
+
+Monitoring Percentages by ATO Status:
+monitoring_status  Monitored  Not Monitored
+ato_status                                 
+Has ATO            14.420063      85.579937
+No ATO              4.825737      95.174263
+
+Chi-Square Test Results:
+Chi2 Statistic: 47.8400
+P-value: 4.6247e-12
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart (or Column Chart).
+*   **Purpose:** The plot is designed to compare a specific metric ("Percentage of Systems with Monitoring") across two distinct categorical groups based on their authorization status ("Has ATO" vs. "No ATO").
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Authorization Status"
+    *   **Categories:** Two discrete categories: "Has ATO" and "No ATO".
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Percentage of Systems with Monitoring (%)"
+    *   **Units:** Percentage points.
+    *   **Range:** The axis scale runs from **0 to 100**, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Has ATO" group is the tallest, represented by a green bar reaching a value of **14.4%**.
+*   **Shortest Bar:** The "No ATO" group is the shortest, represented by a red bar reaching a value of **4.8%**.
+*   **Pattern:** There is a positive correlation between having an ATO (Authority to Operate) and the presence of post-deployment monitoring. The bar representing authorized systems is noticeably larger than the unauthorized group.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Impact of ATO Authorization on Post-Deployment Monitoring" appears at the top, defining the context of the analysis.
+*   **Data Labels:** Specific percentage values are annotated directly above each bar ("14.4%" and "4.8%"), eliminating the need to estimate values based on the grid lines.
+*   **Grid Lines:** Horizontal dashed grey lines are provided at every 20% increment to assist with visual scaling.
+*   **Color Coding:** The bars use distinct colors to reinforce the categories:
+    *   **Green:** Used for "Has ATO" (generally associated with positive/compliant status).
+    *   **Red:** Used for "No ATO" (generally associated with negative/non-compliant status).
+
+### 5. Statistical Insights
+*   **Relative Impact:** Systems with an ATO are **3 times more likely** (14.4% vs 4.8%) to have post-deployment monitoring compared to systems without an ATO. This suggests that the authorization process effectively encourages or enforces monitoring standards.
+*   **Low Overall Compliance:** Despite the "Has ATO" group performing better, the absolute values are quite low. Even among authorized systems, only **14.4%** have monitoring, leaving **85.6%** of authorized systems without it (based on this metric). This indicates that while ATO improves the odds of monitoring, it does not guarantee it.
+*   **Conclusion:** The authorization process (ATO) acts as a significant differentiator for system visibility, but there is substantial room for improvement in monitoring coverage across all systems, regardless of authorization status.
+==================================================

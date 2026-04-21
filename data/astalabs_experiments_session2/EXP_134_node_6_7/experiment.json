@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was successfully executed and yielded statistically significant results supporting the 'Forced Participation' Paradox hypothesis. After resolving initial data cleaning issues by treating free-text service descriptions as 'Public-Facing' indicators and interpreting verbose 'No' responses in the opt-out column, the script analyzed 120 valid use cases from the EO 13960 inventory. \n\nThe Chi-Square Test of Independence resulted in a statistic of 30.12 and a p-value of 4.07e-08, which is well below the 0.05 threshold. This provides strong evidence to **reject the null hypothesis** and confirms that target audience is a significant predictor of opt-out availability. \n\nThe data reveals a stark disparity in user agency: Internal systems (likely employee-facing) offer opt-out mechanisms 83.0% of the time, whereas Public-Facing systems offer them only 28.1% of the time. This 55-percentage-point gap confirms the existence of a 'Forced Participation' dynamic, where the general public is significantly less likely to be afforded the choice to decline AI interaction compared to federal employees.",
+  "child_ids": [
+    "node_7_1"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\ndf = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 subset\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# --- Step 1: Define Audience (Public vs Internal) ---\n# Logic: '26_public_service' contains descriptions for public services.\n# We assume populated (and meaningful) text implies 'Public-Facing'.\n# Null or empty/short artifacts implies 'Internal'.\n\ndef categorize_audience(val):\n    if pd.isna(val):\n        return 'Internal'\n    s = str(val).strip()\n    if len(s) < 3:  # Filter out artifacts like '.', ' ', or '\\n'\n        return 'Internal'\n    return 'Public-Facing'\n\neo_df['audience_clean'] = eo_df['26_public_service'].apply(categorize_audience)\n\n# --- Step 2: Define Opt-Out (Yes vs No) ---\n# Logic: '67_opt_out' contains 'Yes', verbose 'No...', or 'Waived'.\n\ndef categorize_opt_out(val):\n    if pd.isna(val):\n        return None\n    s = str(val).lower().strip()\n    \n    if s == 'yes' or s.startswith('yes'):\n        return 'Yes'\n    if s.startswith('no') or 'waived' in s:\n        return 'No'\n    return None # Exclude 'Other', 'N/A' if ambiguous, or NaN\n\neo_df['opt_out_clean'] = eo_df['67_opt_out'].apply(categorize_opt_out)\n\n# --- Step 3: Filter Valid Data ---\n# We only analyze rows where a definitive Opt-Out status is recorded.\nanalysis_df = eo_df.dropna(subset=['opt_out_clean']).copy()\n\nprint(\"Data Preparation Complete.\")\nprint(f\"Total EO 13960 Rows: {len(eo_df)}\")\nprint(f\"Rows with Valid Opt-Out Status: {len(analysis_df)}\")\nprint(\"\\nDistribution of Audience in Analysis Set:\")\nprint(analysis_df['audience_clean'].value_counts())\n\n# --- Step 4: Statistical Analysis ---\nif len(analysis_df) > 0:\n    # Contingency Table\n    crosstab = pd.crosstab(analysis_df['audience_clean'], analysis_df['opt_out_clean'])\n    print(\"\\nContingency Table (Count):\")\n    print(crosstab)\n    \n    # Check if we have enough data dimensions\n    if crosstab.shape == (2, 2):\n        # Percentages\n        crosstab_pct = pd.crosstab(analysis_df['audience_clean'], analysis_df['opt_out_clean'], normalize='index') * 100\n        print(\"\\nOpt-Out Availability Rates (%):\")\n        print(crosstab_pct)\n        \n        # Chi-Square\n        chi2, p, dof, ex = chi2_contingency(crosstab)\n        print(f\"\\nChi-Square Test Results:\")\n        print(f\"Statistic: {chi2:.4f}\")\n        print(f\"P-Value: {p:.4e}\")\n        \n        # Interpretation\n        if p < 0.05:\n            print(\"Result: Statistically Significant Association.\")\n        else:\n            print(\"Result: No Significant Association.\")\n            \n        # Visualization\n        plt.figure(figsize=(8, 6))\n        yes_rates = crosstab_pct['Yes']\n        colors = ['#2ca02c', '#1f77b4'] # Green vs Blue\n        ax = yes_rates.plot(kind='bar', color=colors, alpha=0.9, edgecolor='black', rot=0)\n        \n        plt.title(\"The 'Forced Participation' Paradox:\\nOpt-Out Availability by Audience\")\n        plt.ylabel(\"Use Cases with Opt-Out (%)\")\n        plt.xlabel(\"Target Audience\")\n        plt.ylim(0, 100)\n        plt.grid(axis='y', linestyle='--', alpha=0.5)\n        \n        for i, v in enumerate(yes_rates):\n            ax.text(i, v + 2, f\"{v:.1f}%\", ha='center', fontweight='bold')\n            \n        plt.tight_layout()\n        plt.show()\n        \n    else:\n        print(\"\\nInsufficient dimensions for Chi-Square (need 2x2).\")\n        # Fallback print if one category is missing (e.g., all Internal are No)\n        print(\"Raw Counts:\")\n        print(crosstab)\nelse:\n    print(\"No valid data available for analysis.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Data Preparation Complete.\nTotal EO 13960 Rows: 1757\nRows with Valid Opt-Out Status: 120\n\nDistribution of Audience in Analysis Set:\naudience_clean\nInternal         88\nPublic-Facing    32\nName: count, dtype: int64\n\nContingency Table (Count):\nopt_out_clean   No  Yes\naudience_clean         \nInternal        15   73\nPublic-Facing   23    9\n\nOpt-Out Availability Rates (%):\nopt_out_clean          No        Yes\naudience_clean                      \nInternal        17.045455  82.954545\nPublic-Facing   71.875000  28.125000\n\nChi-Square Test Results:\nStatistic: 30.1175\nP-Value: 4.0664e-08\nResult: Statistically Significant Association.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Vertical Bar Plot (or Bar Chart).\n*   **Purpose:** The plot compares the percentage of use cases that offer an \"Opt-Out\" mechanism across two distinct categories of target audiences (\"Internal\" vs. \"Public-Facing\").\n\n**2. Axes**\n*   **X-Axis (Horizontal):**\n    *   **Title:** \"Target Audience\"\n    *   **Labels:** The axis categorizes the data into \"Internal\" and \"Public-Facing.\"\n*   **Y-Axis (Vertical):**\n    *   **Title:** \"Use Cases with Opt-Out (%)\"\n    *   **Range:** 0 to 100.\n    *   **Units:** Percentage (%). The axis is marked with intervals of 20 (0, 20, 40, 60, 80, 100).\n\n**3. Data Trends**\n*   **Tallest Bar:** The \"Internal\" audience bar (colored green) is the tallest.\n*   **Shortest Bar:** The \"Public-Facing\" audience bar (colored blue) is significantly shorter.\n*   **Pattern:** There is a drastic disparity between the two categories. Use cases targeted at internal audiences are nearly three times as likely to have opt-out availability compared to those targeted at the public.\n\n**4. Annotations and Legends**\n*   **Main Title:** \"The 'Forced Participation' Paradox: Opt-Out Availability by Audience\". This title frames the data as counter-intuitive (a \"paradox\"), implying that one might expect different results (perhaps expecting the public to have more choice).\n*   **Data Labels:**\n    *   **Internal:** Annotated with **\"83.0%\"** at the top of the green bar.\n    *   **Public-Facing:** Annotated with **\"28.1%\"** at the top of the blue bar.\n*   **Gridlines:** Horizontal dashed gridlines appear at 20% intervals to aid in visual estimation.\n\n**5. Statistical Insights**\n*   **Significant Discrepancy:** There is a massive 54.9 percentage point gap between the two groups. While the vast majority of internal use cases (83.0%) allow users to opt out, less than a third (28.1%) of public-facing use cases offer the same choice.\n*   **The \"Paradox\":** The chart suggests that internal stakeholders (likely employees or organizational members) are afforded significantly more agency and consent regarding participation than the general public. This is often described as a paradox because public-facing technologies are usually subject to higher scrutiny and broader regulatory privacy requirements, yet here they show much lower voluntary participation rates.\n==================================================",
+  "created_at": "2026-02-22T07:19:18.324277+00:00",
+  "creation_idx": 135,
+  "experiment_id": "node_6_7",
+  "experiment_plan": {
+    "deliverables": "Comparative statistics, Visualization of User Control by Target Audience.",
+    "objective": "Investigate if citizen-facing AI deployments prioritize service delivery over user agency (opt-out choice).",
+    "steps": "1. Load 'eo13960_scored'.\n2. Use '26_public_service' to distinguish 'Public-Facing' vs 'Internal' systems.\n3. Clean '67_opt_out' into binary (Yes/No).\n4. Compare the Opt-Out rates using a Chi-Square test.\n5. Visualize the proportion of 'Mandatory' AI interaction for the public vs employees."
+  },
+  "hypothesis": "The 'Forced Participation' Paradox: Public-facing AI services are statistically less likely to offer 'Opt-Out' mechanisms compared to internal-facing employee systems.",
+  "id_in_run": 134,
+  "is_surprising": true,
+  "parent_id": "node_5_41",
+  "posterior": 0.7747252747252747,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.7747252747252747,
+    "n": 60.0,
+    "prior_params": [
+      10.5,
+      20.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.3387096774193548,
+  "prior_belief": {
+    "_empirical_mean": 0.3333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 25.0,
+    "maybe_true": 5.0,
+    "mean": 0.3387096774193548,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and yielded robust statistical evidence supporting the 'Forced Participation' Paradox hypothesis. After overcoming initial data cleaning challenges—specifically identifying that the 'Public Service' column used free-text descriptions rather than binary flags—the analysis successfully isolated 120 valid use cases.\n\nThe Chi-Square test (p = 4.07e-08) revealed a highly significant disparity: Internal (employee-facing) AI systems offer opt-out mechanisms 83.0% of the time, whereas Public-Facing systems offer them only 28.1% of the time. This 55-percentage-point gap confirms that while federal employees often retain the agency to decline AI interaction, the general public is frequently subjected to mandatory AI participation in government services, validating the 'Forced Participation' paradox.",
+  "rich_outputs": null,
+  "runtime_ms": 295890.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.5232187167671039
+}

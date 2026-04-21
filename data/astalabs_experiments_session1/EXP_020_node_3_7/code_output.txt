@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+--- Tactic Frequency ---
+Incidents with Exfiltration (AML.TA0010): 15
+Incidents with Reconnaissance (AML.TA0002): 20
+
+Analysis for Exfiltration:
+  Mean Integration Score (Present): 0.500 (n=15) | Std: 0.000
+  Mean Integration Score (Absent):  0.527 (n=37) | Std: 0.202
+  T-test: t=-0.813, p=0.4217
+
+Analysis for Reconnaissance:
+  Mean Integration Score (Present): 0.525 (n=20) | Std: 0.197
+  Mean Integration Score (Absent):  0.516 (n=32) | Std: 0.155
+  T-test: t=0.181, p=0.8576
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  res = hypotest_fun_out(*samples, **kwds)
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided image, here is the analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (or Clustered Bar Plot).
+*   **Purpose:** The plot compares the mean values of a specific metric ("Integration Orientation Score") across two main categories ("Exfiltration" and "Reconnaissance"), further split by a binary condition ("Tactic Present" vs. "Tactic Absent").
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title/Labels:** Categorical labels representing specific tactics: "Exfiltration" and "Reconnaissance".
+    *   **Range:** N/A (Categorical).
+*   **Y-axis:**
+    *   **Title/Label:** "Mean Integration Score (0=Trust, 1=Integration)".
+    *   **Units:** Dimensionless score on a scale from 0 to 1.
+    *   **Range:** The axis spans from 0.0 to 1.0, with tick marks at 0.2 intervals.
+
+### 3. Data Trends
+*   **General Observation:** across all categories and conditions, the Mean Integration Score hovers very close to the midpoint (0.5).
+*   **Exfiltration Group:**
+    *   The "Tactic Absent" bar (gray) is slightly taller than the "Tactic Present" bar (blue).
+    *   The values appear to be roughly 0.50 for "Present" and slightly above 0.52 for "Absent".
+*   **Reconnaissance Group:**
+    *   The "Tactic Present" bar (blue) is marginally taller than the "Tactic Absent" bar (gray).
+    *   Both bars appear to be just above the 0.50 mark.
+*   **Comparison:** The variation in bar height between the two conditions (Present vs. Absent) is minimal for both tactic categories.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner.
+    *   **Blue:** Represents "Tactic Present".
+    *   **Gray:** Represents "Tactic Absent".
+*   **P-values:** Statistical annotations are placed above each group of bars to indicate significance testing results:
+    *   Above **Exfiltration**: **p=0.422**
+    *   Above **Reconnaissance**: **p=0.858**
+*   **Title:** "Integration Orientation by Tactic Presence".
+
+### 5. Statistical Insights
+*   **No Statistically Significant Difference:** The p-values provided (0.422 and 0.858) are both well above the standard significance threshold (typically $\alpha = 0.05$). This indicates that there is **no statistically significant difference** in the Mean Integration Score between cases where the tactic is present versus when it is absent.
+*   **Neutral Orientation:** Since the scores are centered around 0.5 (on a scale where 0 is Trust and 1 is Integration), the participants or subjects generally displayed a neutral orientation, neither strongly leaning toward Trust nor Integration, regardless of the tactic used.
+*   **Conclusion:** The presence or absence of "Exfiltration" or "Reconnaissance" tactics does not appear to influence the Integration Orientation score in a meaningful way based on this data.
+==================================================

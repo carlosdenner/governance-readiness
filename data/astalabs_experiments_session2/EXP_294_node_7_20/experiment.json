@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment was successfully executed following the correction of the data parsing logic. The programmer implemented custom text-scoring functions to correctly quantify the verbose entries in the 'Basic Control' columns (Documentation, Authorization, Notice), resulting in a valid segmentation of the dataset into 'High Governance' (N=525) and 'Low Governance' (N=1,232) groups based on a median split. \n\nThe analysis revealed that public code availability is extremely rare across the entire federal dataset, with only ~2.7% of projects making code publicly available. The Chi-square test yielded a statistic of 0.0000 and a p-value of 1.0, indicating absolutely no statistically significant difference in transparency between agencies with high vs. low internal governance scores. Consequently, the hypothesis that internal governance discipline correlates with external transparency is rejected; the two attributes appear to be independent in this dataset.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\nimport matplotlib.pyplot as plt\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 Scored data\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 Data Loaded. Shape: {eo_df.shape}\")\n\n# --- Step 2: Calculate Tier 1 Score ---\n# Using inspected columns: \n# 34_data_docs (Documentation)\n# 40_has_ato (Authorization)\n# 59_ai_notice (Transparency/Notice)\n\ndef score_docs(val):\n    if pd.isna(val): return 0\n    s = str(val).lower()\n    # If it explicitly says missing or not available, score 0\n    if 'missing' in s or 'not available' in s:\n        return 0\n    # If it says complete, available, existing, partially -> 1\n    if 'complete' in s or 'available' in s or 'exist' in s or 'partially' in s:\n        return 1\n    return 0\n\ndef score_ato(val):\n    if pd.isna(val): return 0\n    s = str(val).lower()\n    if s.startswith('yes'):\n        return 1\n    return 0\n\ndef score_notice(val):\n    if pd.isna(val): return 0\n    s = str(val).lower()\n    # If none or n/a -> 0\n    if 'none' in s or 'n/a' in s:\n        return 0\n    # If online, terms, physical -> 1\n    if 'online' in s or 'physical' in s or 'terms' in s or 'instruction' in s:\n        return 1\n    return 0\n\n# Apply scoring\neo_df['score_docs'] = eo_df['34_data_docs'].apply(score_docs)\neo_df['score_ato'] = eo_df['40_has_ato'].apply(score_ato)\neo_df['score_notice'] = eo_df['59_ai_notice'].apply(score_notice)\n\neo_df['tier1_score'] = eo_df['score_docs'] + eo_df['score_ato'] + eo_df['score_notice']\n\n# --- Step 3: Split into Groups ---\nmedian_score = eo_df['tier1_score'].median()\nprint(f\"\\nTier 1 Score Distribution:\\n{eo_df['tier1_score'].value_counts().sort_index()}\")\nprint(f\"Median Score: {median_score}\")\n\n# High > Median, Low <= Median\n# If median is high (e.g. 2 or 3), this split might be unbalanced, but we stick to the plan.\neo_df['governance_group'] = np.where(eo_df['tier1_score'] > median_score, 'High Governance', 'Low Governance')\nprint(f\"\\nGroup Counts:\\n{eo_df['governance_group'].value_counts()}\")\n\n# --- Step 4: Analyze Code Access ---\n# Target: 38_code_access\n# We want 'publicly available'.\ndef score_public_code(val):\n    if pd.isna(val): return 0\n    s = str(val).lower()\n    if 'publicly available' in s:\n        return 1\n    return 0\n\neo_df['is_public_code'] = eo_df['38_code_access'].apply(score_public_code)\n\n# Contingency Table\ncontingency = pd.crosstab(eo_df['governance_group'], eo_df['is_public_code'])\ncontingency.columns = ['Not Public', 'Public']\n\nprint(\"\\nContingency Table (Public Code Access):\")\nprint(contingency)\n\n# Chi-square\nchi2, p, dof, expected = chi2_contingency(contingency)\nprint(f\"\\nChi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Plot\nprops = contingency.div(contingency.sum(axis=1), axis=0)\nax = props.plot(kind='bar', stacked=True, color=['#ff9999', '#66b3ff'])\nplt.title(f'Public Code Access by Governance Tier (Median={median_score})')\nplt.ylabel('Proportion')\nplt.xlabel('Governance Group')\nplt.legend(title='Code Status', loc='upper right')\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: EO 13960 Data Loaded. Shape: (1757, 196)\n\nTier 1 Score Distribution:\ntier1_score\n0    831\n1    401\n2    498\n3     27\nName: count, dtype: int64\nMedian Score: 1.0\n\nGroup Counts:\ngovernance_group\nLow Governance     1232\nHigh Governance     525\nName: count, dtype: int64\n\nContingency Table (Public Code Access):\n                  Not Public  Public\ngovernance_group                    \nHigh Governance          511      14\nLow Governance          1198      34\n\nChi-square Statistic: 0.0000\nP-value: 1.0000e+00\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Stacked Bar Plot (or Stacked Column Chart).\n*   **Purpose:** This plot is designed to compare the proportional distribution of a categorical variable (Code Status: Public vs. Not Public) across two different groups (High Governance vs. Low Governance). It normalizes the data to a total proportion of 1.0 (or 100%) to facilitate a direct comparison of the *composition* of each group.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Governance Group\"\n    *   **Categories:** Two discrete groups labeled \"High Governance\" and \"Low Governance\". The text labels are rotated 90 degrees vertically.\n*   **Y-Axis:**\n    *   **Label:** \"Proportion\"\n    *   **Range:** The axis runs from **0.0 to 1.0**, with tick marks every 0.2 units.\n    *   **Units:** The values represent a ratio or probability, where 1.0 equates to 100% of the sample in that group.\n\n### 3. Data Trends\n*   **Dominant Category:** In both the \"High Governance\" and \"Low Governance\" groups, the **\"Not Public\"** category (represented by the salmon/light red color) makes up the overwhelming majority of the proportion. Visually, it appears to cover approximately 95% to 98% of each bar.\n*   **Minor Category:** The **\"Public\"** category (represented by the light blue color) is a very thin sliver at the top of each bar, indicating a very low proportion (likely <5%).\n*   **Similarity:** There is virtually no discernible difference between the two bars. The ratio of Public to Not Public code appears nearly identical regardless of whether the governance tier is High or Low.\n\n### 4. Annotations and Legends\n*   **Title:** \"Public Code Access by Governance Tier (Median=1.0)\". This indicates the chart is analyzing code accessibility based on governance levels. The \"(Median=1.0)\" likely refers to a statistic regarding the governance scoring or the dataset split point.\n*   **Legend:** Located in the top right corner, titled **\"Code Status\"**. It defines the color coding:\n    *   **Salmon/Pink:** \"Not Public\"\n    *   **Blue:** \"Public\"\n\n### 5. Statistical Insights\n*   **Low Availability:** The primary insight is that public code access is extremely rare in this dataset. The vast majority of projects or entities analyzed do not make their code public.\n*   **No Governance Effect:** The plot suggests that the level of governance (\"High\" vs. \"Low\") has **no impact** on the likelihood of code being public. Since the proportions are nearly identical across both groups, governance tier does not appear to be a differentiating factor for code accessibility.\n==================================================",
+  "created_at": "2026-02-22T15:04:26.789297+00:00",
+  "creation_idx": 295,
+  "experiment_id": "node_7_20",
+  "experiment_plan": {
+    "deliverables": "Comparison of code availability rates between high and low governance agencies.",
+    "objective": "Test if internal governance discipline correlates with external transparency.",
+    "steps": "1. Filter 'eo13960_scored'. 2. Calculate the median 'tier1_score'. 3. Split agencies into 'High Governance' (score > median) and 'Low Governance'. 4. Compare the proportion of 'Yes' values in '38_code_access' between the two groups using a Chi-square test."
+  },
+  "hypothesis": "Agencies with high 'Basic Control' (Tier 1) scores also demonstrate greater transparency by having significantly higher rates of public code access.",
+  "id_in_run": 294,
+  "is_surprising": true,
+  "parent_id": "node_6_52",
+  "posterior": 0.16483516483516483,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.16483516483516483,
+    "n": 60.0,
+    "prior_params": [
+      15.0,
+      16.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.4838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 0.48333333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 1.0,
+    "definitely_true": 0.0,
+    "maybe_false": 14.0,
+    "maybe_true": 14.0,
+    "mean": 0.4838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment was successfully executed following the correction of the data parsing logic. The programmer implemented custom text-scoring functions to correctly quantify the verbose entries in the 'Basic Control' columns (Documentation, Authorization, Notice), resulting in a valid segmentation of the dataset into 'High Governance' (N=525) and 'Low Governance' (N=1,232) groups based on a median split.\n\nThe analysis revealed that public code availability is extremely rare across the entire federal dataset, with only ~2.7% of projects making code publicly available. The Chi-square test yielded a statistic of 0.0000 and a p-value of 1.0, indicating absolutely no statistically significant difference in transparency between agencies with high vs. low internal governance scores. Consequently, the hypothesis that internal governance discipline correlates with external transparency is rejected; the two attributes appear to be independent in this dataset.",
+  "rich_outputs": null,
+  "runtime_ms": 388520.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.3828429634881248
+}

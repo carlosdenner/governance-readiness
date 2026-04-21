@@ -1,0 +1,51 @@
+exitcode: 0 (execution succeeded)
+Code output: EO13960 records loaded: 1757
+
+--- Analysis Results ---
+Legacy Cohort: n=774
+New Cohort:    n=700
+Legacy Mean Score: 0.0685
+New Mean Score:    0.0400
+T-statistic: 1.9399, P-value: 5.2589e-02
+Result: No Statistically Significant Difference
+
+Control Adoption Rates:
+Disparity Mitigation: Legacy=3.5%, New=1.6%
+Stakeholder Consult: Legacy=3.4%, New=2.4%
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (Clustered Bar Chart).
+*   **Purpose:** The plot compares the "Adoption Rate" of two specific equity controls ("Disparity Mitigation" and "Stakeholder Consult") across two different stages of system maturity ("Legacy" vs. "New").
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Adoption Rate".
+    *   **Range:** 0.0 to 1.0. This scale represents a probability or percentage (where 1.0 equals 100%).
+    *   **Ticks:** Intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+*   **X-Axis:**
+    *   **Labels:** Categorical labels representing the type of equity control: "Disparity Mitigation" and "Stakeholder Consult".
+
+### 3. Data Trends
+*   **Overall Magnitude:** The most prominent visual feature is that all bars are extremely short relative to the y-axis scale. The adoption rates are very close to zero, leaving the vast majority of the chart area empty.
+*   **Tallest Bars:** The blue bars, representing "Legacy (Operational)" systems, are the tallest in both categories, though still very low at a value of **0.03**.
+*   **Shortest Bars:** The orange bars, representing "New (Dev/Planned)" systems, are the shortest in both categories with a value of **0.02**.
+*   **Pattern:** There is a consistent pattern across both categories: Legacy systems have a slightly higher adoption rate (0.03) compared to New systems (0.02).
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner.
+    *   **Blue Square:** Represents "Legacy (Operational)" systems.
+    *   **Orange Square:** Represents "New (Dev/Planned)" systems.
+*   **Bar Annotations:** Specific numerical values are placed directly above each bar to indicate the exact height:
+    *   **0.03** above all Legacy (Blue) bars.
+    *   **0.02** above all New (Orange) bars.
+*   **Title:** "The Legacy Governance Gap: Equity Control Adoption". This title suggests the chart intends to highlight a discrepancy or deficiency in governance regarding equity controls.
+
+### 5. Statistical Insights
+*   **Extremely Low Adoption:** The adoption of equity controls (Disparity Mitigation and Stakeholder Consultation) is negligible across the board. With rates of only 2% to 3% (0.02 - 0.03), it indicates that these practices are virtually non-existent in both legacy and new systems.
+*   **Legacy vs. New Paradox:** Contrary to what might be expected—that newer systems in development would incorporate modern equity governance standards—the data shows that "Legacy (Operational)" systems actually have a slightly higher adoption rate (3%) than "New (Dev/Planned)" systems (2%).
+*   **The "Gap":** The visual emptiness of the chart (the gap between the bars and the 1.0 mark) powerfully illustrates the massive deficit in equity control adoption. The industry is far from a standard or high adoption rate.
+==================================================

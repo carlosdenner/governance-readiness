@@ -1,0 +1,11 @@
+exitcode: 0 (execution succeeded)
+Code output: Active columns in atlas_cases: ['source_table', 'source_row_num', 'case_id', 'name', 'summary', 'n_tactics', 'n_techniques', 'n_mitigations', 'tactics', 'techniques']
+Potential mitigation columns: ['n_mitigations']
+
+--- step3_mitigation_gaps columns: ['source_table', 'source_row_num', 'mitigation_id', 'mitigation_name', 'category', 'incident_count', 'competency_gap']
+               source_table  source_row_num  ... evidence recommendation
+6620  step3_mitigation_gaps               1  ...      NaN            NaN
+6621  step3_mitigation_gaps               2  ...      NaN            NaN
+6622  step3_mitigation_gaps               3  ...      NaN            NaN
+
+[3 rows x 196 columns]

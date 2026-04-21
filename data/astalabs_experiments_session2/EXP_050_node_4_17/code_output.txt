@@ -1,0 +1,67 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID Incidents: 1362
+Records for Analysis: 86
+
+--- Counts by Sector ---
+Sector_Category
+Private    59
+Public     27
+Name: count, dtype: int64
+
+--- Counts by Harm Type ---
+Harm_Category
+Physical      47
+Allocative    39
+Name: count, dtype: int64
+
+--- Contingency Table ---
+Harm_Category    Allocative  Physical
+Sector_Category                      
+Private                  25        34
+Public                   14        13
+
+--- Chi-Square Results ---
+Chi2 Statistic: 0.3435
+P-value: 5.5780e-01
+Conclusion: No significant relationship found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Plot.
+*   **Purpose:** The plot is designed to compare the relative proportions of two distinct categories of harm ("Allocative" and "Physical") across two different sectors ("Private" and "Public"). By stacking the bars to a total height of 1.0, it emphasizes the composition or percentage distribution within each sector rather than absolute counts.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Deployer Sector"
+    *   **Categories:** Two categorical variables: "Private" and "Public".
+*   **Y-Axis:**
+    *   **Label:** "Proportion"
+    *   **Range:** The axis ranges from 0.0 to 1.0 (representing 0% to 100%). The tick marks are spaced at intervals of 0.2.
+
+### 3. Data Trends
+*   **Private Sector:**
+    *   **Physical Harms (Blue):** This segment is the larger portion of the bar, representing a proportion of **0.58** (58%).
+    *   **Allocative Harms (Red):** This segment is the smaller portion, representing a proportion of **0.42** (42%).
+    *   **Trend:** In the Private sector, physical harms are more prevalent than allocative harms.
+*   **Public Sector:**
+    *   **Allocative Harms (Red):** This segment is the larger portion of the bar, representing a proportion of **0.52** (52%).
+    *   **Physical Harms (Blue):** This segment is the smaller portion, representing a proportion of **0.48** (48%).
+    *   **Trend:** In the Public sector, allocative harms are slightly more prevalent than physical harms.
+
+### 4. Annotations and Legends
+*   **Title:** "Proportion of Allocative vs. Physical Harms by Sector" describes the overall subject of the chart.
+*   **Legend:** Located on the right side titled "Harm Type". It indicates:
+    *   **Red:** Allocative Harms.
+    *   **Blue:** Physical Harms.
+*   **Value Annotations:** White numeric labels are centered within each bar segment, explicitly stating the exact proportion values (e.g., "0.58", "0.42", "0.52", "0.48"). This aids in precise reading of the data without relying solely on axis estimation.
+
+### 5. Statistical Insights
+*   **Sectoral Inversion:** There is an inversion in the dominant type of harm between the two sectors. The Private sector leans towards **Physical harms** (58%), whereas the Public sector leans towards **Allocative harms** (52%).
+*   **Comparison of Harm Types:**
+    *   Allocative harms are **10 percentage points higher** in the Public sector (52%) compared to the Private sector (42%).
+    *   Conversely, Physical harms are **10 percentage points higher** in the Private sector (58%) compared to the Public sector (48%).
+*   **Overall Balance:** While there is a clear distinction between the sectors, the split is relatively balanced in both cases. Neither sector is exclusively dominated by one type of harm; the distributions are close to a 50/50 split, with only mild deviations favoring one type over the other.
+==================================================

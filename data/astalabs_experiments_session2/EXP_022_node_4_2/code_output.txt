@@ -1,0 +1,34 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 subset shape: (1757, 196)
+
+Sector Distribution:
+sector_group
+Health                     233
+Law Enforcement/Justice     86
+Name: count, dtype: int64
+
+Unique values in '62_disparity_mitigation':
+['nan'
+ 'The threshold for the biometric matching was tested extensively with a variety of face types for several months to establish a match threshold for the identification.'
+ 'It is reevaluated and retrained on an annual basis.'
+ 'None for liveness detection using Google ML Kit. For facial verification, ICE leverages CBP TVS and inherits their controls.'
+ 'There are two outputs related to using ISAP Biometric Monitoring App. Either a participant “passes” (biometric match) or the photo is move
+
+--- Analysis Results ---
+
+Contingency Table (1=Yes, 0=No):
+has_mitigation           1    0
+sector_group                   
+Health                   0  233
+Law Enforcement/Justice  0   86
+
+Compliance Rates (%):
+sector_group
+Health                     0.0
+Law Enforcement/Justice    0.0
+Name: has_mitigation, dtype: float64
+
+Statistical Test Skipped: Zero compliance found in both sectors.
+Odds Ratio: Undefined (0/0 type scenario).
+Conclusion: No evidence of disparity mitigation controls found in either sector.

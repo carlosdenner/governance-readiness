@@ -1,0 +1,13 @@
+exitcode: 1 (execution failed)
+Code output: === Loading Dataset ===
+Error loading dataset: [Errno 2] No such file or directory: '../step4_propositions.csv'
+An exception has occurred, use %tb to see the full traceback.
+
+[31mSystemExit[39m[31m:[39m 1
+
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/IPython/core/interactiveshell.py:3709: UserWarning: To exit: use 'exit', 'quit', or Ctrl-D.
+  warn("To exit: use 'exit', 'quit', or Ctrl-D.", stacklevel=1)
+
+ERROR: {'type': 'SystemExit', 'message': '1', 'traceback': 'Traceback (most recent call last):\n  File "<ipython-input-1-cd5a76a2a0ea>", line 16, in <module>\n    df = pd.read_csv(file_path)\n  File "/usr/local/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 873, in read_csv\n    return _read(filepath_or_buffer, kwds)\n  File "/usr/local/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 300, in _read\n    parser = TextFileReader(filepath_or_buffer, **kwds)\n  File "/usr/local/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1645, in __init__\n    self._engine = self._make_engine(f, self.engine)\n                   ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^\n  File "/usr/local/lib/python3.13/site-packages/pandas/io/parsers/readers.py", line 1904, in _make_engine\n    self.handles = get_handle(\n                   ~~~~~~~~~~^\n        f,\n        ^^\n    ...<6 lines>...\n        storage_options=self.options.get("storage_options", None),\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n    )\n    ^\n  File "/usr/local/lib/python3.13/site-packages/pandas/io/common.py", line 926, in get_handle\n    handle = open(\n        handle,\n    ...<3 lines>...\n        newline="",\n    )\nFileNotFoundError: [Errno 2] No such file or directory: \'../step4_propositions.csv\'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File "/usr/local/lib/python3.13/site-packages/IPython/core/interactiveshell.py", line 3701, in run_code\n    exec(code_obj, self.user_global_ns, self.user_ns)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "<ipython-input-1-cd5a76a2a0ea>", line 22, in <module>\n    sys.exit(1)\n    ~~~~~~~~^^^\nSystemExit: 1\n'}

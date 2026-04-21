@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully loaded 'step2_crosswalk_matrix.csv' and analyzed the bundle affinity of the 'Human-in-the-Loop Approval Gates' control. The hypothesis predicted that this control would be mapped significantly more frequently to 'Trust Readiness'. The results contradict this prediction in both direction and significance. The control was mapped to 0% of 'Trust Readiness' requirements (0/19) and 13.04% of 'Integration Readiness' requirements (3/23). Statistical testing (Fisher's Exact Test p=0.2387) confirmed that this difference is not statistically significant, likely due to the low overall frequency of the control (only 3 total occurrences). Therefore, the hypothesis is rejected; the control appears exclusively (though sparsely) in the Integration bundle rather than the Trust bundle.",
+  "child_ids": [
+    "node_6_5"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport os\nimport sys\n\n# Robust file loading\nfilename = 'step2_crosswalk_matrix.csv'\nfile_path = None\n\n# Check current directory and parent directory\npossible_paths = [filename, f'../{filename}']\n\nfor path in possible_paths:\n    if os.path.exists(path):\n        file_path = path\n        break\n\nif file_path is None:\n    print(f\"Error: {filename} not found in current or parent directory.\")\n    sys.exit(1)\n\nprint(f\"Loading dataset from: {file_path}\")\ndf = pd.read_csv(file_path)\n\n# Target column and bundle column\ncontrol_col = 'Human-in-the-Loop Approval Gates'\nbundle_col = 'bundle'\n\n# Verify columns exist\nif control_col not in df.columns or bundle_col not in df.columns:\n    print(f\"Error: Required columns not found. Available columns: {df.columns.tolist()}\")\n    sys.exit(1)\n\n# Preprocess: Convert control column to binary (1 if 'X', 0 otherwise)\n# Fill NA with empty string, convert to string, strip whitespace, check for 'X'\ndf['is_mapped'] = df[control_col].fillna('').astype(str).str.strip().apply(lambda x: 1 if x.upper() == 'X' else 0)\n\n# Group by bundle to see raw counts and proportions\nsummary = df.groupby(bundle_col)['is_mapped'].agg(['count', 'sum', 'mean'])\nsummary.rename(columns={'count': 'Total Requirements', 'sum': 'Control Mapped Count', 'mean': 'Usage Proportion'}, inplace=True)\nprint(\"\\n=== Descriptive Statistics ===\")\nprint(summary)\n\n# Create Contingency Table for Statistical Test\n# Rows: Bundle (Trust vs Integration)\n# Cols: Control Mapped (0 vs 1)\ncontingency_table = pd.crosstab(df[bundle_col], df['is_mapped'])\nprint(\"\\n=== Contingency Table ===\")\nprint(contingency_table)\n\n# Check if we have enough data for a valid test (at least 2x2)\nif contingency_table.shape == (2, 2):\n    # Perform Chi-square test of independence\n    chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n\n    print(\"\\n=== Statistical Test Results (Chi-square) ===\")\n    print(f\"Chi2 Statistic: {chi2:.4f}\")\n    print(f\"p-value: {p:.4f}\")\n\n    # Fisher's Exact Test (often better for small sample sizes)\n    odds_ratio, fisher_p = stats.fisher_exact(contingency_table)\n    print(f\"Fisher's Exact Test p-value: {fisher_p:.4f}\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\nelse:\n    print(\"\\nWarning: Contingency table is not 2x2. One bundle might have 0 mappings.\")\n    # If one bundle has 0 mappings, we can still do a Fisher exact test if we construct the 2x2 manually or handle it\n    # But let's see the output first. \n\n# Visualization\nplt.figure(figsize=(8, 6))\n# We want to plot the proportion of 'is_mapped' == 1 for each bundle\nproportions = summary['Usage Proportion']\nax = proportions.plot(kind='bar', color=['skyblue', 'salmon'], alpha=0.8)\nplt.title(f\"Proportion of Requirements Mapping to\\n'{control_col}' by Bundle\")\nplt.ylabel(\"Proportion (Usage Rate)\")\nplt.xlabel(\"Competency Bundle\")\nplt.ylim(0, 1.0)\n\n# Add value labels\nfor i, v in enumerate(proportions):\n    ax.text(i, v + 0.02, f\"{v:.2%}\", ha='center', fontweight='bold')\n\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_crosswalk_matrix.csv\n\n=== Descriptive Statistics ===\n                       Total Requirements  ...  Usage Proportion\nbundle                                     ...                  \nIntegration Readiness                  23  ...          0.130435\nTrust Readiness                        19  ...          0.000000\n\n[2 rows x 3 columns]\n\n=== Contingency Table ===\nis_mapped               0  1\nbundle                      \nIntegration Readiness  20  3\nTrust Readiness        19  0\n\n=== Statistical Test Results (Chi-square) ===\nChi2 Statistic: 1.0646\np-value: 0.3022\nFisher's Exact Test p-value: 0.2387\nOdds Ratio: 0.0000\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot (Vertical Column Chart).\n*   **Purpose:** The plot compares categorical data (\"Competency Bundles\") against a numerical variable (\"Proportion/Usage Rate\"). Specifically, it visualizes how frequently requirements map to \"Human-in-the-Loop Approval Gates\" for two different bundles.\n\n### 2. Axes\n*   **X-axis:**\n    *   **Title:** \"Competency Bundle\"\n    *   **Labels:** Two categorical labels are presented vertically: \"Integration Readiness\" and \"Trust Readiness\".\n*   **Y-axis:**\n    *   **Title:** \"Proportion (Usage Rate)\"\n    *   **Range:** The axis ranges from **0.0 to 1.0** (representing 0% to 100%).\n    *   **Intervals:** The scale is marked in increments of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n\n### 3. Data Trends\n*   **Highest Value:** The \"Integration Readiness\" bundle represents the highest (and only non-zero) value in this comparison.\n*   **Lowest Value:** The \"Trust Readiness\" bundle represents the lowest value at exactly zero.\n*   **Pattern:** There is a significant disparity between the two categories. While Integration Readiness has a measurable association with the metric, Trust Readiness has absolutely none.\n\n### 4. Annotations and Legends\n*   **Annotations:** There are explicit numerical annotations placed above each category location to indicate exact values:\n    *   Above **Integration Readiness**: \"13.04%\"\n    *   Above **Trust Readiness**: \"0.00%\"\n*   **Legend:** There is no separate legend box; the categories are identified directly by the x-axis labels.\n\n### 5. Statistical Insights\n*   **Exclusivity of Requirements:** The specific requirement of \"Human-in-the-Loop Approval Gates\" appears to be exclusive to the **Integration Readiness** bundle (13.04%) in this comparison, as the **Trust Readiness** bundle shows a 0.00% mapping rate.\n*   **Low Overall Prevalence:** Even within the Integration Readiness bundle, the usage rate is relatively low (roughly 1 in 8 requirements, or ~13%). This suggests that \"Human-in-the-Loop\" gates are a minority requirement even where they are present.\n*   **Implication for Automation:** The 0.00% score for Trust Readiness implies that \"Trust\" requirements in this specific framework either rely entirely on automated validation or do not utilize human approval gates as a control mechanism.\n==================================================",
+  "created_at": "2026-02-20T22:59:14.704752+00:00",
+  "creation_idx": 47,
+  "experiment_id": "node_5_5",
+  "experiment_plan": {
+    "deliverables": "Usage proportions per bundle and statistical test results.",
+    "objective": "Determine the bundle affinity of the 'Human-in-the-Loop Approval Gates' control.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Identify the column 'Human-in-the-Loop Approval Gates'.\n3. Create a binary variable (1 if 'X', 0 otherwise) for this column.\n4. Group by 'bundle' and calculate the mean usage rate (proportion of requirements using this control).\n5. Perform a Chi-square test or Z-test for proportions to check if the usage rate differs significantly between Trust and Integration bundles."
+  },
+  "hypothesis": "The 'Human-in-the-Loop Approval Gates' architecture control is mapped significantly more frequently to 'Trust Readiness' requirements than to 'Integration Readiness' requirements, statistically confirming its role as a governance-enforcing control rather than an engineering utility.",
+  "id_in_run": 46,
+  "is_surprising": true,
+  "parent_id": "node_4_4",
+  "posterior": 0.2024793388429752,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2024793388429752,
+    "n": 90.0,
+    "prior_params": [
+      24.5,
+      6.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7903225806451613,
+  "prior_belief": {
+    "_empirical_mean": 0.8,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 6.0,
+    "maybe_false": 0.0,
+    "maybe_true": 24.0,
+    "mean": 0.7903225806451613,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the analysis is methodologically sound. The code correctly identified the usage frequency of 'Human-in-the-Loop Approval Gates' across the two bundles. The hypothesis, which predicted a higher affinity for 'Trust Readiness', was conclusively rejected. The data showed the opposite trend: the control was mapped to 0% of 'Trust Readiness' requirements (0/19) versus ~13% of 'Integration Readiness' requirements (3/23). Fisher's Exact Test (p=0.2387) confirmed that while there is an observed difference, it is not statistically significant due to the scarcity of the control (only 3 total occurrences). Thus, the control is not a dominant feature of either bundle in this dataset, and certainly not a 'Trust' enforcer as hypothesized.",
+  "rich_outputs": null,
+  "runtime_ms": 221490.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6822484108646509
+}

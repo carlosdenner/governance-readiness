@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: AIID Incidents loaded: 1362
+Valid rows for analysis: 188
+
+--- Contingency Table (Counts) ---
+Intent_Clean  Accidental  Intentional
+Sector_Clean                         
+Private              141            8
+Public                39            0
+
+--- Contingency Table (Proportions) ---
+Intent_Clean  Accidental  Intentional
+Sector_Clean                         
+Private         0.946309     0.053691
+Public          1.000000     0.000000
+
+Chi-square Statistic: 1.0677
+P-value: 0.3015
+Result: Not Significant (Fail to Reject H0)
+There is NO significant difference in intentionality between Public and Private sectors.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The plot compares the relative proportions of two categories of harm intent ("Accidental" vs. "Intentional") across two different sectors ("Private" vs. "Public"). By normalizing the height of the bars to 1.0 (100%), it focuses on the composition of the data within each sector rather than the absolute number of incidents.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "Sector"
+    *   **Categories:** "Private" and "Public".
+*   **Y-axis:**
+    *   **Label:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** Intervals of 0.2.
+
+### 3. Data Trends
+*   **Dominant Trend:** In both the Private and Public sectors, "Accidental" harm (represented by the blue bars) makes up the overwhelming majority of incidents.
+*   **Private Sector:**
+    *   **Accidental:** Visually accounts for approximately 95% of the bar.
+    *   **Intentional:** Represents a small minority, visually estimated at roughly 5% (the orange segment at the top).
+*   **Public Sector:**
+    *   **Accidental:** Visually accounts for nearly 100% of the bar.
+    *   **Intentional:** There is almost no visible orange segment, suggesting that intentional harm in the Public sector is negligible or non-existent in this specific dataset.
+*   **Comparison:** The Private sector has a noticeably larger proportion of intentional harm compared to the Public sector, though it remains a small fraction of the total.
+
+### 4. Annotations and Legends
+*   **Legend:** Located on the right side, titled "Harm Intent."
+    *   **Blue:** Accidental
+    *   **Orange:** Intentional
+*   **Annotations (Data Labels):**
+    *   There is white text centered within the bar segments reading `%.1%`.
+    *   **Observation:** This indicates a coding/formatting error in the generation of the chart (likely a format string literal was printed instead of the actual numerical value). As a result, exact percentages cannot be read directly from the labels and must be estimated visually from the Y-axis.
+
+### 5. Statistical Insights
+*   **Nature of AI Incidents:** According to the AIID (Artificial Intelligence Incident Database) data presented here, AI-related harm is predominantly accidental rather than malicious or intentional.
+*   **Sector Behavior:** The Public sector appears to operate with a near-zero rate of intentional harm incidents. In contrast, the Private sector, while still mostly accidental, demonstrates a non-zero incidence of intentional harm. This could suggest different risk profiles, use-cases, or reporting standards between commercial/private AI deployments and government/public ones.
+==================================================

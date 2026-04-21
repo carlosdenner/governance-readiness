@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: GenAI Attack Surface Analysis (ATLAS Cases)...
+Loaded 52 ATLAS cases.
+
+Group Sizes:
+  Generative AI Cases: 21
+  Traditional AI Cases: 31
+
+Descriptive Statistics (Tactic Counts):
+  Generative AI: Mean=1.00, Median=1.00, Std=0.00
+  Traditional AI: Mean=1.00, Median=1.00, Std=0.00
+
+Mann-Whitney U Test Results (Two-sided):
+  U-statistic: 325.5
+  P-value: 1.0000
+  Result: No Statistically Significant Difference.
+
+STDERR:
+<ipython-input-1-588d68197757>:108: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **strip plot** (also known as a categorical scatter plot or 1D scatter plot).
+*   **Purpose:** It is used to visualize the distribution of a single continuous or discrete variable ("Number of Distinct Tactics") across different categories ("Traditional AI" and "Generative AI"). It is particularly useful for showing individual data points and sample density when the dataset sizes are relatively small.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** Represents the type of Artificial Intelligence.
+    *   **Categories:**
+        1.  **Traditional AI** (Sample size, $n=31$)
+        2.  **Generative AI** (Sample size, $n=21$)
+*   **Y-axis:**
+    *   **Title:** "Number of Distinct Tactics per Case".
+    *   **Units:** Count (integer values representing distinct tactics).
+    *   **Range:** The visible scale ranges from **0.96 to 1.04**. However, this is a "zoomed-in" view; the data strictly sits at the integer value of **1.00**.
+
+### 3. Data Trends
+*   **Uniformity:** The most striking trend is the complete lack of variation in the y-axis variable. Every single data point (represented by red dots) for both categories aligns perfectly at the value **1.00**.
+*   **Clusters:**
+    *   **Traditional AI:** A horizontal cluster of red dots located at y=1.00. The cluster appears slightly wider or denser, reflecting the larger sample size ($n=31$).
+    *   **Generative AI:** A similar horizontal cluster located at y=1.00, appearing slightly narrower due to the smaller sample size ($n=21$).
+*   **Outliers:** There are no outliers. Every case falls exactly on the mean.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Attack Tactics Count: Generative vs. Traditional AI" clearly defines the scope of the comparison.
+*   **Sample Size Indicators:** The x-axis labels include "($n=31$)" and "($n=21$)", providing immediate context regarding the statistical weight of each group.
+*   **Grid Lines:** Horizontal dashed grid lines are plotted at intervals of 0.02 (0.96, 0.98, 1.00, etc.) to assist with reading the exact values, emphasizing that the points sit precisely on the 1.00 line.
+
+### 5. Statistical Insights
+*   **Zero Variance:** The standard deviation and variance for "Number of Distinct Tactics" in both groups is **0**.
+*   **Single-Tactic Nature:** The data suggests that within the studied dataset, every single AI-related incident—whether utilizing Traditional or Generative AI—involved exactly **one distinct attack tactic**. There were no complex, multi-tactic attacks recorded in this specific sample.
+*   **No Disparity:** There is no statistical difference between Traditional and Generative AI regarding the *count* of distinct tactics used per case; both hold a constant value of 1.
+*   **Frequency:** While the complexity (tactic count) is identical, the dataset contains approximately **47% more cases** of Traditional AI attacks (31 cases) compared to Generative AI attacks (21 cases).
+==================================================

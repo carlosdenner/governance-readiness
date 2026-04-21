@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+AIID Incidents loaded: 1362 rows
+Identified Harm Column: 'description'
+Identified Failure Column: 'Known AI Technical Failure'
+
+--- Analysis Data Distribution ---
+Harm_Group
+Rights/Social      28
+Physical/Safety    12
+Name: count, dtype: int64
+Failure_Group
+Robustness       37
+Specification     3
+Name: count, dtype: int64
+
+Contingency Table:
+ Failure_Group    Robustness  Specification
+Harm_Group                                
+Physical/Safety          11              1
+Rights/Social            26              2
+
+Chi-Square Statistic: 0.0000
+P-value: 1.0000e+00
+
+--- Conclusion ---
+No Significant Association (Fail to Reject Null).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Heatmap** visualizing a **contingency table** (or cross-tabulation).
+*   **Purpose:** The plot aims to display the frequency distribution of specific outcomes by cross-referencing two categorical variables: "Harm Domain" and "Technical Failure." The intensity of the color corresponds to the count (number of occurrences) for each intersection.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Harm Domain"
+    *   **Categories:** "Physical/Safety" and "Rights/Social"
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Technical Failure"
+    *   **Categories:** "Robustness" and "Specification"
+*   **Color Scale (Z-Axis equivalent):**
+    *   A color bar on the right indicates the magnitude of the values.
+    *   **Range:** The scale runs from a light yellow (representing low values, ~1) to a deep blue (representing high values, ~26).
+
+### 3. Data Trends
+*   **Highest Concentration:** The most significant cluster is found at the intersection of **"Rights/Social"** harm and **"Robustness"** failure, represented by the darkest blue square with a count of **26**.
+*   **Secondary Cluster:** The intersection of **"Physical/Safety"** harm and **"Robustness"** failure is the second most common, with a count of **11** (medium teal color).
+*   **Low Frequency Areas:** The "Specification" category for technical failures shows very low activity. Both "Physical/Safety" (count of **1**) and "Rights/Social" (count of **2**) are represented by pale yellow squares, indicating these are rare events in this dataset relative to Robustness failures.
+*   **Overall Pattern:** The visual weight of the heatmap is heavily skewed towards the left column ("Robustness"), indicating that robustness failures are the dominant technical issue recorded here.
+
+### 4. Annotations and Legends
+*   **Title:** "Harm vs Failure" with a subtitle specifying the data source: "(Source: description / Known AI Technical Failure)".
+*   **Cell Values:** Each cell contains a numerical annotation representing the exact count for that category (11, 1, 26, 2).
+*   **Color Bar:** A legend on the right provides a gradient key ranging from approximately 2 to 26, guiding the visual interpretation of magnitude.
+
+### 5. Statistical Insights
+*   **Total Sample Size:** The dataset represents a total of **40 cases** ($11 + 1 + 26 + 2$).
+*   **Dominance of Robustness Failures:** "Robustness" failures account for the vast majority of incidents, comprising **92.5%** of the data ($37/40$). In contrast, "Specification" failures account for only **7.5%**.
+*   **Harm Domain Distribution:**
+    *   **Rights/Social** harm is the most common outcome, occurring in **70%** of cases ($28/40$).
+    *   **Physical/Safety** harm occurs in **30%** of cases ($12/40$).
+*   **Primary Correlation:** The data suggests a strong correlation between technical failures in **Robustness** and harms related to **Rights/Social** issues, as this single intersection accounts for more than half (**65%**) of all reported incidents in this plot.
+==================================================

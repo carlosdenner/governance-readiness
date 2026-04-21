@@ -1,0 +1,59 @@
+{
+  "analysis": "The experiment successfully tested the 'Operational Complacency' hypothesis using the EO 13960 dataset. After robustly cleaning the data to handle verbose text descriptions in the '53_real_world_testing' column and classifying 1,616 systems into 'Operational' (n=916) or 'Development' (n=700) stages, the analysis found a statistically significant difference in governance compliance (Chi-Square=53.66, p<0.001). Contrary to the hypothesis that operational systems would exhibit 'deploy-and-forget' negligence, they actually demonstrated a significantly higher rate of documented Real World Testing (8.95%) compared to systems in development (0.57%). This result refutes the hypothesis, suggesting that while overall compliance is low, the specific control of 'Real World Testing' is primarily applied or documented only after systems have matured beyond the initial development phases.",
+  "child_ids": [
+    "node_5_12",
+    "node_5_60",
+    "node_5_87"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport sys\n\n# [debug] Print library versions if needed\n# print(f\"Pandas version: {pd.__version__}\")\n\ntry:\n    # Load dataset\n    file_path = 'astalabs_discovery_all_data.csv'\n    print(f\"Loading dataset from {file_path}...\")\n    df = pd.read_csv(file_path, low_memory=False)\n\n    # Filter for EO 13960 data\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"EO 13960 records loaded: {len(df_eo)}\")\n\n    # Columns\n    col_stage = '16_dev_stage'\n    col_testing = '53_real_world_testing'\n\n    # --- CLEANING STAGE ---\n    # Ensure string type and handle NaNs\n    df_eo[col_stage] = df_eo[col_stage].fillna('nan').astype(str).str.lower().str.strip()\n\n    # Logic for is_operational (Independent Variable)\n    def map_stage(val):\n        # Exclude retired or missing\n        if 'retire' in val or 'nan' == val or val == '':\n            return None\n        \n        # Operational keywords\n        # 'operation', 'production', 'implementation', 'use', 'maintain'\n        if any(x in val for x in ['oper', 'prod', 'impl', 'use', 'maintain', 'sustain']):\n            return 'Operational'\n        \n        # Development keywords\n        # 'development', 'initiated', 'planned', 'acquisition'\n        elif any(x in val for x in ['dev', 'init', 'plan', 'acq', 'test', 'pilot', 'experiment']):\n            return 'Development'\n        \n        return None # Unclassified\n\n    df_eo['stage_group'] = df_eo[col_stage].apply(map_stage)\n    \n    # Drop unclassified rows\n    df_clean = df_eo.dropna(subset=['stage_group']).copy()\n    print(f\"\\nRecords after stage classification: {len(df_clean)}\")\n    print(\"Stage Distribution:\")\n    print(df_clean['stage_group'].value_counts())\n\n    # --- CLEANING TESTING ---\n    # Ensure string type\n    df_clean[col_testing] = df_clean[col_testing].fillna('no').astype(str).str.lower().str.strip()\n\n    # Logic for has_testing (Dependent Variable)\n    # We look for explicit mentions of 'operational environment' or 'yes'.\n    # 'benchmark' explicitly states 'has not been tested in an operational environment', so it is 0.\n    def map_testing(val):\n        if 'performance evaluation' in val: return 1\n        if 'impact evaluation' in val: return 1\n        if val == 'yes': return 1\n        return 0\n\n    df_clean['has_testing'] = df_clean[col_testing].apply(map_testing)\n    \n    print(\"\\nTesting Logic Check (sample of raw vs mapped):\")\n    print(df_clean[[col_testing, 'has_testing']].drop_duplicates().head(10))\n\n    # --- ANALYSIS ---\n\n    # Contingency Table\n    contingency_table = pd.crosstab(df_clean['stage_group'], df_clean['has_testing'])\n    # Check if we have both 0 and 1 columns. If not, reindex to ensure shape.\n    if 0 not in contingency_table.columns: contingency_table[0] = 0\n    if 1 not in contingency_table.columns: contingency_table[1] = 0\n    contingency_table = contingency_table[[0, 1]]\n    contingency_table.columns = ['No Real-World Testing', 'Has Real-World Testing']\n    \n    print(\"\\nContingency Table (Real World Testing by Stage):\")\n    print(contingency_table)\n\n    # Calculate Percentages\n    summary = df_clean.groupby('stage_group')['has_testing'].agg(['count', 'sum', 'mean'])\n    summary['pct_compliant'] = summary['mean'] * 100\n    print(\"\\nCompliance Rates (% with Real World Testing):\")\n    print(summary[['count', 'sum', 'pct_compliant']])\n\n    # Statistical Test\n    # Chi-square test of independence\n    if contingency_table.sum().sum() > 0:\n        chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n        print(f\"\\nChi-Square Test Results:\")\n        print(f\"Chi2 Statistic: {chi2:.4f}\")\n        print(f\"p-value: {p:.4f}\")\n        \n        alpha = 0.05\n        if p < alpha:\n            print(\"Result: Statistically Significant (Reject Null Hypothesis)\")\n            op_rate = summary.loc['Operational', 'pct_compliant']\n            dev_rate = summary.loc['Development', 'pct_compliant']\n            print(f\"Operational Rate: {op_rate:.2f}%\")\n            print(f\"Development Rate: {dev_rate:.2f}%\")\n            \n            if op_rate < dev_rate:\n                print(\"Conclusion: Operational systems have LOWER testing compliance. (SUPPORTS Hypothesis)\")\n            else:\n                print(\"Conclusion: Operational systems have HIGHER testing compliance. (REFUTES Hypothesis)\")\n        else:\n            print(\"Result: Not Statistically Significant (Fail to Reject Null Hypothesis)\")\n    else:\n        print(\"\\nWarning: Insufficient data for Chi-square test.\")\n\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")\n    import traceback\n    traceback.print_exc()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nEO 13960 records loaded: 1757\n\nRecords after stage classification: 1616\nStage Distribution:\nstage_group\nOperational    916\nDevelopment    700\nName: count, dtype: int64\n\nTesting Logic Check (sample of raw vs mapped):\n                                 53_real_world_testing  has_testing\n0                                                   no            0\n49   performance evaluation in operational environm...            1\n108  benchmark evaluation: testing of the ai model ...            0\n132  impact evaluation in operational environment: ...            1\n184  no testing: no testing of the model to simulat...            0\n520                                                yes            1\n886  agency caio has waived this minimum practice a...            0\n\nContingency Table (Real World Testing by Stage):\n             No Real-World Testing  Has Real-World Testing\nstage_group                                               \nDevelopment                    696                       4\nOperational                    834                      82\n\nCompliance Rates (% with Real World Testing):\n             count  sum  pct_compliant\nstage_group                           \nDevelopment    700    4       0.571429\nOperational    916   82       8.951965\n\nChi-Square Test Results:\nChi2 Statistic: 53.6573\np-value: 0.0000\nResult: Statistically Significant (Reject Null Hypothesis)\nOperational Rate: 8.95%\nDevelopment Rate: 0.57%\nConclusion: Operational systems have HIGHER testing compliance. (REFUTES Hypothesis)\n",
+  "created_at": "2026-02-22T03:34:53.180098+00:00",
+  "creation_idx": 55,
+  "experiment_id": "node_4_21",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square p-value, and comparative compliance percentages.",
+    "objective": "Compare the rates of Real World Testing compliance between Operational and Developmental AI systems in the federal inventory.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table` = 'eo13960_scored'.\n2. Create a binary variable `is_operational`: map `16_dev_stage` values containing 'Operation' or 'Use' to 1, and 'Development'/'Testing' to 0 (exclude Retired/Other).\n3. Create a binary variable `has_testing`: map `53_real_world_testing` ('Yes' -> 1, Others -> 0).\n4. Perform a Chi-square test of independence between `is_operational` and `has_testing`.\n5. Calculate the compliance percentage for both groups."
+  },
+  "hypothesis": "Operational Complacency: AI systems currently in the 'Operation' stage are statistically less likely to have documented 'Real World Testing' compared to systems still in the 'Development' stage, reflecting a 'deploy-and-forget' governance gap.",
+  "id_in_run": 54,
+  "is_surprising": true,
+  "parent_id": "node_3_10",
+  "posterior": 0.25274725274725274,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25274725274725274,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully implemented the analysis plan. After correcting for data quality issues (handling verbose text descriptions and mixed types), the analysis successfully classified 1,616 federal AI systems into 'Operational' (n=916) and 'Development' (n=700) stages. \n\n**Hypothesis Test Results:**\n1.  **Compliance Rates:** \n    -   **Operational Systems:** 8.95% (82/916) documented Real World Testing.\n    -   **Development Systems:** 0.57% (4/700) documented Real World Testing.\n2.  **Statistical Test:** \n    -   Chi-Square Statistic: 53.66\n    -   p-value: < 0.0001 (Highly Significant)\n\n**Conclusion:**\nThe hypothesis that operational systems suffer from 'deploy-and-forget' complacency (lower testing rates) is **rejected**. The data reveals a strong, statistically significant relationship in the **opposite direction**: systems in the operational/implementation phase are far more likely to have documented real-world testing than those in early development. This suggests that 'Real World Testing' is a control typically applied or documented only as systems mature into production, rather than being neglected after deployment.",
+  "rich_outputs": null,
+  "runtime_ms": 228550.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.587025877348458
+}

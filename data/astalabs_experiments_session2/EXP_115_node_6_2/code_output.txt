@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading data from astalabs_discovery_all_data.csv...
+AIID rows: 1362
+Using Sector Column: Sector of Deployment
+Using Harm Column: Tangible Harm
+
+Rates of Physical Harm (Death/Injury):
+Sector_Group
+Physical_Infra    0.0
+Services          0.0
+Name: Is_Physical_Harm, dtype: float64
+
+Counts:
+Sector_Group
+Services          41
+Physical_Infra    28
+Name: count, dtype: int64
+
+Contingency Table (0=No Harm, 1=Death/Injury):
+Is_Physical_Harm   0
+Sector_Group        
+Physical_Infra    28
+Services          41
+
+Chi-square Statistic: 0.0000
+P-value: 1.000000e+00
+
+STDERR:
+<ipython-input-1-f7ca959a4e8e>:95: UserWarning: Attempting to set identical low and high ylims makes transformation singular; automatically expanding.
+  plt.ylim(0, max(rates.values) * 1.2)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot is designed to compare the "Rate of Death/Injury Incidents" (physical harm) across two distinct sector groups: "Physical_Infra" and "Services." Since the values are zero, the bars have no height, appearing as flat lines on the x-axis.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Sector Group"
+    *   **Labels:** Two categorical groups are represented: "Physical_Infra" (Physical Infrastructure) and "Services."
+*   **Y-Axis:**
+    *   **Title:** "Rate of Death/Injury Incidents"
+    *   **Range:** The axis spans from approximately **-0.05 to 0.05**.
+    *   **Units:** Rate (expressed as a decimal on the axis ticks, but interpreted as a percentage in the annotations). Note that the negative values on the axis are a result of automatic scaling by the plotting software to center the zero-value data; a negative rate of injury is not physically possible.
+
+### 3. Data Trends
+*   **Pattern:** The most distinct pattern is the **absence of incidents**. Both categories show a rate of exactly 0.0.
+*   **Comparison:** There is no variation between the two sectors regarding physical harm rates in this dataset; both are identical at zero.
+
+### 4. Annotations and Legends
+*   **Text Annotations:** There are specific text labels placed at the coordinate corresponding to each sector:
+    *   **Physical_Infra:** "0.0% (n=28)"
+    *   **Services:** "0.0% (n=41)"
+*   **Meaning:**
+    *   **0.0%:** Indicates the calculated rate of physical harm.
+    *   **(n=28/41):** Represents the sample size (N-count) for each group. There were 28 observations for Physical Infrastructure and 41 observations for Services.
+
+### 5. Statistical Insights
+*   **Zero Incidence:** Based on the data presented, there were **zero** recorded incidents of death or injury in either the Physical Infrastructure or Services sectors.
+*   **Sample Size:** The "Services" sector had a larger sample size (n=41) compared to "Physical_Infra" (n=28).
+*   **Conclusion:** Despite a combined total of 69 observations (n=28 + n=41), the event rate for physical harm was non-existent (0%) for the duration or scope of this specific study.
+==================================================

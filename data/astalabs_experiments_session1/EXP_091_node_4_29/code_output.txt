@@ -1,0 +1,98 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded. Shape: (42, 24)
+
+Contingency Table (Source vs Bundle):
+bundle                 Integration Readiness  Trust Readiness
+source                                                       
+EU AI Act (2024/1689)                      4                5
+NIST AI RMF 1.0                            8               11
+NIST GenAI Profile                         2                2
+OWASP Top 10 LLM                           9                1
+
+--- Chi-Square Test of Independence ---
+Chi-Square Statistic: 6.6643
+P-value: 0.083404
+Degrees of Freedom: 3
+
+Result: Fail to Reject Null Hypothesis (No Significant Association)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (Annotated).
+*   **Purpose:** To visualize the relationship and density of mappings between different "Governance Source Frameworks" and "Readiness Bundles." The color intensity and numerical values indicate the frequency or strength of the association between the row and column variables.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Readiness Bundle"
+    *   **Categories:** Two distinct bundles are listed: "Integration Readiness" and "Trust Readiness".
+*   **Y-Axis:**
+    *   **Label:** "Source Framework"
+    *   **Categories:** Four frameworks are listed:
+        *   EU AI Act (2024/1689)
+        *   NIST AI RMF 1.0
+        *   NIST GenAI Profile
+        *   OWASP Top 10 LLM
+*   **Value Scale (Color Bar):**
+    *   Located on the right side of the plot.
+    *   **Range:** The color gradient ranges from light yellow (representing low values, ~1) to dark blue (representing high values, ~11).
+
+### 3. Data Trends
+*   **Highest Value:** The intersection of **NIST AI RMF 1.0** and **Trust Readiness** has the highest value of **11**, indicated by the darkest blue color.
+*   **High Integration Focus:** The **OWASP Top 10 LLM** framework shows a strong skew towards **Integration Readiness** with a value of **9**, while having a very low score for Trust Readiness (1).
+*   **Balanced Distribution:** The **EU AI Act (2024/1689)** is relatively balanced across both bundles (4 for Integration, 5 for Trust). Similarly, the **NIST GenAI Profile** is balanced but with lower overall coverage (2 for both).
+*   **Dominant Framework:** **NIST AI RMF 1.0** appears to be the most comprehensive source in this context, showing high values for both Integration (8) and Trust (11) readiness.
+*   **Lowest Value:** The lowest observed value is **1**, found at the intersection of **OWASP Top 10 LLM** and **Trust Readiness**.
+
+### 4. Annotations and Legends
+*   **Title:** "Heatmap: Governance Source vs. Competency Bundle" appears at the top.
+*   **Cell Annotations:** Each cell in the grid is annotated with the exact integer value corresponding to that data point (e.g., 4, 5, 8, 11, etc.), providing precise readings alongside the visual color cues.
+*   **Color Bar:** A vertical bar on the right serves as a legend for the heat intensity, where yellow represents lower counts and dark blue represents higher counts.
+
+### 5. Statistical Insights
+*   **NIST AI RMF 1.0 is the Leading Framework:** With a total count of 19 (8 + 11), the NIST AI RMF 1.0 provides the most significant coverage for the competencies listed, suggesting it is a robust framework for both Integration and Trust readiness.
+*   **Specialization of OWASP:** The OWASP Top 10 LLM is highly specialized. Its high score in "Integration Readiness" (9) and minimal score in "Trust Readiness" (1) aligns with OWASP’s traditional focus on technical security implementation and vulnerability management rather than broader governance or trust policies.
+*   **Gap Analysis:** The NIST GenAI Profile currently shows the least depth in this specific comparison, with only 4 total points. This might indicate that the profile is either narrower in scope regarding these specific bundles or that the mapping between the profile and these bundles is less direct than the other frameworks.
+==================================================
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The plot is designed to compare the relative distribution (proportion) of two specific categories ("Integration Readiness" and "Trust Readiness") across four different Source Frameworks. Unlike a standard bar chart that compares absolute totals, this chart normalizes all bars to a height of 1.0 (100%) to focus purely on the composition ratio within each framework.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Source Framework"
+    *   **Labels:** The axis lists four distinct regulatory or guideline frameworks:
+        1.  EU AI Act (2024/1689)
+        2.  NIST AI RMF 1.0
+        3.  NIST GenAI Profile
+        4.  OWASP Top 10 LLM
+    *   **Orientation:** The labels are rotated approximately 45 degrees to ensure readability.
+*   **Y-Axis:**
+    *   **Title:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** Intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Comparison of Bundles:**
+    *   **EU AI Act (2024/1689):** The split is fairly even but leans slightly towards "Trust Readiness" (Yellow). "Integration Readiness" (Purple) occupies approximately 44% of the bar, while Trust Readiness takes up the remaining 56%.
+    *   **NIST AI RMF 1.0:** Similar to the EU AI Act, this framework favors "Trust Readiness." The "Integration Readiness" portion appears slightly smaller here, roughly 42%, leaving about 58% for Trust Readiness.
+    *   **NIST GenAI Profile:** This framework demonstrates a perfect or near-perfect balance. The bar is split evenly at the 0.5 mark (50% Integration Readiness, 50% Trust Readiness).
+    *   **OWASP Top 10 LLM:** This is the most distinct outlier in the dataset. It is heavily dominated by "Integration Readiness" (Purple), which appears to occupy roughly 90% of the bar, leaving only ~10% for "Trust Readiness."
+
+### 4. Annotations and Legends
+*   **Plot Title:** "Proportion of Readiness Bundles by Source Framework"
+*   **Legend:** Located in the top right corner, titled **"Bundle"**. It defines the color coding for the bar segments:
+    *   **Dark Purple:** Integration Readiness
+    *   **Yellow:** Trust Readiness
+
+### 5. Statistical Insights
+*   **Divergent Focus:** The plot reveals a significant divergence in focus between the frameworks. The **OWASP Top 10 LLM** is clearly focused on technical implementation/integration (90%), which aligns with OWASP's general focus on specific security vulnerabilities and technical mitigation.
+*   **Regulatory Focus on Trust:** The broader regulatory frameworks (**EU AI Act** and **NIST AI RMF**) lean more heavily toward "Trust Readiness." This suggests these frameworks are likely more concerned with governance, ethics, reliability, and policy rather than just technical integration.
+*   **Balanced Profile:** The **NIST GenAI Profile** serves as a bridge, giving equal weight to both integration and trust, suggesting it treats technical deployment and safety/trustworthiness as equally critical components of readiness.
+==================================================

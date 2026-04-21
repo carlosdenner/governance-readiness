@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Commercial vs Custom AI Governance Scores (Retry)
+Loaded EO 13960 data with 1757 rows.
+Data filtered for Commercial vs Custom comparison: 920 rows
+acquisition_type
+Commercial (COTS)    481
+Custom (GOTS)        439
+Name: count, dtype: int64
+Applying text scoring to Tier 2 columns...
+
+--- Summary Statistics (Tier 2 Score: 0-5) ---
+Commercial AI (n=481): Mean=0.31, Std=1.02
+Custom AI     (n=439):     Mean=0.34, Std=0.90
+
+Mann-Whitney U Test Results:
+U-statistic: 102447.0
+P-value: 1.8205e-01
+Result: No significant difference detected.
+
+STDERR:
+<ipython-input-1-1770d2d19a88>:135: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, showmeans=True)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot** (also known as a box-and-whisker plot).
+*   **Purpose:** It compares the distribution of "Deep Governance (Tier 2) Compliance" scores between two different categorical groups: Commercial and Custom acquisition types. It is designed to visualize central tendency (median/mean), dispersion, and outliers.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Governance Score (0-5)".
+    *   **Range:** The axis spans from roughly -0.2 to 5.2, covering the discrete integer scoring range of 0 to 5.
+    *   **Units:** The score is a discrete numerical value (likely an index or count) on a scale of 0 to 5.
+*   **X-Axis:**
+    *   **Label:** This axis categorizes the data by "Acquisition Type."
+    *   **Categories:** The two labels are "Commercial" and "Custom."
+    *   **Sample Size:** The axis labels include the sample count (n) for each group: Commercial (n=481) and Custom (n=439).
+
+### 3. Data Trends
+*   **Collapsed Distribution (The "Floor Effect"):** For both "Commercial" and "Custom" categories, the "box" portion of the plot (which typically represents the Interquartile Range, or the middle 50% of the data) is collapsed into a single orange line at the value **0**. This indicates that the 25th percentile, the median (50th percentile), and the 75th percentile are all 0.
+*   **Medians:** The orange horizontal line represents the median, which is clearly situated at **0** for both groups.
+*   **Means:** The small green triangles represent the mean (average). The mean is positioned slightly above 0 (estimated around 0.3 to 0.4), indicating the data is positively skewed.
+*   **Outliers:** There are distinct open circles plotted at integers 1, 2, 3, 4, and 5 for both categories. In the context of a box plot where the box is flattened at 0, these points represent the minority of cases that achieved any score higher than 0.
+
+### 4. Annotations and Legends
+*   **Title:** "Deep Governance (Tier 2) Compliance by Acquisition Type."
+*   **Gridlines:** Horizontal dashed gridlines are present at integer intervals (0, 1, 2, 3, 4, 5) to aid in reading the y-values of the outliers.
+*   **Sample Size (n):** Annotations on the x-axis clarify the robustness of the dataset, showing a fairly balanced comparison (481 vs 439).
+
+### 5. Statistical Insights
+*   **Low Compliance Overall:** The most significant insight is that the vast majority of acquisitions—regardless of type—have a Deep Governance Score of **0**. The data is heavily right-skewed.
+*   **Lack of Differentiation:** There is virtually no discernible difference in performance between "Commercial" and "Custom" acquisition types regarding this metric. Both display the same median (0), similar means (near 0), and a similar spread of outliers.
+*   **Outlier Significance:** The presence of scores 1 through 5 as outliers suggests that achieving a high governance score is the exception rather than the rule. These "outliers" are the only positive performers in the dataset.
+*   **Conclusion:** The acquisition type (Commercial vs. Custom) does not appear to be a predictor for Tier 2 Governance compliance, as both methods demonstrate a systematic failure to achieve scores above 0 for the majority of the population.
+==================================================

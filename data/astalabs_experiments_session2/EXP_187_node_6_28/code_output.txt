@@ -1,0 +1,71 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment...
+AIID Incidents loaded: 1362
+Subset after sector filtering: 35
+analyzed_sector
+Transportation    28
+Financial          7
+Name: count, dtype: int64
+
+Harm Category Distribution:
+harm_category
+Physical    15
+Other       14
+Economic     6
+Name: count, dtype: int64
+
+--- Contingency Table (Analyzed for Hypothesis) ---
+harm_category    Economic  Physical
+analyzed_sector                    
+Financial               5         0
+Transportation          1        15
+
+Fisher's Exact Test Results:
+P-value: 2.9485e-04
+Odds Ratio: inf
+
+--- Analysis ---
+Result: Statistically significant relationship (p < 0.05).
+The data supports the hypothesis that harm types are domain-dependent.
+Positive association consistent with hypothesis (Financial biased towards Economic, Transportation towards Physical) if columns ordered [Eco, Phys].
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Plot.
+*   **Purpose:** This plot is designed to compare the proportional composition of different categories (Harm Types) across distinct groups (Sectors). It allows the viewer to see the relative distribution of "Economic," "Physical," and "Other" harms within the "Financial" and "Transportation" sectors, effectively visualizing part-to-whole relationships.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Percentage of Incidents"
+    *   **Range:** 0 to 100.
+    *   **Units:** Percent (%).
+*   **X-Axis:**
+    *   **Label:** "Sector"
+    *   **Categories:** "Financial" and "Transportation" (labels are oriented vertically for readability).
+
+### 3. Data Trends
+*   **Financial Sector:**
+    *   **Dominant Category:** The vast majority of incidents are categorized as **Economic** harm, represented by the tallest segment (yellow) at **71.4%**.
+    *   **Secondary Category:** The **Other** category (grey) accounts for **28.6%**.
+    *   **Absence:** There is a notable absence of **Physical** harm incidents, recorded at **0.0%**.
+*   **Transportation Sector:**
+    *   **Dominant Category:** The largest share of incidents is **Physical** harm (orange/salmon), comprising **53.6%** of the total.
+    *   **Secondary Category:** The **Other** category is also significant, representing **42.9%**.
+    *   **Minor Category:** **Economic** harm is the smallest contributor in this sector at just **3.6%**.
+
+### 4. Annotations and Legends
+*   **Legend:** Located at the top right, titled "**Harm Category**." It maps colors to categories:
+    *   **Yellow:** Economic
+    *   **Orange/Salmon:** Physical
+    *   **Grey:** Other
+*   **Annotations:** Specific percentage values are overlaid directly onto each bar segment (e.g., "71.4%", "53.6%") to provide precise quantitative data without needing to estimate from the Y-axis.
+*   **Title:** "Distribution of AI Harm Types by Sector (Description-based)" identifies the subject matter and the source methodology.
+
+### 5. Statistical Insights
+*   **Sector-Specific Risks:** The plot reveals a stark dichotomy in the nature of AI risks between the two sectors. The **Financial sector** is characterized almost exclusively by non-physical risks (primarily Economic), whereas the **Transportation sector** is predominantly associated with Physical risks (likely involving accidents or safety failures).
+*   **Inverse Relationship:** There is an inverse relationship regarding "Economic" vs. "Physical" harm. While "Economic" is the primary driver in Finance (71.4%), it is negligible in Transportation (3.6%). Conversely, "Physical" harm is the majority in Transportation (53.6%) but non-existent in Finance (0.0%).
+*   **Ambiguity in Transportation:** The "Other" category is quite large in the Transportation sector (42.9%), suggesting that a significant portion of AI incidents in this field do not fit neatly into the binary of purely Economic or Physical harm, or involve other types of societal or psychological impacts.
+==================================================

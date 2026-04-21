@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded EO 13960 dataset with 1757 records.
+
+Unique values in '40_has_ato' (top 10):
+40_has_ato
+Yes                                             636
+No                                              448
+                                                 15
+No.  Engineering Review and Resease instead.     15
+                                                  2
+Operated in an approved enclave                   2
+Data.State-SBU                                    1
+Name: count, dtype: int64
+
+--- Contingency Table: Commercial Status vs. ATO ---
+            No ATO  Has ATO
+Custom/Gov     846      558
+Commercial     275       78
+
+Chi-Square Statistic: 37.2767
+P-value: 1.0250e-09
+
+ATO Rate (Custom/Gov): 39.7% (558/1404)
+ATO Rate (Commercial): 22.1% (78/353)
+
+Odds Ratio (Commercial vs Custom for having ATO): 0.4300
+Interpretation: Custom systems are 2.33 times more likely to have an ATO than Commercial systems.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares the ATO (Authority to Operate) compliance rates between two distinct categories of AI solutions: "Custom/Gov" and "Commercial."
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "ATO Compliance Rate".
+    *   **Range:** The scale ranges from **0.0 to 1.0** (representing 0% to 100%).
+    *   **Increments:** The axis is marked in increments of 0.2.
+*   **X-Axis (Horizontal):**
+    *   **Labels:** The categories represent the source/type of AI: **"Custom/Gov"** and **"Commercial"**.
+
+### 3. Data Trends
+*   **Tallest Bar:** The blue bar representing "Custom/Gov" is the tallest, indicating a higher compliance rate.
+*   **Shortest Bar:** The orange bar representing "Commercial" is the shortest, indicating a lower compliance rate.
+*   **Comparison:** There is a visibly significant gap between the two categories, with the Custom/Gov bar appearing nearly twice as tall as the Commercial bar.
+
+### 4. Annotations and Legends
+*   **Title:** "ATO Compliance: Custom vs. Commercial AI".
+*   **Value Labels:** Specific percentage values are annotated directly above each bar to provide precise data points:
+    *   **Custom/Gov:** Annotated with **39.7%**.
+    *   **Commercial:** Annotated with **22.1%**.
+*   **Color Coding:** While there is no separate legend box, the bars are distinct colors (Blue for Custom/Gov, Orange for Commercial) to aid visual differentiation.
+
+### 5. Statistical Insights
+*   **Significant Performance Gap:** Custom or Government-developed AI solutions have a significantly higher success rate in achieving ATO compliance compared to Commercial solutions. The Custom/Gov sector outperforms the Commercial sector by **17.6 percentage points** ($39.7\% - 22.1\%$).
+*   **Relative Ratio:** The compliance rate for Custom/Gov AI is approximately **1.8 times higher** than that of Commercial AI ($39.7 / 22.1 \approx 1.79$).
+*   **Overall Low Compliance:** Despite the Custom/Gov sector performing better, both categories show relatively low compliance rates (both are below 40%). This suggests that obtaining ATO compliance is a difficult hurdle for AI systems in general, regardless of their origin.
+==================================================

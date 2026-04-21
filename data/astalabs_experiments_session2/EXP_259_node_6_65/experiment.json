@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Automation-Overconfidence' Paradox using Fisher's Exact Test to account for the small sample size of fully autonomous systems (n=7) versus human-assisted ones (n=143). \n\n**Hypothesis Status:** Unsupported.\n\n**Findings:**\n1. **Direction:** Contrary to the hypothesis that autonomous systems would have lower risk identification rates (implying overconfidence), they exhibited a higher rate of documented risks (85.7%, 6/7) compared to human-assisted systems (61.5%, 88/143).\n2. **Significance:** The difference was not statistically significant (Fisher's Exact Test p-value = 0.2578). \n\n**Interpretation:** There is no evidence of an 'automation-overconfidence' effect where risk documentation is neglected for autonomous systems. The trend suggests the opposite—that fully autonomous systems may be subject to higher scrutiny—but the extremely low prevalence of fully autonomous systems in the federal inventory limits the statistical power of this conclusion.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import fisher_exact\nimport sys\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        print(\"Dataset not found.\")\n        sys.exit(1)\n\n# Filter for EO 13960 data\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\ncol_autonomy = '57_autonomous_impact'\ncol_risks = '54_key_risks'\n\n# --- Classification Logic ---\n\ndef classify_autonomy(val):\n    s = str(val).lower().strip()\n    if s == 'nan' or s == 'missing':\n        return 'Unknown'\n    \n    # Autonomous: \"Yes - All individual...\" or \"Other - Immediate human intervention is not practicable...\"\n    # Both imply the system acts without direct human control/intervention in the loop.\n    if s.startswith('yes - all individual') or 'immediate human intervention is not practicable' in s:\n        return 'Autonomous'\n    \n    # Human-Assisted: \"No - Some individual decisions...\"\n    if s.startswith('no - some individual'):\n        return 'Human-Assisted'\n    \n    return 'Unknown'\n\ndef classify_risk(val):\n    # Treat NaN as 0 (No risk identified/documented)\n    if pd.isna(val) or val == 'nan':\n        return 0\n    \n    s = str(val).lower().strip()\n    negative_terms = ['no', 'none', 'n/a', 'not applicable', 'none identified', '0', 'missing']\n    \n    # exact match check\n    if s in negative_terms:\n        return 0\n    \n    # distinct phrases check\n    if 'no key risks identified' in s:\n        return 0\n    if s.startswith('n/a'):\n        return 0\n        \n    # specific check for 'none.'\n    if s == 'none.':\n        return 0\n\n    # If text exists and isn't a negative, assume risks are described/identified\n    return 1\n\n# Apply classification\neo_df['Autonomy_Class'] = eo_df[col_autonomy].apply(classify_autonomy)\neo_df['Risk_Flag'] = eo_df[col_risks].apply(classify_risk)\n\n# Filter for analysis groups\nanalysis_df = eo_df[eo_df['Autonomy_Class'].isin(['Autonomous', 'Human-Assisted'])]\n\n# --- Generate Statistics ---\nprint(\"--- Analysis of Automation-Overconfidence Paradox ---\")\n\n# Group counts\ngroup_counts = analysis_df['Autonomy_Class'].value_counts()\nprint(f\"\\nSample Sizes:\\n{group_counts}\")\n\n# Risk Identification Rates\nrisk_stats = analysis_df.groupby('Autonomy_Class')['Risk_Flag'].agg(['count', 'sum', 'mean'])\nrisk_stats.columns = ['Total', 'Risks_Identified', 'Rate']\nprint(\"\\nRisk Identification Stats:\")\nprint(risk_stats)\n\n# Construct Contingency Table for Fisher's Exact Test\n# Rows: Autonomous, Human-Assisted\n# Cols: Risk Identified (1), Risk Not Identified (0)\n\nauto_identified = risk_stats.loc['Autonomous', 'Risks_Identified']\nauto_total = risk_stats.loc['Autonomous', 'Total']\nauto_not = auto_total - auto_identified\n\nhuman_identified = risk_stats.loc['Human-Assisted', 'Risks_Identified']\nhuman_total = risk_stats.loc['Human-Assisted', 'Total']\nhuman_not = human_total - human_identified\n\ncontingency_table = [[auto_identified, auto_not], [human_identified, human_not]]\n\nprint(\"\\nContingency Table (Rows: Auto, Human; Cols: Identified, Not Identified):\")\nprint(contingency_table)\n\n# Fisher's Exact Test (Two-sided)\nodds_ratio, p_value = fisher_exact(contingency_table, alternative='two-sided')\n\nprint(f\"\\nFisher's Exact Test Results:\")\nprint(f\"Odds Ratio: {odds_ratio:.4f}\")\nprint(f\"P-value: {p_value:.4e}\")\n\nalpha = 0.05\nif p_value < alpha:\n    print(\"Conclusion: Statistically significant difference found.\")\nelse:\n    print(\"Conclusion: No statistically significant difference found.\")\n\n# Interpretation helper\nif risk_stats.loc['Autonomous', 'Rate'] < risk_stats.loc['Human-Assisted', 'Rate']:\n    print(\"Direction: Autonomous systems have a LOWER risk identification rate.\")\nelse:\n    print(\"Direction: Autonomous systems have a HIGHER (or equal) risk identification rate.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- Analysis of Automation-Overconfidence Paradox ---\n\nSample Sizes:\nAutonomy_Class\nHuman-Assisted    143\nAutonomous          7\nName: count, dtype: int64\n\nRisk Identification Stats:\n                Total  Risks_Identified      Rate\nAutonomy_Class                                   \nAutonomous          7                 6  0.857143\nHuman-Assisted    143                88  0.615385\n\nContingency Table (Rows: Auto, Human; Cols: Identified, Not Identified):\n[[np.int64(6), np.int64(1)], [np.int64(88), np.int64(55)]]\n\nFisher's Exact Test Results:\nOdds Ratio: 3.7500\nP-value: 2.5777e-01\nConclusion: No statistically significant difference found.\nDirection: Autonomous systems have a HIGHER (or equal) risk identification rate.\n",
+  "created_at": "2026-02-22T13:19:53.734948+00:00",
+  "creation_idx": 260,
+  "experiment_id": "node_6_65",
+  "experiment_plan": {
+    "deliverables": "Risk Identification rates by Autonomy Level; Statistical comparison.",
+    "objective": "Investigate if autonomy correlates with a decrease in reported risk awareness.",
+    "steps": "1. Filter for 'eo13960_scored'.\n2. Parse `57_autonomous_impact` to categorize systems into 'Autonomous' (values indicating full automation) vs. 'Human-Assisted' (values indicating human-in-the-loop/audit/tool).\n3. Parse `54_key_risks` to binary (1 if risks identified/text present, 0 if 'No', 'None', or NaN).\n4. Compare risk identification rates using a t-test or Chi-square test."
+  },
+  "hypothesis": "The 'Automation-Overconfidence' Paradox: Systems flagged as fully 'Autonomous' in the federal inventory are significantly less likely to have 'Key Risks' identified compared to 'Human-Assisted' systems, suggesting an automation bias where removing the human is mistakenly equated with removing risk.",
+  "id_in_run": 259,
+  "is_surprising": true,
+  "parent_id": "node_5_34",
+  "posterior": 0.38461538461538464,
+  "posterior_belief": {
+    "_empirical_mean": 0.20833333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 10.0,
+    "definitely_true": 0.0,
+    "maybe_false": 50.0,
+    "maybe_true": 0.0,
+    "mean": 0.38461538461538464,
+    "n": 60.0,
+    "prior_params": [
+      22.5,
+      8.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7258064516129032,
+  "prior_belief": {
+    "_empirical_mean": 0.7333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7258064516129032,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 2.0
+  },
+  "review": "The experiment successfully tested the 'Automation-Overconfidence' Paradox hypothesis. Using Fisher's Exact Test to account for the small sample size of fully autonomous systems (n=7), the analysis found no evidence to support the claim that autonomous systems are less likely to have identified risks. In fact, the observed trend contradicted the hypothesis, with autonomous systems showing a higher rate of risk identification (85.7%) compared to human-assisted systems (61.5%), though this difference was not statistically significant (p = 0.26). The hypothesis is therefore not supported.",
+  "rich_outputs": null,
+  "runtime_ms": 265350.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4094292803970223
+}

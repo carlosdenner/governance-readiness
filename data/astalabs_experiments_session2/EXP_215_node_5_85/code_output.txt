@@ -1,0 +1,69 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Top AIID Sectors (cleaned):
+                                         sector_term  incident_count
+0                      information and communication              44
+1                         transportation and storage              21
+2  arts, entertainment and recreation, informatio...              14
+3                         wholesale and retail trade              11
+4            human health and social work activities              10
+Governance columns used: ['52_impact_assessment', '62_disparity_mitigation', '55_independent_eval', '56_monitor_postdeploy', '59_ai_notice', '67_opt_out']
+Top EO Topics:
+                                         clean_topic  gov_score
+0                          aiml platform/environment        0.0
+1                                     classification        0.0
+2                                      deep learning        0.0
+3                                  diplomacy & trade        0.0
+4  diplomacy & trade; mission-enabling (internal ...        0.0
+
+--- Merged Data Analysis Frame ---
+                                               Topic  ...                                    Matched_Sectors
+5                                     transportation  ...  transportation and storage, wholesale and reta...
+2  government services (includes benefits and ser...  ...  administrative and support service activities,...
+3                                   health & medical  ...  human health and social work activities, educa...
+0                                  diplomacy & trade  ...  wholesale and retail trade, transportation and...
+1                              education & workforce  ...  education, information and communication, educ...
+4                                              other  ...  other, administrative and support service acti...
+
+[6 rows x 4 columns]
+
+Spearman Correlation: 0.2571 (p-value: 0.6228)
+Pearson Correlation: 0.7556 (p-value: 0.0823)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided image, here is the detailed breakdown:
+
+### 1. Plot Type
+*   **Type:** Scatter plot with a linear regression trend line.
+*   **Purpose:** The plot aims to visualize the correlation between the frequency of reported AI incidents within specific sectors and the "Governance Readiness Score" of those same sectors. It seeks to determine if sectors experiencing more AI incidents are better prepared in terms of governance.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Reported AI Incidents (AIID)"
+    *   **Range:** The axis is graduated from roughly 4 to 28 on the visual scale (ticks marked at intervals of 5, from 5 to 25).
+    *   **Meaning:** Represents the count of AI incidents reported in the AI Incident Database (AIID).
+*   **Y-Axis:**
+    *   **Title:** "Governance Readiness Score (EO 13960)"
+    *   **Range:** The axis ranges from -0.005 to 0.08, with tick marks every 0.01 unit.
+    *   **Meaning:** Represents a metric for preparedness or governance capability, likely derived from Executive Order 13960 compliance or metrics.
+
+### 3. Data Trends
+*   **Overall Trend:** The red regression line slopes upward from left to right, suggesting a visual positive correlation: as reported incidents increase, the governance readiness score tends to increase. However, the data points are sparse (N=6), making the trend rely heavily on specific points.
+*   **Outliers/Key Clusters:**
+    *   **Transportation:** This is a distinct outlier and the most influential data point. It has the highest number of reported incidents (approx. 28) and the highest governance readiness score (approx. 0.077), sitting far apart from the other clusters in the top-right corner.
+    *   **Diplomacy & Trade:** Despite having a moderate number of incidents (approx. 13), it has a readiness score of essentially zero.
+    *   **Government Services:** This sector has a relatively high number of incidents (~17) but a low readiness score (< 0.01), falling well below the trend line.
+    *   **Low Incident Cluster:** Sectors like "Other" and "Education & Workforce" have fewer incidents (< 10) and low-to-moderate readiness scores.
+
+### 4. Annotations and Legends
+*   **Main Title:** "The Reality Gap: AI Incidents vs. Governance Readiness". This title implies a potential mismatch or an investigation into whether reality (incidents) aligns with policy (readiness).
+*   **Statistical Annotation:** "(Spearman r=0.26, p=0.62)". Located in the subtitle, this provides the statistical context for the relationship shown.
+*   **Data Labels:** Each blue data point is labeled with its corresponding sector (e.g., "Transportation," "Health & Medical," "Government Services").
+*   **Red Line:** A linear fit line representing the general direction of the relationship between the two variables.
+
+### 5. Statistical Insights
+*   **Weak Correlation:** The Spearman correlation coefficient (**r=0.26**) indicates a very weak positive monotonic relationship between reported incidents and governance readiness. While the red line suggests an increase, the strength of this association is negligible.
+*   **Lack of Statistical Significance:** The p-value (**p=0.62**) is significantly higher than the standard threshold for statistical significance (typically p < 0.05). This means the observed relationship is likely due to chance. We cannot reject the null hypothesis; statistically, there is no proven link between the number of AI incidents a sector faces and its governance readiness score based on this dataset.
+*   **Interpretation of the "Reality Gap":** The plot highlights a disconnect. One might expect that sectors with more incidents (like Government Services) would have developed higher governance readiness in response. However, aside from "Transportation," most high-incident sectors do not show correspondingly high readiness scores. The high p-value confirms that incident frequency is not currently a reliable predictor of governance readiness.
+==================================================

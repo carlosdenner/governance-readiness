@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment tested the hypothesis that regulatory frameworks (EU AI Act) align with 'Trust Readiness' while technical frameworks (OWASP Top 10 LLM) align with 'Integration Readiness'. The analysis of 'step2_crosswalk_matrix.csv' produced a 2x2 contingency table: EU AI Act mapped to 4 Integration/5 Trust competencies, while OWASP mapped to 9 Integration/1 Trust. Although the trend strongly supports the hypothesis (OWASP is 90% Integration-focused vs. EU AI Act's 56% Trust-focus), the Fisher's Exact Test yielded a p-value of 0.0573, which is marginally above the standard significance threshold of 0.05. Consequently, while the structural alignment is visually apparent, it is not statistically significant due to the small sample size (n=19).",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport os\n\n# Define filename\nfilename = 'step2_crosswalk_matrix.csv'\n\n# Try loading from parent directory first, then current directory\nfilepath = os.path.join('..', filename)\nif not os.path.exists(filepath):\n    filepath = filename\n\nprint(f\"Loading dataset from: {filepath}\")\n\ntry:\n    df = pd.read_csv(filepath)\n    print(f\"Successfully loaded. Shape: {df.shape}\")\nexcept Exception as e:\n    print(f\"Error loading file: {e}\")\n    exit(1)\n\n# Define the specific sources to compare based on previous output\nregulatory_source = 'EU AI Act (2024/1689)'\ntechnical_source = 'OWASP Top 10 LLM'\n\nprint(f\"\\n=== Hypothesis Testing: Regulatory ({regulatory_source}) vs Technical ({technical_source}) ===\")\n\n# Filter dataset\nsubset_df = df[df['source'].isin([regulatory_source, technical_source])]\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(subset_df['source'], subset_df['bundle'])\nprint(\"\\nContingency Table:\")\nprint(contingency_table)\n\n# Check if table is 2x2\nif contingency_table.shape == (2, 2):\n    # Perform Fisher's Exact Test (appropriate for small sample sizes where cell counts < 5)\n    # The table has a cell with value 1, so Fisher's is more robust than Chi-square here.\n    odds_ratio, p_value_fisher = stats.fisher_exact(contingency_table)\n    \n    print(f\"\\nFisher's Exact Test:\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\n    print(f\"P-value: {p_value_fisher:.4f}\")\n    \n    # Also performing Chi-Square for completeness as requested\n    chi2, p_value_chi2, dof, expected = stats.chi2_contingency(contingency_table, correction=True)\n    print(f\"\\nChi-square Test (with Yates correction):\")\n    print(f\"Chi2 Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p_value_chi2:.4f}\")\n\n    alpha = 0.05\n    if p_value_fisher < alpha:\n        print(\"\\nResult: Significant difference found. The source framework strongly predicts the competency bundle.\")\n    else:\n        print(\"\\nResult: No statistically significant difference found (p >= 0.05).\")\nelse:\n    print(\"\\nError: Contingency table is not 2x2. Check source names.\")\n    print(\"Found sources:\", subset_df['source'].unique())",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_crosswalk_matrix.csv\nSuccessfully loaded. Shape: (42, 24)\n\n=== Hypothesis Testing: Regulatory (EU AI Act (2024/1689)) vs Technical (OWASP Top 10 LLM) ===\n\nContingency Table:\nbundle                 Integration Readiness  Trust Readiness\nsource                                                       \nEU AI Act (2024/1689)                      4                5\nOWASP Top 10 LLM                           9                1\n\nFisher's Exact Test:\nOdds Ratio: 0.0889\nP-value: 0.0573\n\nChi-square Test (with Yates correction):\nChi2 Statistic: 2.6856\nP-value: 0.1013\n\nResult: No statistically significant difference found (p >= 0.05).\n",
+  "created_at": "2026-02-20T23:02:58.374044+00:00",
+  "creation_idx": 48,
+  "experiment_id": "node_4_13",
+  "experiment_plan": {
+    "deliverables": "Contingency table and Chi-square test statistics.",
+    "objective": "Test the independence between the source framework and the resulting competency bundle.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Filter the dataset to include rows where 'source' is 'EU AI Act' or 'OWASP Top 10 LLM' (or include all sources if sample size permits).\n3. Create a contingency table of 'source' vs. 'bundle'.\n4. Perform a Chi-square test of independence to determine if the source framework significantly predicts the bundle classification."
+  },
+  "hypothesis": "There is a significant structural alignment between source frameworks and competency bundles: regulatory frameworks (e.g., EU AI Act) disproportionately drive 'Trust Readiness', while technical frameworks (e.g., OWASP Top 10 LLM) drive 'Integration Readiness'.",
+  "id_in_run": 47,
+  "is_surprising": true,
+  "parent_id": "node_3_13",
+  "posterior": 0.7975206611570248,
+  "posterior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 90.0,
+    "mean": 0.7975206611570248,
+    "n": 90.0,
+    "prior_params": [
+      29.0,
+      2.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9354838709677419,
+  "prior_belief": {
+    "_empirical_mean": 0.95,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 24.0,
+    "maybe_false": 0.0,
+    "maybe_true": 6.0,
+    "mean": 0.9354838709677419,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully implemented the analysis plan. \n\n**Hypothesis**: Regulatory frameworks (EU AI Act) align with 'Trust Readiness' while technical frameworks (OWASP Top 10 LLM) align with 'Integration Readiness'.\n\n**Method**: A subset of the `step2_crosswalk_matrix.csv` dataset was filtered to isolate 'EU AI Act (2024/1689)' and 'OWASP Top 10 LLM'. A 2x2 contingency table was constructed, and Fisher's Exact Test was applied due to small cell counts (one cell < 5).\n\n**Results**:\n- **OWASP Top 10 LLM**: Heavily skewed toward Integration (9 Integration vs. 1 Trust).\n- **EU AI Act**: More balanced, slightly leaning toward Trust (4 Integration vs. 5 Trust).\n- **Statistical Test**: Fisher's Exact Test yielded a p-value of **0.0573** (Odds Ratio: 0.0889).\n\n**Conclusion**: While there is a strong directional trend supporting the hypothesis (technical frameworks driving integration controls), the result is marginally non-significant at the standard alpha=0.05 level, likely due to the small sample size (N=19). We strictly fail to reject the null hypothesis, but the low p-value suggests a potential relationship that might reach significance with a larger dataset.",
+  "rich_outputs": null,
+  "runtime_ms": 244360.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.16011952499884657
+}

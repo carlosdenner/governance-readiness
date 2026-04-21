@@ -1,0 +1,358 @@
+{
+  "overall": {
+    "total_words": 3181,
+    "total_sentences": 163,
+    "avg_sentence_length": 19.5,
+    "median_sentence_length": 19,
+    "max_sentence_length": 41,
+    "sentences_over_40_words": 1,
+    "flesch_reading_ease": 5.8,
+    "flesch_kincaid_grade": 17.3,
+    "gunning_fog_index": 21.7,
+    "complex_word_pct": 34.8,
+    "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 17.301396558939874 is typical for academic IS writing. Fog index 21.713711203213865 is very high — reduce jargon density in key passages."
+  },
+  "per_section": {
+    "Introduction": {
+      "total_words": 458,
+      "total_sentences": 23,
+      "avg_sentence_length": 19.9,
+      "median_sentence_length": 18,
+      "max_sentence_length": 39,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 10.4,
+      "flesch_kincaid_grade": 16.8,
+      "gunning_fog_index": 21.0,
+      "complex_word_pct": 32.5,
+      "interpretation": "Difficult — typical for academic papers. Acceptable for AMCIS. FK grade 16.75512625783178 is typical for academic IS writing. Fog index 20.97831782798557 is very high — reduce jargon density in key passages."
+    },
+    "Theoretical Background": {
+      "total_words": 640,
+      "total_sentences": 26,
+      "avg_sentence_length": 24.6,
+      "median_sentence_length": 26,
+      "max_sentence_length": 39,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": -3.5,
+      "flesch_kincaid_grade": 19.9,
+      "gunning_fog_index": 24.3,
+      "complex_word_pct": 36.2,
+      "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 19.859375000000004 is very high; consider breaking long sentences. Fog index 24.346153846153847 is very high — reduce jargon density in key passages."
+    },
+    "Methodology": {
+      "total_words": 397,
+      "total_sentences": 25,
+      "avg_sentence_length": 15.9,
+      "median_sentence_length": 16,
+      "max_sentence_length": 35,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 17.7,
+      "flesch_kincaid_grade": 14.7,
+      "gunning_fog_index": 18.9,
+      "complex_word_pct": 31.5,
+      "interpretation": "Difficult — typical for academic papers. Acceptable for AMCIS. FK grade 14.738212594458442 is typical for academic IS writing."
+    },
+    "Findings": {
+      "total_words": 22,
+      "total_sentences": 2,
+      "avg_sentence_length": 11.0,
+      "median_sentence_length": 18,
+      "max_sentence_length": 18,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 7.2,
+      "flesch_kincaid_grade": 15.0,
+      "gunning_fog_index": 17.1,
+      "complex_word_pct": 31.8,
+      "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 14.98181818181818 is typical for academic IS writing."
+    },
+    "Governance Theater: Depth Collapse and Tiering Failure": {
+      "total_words": 324,
+      "total_sentences": 19,
+      "avg_sentence_length": 17.1,
+      "median_sentence_length": 13,
+      "max_sentence_length": 36,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 13.8,
+      "flesch_kincaid_grade": 15.6,
+      "gunning_fog_index": 20.3,
+      "complex_word_pct": 33.6,
+      "interpretation": "Difficult — typical for academic papers. Acceptable for AMCIS. FK grade 15.571020142949969 is typical for academic IS writing. Fog index 20.27784275503574 is very high — reduce jargon density in key passages."
+    },
+    "Binding Constraints: Evaluability Constraints and Architectural Enforceability": {
+      "total_words": 323,
+      "total_sentences": 15,
+      "avg_sentence_length": 21.5,
+      "median_sentence_length": 22,
+      "max_sentence_length": 37,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 12.6,
+      "flesch_kincaid_grade": 16.8,
+      "gunning_fog_index": 20.5,
+      "complex_word_pct": 29.7,
+      "interpretation": "Difficult — typical for academic papers. Acceptable for AMCIS. FK grade 16.846390092879258 is typical for academic IS writing. Fog index 20.501878224974202 is very high — reduce jargon density in key passages."
+    },
+    "Contextual Calibration: Sector-Specific Harm Fingerprints": {
+      "total_words": 99,
+      "total_sentences": 4,
+      "avg_sentence_length": 24.8,
+      "median_sentence_length": 33,
+      "max_sentence_length": 36,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": -0.3,
+      "flesch_kincaid_grade": 19.5,
+      "gunning_fog_index": 25.3,
+      "complex_word_pct": 38.4,
+      "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 19.450378787878787 is very high; consider breaking long sentences. Fog index 25.253535353535355 is very high — reduce jargon density in key passages."
+    },
+    "Propositions": {
+      "total_words": 19,
+      "total_sentences": 2,
+      "avg_sentence_length": 9.5,
+      "median_sentence_length": 13,
+      "max_sentence_length": 13,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 23.5,
+      "flesch_kincaid_grade": 12.3,
+      "gunning_fog_index": 18.5,
+      "complex_word_pct": 36.8,
+      "interpretation": "Difficult — typical for academic papers. Acceptable for AMCIS."
+    },
+    "Discussion": {
+      "total_words": 420,
+      "total_sentences": 26,
+      "avg_sentence_length": 16.2,
+      "median_sentence_length": 15,
+      "max_sentence_length": 39,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 2.3,
+      "flesch_kincaid_grade": 17.0,
+      "gunning_fog_index": 21.4,
+      "complex_word_pct": 37.4,
+      "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 16.950952380952383 is typical for academic IS writing. Fog index 21.413919413919416 is very high — reduce jargon density in key passages."
+    },
+    "Research Implications": {
+      "total_words": 89,
+      "total_sentences": 4,
+      "avg_sentence_length": 22.2,
+      "median_sentence_length": 20,
+      "max_sentence_length": 35,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 12.2,
+      "flesch_kincaid_grade": 17.1,
+      "gunning_fog_index": 21.5,
+      "complex_word_pct": 31.5,
+      "interpretation": "Difficult — typical for academic papers. Acceptable for AMCIS. FK grade 17.085252808988766 is typical for academic IS writing. Fog index 21.48426966292135 is very high — reduce jargon density in key passages."
+    },
+    "Practice Implications": {
+      "total_words": 90,
+      "total_sentences": 5,
+      "avg_sentence_length": 18.0,
+      "median_sentence_length": 18,
+      "max_sentence_length": 25,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": -6.0,
+      "flesch_kincaid_grade": 18.6,
+      "gunning_fog_index": 22.3,
+      "complex_word_pct": 37.8,
+      "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 18.570000000000004 is very high; consider breaking long sentences. Fog index 22.311111111111114 is very high — reduce jargon density in key passages."
+    },
+    "Limitations": {
+      "total_words": 119,
+      "total_sentences": 6,
+      "avg_sentence_length": 19.8,
+      "median_sentence_length": 20,
+      "max_sentence_length": 30,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": -4.5,
+      "flesch_kincaid_grade": 18.8,
+      "gunning_fog_index": 22.7,
+      "complex_word_pct": 37.0,
+      "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 18.818949579831934 is very high; consider breaking long sentences. Fog index 22.723249299719892 is very high — reduce jargon density in key passages."
+    },
+    "Conclusion": {
+      "total_words": 123,
+      "total_sentences": 6,
+      "avg_sentence_length": 20.5,
+      "median_sentence_length": 25,
+      "max_sentence_length": 35,
+      "sentences_over_40_words": 0,
+      "flesch_reading_ease": 2.4,
+      "flesch_kincaid_grade": 18.0,
+      "gunning_fog_index": 24.5,
+      "complex_word_pct": 40.7,
+      "interpretation": "Very difficult to read — even for academic standards. Consider simplifying some sentences. FK grade 18.019634146341463 is very high; consider breaking long sentences. Fog index 24.460162601626017 is very high — reduce jargon density in key passages."
+    }
+  },
+  "passive_voice": {
+    "total_sentences": 163,
+    "passive_sentences": 12,
+    "passive_pct": 7.4,
+    "target_range": "15-25% for academic IS papers",
+    "examples": [
+      "Critically, IR supplies the enforcement hooks that make governance actionable: without telemetry infrastructure, audit logging is impossible; without evaluation pipelines, bias testing cannot be conducted; without code access, independent review is foreclosed.",
+      "Importantly, the paper's core findings, namely governance drop-off, IR dominance, and evaluability constraints, are computed directly from EO 13960 variables and are not mediated by the cross-taxonomy map.",
+      "Across 400 experiments (Session 1: 100; Session 2: 300), 67.7% of hypotheses were contradicted, a result we treat as substantive evidence of governance gaps rather than methodological failure.",
+      "Findings reported in the paper rest on convergent multi-experiment evidence and are confirmed through standard statistical tests (logistic regression, chi-square).",
+      "The Bayesian-surprise engine generated candidate patterns; all quantitative results reported below are confirmed through standard statistical tests."
+    ]
+  },
+  "longest_sentences": [
+    {
+      "words": 41,
+      "text": "---\n\nImplications, Limitations, and Conclusion\n\nResearch Implications\n\nThis study provides a replicable secondary-data framework for AI governance gap analysis, connecting \"what can go wrong\" (ATLAS), \"what has gone wrong\" (AIID), and \"what is being done\" (EO 13960) without requiring proprietary organizational access."
+    },
+    {
+      "words": 39,
+      "text": "We theorize that trust readiness and integration readiness are potential strategic complements : governance controls require architectural hooks to be enforceable (bias testing needs evaluation pipelines; independent review needs code access), and architectural patterns require governance boundaries to be safe."
+    },
+    {
+      "words": 39,
+      "text": "We posit that AI deployment and scalability require two capability bundles: trust readiness (TR), governance capabilities spanning risk management, compliance, and accountability, and integration readiness (IR), the organizational and technical capacity to integrate, operate, and scale AI in production."
+    },
+    {
+      "words": 39,
+      "text": "Contextual Calibration: Sector-Specific Harm Fingerprints\n\nAIID incident analysis reveals that AI harms are sector-structured rather than autonomy-driven: finance incidents cluster around economic harm, healthcare around physical harm, and government deployments around civil rights harm ($\\chi^2$=12.97, p=0.0003)."
+    },
+    {
+      "words": 39,
+      "text": "Among systems with identified development method, vendor-developed systems are roughly half as likely to report impact assessment (OR=0.43, p=0.002), revealing that trust readiness includes a structural dimension: the ability to access the artifacts required to execute governance processes ."
+    },
+    {
+      "words": 38,
+      "text": "This steep \"surface-to-substance\" drop-off is not merely organizational immaturity; it constitutes governance theater, a form of institutional decoupling  in which organizations adopt formal governance structures while the operational routines needed to enact them remain absent."
+    },
+    {
+      "words": 38,
+      "text": "TR spans a continuum from surface compliance (TR-surface, 0–2: internal review boards and authorization to operate) to substantive safeguards (TR-substantive, 0–7: impact assessment, independent evaluation, real-world testing, post-deployment monitoring, AI notice, bias mitigation, and appeal processes)."
+    },
+    {
+      "words": 37,
+      "text": "We take organizational AI portfolio scope as a contextual starting point, operationalized via an agency-level proxy; our propositions focus on the downstream capability mechanisms, trust readiness and integration readiness, that convert portfolio scope into operational deployment."
+    },
+    {
+      "words": 37,
+      "text": "The composite TR null in M3 masks a suppression effect revealed in M4: TR-surface facilitates deployment (OR=1.39, p<0.01) because procedural authorizations remove administrative barriers, while TR-substantive dampens it (OR=0.92, p<0.05) because genuine scrutiny introduces friction."
+    },
+    {
+      "words": 37,
+      "text": "Notably, the bivariate vendor direction reverses when the 650 records with unspecified development method are included, because these effectively blank submissions inflate the non-vendor reference group, a sample composition artifact rather than a true positive vendor effect."
+    },
+    {
+      "words": 37,
+      "text": "Federal AI Use Case Inventory (1,757 deployments across 38 agencies), we find that while a majority of AI systems report internal review approval, only a small fraction report substantive safeguards such as impact assessments, bias mitigation, or independent evaluation."
+    },
+    {
+      "words": 36,
+      "text": "M4 splits TR into surface (0–2) and substantive (0–7) components, revealing a suppression effect: TR-surface facilitates deployment (OR=1.39, p<0.01) as procedural authorizations remove administrative barriers, while TR-substantive dampens it (OR=0.92, p<0.05) as genuine scrutiny introduces friction."
+    },
+    {
+      "words": 36,
+      "text": "Biometrics incidents show a disproportionate civil-rights association (EXP168, p<0.01), and federal deployment sectors do not mirror incident concentration (EXP108; +0.171), suggesting that governance programs derived from adversarial threat research may misallocate attention relative to incident reality."
+    },
+    {
+      "words": 36,
+      "text": "Binding Constraints: Evaluability Constraints and Architectural Enforceability\n\nCommercial procurement is a consistently supported predictor of governance under-implementation, operating as an evaluability constraint that restricts the control rights needed to translate governance commitments into implementable safeguards."
+    },
+    {
+      "words": 35,
+      "text": "The Chief Information Officer (CIO) role has evolved from technology steward to strategic partner in this process , and practitioner surveys confirm that strategy, speed, and risk mastery now define the CIO agenda [@mckinsey2026; @bcg2025; @gartner2026]."
+    },
+    {
+      "words": 35,
+      "text": "Conceptually, this deficit can be understood through the lens of AI boundary resources : when vendors do not provide governance-relevant interfaces (documentation, logging, evaluation endpoints), clients cannot enact deep safeguards even when policies demand them."
+    },
+    {
+      "words": 35,
+      "text": "By triangulating threats, incidents, and governance practice, we offer a replicable method and a reconciled proposition set to guide IS research on how organizational AI portfolio scope can be converted into safe, scalable AI deployment."
+    },
+    {
+      "words": 35,
+      "text": "Because the three data sources use distinct classification schemes, we construct a bridging table that maps elements from each source to a common set of organizing constructs, anchored to CIO-reported constraints to AI scaling ."
+    },
+    {
+      "words": 34,
+      "text": "Trust readiness (TR) encompasses risk management, compliance, adversarial threat modeling, incident response, and stakeholder accountability, grounded in normative frameworks including NIST AI RMF , the EU AI Act , and the MITRE ATLAS adversarial threat taxonomy."
+    },
+    {
+      "words": 32,
+      "text": "We theorize these bundles as potential strategic complements , yet our evidence reveals a more fundamental problem: commercial procurement constrains the control rights needed to execute substantive safeguards even when policies demand them ."
+    }
+  ],
+  "most_complex_sentences": [
+    {
+      "complex_pct": 70.0,
+      "words": 10,
+      "text": "Governance theater therefore signals capability deficit, not merely motivational deficit."
+    },
+    {
+      "complex_pct": 61.5,
+      "words": 13,
+      "text": "Commercial procurement introduces evaluability constraints that undermine substantive governance (OR=0.43 for impact assessment)."
+    },
+    {
+      "complex_pct": 60.0,
+      "words": 10,
+      "text": "Integration readiness is the dominant predictor of operational deployment (OR=1.25)."
+    },
+    {
+      "complex_pct": 58.3,
+      "words": 12,
+      "text": "Substantive safeguards demand deep technical access, cross-functional coordination, and sustained investment."
+    },
+    {
+      "complex_pct": 58.3,
+      "words": 12,
+      "text": "Propositions and primary evidence anchors\n\n---\n\nDiscussion\n\nTR/IR complementarity: aspiration versus reality."
+    },
+    {
+      "complex_pct": 52.0,
+      "words": 25,
+      "text": "Recent IS syntheses of responsible AI governance propose integrative frameworks yet emphasize that empirical work connecting governance designs to enacted routines and outcomes remains underdeveloped ."
+    },
+    {
+      "complex_pct": 52.0,
+      "words": 25,
+      "text": "Finally, governance should be sector-calibrated rather than autonomy-calibrated, aligning safeguard priorities to empirically observed sector-specific harm fingerprints rather than generic threat models."
+    },
+    {
+      "complex_pct": 50.0,
+      "words": 12,
+      "text": "Reconfiguring entails updating those routines as threat landscapes, regulations, and portfolios evolve."
+    },
+    {
+      "complex_pct": 50.0,
+      "words": 10,
+      "text": "Partial investment yields no functional governance, echoing dynamic capabilities logic ."
+    },
+    {
+      "complex_pct": 48.4,
+      "words": 31,
+      "text": "Governance Readiness Gaps in Organizational AI Deployment: A Triangulated Analysis of Threats, Incidents, and Practice\n\nIndicate Submission Type: Full Paper\n\n---\n\nIntroduction\n\nArtificial intelligence has shifted from boardroom aspiration to organizational imperative."
+    },
+    {
+      "complex_pct": 47.2,
+      "words": 36,
+      "text": "Biometrics incidents show a disproportionate civil-rights association (EXP168, p<0.01), and federal deployment sectors do not mirror incident concentration (EXP108; +0.171), suggesting that governance programs derived from adversarial threat research may misallocate attention relative to incident reality."
+    },
+    {
+      "complex_pct": 46.7,
+      "words": 15,
+      "text": "Organizations should implement safeguard clusters as standard architecture patterns: a verification and validation bundle (assessment ?"
+    },
+    {
+      "complex_pct": 46.4,
+      "words": 28,
+      "text": "Conclusion\n\nTriangulating adversarial threat knowledge, real-world AI failures, and reported governance practices, this paper reveals a persistent governance readiness gap in a large, policy-salient deployment portfolio."
+    },
+    {
+      "complex_pct": 46.2,
+      "words": 13,
+      "text": "physical harm), showing that contemporary governance frameworks encode aspirational models not yet routinized."
+    },
+    {
+      "complex_pct": 45.5,
+      "words": 11,
+      "text": "Table 2 reports nested logistic regressions predicting operational deployment (52.4% of use cases)."
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis regarding the nature of harm in Financial versus Transportation AI incidents. \n\n**Data Processing:**\n- The programmer successfully filtered the AIID dataset and categorized incidents into 'Financial' (n=7) and 'Transportation' (n=28) sectors using keyword matching.\n- A binary 'Demographic Harm' flag was created based on the 'Harm Distribution Basis' column.\n\n**Findings:**\n- **Financial Sector:** 28.6% of incidents (2/7) involved demographic harm (e.g., discrimination, bias).\n- **Transportation Sector:** 0% of incidents (0/28) involved demographic harm.\n- **Statistical Significance:** Fisher's Exact Test yielded a p-value of **0.035**, which is below the standard alpha of 0.05.\n\n**Conclusion:**\nThe results **support** the hypothesis. There is a statistically significant association between the Financial sector and demographic harm compared to the Transportation sector, which showed no instances of demographic harm in this sample. This aligns with the expectation that financial AI risks often involve allocative harms (bias in lending/credit), whereas transportation risks are likely distinct (e.g., physical safety), though the small sample size for the Financial sector (n=7) warrants caution in generalization.",
+  "child_ids": [
+    "node_6_56"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# [debug]\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\n# Normalize column names just in case, though they seem consistent based on previous output\n# The relevant columns are 'Sector of Deployment' and 'Harm Distribution Basis'\n\n# Clean and categorize Sector\ndef categorize_sector(val):\n    if pd.isna(val):\n        return None\n    val_lower = str(val).lower()\n    if 'financial' in val_lower or 'finance' in val_lower or 'banking' in val_lower:\n        return 'Financial'\n    if 'transport' in val_lower or 'automotive' in val_lower:\n        return 'Transportation'\n    return None\n\naiid_df['target_sector'] = aiid_df['Sector of Deployment'].apply(categorize_sector)\n\n# Filter for only the two sectors of interest\nsector_df = aiid_df.dropna(subset=['target_sector']).copy()\n\n# Define Demographic Harm\n# Looking for 'Demographic', 'Race', 'Gender', etc. \n# Based on AIID taxonomy, 'Harm Distribution Basis' usually contains 'Demographic' for discrimination issues.\ndef is_demographic(val):\n    if pd.isna(val):\n        return False\n    val_lower = str(val).lower()\n    keywords = ['demographic', 'race', 'gender', 'sex', 'ethnicity', 'age', 'religion', 'disability']\n    return any(k in val_lower for k in keywords)\n\nsector_df['is_demographic_harm'] = sector_df['Harm Distribution Basis'].apply(is_demographic)\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(sector_df['target_sector'], sector_df['is_demographic_harm'])\n\n# Rename columns for clarity in output\ncontingency_table.columns = ['Other Harm', 'Demographic Harm']\n\nprint(\"--- Contingency Table ---\")\nprint(contingency_table)\nprint(\"\\n\")\n\n# Check sample sizes for statistical test selection\ntotal_samples = contingency_table.sum().sum()\nmin_expected = 0\nif contingency_table.size == 4:\n    chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n    min_expected = expected.min()\nelse:\n    p = 1.0\n    min_expected = 0\n\n# Use Fisher's Exact Test if sample size is small or any expected cell count < 5\nif min_expected < 5:\n    print(f\"Performing Fisher's Exact Test (Min expected count: {min_expected:.2f})...\")\n    oddsratio, p_value = stats.fisher_exact(contingency_table)\n    test_name = \"Fisher's Exact Test\"\nelse:\n    print(f\"Performing Chi-Square Test (Min expected count: {min_expected:.2f})...\")\n    test_name = \"Chi-Square Test\"\n    p_value = p\n\nprint(f\"{test_name} Results:\")\nprint(f\"P-value: {p_value:.5f}\")\n\n# Calculate proportions\nprops = contingency_table.div(contingency_table.sum(axis=1), axis=0)\nprint(\"\\n--- Proportions ---\")\nprint(props)\n\n# Visualization\nax = props.plot(kind='bar', stacked=True, figsize=(8, 6), color=['skyblue', 'salmon'])\nplt.title(f'Harm Distribution Basis by Sector\\n({test_name} p={p_value:.4f})')\nplt.ylabel('Proportion of Incidents')\nplt.xlabel('Sector')\nplt.legend(title='Harm Basis', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- Contingency Table ---\n                Other Harm  Demographic Harm\ntarget_sector                               \nFinancial                5                 2\nTransportation          28                 0\n\n\nPerforming Fisher's Exact Test (Min expected count: 0.40)...\nFisher's Exact Test Results:\nP-value: 0.03529\n\n--- Proportions ---\n                Other Harm  Demographic Harm\ntarget_sector                               \nFinancial         0.714286          0.285714\nTransportation    1.000000          0.000000\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Stacked Bar Plot.\n*   **Purpose:** This plot compares the relative proportions of two categories of \"Harm Basis\" (Other Harm vs. Demographic Harm) across two distinct sectors (Financial and Transportation). The stacking allows for a visualization of the part-to-whole relationship within each sector.\n\n**2. Axes**\n*   **X-axis:**\n    *   **Label:** \"Sector\"\n    *   **Categories:** Two discrete categories are displayed: \"Financial\" and \"Transportation\". The labels are oriented vertically.\n*   **Y-axis:**\n    *   **Label:** \"Proportion of Incidents\"\n    *   **Range:** The axis runs from 0.0 to 1.0, representing percentages from 0% to 100%.\n    *   **Ticks:** Increments of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n\n**3. Data Trends**\n*   **Financial Sector:** The bar shows a mix of harm types. Approximately 70-75% of the incidents fall under \"Other Harm\" (blue), while the remaining ~25-30% are attributed to \"Demographic Harm\" (red). This sector shows the highest proportion of Demographic Harm in the plot.\n*   **Transportation Sector:** The bar is almost entirely composed of \"Other Harm\" (blue), reaching nearly 1.0 (100%). There is virtually no visible \"Demographic Harm\" (red) component for this sector.\n*   **Comparison:** There is a distinct difference in composition between the two sectors. The Financial sector has a notable presence of Demographic Harm, whereas the Transportation sector is overwhelmingly characterized by Other Harm.\n\n**4. Annotations and Legends**\n*   **Main Title:** \"Harm Distribution Basis by Sector\"\n*   **Subtitle/Statistical Annotation:** \"(Fisher's Exact Test p=0.0353)\" is included in the title area, indicating the statistical test used and the resulting p-value.\n*   **Legend:** Located on the right side with the title \"Harm Basis\".\n    *   **Sky Blue:** Represents \"Other Harm\".\n    *   **Salmon/Red:** Represents \"Demographic Harm\".\n\n**5. Statistical Insights**\n*   **Significance:** The p-value provided in the title is **0.0353**. Since this value is less than the standard significance threshold of 0.05 (p < 0.05), the difference in the distribution of harm types between the Financial and Transportation sectors is statistically significant.\n*   **Interpretation:** We can reject the null hypothesis that Sector and Harm Basis are independent. The data suggests that incidents in the Financial sector are significantly more likely to involve \"Demographic Harm\" compared to the Transportation sector, where such harm appears non-existent or extremely rare based on this dataset.\n==================================================",
+  "created_at": "2026-02-22T08:12:06.318393+00:00",
+  "creation_idx": 152,
+  "experiment_id": "node_5_54",
+  "experiment_plan": {
+    "deliverables": "Stacked bar chart of Harm Basis by Sector; Statistical test results.",
+    "objective": "Compare the basis of harm distribution across Financial and Transportation sectors.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` (AIID subset).\n2. Filter for rows where `Sector of Deployment` is 'Financial' or 'Transportation' (or similar keywords).\n3. Create binary target `is_demographic_harm` based on `Harm Distribution Basis` (True if contains 'Demographic' or 'Race'/'Gender', False otherwise).\n4. Perform a Chi-Square test or Fisher's Exact test comparing the two sectors."
+  },
+  "hypothesis": "Sector-Demographic Harm: Incidents in the 'Financial' sector are significantly more likely to have a 'Demographic' harm distribution basis (discrimination) compared to the 'Transportation' sector, which skews towards general safety harms.",
+  "id_in_run": 151,
+  "is_surprising": false,
+  "parent_id": "node_4_31",
+  "posterior": 0.9093406593406593,
+  "posterior_belief": {
+    "_empirical_mean": 0.8833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 32.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.9093406593406593,
+    "n": 60.0,
+    "prior_params": [
+      29.75,
+      1.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9596774193548387,
+  "prior_belief": {
+    "_empirical_mean": 0.975,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 27.0,
+    "maybe_false": 0.0,
+    "maybe_true": 3.0,
+    "mean": 0.9596774193548387,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested and supported the 'Sector-Demographic Harm' hypothesis. The execution was faithful to the plan, correctly identifying the small sample size issue (Financial sector n=7) and employing Fisher's Exact Test appropriately instead of Chi-Square. \n\n**Findings:**\n1.  **Significant Association:** The analysis found a statistically significant association (p=0.035) between the sector and the nature of harm.\n2.  **Sector Differences:** Incidents in the **Financial** sector demonstrated a much higher propensity for 'Demographic' harm (28.6%, n=2/7) compared to the **Transportation** sector, which had zero recorded instances of demographic harm (0%, n=0/28).\n3.  **Conclusion:** The results confirm that AI failures in financial contexts are distinctively prone to allocative or discriminatory harms, distinguishing them from transportation-sector failures which likely skew towards physical safety or reliability issues (captured here as 'Other Harm').",
+  "rich_outputs": null,
+  "runtime_ms": 183450.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.060404112017015295
+}

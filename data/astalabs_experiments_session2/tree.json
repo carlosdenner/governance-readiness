@@ -1,0 +1,3474 @@
+{
+  "runid": "c685374c-9ac3-43d2-83e7-061f30f747cd",
+  "has_job_completed": false,
+  "nodes": {
+    "node_2_0": {
+      "id_in_run": 1,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_5",
+        "node_3_12"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.1339950372208436,
+      "prior": 0.9193548387096774,
+      "posterior": 0.8076923076923077,
+      "hypothesis": "Adversarial Tactic-Gap Fingerprinting: 'Evasion' tactics (AML.TA0007) correlate with 'Model Robustness' competency gaps, while 'Exfiltration' (AML.TA0"
+    },
+    "node_2_1": {
+      "id_in_run": 2,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_7",
+        "node_3_15",
+        "node_3_22"
+      ],
+      "status": "FAILED",
+      "surprise": null,
+      "prior": null,
+      "posterior": null,
+      "hypothesis": "Harm Domain Locality: The 'Physical' harm domain is almost exclusively isolated to the 'Transportation' and 'Industrial' sectors, whereas 'Psychologic"
+    },
+    "node_2_2": {
+      "id_in_run": 3,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_1",
+        "node_3_10",
+        "node_3_18"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6206896551724138,
+      "prior": 0.75,
+      "posterior": 0.23275862068965517,
+      "hypothesis": "Commercial 'Black-Box' Opacity: AI systems procured from commercial vendors (COTS) exhibit significantly lower rates of deep governance compliance (sp"
+    },
+    "node_2_3": {
+      "id_in_run": 4,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_2",
+        "node_3_9",
+        "node_3_19"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4147465437788018,
+      "prior": 0.7741935483870968,
+      "posterior": 0.42857142857142855,
+      "hypothesis": "The Technical Implementability Gap: Governance requirements related to 'Fairness' and 'Explainability' map to significantly fewer unique architectural"
+    },
+    "node_2_4": {
+      "id_in_run": 5,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_0",
+        "node_3_8",
+        "node_3_17"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.7465437788018434,
+      "prior": 0.9435483870967742,
+      "posterior": 0.32142857142857145,
+      "hypothesis": "The 'Legacy' Debt: AI systems in the 'Operation' phase are significantly less likely to have undergone Algorithmic Impact Assessments compared to syst"
+    },
+    "node_2_5": {
+      "id_in_run": 6,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_3",
+        "node_3_11",
+        "node_3_16"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3828429634881248,
+      "prior": 0.9838709677419355,
+      "posterior": 0.6648351648351648,
+      "hypothesis": "Sector-Specific Technical Failures: The 'Financial' sector is disproportionately plagued by 'Fairness/Bias' technical failures, whereas the 'Transport"
+    },
+    "node_2_6": {
+      "id_in_run": 7,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_6",
+        "node_3_13",
+        "node_3_20"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.019142148174406248,
+      "prior": 0.9758064516129032,
+      "posterior": 0.9917582417582418,
+      "hypothesis": "The Privacy-Control Gap: Among federal AI systems that explicitly process PII (Personally Identifiable Information), a significant majority fail to pr"
+    },
+    "node_2_7": {
+      "id_in_run": 8,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_4",
+        "node_3_14",
+        "node_3_21"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.1614321162708259,
+      "prior": 0.6209677419354839,
+      "posterior": 0.7554945054945055,
+      "hypothesis": "Autonomy-Harm Escalation: In real-world incidents, higher levels of AI autonomy are positively correlated with higher severity of harm (Harm Level), i"
+    },
+    "node_3_0": {
+      "id_in_run": 9,
+      "parent_id": "node_2_4",
+      "child_ids": [
+        "node_4_0",
+        "node_4_36"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.36370081531371856,
+      "prior": 0.7096774193548387,
+      "posterior": 0.4065934065934066,
+      "hypothesis": "The Autonomy-Harm Escalation: In real-world AI incidents, systems with 'High' autonomy levels are associated with a significantly higher severity of h"
+    },
+    "node_3_1": {
+      "id_in_run": 10,
+      "parent_id": "node_2_2",
+      "child_ids": [
+        "node_4_2",
+        "node_4_33"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.17227933356965622,
+      "prior": 0.782258064516129,
+      "posterior": 0.9258241758241759,
+      "hypothesis": "Vendor Transparency Gap: AI systems identified as specific 'Commercial' applications in the EO 13960 inventory are significantly less likely to grant "
+    },
+    "node_3_2": {
+      "id_in_run": 11,
+      "parent_id": "node_2_3",
+      "child_ids": [
+        "node_4_1",
+        "node_4_19",
+        "node_4_44"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.45941155618574975,
+      "prior": 0.41935483870967744,
+      "posterior": 0.8021978021978022,
+      "hypothesis": "Federal AI systems processing PII (Personally Identifiable Information) are not statistically more likely to maintain a 'Data Catalog' than non-PII sy"
+    },
+    "node_3_3": {
+      "id_in_run": 12,
+      "parent_id": "node_2_5",
+      "child_ids": [
+        "node_4_3",
+        "node_4_26",
+        "node_4_45"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4094292803970223,
+      "prior": 0.7258064516129032,
+      "posterior": 0.38461538461538464,
+      "hypothesis": "Domain-Specific Autonomy Risk: AI incidents in physical-impact sectors (e.g., Transportation, Healthcare) are associated with significantly higher rep"
+    },
+    "node_3_4": {
+      "id_in_run": 13,
+      "parent_id": "node_2_7",
+      "child_ids": [
+        "node_4_6",
+        "node_4_42",
+        "node_4_52"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.44665012406947896,
+      "prior": 0.8145161290322581,
+      "posterior": 0.4423076923076923,
+      "hypothesis": "Generative AI Vulnerability Profile: In ATLAS cases, systems identifiable as 'Generative AI' (via keywords) are significantly more prone to 'Defense E"
+    },
+    "node_3_5": {
+      "id_in_run": 14,
+      "parent_id": "node_2_0",
+      "child_ids": [
+        "node_4_4",
+        "node_4_28"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Development Stage Governance Decay: AI systems in the 'Operational' phase show lower evidence of active risk monitoring compared to systems in the 'De"
+    },
+    "node_3_6": {
+      "id_in_run": 15,
+      "parent_id": "node_2_6",
+      "child_ids": [
+        "node_4_5",
+        "node_4_32"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.663594470046083,
+      "prior": 0.8387096774193549,
+      "posterior": 0.2857142857142857,
+      "hypothesis": "The 'Legacy Governance' Gap: Federal AI systems initiated before 2020 are significantly less likely to have a recorded 'Impact Assessment' than system"
+    },
+    "node_3_7": {
+      "id_in_run": 16,
+      "parent_id": "node_2_1",
+      "child_ids": [
+        "node_4_7",
+        "node_4_43",
+        "node_4_51"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.1844026940801134,
+      "prior": 0.25806451612903225,
+      "posterior": 0.1043956043956044,
+      "hypothesis": "Harm Domain Locality: The 'Physical' harm domain is almost exclusively isolated to the 'Transportation' and 'Industrial' sectors, whereas 'Psychologic"
+    },
+    "node_4_0": {
+      "id_in_run": 17,
+      "parent_id": "node_3_0",
+      "child_ids": [
+        "node_5_19"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.19142148174406234,
+      "prior": 0.7580645161290323,
+      "posterior": 0.9175824175824175,
+      "hypothesis": "User Agency Bundle: The provision of an 'Opt-Out' mechanism is strongly correlated with the existence of an 'Appeal Process', indicating that organiza"
+    },
+    "node_3_8": {
+      "id_in_run": 18,
+      "parent_id": "node_2_4",
+      "child_ids": [
+        "node_4_9",
+        "node_4_22",
+        "node_4_48"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5406593406593406,
+      "prior": 0.75,
+      "posterior": 0.29945054945054944,
+      "hypothesis": "The Intentionality of Greed: AI incidents resulting in 'Financial' harm are significantly more likely to be intentional acts compared to incidents res"
+    },
+    "node_3_9": {
+      "id_in_run": 19,
+      "parent_id": "node_2_3",
+      "child_ids": [
+        "node_4_12",
+        "node_4_41"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.19142148174406234,
+      "prior": 0.7419354838709677,
+      "posterior": 0.5824175824175825,
+      "hypothesis": "Incidents involving Generative AI technologies result in 'Intangible' harms (e.g., bias, reputation) significantly more often than traditional Discrim"
+    },
+    "node_4_1": {
+      "id_in_run": 20,
+      "parent_id": "node_3_2",
+      "child_ids": [
+        "node_5_24",
+        "node_5_86"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Crisis Governance Regression: AI systems implemented during the COVID-19 emergency (2020-2021) exhibit statistically lower rates of 'Impact Assessment"
+    },
+    "node_3_10": {
+      "id_in_run": 21,
+      "parent_id": "node_2_2",
+      "child_ids": [
+        "node_4_10",
+        "node_4_21"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.48769939737681667,
+      "prior": 0.7580645161290323,
+      "posterior": 0.3516483516483517,
+      "hypothesis": "Malice by Sector: 'Intentional' AI incidents (malicious use) in the AIID dataset are significantly more likely to occur in the 'Defense/Security' and "
+    },
+    "node_4_2": {
+      "id_in_run": 22,
+      "parent_id": "node_3_1",
+      "child_ids": [
+        "node_5_8",
+        "node_5_28"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5359801488833746,
+      "prior": 0.6774193548387096,
+      "posterior": 0.23076923076923078,
+      "hypothesis": "The 'Sectoral Ethics' Divergence: Federal AI deployments in the 'Health' topic area are significantly more likely to implement 'Disparity Mitigation' "
+    },
+    "node_4_3": {
+      "id_in_run": 23,
+      "parent_id": "node_3_3",
+      "child_ids": [
+        "node_5_3",
+        "node_5_68"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5793690180786955,
+      "prior": 0.782258064516129,
+      "posterior": 0.29945054945054944,
+      "hypothesis": "Autonomy-Failure Correlation: High-autonomy systems (Level 3+) primarily fail due to 'Robustness' issues (e.g., environmental adaptation), whereas Low"
+    },
+    "node_3_11": {
+      "id_in_run": 24,
+      "parent_id": "node_2_5",
+      "child_ids": [
+        "node_4_8",
+        "node_4_15"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.7337823466855724,
+      "prior": 0.9274193548387096,
+      "posterior": 0.3159340659340659,
+      "hypothesis": "Legacy Gap: AI systems in the 'Operation and Maintenance' phase are significantly less likely to have a documented 'Impact Assessment' compared to sys"
+    },
+    "node_4_4": {
+      "id_in_run": 25,
+      "parent_id": "node_3_5",
+      "child_ids": [
+        "node_5_0",
+        "node_5_5",
+        "node_5_90"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6189294576391351,
+      "prior": 0.782258064516129,
+      "posterior": 0.2664835164835165,
+      "hypothesis": "Sector-Specific Justice: 'Enforcement' agencies (e.g., DHS, DOJ) have significantly lower 'Appeal Process' availability for their AI systems compared "
+    },
+    "node_3_12": {
+      "id_in_run": 26,
+      "parent_id": "node_2_0",
+      "child_ids": [
+        "node_4_11",
+        "node_4_23"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3956043956043956,
+      "prior": 0.75,
+      "posterior": 0.42032967032967034,
+      "hypothesis": "Autonomy-Failure Alignment: Incidents involving 'High Autonomy' systems are statistically correlated with 'Specification/Objective' failures, whereas "
+    },
+    "node_3_13": {
+      "id_in_run": 27,
+      "parent_id": "node_2_6",
+      "child_ids": [
+        "node_4_13",
+        "node_4_25"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4913151364764268,
+      "prior": 0.6209677419354839,
+      "posterior": 0.21153846153846154,
+      "hypothesis": "The 'Autonomy-Severity' Escalation: Incidents involving systems with 'High' autonomy levels are associated with a statistically significant increase i"
+    },
+    "node_4_5": {
+      "id_in_run": 28,
+      "parent_id": "node_3_6",
+      "child_ids": [
+        "node_5_7"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "The 'Operational Governance' Gate: AI systems in the 'Operation' stage are significantly more likely to have undergone an 'Independent Evaluation' tha"
+    },
+    "node_4_6": {
+      "id_in_run": 29,
+      "parent_id": "node_3_4",
+      "child_ids": [
+        "node_5_18"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Commercial Opacity: Government AI systems procured from commercial vendors are significantly less likely to have accessible code compared to systems d"
+    },
+    "node_3_14": {
+      "id_in_run": 30,
+      "parent_id": "node_2_7",
+      "child_ids": [
+        "node_4_16",
+        "node_4_34",
+        "node_4_47"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5797943991492378,
+      "prior": 0.7661290322580645,
+      "posterior": 0.28296703296703296,
+      "hypothesis": "Privacy Oversight Evasion: 'Law Enforcement' AI deployments containing PII are significantly more likely to bypass 'SAOP Review' (Senior Agency Offici"
+    },
+    "node_4_7": {
+      "id_in_run": 31,
+      "parent_id": "node_3_7",
+      "child_ids": [
+        "node_5_23"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.421978021978022,
+      "prior": 0.75,
+      "posterior": 0.3983516483516483,
+      "hypothesis": "The Legacy Governance Gap: Operational AI systems (Legacy) show statistically lower compliance with modern 'Equity' controls (bias mitigation, stakeho"
+    },
+    "node_3_15": {
+      "id_in_run": 32,
+      "parent_id": "node_2_1",
+      "child_ids": [
+        "node_4_17",
+        "node_4_30"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.37071960297766754,
+      "prior": 0.6935483870967742,
+      "posterior": 0.38461538461538464,
+      "hypothesis": "The Deployment-Governance Gap: AI systems listed as 'Operational' in the EO13960 inventory have lower 'Continuous Monitoring' compliance rates compare"
+    },
+    "node_4_8": {
+      "id_in_run": 33,
+      "parent_id": "node_3_11",
+      "child_ids": [
+        "node_5_16",
+        "node_5_47"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4913151364764268,
+      "prior": 0.8709677419354839,
+      "posterior": 0.46153846153846156,
+      "hypothesis": "Agency AI Culture (Build vs. Buy): Defense and Security agencies (e.g., DOD, DHS) have a significantly higher reliance on 'Custom' AI compared to Civi"
+    },
+    "node_3_16": {
+      "id_in_run": 34,
+      "parent_id": "node_2_5",
+      "child_ids": [
+        "node_4_14",
+        "node_4_38"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5806451612903226,
+      "prior": 0.7338709677419355,
+      "posterior": 0.25,
+      "hypothesis": "PII Privacy-Fairness Disconnect: The presence of PII (`29_contains_pii`) in a system is not a statistically significant predictor of the implementatio"
+    },
+    "node_3_17": {
+      "id_in_run": 35,
+      "parent_id": "node_2_4",
+      "child_ids": [
+        "node_4_37",
+        "node_4_46"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The Vendor Transparency Deficit: Government AI systems procured from commercial vendors are significantly less likely to provide code access compared "
+    },
+    "node_4_9": {
+      "id_in_run": 36,
+      "parent_id": "node_3_8",
+      "child_ids": [
+        "node_5_1",
+        "node_5_93"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Commercial AI 'Black Boxes': AI systems procured commercially (COTS) exhibit significantly lower Tier 2 Governance scores (deep safeguards like bias m"
+    },
+    "node_4_10": {
+      "id_in_run": 37,
+      "parent_id": "node_3_10",
+      "child_ids": [
+        "node_5_13",
+        "node_5_42"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4292095001772421,
+      "prior": 0.7258064516129032,
+      "posterior": 0.36813186813186816,
+      "hypothesis": "Biometric Bias Awareness: AI systems involving biometric data (e.g., Facial Recognition) have a significantly higher rate of 'Disparity Mitigation' co"
+    },
+    "node_3_18": {
+      "id_in_run": 38,
+      "parent_id": "node_2_2",
+      "child_ids": [
+        "node_4_20",
+        "node_4_27"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "Autonomy-Harm Escalation: In the AIID dataset, AI incidents involving 'High' autonomy systems (e.g., systems that act without human intervention) are "
+    },
+    "node_4_11": {
+      "id_in_run": 39,
+      "parent_id": "node_3_12",
+      "child_ids": [
+        "node_5_2",
+        "node_5_61",
+        "node_5_79"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.47685218007798647,
+      "prior": 0.6693548387096774,
+      "posterior": 0.27197802197802196,
+      "hypothesis": "Autonomy-Harm Escalation: Incidents involving 'High Autonomy' systems are statistically more likely to result in 'Critical/Severe' harm levels compare"
+    },
+    "node_5_0": {
+      "id_in_run": 40,
+      "parent_id": "node_4_4",
+      "child_ids": [
+        "node_6_1"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.21035093938319743,
+      "prior": 0.27419354838709675,
+      "posterior": 0.0989010989010989,
+      "hypothesis": "Governance 'Rust': AI systems deployed prior to the 2020 AI Executive Order (legacy systems) demonstrate significantly lower 'Governance Readiness' sc"
+    },
+    "node_3_19": {
+      "id_in_run": 41,
+      "parent_id": "node_2_3",
+      "child_ids": [
+        "node_4_18",
+        "node_4_31"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Operational AI systems (in 'O&M' stage) demonstrate significantly lower adherence to 'Monitoring' and 'Real-World Testing' requirements compared to sy"
+    },
+    "node_4_12": {
+      "id_in_run": 42,
+      "parent_id": "node_3_9",
+      "child_ids": [
+        "node_5_17",
+        "node_5_31"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.49999999999999994,
+      "prior": 0.6583333333333333,
+      "posterior": 0.24166666666666667,
+      "hypothesis": "Tactical Complexity Evolution: Recent adversarial cases (proxied by higher Case IDs) involve a significantly higher count of unique 'Techniques' per c"
+    },
+    "node_3_20": {
+      "id_in_run": 43,
+      "parent_id": "node_2_6",
+      "child_ids": [
+        "node_4_24",
+        "node_4_40"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "The 'Generative Harm' Shift: Incidents involving Generative AI technologies (e.g., LLMs, Diffusion) result in a significantly higher proportion of 'Re"
+    },
+    "node_4_13": {
+      "id_in_run": 44,
+      "parent_id": "node_3_13",
+      "child_ids": [
+        "node_5_25",
+        "node_5_38"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6316908897554059,
+      "prior": 0.7983870967741935,
+      "posterior": 0.27197802197802196,
+      "hypothesis": "The 'Paperwork-Operations' Gap: Federal agencies are significantly more likely to complete bureaucratic governance steps (e.g., 'Impact Assessments') "
+    },
+    "node_4_14": {
+      "id_in_run": 45,
+      "parent_id": "node_3_16",
+      "child_ids": [
+        "node_5_9",
+        "node_5_74"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.2998936547323644,
+      "prior": 0.6209677419354839,
+      "posterior": 0.8708791208791209,
+      "hypothesis": "Autonomy-Harm Escalation: In the AIID dataset, higher levels of system autonomy (e.g., 'Autonomy3') are statistically associated with a higher degree "
+    },
+    "node_4_15": {
+      "id_in_run": 46,
+      "parent_id": "node_3_11",
+      "child_ids": [
+        "node_5_15",
+        "node_5_77"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.40857851825593755,
+      "prior": 0.7580645161290323,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "The 'Black Box' Procurement Risk: Commercially procured AI systems in government are significantly less likely to have documented 'Disparity Mitigatio"
+    },
+    "node_4_16": {
+      "id_in_run": 47,
+      "parent_id": "node_3_14",
+      "child_ids": [
+        "node_5_82"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Vendor Transparency Gap: AI systems procured from commercial vendors are significantly less likely to grant agencies 'Code Access' compared to systems"
+    },
+    "node_3_21": {
+      "id_in_run": 48,
+      "parent_id": "node_2_7",
+      "child_ids": [
+        "node_4_35",
+        "node_4_49",
+        "node_4_50"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.1975895072669266,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9065934065934066,
+      "hypothesis": "The 'Paper Tiger' Assessment: Among agencies that conduct AI Impact Assessments, the identification of 'Adverse Impacts' is uncorrelated with the impl"
+    },
+    "node_3_22": {
+      "id_in_run": 49,
+      "parent_id": "node_2_1",
+      "child_ids": [
+        "node_4_29",
+        "node_4_39"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3956043956043956,
+      "prior": 0.75,
+      "posterior": 0.42032967032967034,
+      "hypothesis": "Regulatory Safety Buffers: Highly regulated sectors (Healthcare, Transportation) report a significantly higher ratio of 'Near-Misses' to 'Actual Harms"
+    },
+    "node_4_17": {
+      "id_in_run": 50,
+      "parent_id": "node_3_15",
+      "child_ids": [
+        "node_5_36",
+        "node_5_71"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4275079758950726,
+      "prior": 0.7903225806451613,
+      "posterior": 0.4340659340659341,
+      "hypothesis": "The 'Public-Allocative Bias': Incidents attributed to Public Sector deployers are significantly more likely to cause 'Allocative Harms' (e.g., discrim"
+    },
+    "node_4_18": {
+      "id_in_run": 51,
+      "parent_id": "node_3_19",
+      "child_ids": [
+        "node_5_6",
+        "node_5_55"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.522155264090748,
+      "prior": 0.7016129032258065,
+      "posterior": 0.2664835164835165,
+      "hypothesis": "Architectural Complexity of NIST Functions: Governance requirements mapped to the NIST 'PROTECT' function require a significantly higher density of ar"
+    },
+    "node_4_19": {
+      "id_in_run": 52,
+      "parent_id": "node_3_2",
+      "child_ids": [
+        "node_5_48",
+        "node_5_98"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.1467564693371145,
+      "prior": 0.43548387096774194,
+      "posterior": 0.3131868131868132,
+      "hypothesis": "The 'Kill Chain' Gateway: In adversarial AI attacks, the presence of 'Evasion' tactics is significantly associated with the successful execution of 'E"
+    },
+    "node_4_20": {
+      "id_in_run": 53,
+      "parent_id": "node_3_18",
+      "child_ids": [
+        "node_5_4",
+        "node_5_21"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6189294576391351,
+      "prior": 0.782258064516129,
+      "posterior": 0.2664835164835165,
+      "hypothesis": "Development Transparency Gap: Federal AI systems in the 'Implemented' or 'Operational' stage are significantly more likely to provide public 'AI Notic"
+    },
+    "node_4_21": {
+      "id_in_run": 54,
+      "parent_id": "node_3_10",
+      "child_ids": [
+        "node_5_12",
+        "node_5_60",
+        "node_5_87"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Operational Complacency: AI systems currently in the 'Operation' stage are statistically less likely to have documented 'Real World Testing' compared "
+    },
+    "node_5_1": {
+      "id_in_run": 55,
+      "parent_id": "node_4_9",
+      "child_ids": [
+        "node_6_50"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.019354838709677403,
+      "prior": 0.7661290322580645,
+      "posterior": 0.75,
+      "hypothesis": "Infrastructure as Control: AI systems hosted on 'Commercial Cloud' environments are significantly more likely to have robust 'Post-Deployment Monitori"
+    },
+    "node_4_22": {
+      "id_in_run": 56,
+      "parent_id": "node_3_8",
+      "child_ids": [
+        "node_5_39",
+        "node_5_59"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.548103509393832,
+      "prior": 0.717741935483871,
+      "posterior": 0.260989010989011,
+      "hypothesis": "Autonomy Escalates Harm: In the AIID dataset, incidents involving 'High Autonomy' systems are significantly more likely to result in 'Physical' harm c"
+    },
+    "node_4_23": {
+      "id_in_run": 57,
+      "parent_id": "node_3_12",
+      "child_ids": [
+        "node_5_14",
+        "node_5_41"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6253101736972705,
+      "prior": 0.7903225806451613,
+      "posterior": 0.2692307692307692,
+      "hypothesis": "Risk-Governance Decoupling: There is no statistically significant association between self-reported 'Impact Type' (High vs Low) and the completion of "
+    },
+    "node_5_2": {
+      "id_in_run": 58,
+      "parent_id": "node_4_11",
+      "child_ids": [
+        "node_6_0",
+        "node_6_15"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5676710386387805,
+      "prior": 0.9758064516129032,
+      "posterior": 0.5027472527472527,
+      "hypothesis": "The 'Commercial Opacity' Gap: Commercial (COTS) AI deployments in the federal government are statistically less likely to possess 'Data Documentation'"
+    },
+    "node_4_24": {
+      "id_in_run": 59,
+      "parent_id": "node_3_20",
+      "child_ids": [
+        "node_5_11",
+        "node_5_46"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5868131868131867,
+      "prior": 0.75,
+      "posterior": 0.260989010989011,
+      "hypothesis": "The 'Testing-Deployment' Decay: Operational AI systems (Stage: 'Operation and Maintenance') have significantly lower rates of documented 'Real World T"
+    },
+    "node_4_25": {
+      "id_in_run": 60,
+      "parent_id": "node_3_13",
+      "child_ids": [
+        "node_5_26",
+        "node_5_62",
+        "node_5_100"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.46834455866713925,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3516483516483517,
+      "hypothesis": "The Generative-Malice Link: Incidents involving 'Generative' AI technologies (e.g., LLMs, GANs) are significantly more likely to be caused by 'Intenti"
+    },
+    "node_4_26": {
+      "id_in_run": 61,
+      "parent_id": "node_3_3",
+      "child_ids": [
+        "node_5_29",
+        "node_5_92"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5742644452321871,
+      "prior": 0.7258064516129032,
+      "posterior": 0.24725274725274726,
+      "hypothesis": "Agency Culture Paradox: 'Defense and Security' agencies (e.g., DOD, DHS) prioritize 'System Security' controls (Authority to Operate) over 'Rights-Pre"
+    },
+    "node_5_3": {
+      "id_in_run": 62,
+      "parent_id": "node_4_3",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.1750443105281815,
+      "prior": 0.3629032258064516,
+      "posterior": 0.21703296703296704,
+      "hypothesis": "Agency Maturity Effect: 'Mature' federal agencies (defined as the top quartile by number of reported AI use cases) perform 'Independent Evaluations' o"
+    },
+    "node_5_4": {
+      "id_in_run": 63,
+      "parent_id": "node_4_20",
+      "child_ids": [
+        "node_6_19",
+        "node_6_79"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.574051754696916,
+      "prior": 0.9838709677419355,
+      "posterior": 0.5054945054945055,
+      "hypothesis": "Generative AI Incident Surge: The proportion of reported AI incidents involving 'Generative' technologies (e.g., LLMs, Diffusion) has significantly in"
+    },
+    "node_4_27": {
+      "id_in_run": 64,
+      "parent_id": "node_3_18",
+      "child_ids": [
+        "node_5_22",
+        "node_5_44"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3828429634881248,
+      "prior": 0.4838709677419355,
+      "posterior": 0.16483516483516483,
+      "hypothesis": "Adversarial Tactic Complexity: ATLAS case studies involving the 'Evasion' tactic involve a significantly higher number of distinct 'Techniques' per ca"
+    },
+    "node_4_28": {
+      "id_in_run": 65,
+      "parent_id": "node_3_5",
+      "child_ids": [
+        "node_5_30",
+        "node_5_50"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.06380716058135416,
+      "prior": 0.9193548387096774,
+      "posterior": 0.9725274725274725,
+      "hypothesis": "The 'Theory-Reality' Gap: The frequency of 'Evasion' tactics in research-oriented datasets (ATLAS) is significantly higher than the frequency of real-"
+    },
+    "node_5_5": {
+      "id_in_run": 66,
+      "parent_id": "node_4_4",
+      "child_ids": [
+        "node_6_45",
+        "node_6_54"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.19780219780219777,
+      "prior": 0.75,
+      "posterior": 0.9148351648351648,
+      "hypothesis": "Governance Bundling: Organizations that implement 'Bias Mitigation' controls are significantly more likely to also implement 'Real-world Testing', sug"
+    },
+    "node_4_29": {
+      "id_in_run": 67,
+      "parent_id": "node_3_22",
+      "child_ids": [
+        "node_5_10",
+        "node_5_51"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4849344204182914,
+      "prior": 0.8629032258064516,
+      "posterior": 0.45879120879120877,
+      "hypothesis": "Commercial AI (COTS) deployments in federal agencies are significantly less likely to possess Transparency controls (Code Access, Data Documentation) "
+    },
+    "node_4_30": {
+      "id_in_run": 68,
+      "parent_id": "node_3_15",
+      "child_ids": [
+        "node_5_37",
+        "node_5_91"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38284296348812474,
+      "prior": 0.7338709677419355,
+      "posterior": 0.41483516483516486,
+      "hypothesis": "The 'Harm-Equity Blindspot': Incidents where the 'Harm Distribution Basis' is specific to a protected class (e.g., Race, Gender) are statistically les"
+    },
+    "node_4_31": {
+      "id_in_run": 69,
+      "parent_id": "node_3_19",
+      "child_ids": [
+        "node_5_54",
+        "node_5_94"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.01956752924494859,
+      "prior": 0.25806451612903225,
+      "posterior": 0.24175824175824176,
+      "hypothesis": "Autonomy-Redress Compensatory Mechanism: High-autonomy systems are significantly more likely to have formal 'Appeal Processes' established than low-au"
+    },
+    "node_5_6": {
+      "id_in_run": 70,
+      "parent_id": "node_4_18",
+      "child_ids": [
+        "node_6_34"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.18440269408011348,
+      "prior": 0.7419354838709677,
+      "posterior": 0.8956043956043956,
+      "hypothesis": "Documentation as a Trailing Indicator: Projects in the 'Operation' stage are significantly more likely to possess 'Data Documentation' than projects i"
+    },
+    "node_4_32": {
+      "id_in_run": 71,
+      "parent_id": "node_3_6",
+      "child_ids": [
+        "node_5_34",
+        "node_5_53"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "The 'Risk-Governance' Disconnect: Federal sectors with the highest density of reported AI incidents (from AIID) do not exhibit statistically higher ra"
+    },
+    "node_5_7": {
+      "id_in_run": 72,
+      "parent_id": "node_4_5",
+      "child_ids": [
+        "node_6_2",
+        "node_6_29"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.66848635235732,
+      "prior": 0.9032258064516129,
+      "posterior": 0.34615384615384615,
+      "hypothesis": "The 'Defense' Transparency Gap: Defense and Security agencies (DOD, DHS, DOJ) are significantly less likely to provide 'Public Notice' of their AI use"
+    },
+    "node_4_33": {
+      "id_in_run": 73,
+      "parent_id": "node_3_1",
+      "child_ids": [
+        "node_5_27",
+        "node_5_73"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'Security-Safety' Decoupling: Possession of an 'Authority to Operate' (ATO), a standard security compliance marker, is not positively correlated w"
+    },
+    "node_5_8": {
+      "id_in_run": 74,
+      "parent_id": "node_4_2",
+      "child_ids": [
+        "node_6_61"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.2679900744416873,
+      "prior": 0.6612903225806451,
+      "posterior": 0.8846153846153846,
+      "hypothesis": "The 'Operational Rigor' Hypothesis: Operational AI systems ('Implemented') in the federal inventory exhibit significantly higher rates of Impact Asses"
+    },
+    "node_4_34": {
+      "id_in_run": 75,
+      "parent_id": "node_3_14",
+      "child_ids": [
+        "node_5_35",
+        "node_5_56"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Legacy Tech Debt: AI projects initiated before 2019 are significantly less likely to maintain a 'Data Catalog' than projects initiated post-2019, refl"
+    },
+    "node_4_35": {
+      "id_in_run": 76,
+      "parent_id": "node_3_21",
+      "child_ids": [
+        "node_5_43"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The 'Physical-Digital' Harm Divide: In the AIID dataset, incidents in the 'Transportation' and 'Healthcare' sectors are significantly more likely to i"
+    },
+    "node_4_36": {
+      "id_in_run": 77,
+      "parent_id": "node_3_0",
+      "child_ids": [
+        "node_5_20",
+        "node_5_65"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4147465437788018,
+      "prior": 0.7741935483870968,
+      "posterior": 0.42857142857142855,
+      "hypothesis": "The Generative Malice Gap: AI Incidents involving 'Generative' technologies (LLMs, Diffusion, GANs) are significantly more likely to be classified as "
+    },
+    "node_4_37": {
+      "id_in_run": 78,
+      "parent_id": "node_3_17",
+      "child_ids": [
+        "node_5_33"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.025522864232541662,
+      "prior": 0.967741935483871,
+      "posterior": 0.989010989010989,
+      "hypothesis": "The 'Shadow AI' Monitoring Gap: Federal AI systems that lack a formal Authority to Operate (ATO) are significantly less likely to have Post-Deployment"
+    },
+    "node_5_9": {
+      "id_in_run": 79,
+      "parent_id": "node_4_14",
+      "child_ids": [
+        "node_6_4"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.49769585253456217,
+      "prior": 0.6290322580645161,
+      "posterior": 0.21428571428571427,
+      "hypothesis": "The 'Production Gap': There is no statistically significant difference in the completion rate of AI Impact Assessments between systems in 'Use' versus"
+    },
+    "node_4_38": {
+      "id_in_run": 80,
+      "parent_id": "node_3_16",
+      "child_ids": [
+        "node_5_40",
+        "node_5_64"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.21141439205955334,
+      "prior": 0.9838709677419355,
+      "posterior": 0.8076923076923077,
+      "hypothesis": "Technology-Risk Mapping: Incidents involving 'Language' or 'Text' based AI technologies are statistically associated with 'Fairness/Bias' harms, where"
+    },
+    "node_4_39": {
+      "id_in_run": 81,
+      "parent_id": "node_3_22",
+      "child_ids": [
+        "node_5_52",
+        "node_5_80"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3445586671393123,
+      "prior": 0.43548387096774194,
+      "posterior": 0.14835164835164835,
+      "hypothesis": "The dominant 'Harm Domain' in AI incidents has shifted significantly over time: prior to 2020, 'Physical' and 'Economic' harms dominated, whereas post"
+    },
+    "node_5_10": {
+      "id_in_run": 82,
+      "parent_id": "node_4_29",
+      "child_ids": [
+        "node_6_62"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "Ownership-Monitoring Correlation: Systems developed 'In-house' are significantly more likely to have 'Continuous Monitoring' protocols than systems de"
+    },
+    "node_4_40": {
+      "id_in_run": 83,
+      "parent_id": "node_3_20",
+      "child_ids": [
+        "node_5_70",
+        "node_5_84"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.03828429634881236,
+      "prior": 0.9516129032258065,
+      "posterior": 0.9835164835164835,
+      "hypothesis": "The 'Autonomy-Physicality' Link: AI incidents involving 'High Autonomy' systems (e.g., autonomous vehicles, robots) result in 'Physical' harm at a sig"
+    },
+    "node_5_11": {
+      "id_in_run": 84,
+      "parent_id": "node_4_24",
+      "child_ids": [
+        "node_6_10"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4345267635590216,
+      "prior": 0.7741935483870968,
+      "posterior": 0.41208791208791207,
+      "hypothesis": "The 'Vendor Reliance' Trap: Commercial (COTS) AI systems in federal agencies have significantly lower rates of documented 'Impact Assessments' compare"
+    },
+    "node_5_12": {
+      "id_in_run": 85,
+      "parent_id": "node_4_21",
+      "child_ids": [
+        "node_6_14"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "The Public Scrutiny Effect: AI systems designated as 'Publicly Accessible' (providing public information or services) are significantly more likely to"
+    },
+    "node_5_13": {
+      "id_in_run": 86,
+      "parent_id": "node_4_10",
+      "child_ids": [
+        "node_6_6",
+        "node_6_44"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Lifecycle Documentation Debt: AI systems in the 'Operation/Maintenance' phase are *less* likely to have complete 'Data Documentation' compared to syst"
+    },
+    "node_6_0": {
+      "id_in_run": 87,
+      "parent_id": "node_5_2",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.006380716058135416,
+      "prior": 0.7580645161290323,
+      "posterior": 0.7527472527472527,
+      "hypothesis": "Modality-Failure Correlation: AI systems based on 'Language' technologies are statistically more likely to exhibit 'Output/Content' failures, while 'V"
+    },
+    "node_5_14": {
+      "id_in_run": 88,
+      "parent_id": "node_4_23",
+      "child_ids": [
+        "node_6_5",
+        "node_6_64"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.35795817086139664,
+      "prior": 0.6774193548387096,
+      "posterior": 0.3791208791208791,
+      "hypothesis": "Agency Risk Appetite: Security-focused agencies (DOD, DHS, DOJ) deploy a significantly higher proportion of 'Rights-Impacting' AI systems compared to "
+    },
+    "node_5_15": {
+      "id_in_run": 89,
+      "parent_id": "node_4_15",
+      "child_ids": [
+        "node_6_31"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.17227933356965622,
+      "prior": 0.782258064516129,
+      "posterior": 0.9258241758241759,
+      "hypothesis": "The 'Maturity Clustering' Effect: Governance capabilities are not isolated; federal AI systems that have achieved a security 'Authority to Operate' (A"
+    },
+    "node_5_16": {
+      "id_in_run": 90,
+      "parent_id": "node_4_8",
+      "child_ids": [
+        "node_6_11",
+        "node_6_76"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.29819213045019494,
+      "prior": 0.4435483870967742,
+      "posterior": 0.19505494505494506,
+      "hypothesis": "The 'Physicality' of Autonomy: Higher levels of system autonomy are strongly associated with 'Physical' harms, whereas lower autonomy systems are domi"
+    },
+    "node_4_41": {
+      "id_in_run": 91,
+      "parent_id": "node_3_9",
+      "child_ids": [
+        "node_5_32",
+        "node_5_72"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5934065934065934,
+      "prior": 0.75,
+      "posterior": 0.2554945054945055,
+      "hypothesis": "Rights-Impacting Compliance Paradox: AI systems explicitly classified as 'Rights-Impacting' do not show significantly higher rates of 'Independent Eva"
+    },
+    "node_5_17": {
+      "id_in_run": 92,
+      "parent_id": "node_4_12",
+      "child_ids": [
+        "node_6_49"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.46273637374860954,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3563218390804598,
+      "hypothesis": "The 'Paperwork vs. Protection' Gap: Governance requirements categorized under the NIST AI RMF 'MAP' function map to significantly fewer technical arch"
+    },
+    "node_4_42": {
+      "id_in_run": 93,
+      "parent_id": "node_3_4",
+      "child_ids": [
+        "node_5_75",
+        "node_5_88"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.2401276143211627,
+      "prior": 0.8951612903225806,
+      "posterior": 0.695054945054945,
+      "hypothesis": "ATLAS Kill Chain Clustering: In adversarial AI attacks, the tactic 'Exfiltration' is significantly more likely to co-occur with 'Collection' than with"
+    },
+    "node_5_18": {
+      "id_in_run": 94,
+      "parent_id": "node_4_6",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.18504076568592692,
+      "prior": 0.9838709677419355,
+      "posterior": 0.8296703296703297,
+      "hypothesis": "Sector-Specific Harm Fingerprints: The 'Healthcare' sector is significantly more prone to 'Physical' harm incidents compared to the 'Financial' sector"
+    },
+    "node_5_19": {
+      "id_in_run": 95,
+      "parent_id": "node_4_0",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.026160935838355125,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7637362637362637,
+      "hypothesis": "The Security-Transparency Trade-off: Agencies with 'Defense' or 'Justice' missions are significantly less likely to provide public 'Code Access' compa"
+    },
+    "node_5_20": {
+      "id_in_run": 96,
+      "parent_id": "node_4_36",
+      "child_ids": [
+        "node_6_21"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5997873094647288,
+      "prior": 0.7580645161290323,
+      "posterior": 0.25824175824175827,
+      "hypothesis": "The Vendor-Bias Blindspot: Commercial AI systems are significantly less likely to have documented 'Disparity Mitigation' evidence compared to internal"
+    },
+    "node_5_21": {
+      "id_in_run": 97,
+      "parent_id": "node_4_20",
+      "child_ids": [
+        "node_6_20"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5676710386387805,
+      "prior": 0.7258064516129032,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Sector-Harm Divergence: Incidents in the 'Public Sector' are significantly more likely to result in 'Intangible/Risk' harms compared to 'Private Secto"
+    },
+    "node_5_22": {
+      "id_in_run": 98,
+      "parent_id": "node_4_27",
+      "child_ids": [
+        "node_6_8",
+        "node_6_51"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Legacy Governance Debt: Operational AI systems (those in 'Operation and Maintenance') are significantly less likely to report compliance with newer 'D"
+    },
+    "node_4_43": {
+      "id_in_run": 99,
+      "parent_id": "node_3_7",
+      "child_ids": [
+        "node_5_69",
+        "node_5_78"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5300248138957816,
+      "prior": 0.9032258064516129,
+      "posterior": 0.46153846153846156,
+      "hypothesis": "The 'Opaque Defense' Hypothesis: Defense and Security agencies deploy a significantly higher proportion of 'High Impact' systems that lack public tran"
+    },
+    "node_5_23": {
+      "id_in_run": 100,
+      "parent_id": "node_4_7",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.047079337401918005,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7027027027027027,
+      "hypothesis": "The Adversarial Blind Spot: In ATLAS case studies, 'Exfiltration' tactics (stealing model/data) are associated with significantly fewer documented 'Mi"
+    },
+    "node_5_24": {
+      "id_in_run": 101,
+      "parent_id": "node_4_1",
+      "child_ids": [
+        "node_6_41"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "The Autonomy-Risk Escalation: Higher levels of AI autonomy are statistically associated with 'Tangible' harms (e.g., physical, financial) rather than "
+    },
+    "node_4_44": {
+      "id_in_run": 102,
+      "parent_id": "node_3_2",
+      "child_ids": [
+        "node_5_49",
+        "node_5_63"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6253101736972705,
+      "prior": 0.7903225806451613,
+      "posterior": 0.2692307692307692,
+      "hypothesis": "Vendor Opacity: Federally deployed 'Commercial' AI systems are significantly less likely to have reported 'Post-Deployment Monitoring' compared to 'Cu"
+    },
+    "node_5_25": {
+      "id_in_run": 103,
+      "parent_id": "node_4_13",
+      "child_ids": [
+        "node_6_3"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5656166982922202,
+      "prior": 0.7419354838709677,
+      "posterior": 0.27058823529411763,
+      "hypothesis": "The 'Legacy-Governance' Gap: AI systems currently in the 'Operation' phase are significantly less likely to have a completed Impact Assessment than sy"
+    },
+    "node_5_26": {
+      "id_in_run": 104,
+      "parent_id": "node_4_25",
+      "child_ids": [
+        "node_6_16"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.19780219780219777,
+      "prior": 0.75,
+      "posterior": 0.9148351648351648,
+      "hypothesis": "The Vendor-Opacity Hypothesis (Revised): AI systems developed by external 'Contractors' are significantly less likely to have accessible 'Data Documen"
+    },
+    "node_5_27": {
+      "id_in_run": 105,
+      "parent_id": "node_4_33",
+      "child_ids": [
+        "node_6_28"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "The 'Shadow AI' Deployment Gap: A statistically significant proportion of federal AI systems currently in the 'Operation' stage lack a valid Authority"
+    },
+    "node_5_28": {
+      "id_in_run": 106,
+      "parent_id": "node_4_2",
+      "child_ids": [
+        "node_6_60"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "The 'Shadow AI' Security Gap: Commercial AI procurements ('COTS') in federal agencies are significantly less likely to report a formal 'Authority to O"
+    },
+    "node_4_45": {
+      "id_in_run": 107,
+      "parent_id": "node_3_3",
+      "child_ids": [
+        "node_5_67",
+        "node_5_96"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5408720311946118,
+      "prior": 0.7419354838709677,
+      "posterior": 0.29120879120879123,
+      "hypothesis": "GenAI Governance Lag: AI use cases utilizing Generative AI or LLM technologies (identified via text keywords) have significantly lower compliance with"
+    },
+    "node_5_29": {
+      "id_in_run": 108,
+      "parent_id": "node_4_26",
+      "child_ids": [
+        "node_6_47"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.1712158808933002,
+      "prior": 0.7419354838709677,
+      "posterior": 0.8846153846153846,
+      "hypothesis": "The Risk-Investment Mismatch: There is a negative or negligible correlation between the sectors where the Government is investing (EO13960 Use Cases) "
+    },
+    "node_6_1": {
+      "id_in_run": 109,
+      "parent_id": "node_5_0",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.1782346685572492,
+      "prior": 0.7419354838709677,
+      "posterior": 0.5934065934065934,
+      "hypothesis": "The High-Impact Audit Gap: AI systems classified as 'High Impact' in the federal inventory are not significantly more likely to have undergone an 'Ind"
+    },
+    "node_5_30": {
+      "id_in_run": 110,
+      "parent_id": "node_4_28",
+      "child_ids": [
+        "node_6_12",
+        "node_6_25"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'Malicious Sector' Profile: Incidents characterized as 'Intentional Harm' (Malicious Use) are disproportionately concentrated in the 'Public Secto"
+    },
+    "node_5_31": {
+      "id_in_run": 111,
+      "parent_id": "node_4_12",
+      "child_ids": [
+        "node_6_48"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.16547323644097836,
+      "prior": 0.9758064516129032,
+      "posterior": 0.8379120879120879,
+      "hypothesis": "Sector-Based Harm Specificity: The 'Healthcare' sector is significantly more likely to experience 'Physical' harms, whereas the 'Financial' sector is "
+    },
+    "node_5_32": {
+      "id_in_run": 112,
+      "parent_id": "node_4_41",
+      "child_ids": [
+        "node_6_27"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.1595179014533854,
+      "prior": 0.7983870967741935,
+      "posterior": 0.9313186813186813,
+      "hypothesis": "Commercial Opacity: Government AI systems procured from commercial vendors are significantly less likely to have available data documentation compared"
+    },
+    "node_5_33": {
+      "id_in_run": 113,
+      "parent_id": "node_4_37",
+      "child_ids": [
+        "node_6_9",
+        "node_6_74"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6423254165189649,
+      "prior": 0.8951612903225806,
+      "posterior": 0.3598901098901099,
+      "hypothesis": "Commercial COTS AI systems in the federal inventory are significantly less likely to have undergone Independent Evaluations compared to custom-develop"
+    },
+    "node_4_46": {
+      "id_in_run": 114,
+      "parent_id": "node_3_17",
+      "child_ids": [
+        "node_5_45",
+        "node_5_76"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3688053881602268,
+      "prior": 0.5161290322580645,
+      "posterior": 0.2087912087912088,
+      "hypothesis": "The 'Public Service' Accountability Divide: Public-facing AI systems in federal agencies are significantly more likely to provide an Appeal Process co"
+    },
+    "node_6_2": {
+      "id_in_run": 115,
+      "parent_id": "node_5_7",
+      "child_ids": [
+        "node_7_3",
+        "node_7_4"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6729528535980148,
+      "prior": 0.9838709677419355,
+      "posterior": 0.4230769230769231,
+      "hypothesis": "The 'Physical' Sector Risk: Incidents in the 'Transportation' and 'Energy' sectors have a significantly higher ratio of 'Death/Injury' harms compared "
+    },
+    "node_5_34": {
+      "id_in_run": 116,
+      "parent_id": "node_4_32",
+      "child_ids": [
+        "node_6_13",
+        "node_6_65"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'High-Stakes Transparency' Gap: AI systems classified as 'Rights-Impacting' or 'Safety-Impacting' do not exhibit statistically higher rates of 'Pu"
+    },
+    "node_5_35": {
+      "id_in_run": 117,
+      "parent_id": "node_4_34",
+      "child_ids": [
+        "node_6_70"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5934065934065934,
+      "prior": 0.75,
+      "posterior": 0.2554945054945055,
+      "hypothesis": "Sectoral Bias Blindspots: Despite high stakes, 'Law Enforcement' AI deployments report significantly lower rates of 'Disparity Mitigation' compared to"
+    },
+    "node_4_47": {
+      "id_in_run": 118,
+      "parent_id": "node_3_14",
+      "child_ids": [
+        "node_5_57",
+        "node_5_81"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4024104927330734,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4065934065934066,
+      "hypothesis": "Adversarial Tech Sophistication: In ATLAS case studies, the 'Exfiltration' tactic is significantly more likely to co-occur with 'Evasion' tactics than"
+    },
+    "node_5_36": {
+      "id_in_run": 119,
+      "parent_id": "node_4_17",
+      "child_ids": [
+        "node_6_24",
+        "node_6_82"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5738390641616448,
+      "prior": 0.7419354838709677,
+      "posterior": 0.26373626373626374,
+      "hypothesis": "The 'Causal Clarity' of Physical Harm: Incidents resulting in 'Physical' harm are significantly more likely to have a specific, identified 'AI Technic"
+    },
+    "node_5_37": {
+      "id_in_run": 120,
+      "parent_id": "node_4_30",
+      "child_ids": [
+        "node_6_46"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.03828429634881236,
+      "prior": 0.7983870967741935,
+      "posterior": 0.7664835164835165,
+      "hypothesis": "The 'Generative-Harm Specificity': Incidents involving Generative AI technologies (LLMs, Diffusion) are significantly more likely to involve 'Reputati"
+    },
+    "node_6_3": {
+      "id_in_run": 121,
+      "parent_id": "node_5_25",
+      "child_ids": [
+        "node_7_8",
+        "node_7_9"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6891173342786246,
+      "prior": 0.8709677419354839,
+      "posterior": 0.2967032967032967,
+      "hypothesis": "Sectoral Autonomy Divergence: The 'Transportation' sector suffers significantly more incidents involving 'High Autonomy' systems compared to the 'Gove"
+    },
+    "node_5_38": {
+      "id_in_run": 122,
+      "parent_id": "node_4_13",
+      "child_ids": [
+        "node_6_55"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "The 'Rights-Safety' Divergence: AI systems classified as 'Rights-Impacting' are significantly more likely to implement 'Stakeholder Consultation' than"
+    },
+    "node_5_39": {
+      "id_in_run": 123,
+      "parent_id": "node_4_22",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4749379652605459,
+      "prior": 0.7419354838709677,
+      "posterior": 0.34615384615384615,
+      "hypothesis": "Transparency Begets Accountability: AI systems that provide a public 'AI Notice' are significantly more likely to also offer a formal 'Appeal Process'"
+    },
+    "node_4_48": {
+      "id_in_run": 124,
+      "parent_id": "node_3_8",
+      "child_ids": [
+        "node_5_58",
+        "node_5_85"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5170506912442395,
+      "prior": 0.8951612903225806,
+      "posterior": 0.4642857142857143,
+      "hypothesis": "Generative AI's Adversarial Profile: AIID incidents involving 'Generative' technologies are significantly more likely to match ATLAS-style adversarial"
+    },
+    "node_5_40": {
+      "id_in_run": 125,
+      "parent_id": "node_4_38",
+      "child_ids": [
+        "node_6_18"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "Autonomy-Harm Escalation: High-autonomy AI systems (e.g., 'System Selects and Acts') are disproportionately associated with 'Tangible Harms' (Physical"
+    },
+    "node_6_4": {
+      "id_in_run": 126,
+      "parent_id": "node_5_9",
+      "child_ids": [
+        "node_7_2"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Legacy Governance Debt: AI systems marked as 'Existing/Reused' have a statistically lower implementation rate of user-centric recourse controls (speci"
+    },
+    "node_6_5": {
+      "id_in_run": 127,
+      "parent_id": "node_5_14",
+      "child_ids": [
+        "node_7_0"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5997873094647288,
+      "prior": 0.7580645161290323,
+      "posterior": 0.25824175824175827,
+      "hypothesis": "The 'Legacy Debt' of Governance: AI Systems initiated prior to the issuance of EO 13960 (Year < 2021) exhibit significantly lower compliance with crit"
+    },
+    "node_5_41": {
+      "id_in_run": 128,
+      "parent_id": "node_4_23",
+      "child_ids": [
+        "node_6_7",
+        "node_6_22",
+        "node_6_73"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Policy-Practice Decoupling: There is no significant correlation between self-reported compliance with the 'Information Quality Act' (IQA) and the oper"
+    },
+    "node_6_6": {
+      "id_in_run": 129,
+      "parent_id": "node_5_13",
+      "child_ids": [
+        "node_7_6"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.7654732364409783,
+      "prior": 0.9758064516129032,
+      "posterior": 0.33791208791208793,
+      "hypothesis": "Mission Culture (Defense vs. Health): The Department of Health and Human Services (HHS) is significantly more likely to document 'Disparity Mitigation"
+    },
+    "node_5_42": {
+      "id_in_run": 130,
+      "parent_id": "node_4_10",
+      "child_ids": [
+        "node_6_40"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.40836582772066643,
+      "prior": 0.7661290322580645,
+      "posterior": 0.4258241758241758,
+      "hypothesis": "GenAI Harm Profile: Incidents involving 'Generative AI' are significantly more likely to result in 'Intangible' harms (e.g., Reputation, Bias) compare"
+    },
+    "node_4_49": {
+      "id_in_run": 131,
+      "parent_id": "node_3_21",
+      "child_ids": [
+        "node_5_66"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.40178571428571425,
+      "prior": 0.25892857142857145,
+      "posterior": 0.59375,
+      "hypothesis": "The 'Transparency-Accountability' Link: In the EO13960 dataset, use cases that make their code publicly available are significantly more likely to hav"
+    },
+    "node_5_43": {
+      "id_in_run": 132,
+      "parent_id": "node_4_35",
+      "child_ids": [
+        "node_6_67"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4594115561857498,
+      "prior": 0.5806451612903226,
+      "posterior": 0.1978021978021978,
+      "hypothesis": "The 'Deployment-Gate' Failure: There is no statistically significant difference in the rate of 'Real World Testing' between AI systems in the 'Develop"
+    },
+    "node_7_0": {
+      "id_in_run": 133,
+      "parent_id": "node_6_5",
+      "child_ids": [
+        "node_8_3"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6572137539879476,
+      "prior": 0.8306451612903226,
+      "posterior": 0.28296703296703296,
+      "hypothesis": "The 'Vendor Opacity' Effect: Commercial-off-the-shelf (COTS) AI systems acquired by federal agencies are significantly less likely to undergo 'Indepen"
+    },
+    "node_6_7": {
+      "id_in_run": 134,
+      "parent_id": "node_5_41",
+      "child_ids": [
+        "node_7_1"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.5232187167671039,
+      "prior": 0.3387096774193548,
+      "posterior": 0.7747252747252747,
+      "hypothesis": "The 'Forced Participation' Paradox: Public-facing AI services are statistically less likely to offer 'Opt-Out' mechanisms compared to internal-facing "
+    },
+    "node_6_8": {
+      "id_in_run": 135,
+      "parent_id": "node_5_22",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.06614675646933711,
+      "prior": 0.7419354838709677,
+      "posterior": 0.6868131868131868,
+      "hypothesis": "Commercial Opacity: In the EO13960 dataset, AI systems procured from 'Commercial' sources are statistically less likely to report having undergone 'In"
+    },
+    "node_5_44": {
+      "id_in_run": 136,
+      "parent_id": "node_4_27",
+      "child_ids": [
+        "node_6_52",
+        "node_6_83"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4653668911733428,
+      "prior": 0.6048387096774194,
+      "posterior": 0.21703296703296704,
+      "hypothesis": "Temporal Severity Escalation: The proportion of AI incidents classified as 'Severe' or 'Critical' in the AIID dataset has increased significantly in t"
+    },
+    "node_6_9": {
+      "id_in_run": 137,
+      "parent_id": "node_5_33",
+      "child_ids": [
+        "node_7_14"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5239829523440527,
+      "prior": 0.6810344827586207,
+      "posterior": 0.2443820224719101,
+      "hypothesis": "The Contractor Transparency Friction: AI systems developed via 'Contracting Resources' are significantly less likely to provide public 'AI Notice' com"
+    },
+    "node_5_45": {
+      "id_in_run": 138,
+      "parent_id": "node_4_46",
+      "child_ids": [
+        "node_6_30"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.27437079049982277,
+      "prior": 0.5967741935483871,
+      "posterior": 0.36813186813186816,
+      "hypothesis": "The 'Evasion' vs 'Injection' Split: Adversarial cases involving Computer Vision systems are significantly more likely to employ 'Evasion' tactics, whi"
+    },
+    "node_6_10": {
+      "id_in_run": 139,
+      "parent_id": "node_5_11",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5438496986884084,
+      "prior": 0.8790322580645161,
+      "posterior": 0.4258241758241758,
+      "hypothesis": "The 'Autonomy-Harm' Escalation: Incidents involving 'High' autonomy AI systems (e.g., autonomous vehicles, robots) result in a significantly higher pr"
+    },
+    "node_5_46": {
+      "id_in_run": 140,
+      "parent_id": "node_4_24",
+      "child_ids": [
+        "node_6_23",
+        "node_6_78"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5672456575682382,
+      "prior": 0.7419354838709677,
+      "posterior": 0.2692307692307692,
+      "hypothesis": "The 'Malice-Accident' Divergence: Intentional AI incidents (Adversarial) are significantly more likely to cause 'Economic' or 'Reputational' harm, whi"
+    },
+    "node_6_11": {
+      "id_in_run": 141,
+      "parent_id": "node_5_16",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.10664911125740625,
+      "prior": 0.7419354838709677,
+      "posterior": 0.6530612244897959,
+      "hypothesis": "Generative AI & Reputation Risk: Incidents involving 'Generative AI' technologies are significantly more likely to result in 'Reputational Harm' compa"
+    },
+    "node_5_47": {
+      "id_in_run": 142,
+      "parent_id": "node_4_8",
+      "child_ids": [
+        "node_6_77"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "Outsourced Accountability Gap: AI systems developed primarily by contractors are significantly less likely to have a documented 'Appeal Process' compa"
+    },
+    "node_5_48": {
+      "id_in_run": 143,
+      "parent_id": "node_4_19",
+      "child_ids": [
+        "node_6_75"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5806451612903226,
+      "prior": 0.9838709677419355,
+      "posterior": 0.5,
+      "hypothesis": "Sector-Specific Failure Modes: The 'Healthcare' sector is statistically overrepresented in 'Physical' harm incidents, while the 'Financial' sector is "
+    },
+    "node_5_49": {
+      "id_in_run": 144,
+      "parent_id": "node_4_44",
+      "child_ids": [
+        "node_6_17"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5672456575682382,
+      "prior": 0.7419354838709677,
+      "posterior": 0.2692307692307692,
+      "hypothesis": "The 'EU-NIST' Implementation Gap: Requirements derived from the 'EU AI Act' map to a significantly higher number of unique architectural controls per "
+    },
+    "node_6_12": {
+      "id_in_run": 145,
+      "parent_id": "node_5_30",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "Agency AI Maturity Clustering: Scientific agencies (e.g., NASA, NSF, DOE) exhibit significantly higher 'Integration Readiness' scores (composite of co"
+    },
+    "node_5_50": {
+      "id_in_run": 146,
+      "parent_id": "node_4_28",
+      "child_ids": [
+        "node_6_26",
+        "node_6_69"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'Risk-Control' Mismatch: AI systems self-designated as 'Critical' or 'High Impact' do NOT show statistically higher rates of 'Independent Evaluati"
+    },
+    "node_5_51": {
+      "id_in_run": 147,
+      "parent_id": "node_4_29",
+      "child_ids": [
+        "node_6_63"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3956043956043956,
+      "prior": 0.75,
+      "posterior": 0.42032967032967034,
+      "hypothesis": "Generative AI Incident Profile: Incidents involving 'Generative AI' technologies are disproportionately associated with 'Reputational' and 'Psychologi"
+    },
+    "node_5_52": {
+      "id_in_run": 148,
+      "parent_id": "node_4_39",
+      "child_ids": [
+        "node_6_36"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.006380716058135416,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7472527472527473,
+      "hypothesis": "Evasion-Theft Coupling: In adversarial AI attacks (ATLAS), the tactic 'Exfiltration' (Model Theft) co-occurs significantly more often with 'Evasion' a"
+    },
+    "node_6_13": {
+      "id_in_run": 149,
+      "parent_id": "node_5_34",
+      "child_ids": [
+        "node_7_10"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.7593052109181142,
+      "prior": 0.9596774193548387,
+      "posterior": 0.3269230769230769,
+      "hypothesis": "The 'Opaque Shield' of Defense: Defense and Security agencies exhibit significantly lower 'Public Transparency' rates (Public Notice) than Civilian So"
+    },
+    "node_5_53": {
+      "id_in_run": 150,
+      "parent_id": "node_4_32",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.0,
+      "prior": 0.75,
+      "posterior": 0.75,
+      "hypothesis": "The 'Agile-Monitoring' Advantage: Federal AI systems developed using 'Agile' or 'DevOps' methodologies are significantly more likely to report 'Post-D"
+    },
+    "node_5_54": {
+      "id_in_run": 151,
+      "parent_id": "node_4_31",
+      "child_ids": [
+        "node_6_56"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.060404112017015295,
+      "prior": 0.9596774193548387,
+      "posterior": 0.9093406593406593,
+      "hypothesis": "Sector-Demographic Harm: Incidents in the 'Financial' sector are significantly more likely to have a 'Demographic' harm distribution basis (discrimina"
+    },
+    "node_5_55": {
+      "id_in_run": 152,
+      "parent_id": "node_4_18",
+      "child_ids": [
+        "node_6_33"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6063311688311688,
+      "prior": 0.7410714285714286,
+      "posterior": 0.23579545454545456,
+      "hypothesis": "Autonomy-Failure Divergence: AI systems with 'High' autonomy levels are significantly more correlated with 'Robustness' failures, whereas 'Low' autono"
+    },
+    "node_5_56": {
+      "id_in_run": 153,
+      "parent_id": "node_4_34",
+      "child_ids": [
+        "node_6_71"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "The Automation Paradox: Systems classified as 'Autonomous' are significantly more likely to have 'Post-Deployment Monitoring' in place compared to 'Hu"
+    },
+    "node_5_57": {
+      "id_in_run": 154,
+      "parent_id": "node_4_47",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.1975895072669266,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9065934065934066,
+      "hypothesis": "Physical Severity Escalation: AI incidents classified under the 'Physical Safety' harm domain are associated with significantly higher severity scores"
+    },
+    "node_5_58": {
+      "id_in_run": 155,
+      "parent_id": "node_4_48",
+      "child_ids": [
+        "node_6_39"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5934065934065934,
+      "prior": 0.75,
+      "posterior": 0.2554945054945055,
+      "hypothesis": "The Sophistication of State Targets: Adversarial attacks targeting Government or Defense systems involve a significantly higher number of distinct ATL"
+    },
+    "node_5_59": {
+      "id_in_run": 156,
+      "parent_id": "node_4_22",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.15313718539524998,
+      "prior": 0.8064516129032258,
+      "posterior": 0.9340659340659341,
+      "hypothesis": "Malice is Intangible: Adversarial AI attacks (from ATLAS) are significantly less likely to result in 'Physical' harm compared to general AI failures ("
+    },
+    "node_5_60": {
+      "id_in_run": 157,
+      "parent_id": "node_4_21",
+      "child_ids": [
+        "node_6_42",
+        "node_6_58"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.772066643034385,
+      "prior": 0.9758064516129032,
+      "posterior": 0.3324175824175824,
+      "hypothesis": "Sector-Specific Opacity: AI systems deployed in 'Law Enforcement' and 'Defense' topic areas are significantly less likely to provide 'Code Access' or "
+    },
+    "node_6_14": {
+      "id_in_run": 158,
+      "parent_id": "node_5_12",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Sector Harm Fingerprints: AI incidents in the 'Financial' sector are statistically more likely to involve 'Economic' or 'Intangible' harms (e.g., disc"
+    },
+    "node_5_61": {
+      "id_in_run": 159,
+      "parent_id": "node_4_11",
+      "child_ids": [
+        "node_6_35",
+        "node_6_87"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Public-Facing Transparency Correlation: AI systems marked as 'Publicly Accessible' are statistically more likely to implement 'Opt-Out' mechanisms tha"
+    },
+    "node_6_15": {
+      "id_in_run": 160,
+      "parent_id": "node_5_2",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.22970577809287485,
+      "prior": 0.7096774193548387,
+      "posterior": 0.9010989010989011,
+      "hypothesis": "Public Accountability Gap: Federal AI systems classified as 'Public-Facing' are significantly more likely to provide an 'Appeal Process' than internal"
+    },
+    "node_5_62": {
+      "id_in_run": 161,
+      "parent_id": "node_4_25",
+      "child_ids": [
+        "node_6_85"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4075639599555061,
+      "prior": 0.7419354838709677,
+      "posterior": 0.40229885057471265,
+      "hypothesis": "The Maturity-Privacy Paradox: AI systems in the 'Operational' stage are significantly more likely to process PII (`29_contains_pii`) compared to syste"
+    },
+    "node_6_16": {
+      "id_in_run": 162,
+      "parent_id": "node_5_26",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The 'Stage-Gate' Monitoring Hypothesis: AI systems in the 'Operation/Maintenance' phase are significantly more likely to have 'Post-Deployment Monitor"
+    },
+    "node_5_63": {
+      "id_in_run": 163,
+      "parent_id": "node_4_44",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.3190358029067706,
+      "prior": 0.4032258064516129,
+      "posterior": 0.13736263736263737,
+      "hypothesis": "The 'High-Stakes' Compliance Variance: In the EO13960 inventory, systems in the 'Health' topic area are significantly more likely to report having 'Di"
+    },
+    "node_6_17": {
+      "id_in_run": 164,
+      "parent_id": "node_5_49",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The 'Threat-Reality Mismatch': The distribution of targeted sectors in adversarial research (ATLAS) differs significantly from the sectors experiencin"
+    },
+    "node_5_64": {
+      "id_in_run": 165,
+      "parent_id": "node_4_38",
+      "child_ids": [
+        "node_6_43",
+        "node_6_84"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Operational Governance Decay: AI systems in the 'Operational' lifecycle stage are significantly less likely to have a current 'Impact Assessment' comp"
+    },
+    "node_6_18": {
+      "id_in_run": 166,
+      "parent_id": "node_5_40",
+      "child_ids": [
+        "node_7_7"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6125487415809997,
+      "prior": 0.7741935483870968,
+      "posterior": 0.26373626373626374,
+      "hypothesis": "Defense and Intelligence agencies (DOD, DOJ, DHS) have a significantly lower compliance rate for 'AI Public Notice' compared to Civilian Service agenc"
+    },
+    "node_6_19": {
+      "id_in_run": 167,
+      "parent_id": "node_5_4",
+      "child_ids": [
+        "node_7_17"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "Compliance Clustering: There is a strong positive dependency between 'Impact Assessment' (Control 52) and 'AI Notice' (Control 59) in federal agencies"
+    },
+    "node_6_20": {
+      "id_in_run": 168,
+      "parent_id": "node_5_21",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Biometric Risk Profile: AI incidents involving 'Facial Recognition' or 'Biometric' technologies are significantly more likely to involve 'Civil Rights"
+    },
+    "node_5_65": {
+      "id_in_run": 169,
+      "parent_id": "node_4_36",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.006380716058135416,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7472527472527473,
+      "hypothesis": "The Security-Rights Divergence: 'Civilian' agencies (e.g., Health, Education) demonstrate significantly higher compliance with rights-preserving contr"
+    },
+    "node_6_21": {
+      "id_in_run": 170,
+      "parent_id": "node_5_20",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.006168025522864262,
+      "prior": 0.9838709677419355,
+      "posterior": 0.989010989010989,
+      "hypothesis": "Sector-Harm Fingerprints: The distribution of 'Tangible Harm' types (Physical vs. Economic vs. Intangible) in AI incidents is significantly dependent "
+    },
+    "node_4_50": {
+      "id_in_run": 171,
+      "parent_id": "node_3_21",
+      "child_ids": [
+        "node_5_95",
+        "node_5_99"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.19377085650723025,
+      "prior": 0.7419354838709677,
+      "posterior": 0.5804597701149425,
+      "hypothesis": "Adversarial Tactic Complexity: In the ATLAS dataset, cases involving the 'Impact' tactic are significantly more likely to involve a higher count of di"
+    },
+    "node_5_66": {
+      "id_in_run": 172,
+      "parent_id": "node_4_49",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The 'Risk-Based' Oversight Model: Systems classified as 'High Impact' (or having significant benefits/risks) are significantly more likely to undergo "
+    },
+    "node_5_67": {
+      "id_in_run": 173,
+      "parent_id": "node_4_45",
+      "child_ids": [
+        "node_6_68"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.05742644452321874,
+      "prior": 0.9274193548387096,
+      "posterior": 0.9752747252747253,
+      "hypothesis": "The Fairness-Safety Divergence: 'Fairness/Bias' technical failures are significantly more likely to result in 'Intangible' harms (e.g., Civil Rights, "
+    },
+    "node_5_68": {
+      "id_in_run": 174,
+      "parent_id": "node_4_3",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.18504076568592692,
+      "prior": 0.7661290322580645,
+      "posterior": 0.9203296703296703,
+      "hypothesis": "Commercial Opacity: Commercially procured AI systems (COTS) in federal agencies exhibit significantly lower transparency compliance (measured by avail"
+    },
+    "node_7_1": {
+      "id_in_run": 175,
+      "parent_id": "node_6_7",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The Assessment-Action Gap: Completing an 'Impact Assessment' does not statistically guarantee the presence of 'Disparity Mitigation' plans, indicating"
+    },
+    "node_6_22": {
+      "id_in_run": 176,
+      "parent_id": "node_5_41",
+      "child_ids": [
+        "node_7_13"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6316908897554059,
+      "prior": 0.7983870967741935,
+      "posterior": 0.27197802197802196,
+      "hypothesis": "Harm-Failure Alignment: Incidents causing 'Physical' harm are predominantly associated with 'Robustness' failures, whereas 'Civil Rights' harms are pr"
+    },
+    "node_4_51": {
+      "id_in_run": 177,
+      "parent_id": "node_3_7",
+      "child_ids": [
+        "node_5_83",
+        "node_5_97"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The Generative AI Explosion: The proportion of incidents involving 'Generative' or 'Content' technologies has grown exponentially relative to 'Robotic"
+    },
+    "node_5_69": {
+      "id_in_run": 178,
+      "parent_id": "node_4_43",
+      "child_ids": [
+        "node_6_32"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.7784473590925205,
+      "prior": 0.9838709677419355,
+      "posterior": 0.33516483516483514,
+      "hypothesis": "The 'Adversarial Mirage' Hypothesis: Despite the research focus on adversarial attacks (ATLAS), real-world AI failures (AIID) are overwhelmingly non-a"
+    },
+    "node_6_23": {
+      "id_in_run": 179,
+      "parent_id": "node_5_46",
+      "child_ids": [
+        "node_7_15"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4402694080113434,
+      "prior": 0.5564516129032258,
+      "posterior": 0.18956043956043955,
+      "hypothesis": "The 'Deployment-Privacy' Tradeoff: Operational AI systems are significantly less likely to document 'Opt-Out' mechanisms compared to systems in the 'D"
+    },
+    "node_5_70": {
+      "id_in_run": 180,
+      "parent_id": "node_4_40",
+      "child_ids": [
+        "node_6_38"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.21056362991846858,
+      "prior": 0.7338709677419355,
+      "posterior": 0.9093406593406593,
+      "hypothesis": "The 'Public-Facing' Accountability Gap: Despite higher visibility risks, AI systems designated as 'Public Service' (customer-facing) do not show stati"
+    },
+    "node_5_71": {
+      "id_in_run": 181,
+      "parent_id": "node_4_17",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.035777126099706714,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7121212121212122,
+      "hypothesis": "The 'Vendor-Governance Gap': Commercial-off-the-shelf (COTS) AI systems procured by federal agencies exhibit significantly lower compliance rates for "
+    },
+    "node_6_24": {
+      "id_in_run": 182,
+      "parent_id": "node_5_36",
+      "child_ids": [
+        "node_7_19"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5355547678128324,
+      "prior": 0.6935483870967742,
+      "posterior": 0.24725274725274726,
+      "hypothesis": "The 'Awakening' Lag: Federal AI systems initiated after 2020 show significantly higher compliance with 'Disparity Mitigation' controls compared to sys"
+    },
+    "node_6_25": {
+      "id_in_run": 183,
+      "parent_id": "node_5_30",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The Generative Shift: The proportion of AI incidents attributed to 'Generative' or 'Language Modeling' technologies has increased significantly in the"
+    },
+    "node_6_26": {
+      "id_in_run": 184,
+      "parent_id": "node_5_50",
+      "child_ids": [
+        "node_7_12"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626025,
+      "prior": 0.49193548387096775,
+      "posterior": 0.16758241758241757,
+      "hypothesis": "The 'Rights vs. Safety' Consultation Split: AI systems designated as 'Rights-Impacting' exhibit significantly higher rates of 'Stakeholder Consultatio"
+    },
+    "node_5_72": {
+      "id_in_run": 185,
+      "parent_id": "node_4_41",
+      "child_ids": [
+        "node_6_80"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.19142148174406234,
+      "prior": 0.7419354838709677,
+      "posterior": 0.5824175824175825,
+      "hypothesis": "Public Service Transparency Gap: AI systems designated as 'Public Services' are significantly more likely to implement 'AI Notice' mechanisms compared"
+    },
+    "node_6_27": {
+      "id_in_run": 186,
+      "parent_id": "node_5_32",
+      "child_ids": [
+        "node_7_18"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "Modality-Driven Malice: Incidents involving Computer Vision technologies are significantly more likely to be classified as 'Intentional' harm (e.g., s"
+    },
+    "node_6_28": {
+      "id_in_run": 187,
+      "parent_id": "node_5_27",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Sector-Specific Harm Signatures: In the AIID dataset, 'Financial' sector incidents are significantly biased towards 'Economic' harms, while 'Transport"
+    },
+    "node_5_73": {
+      "id_in_run": 188,
+      "parent_id": "node_4_33",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.06380716058135416,
+      "prior": 0.9193548387096774,
+      "posterior": 0.9725274725274725,
+      "hypothesis": "The Privacy Shield Paradox: AI systems processing Personally Identifiable Information (PII) are significantly more likely to have undergone a general "
+    },
+    "node_5_74": {
+      "id_in_run": 189,
+      "parent_id": "node_4_14",
+      "child_ids": [
+        "node_6_59"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3654023395958879,
+      "prior": 0.6451612903225806,
+      "posterior": 0.34065934065934067,
+      "hypothesis": "Defense vs. Civilian Readiness: Defense-related agencies (e.g., DOD, DHS) demonstrate significantly higher Total Governance Scores than civilian servi"
+    },
+    "node_7_2": {
+      "id_in_run": 190,
+      "parent_id": "node_6_4",
+      "child_ids": [
+        "node_8_2"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5644806806097129,
+      "prior": 0.8467741935483871,
+      "posterior": 0.37637362637362637,
+      "hypothesis": "The Transparency-Autonomy Trade-off: High-impact 'Rights-Impacting' AI systems are statistically less likely to provide public code access compared to"
+    },
+    "node_6_29": {
+      "id_in_run": 191,
+      "parent_id": "node_5_7",
+      "child_ids": [
+        "node_7_5"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5997873094647288,
+      "prior": 0.7580645161290323,
+      "posterior": 0.25824175824175827,
+      "hypothesis": "The 'Pilot' Sustainability Gap: AI systems in the 'Pilot' stage are significantly less likely to have confirmed 'Timely Resources' for maintenance tha"
+    },
+    "node_7_3": {
+      "id_in_run": 192,
+      "parent_id": "node_6_2",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "Sector-Specific Bias Risk: The 'Finance' and 'Public Administration' sectors exhibit a significantly higher ratio of 'Discrimination/Bias' incidents i"
+    },
+    "node_4_52": {
+      "id_in_run": 193,
+      "parent_id": "node_3_4",
+      "child_ids": [
+        "node_5_89"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.3958170861396668,
+      "prior": 0.7419354838709677,
+      "posterior": 0.41208791208791207,
+      "hypothesis": "Autonomy-Intent Paradox: Incidents involving 'Low Autonomy' systems are significantly more likely to be triggered by 'Intentional' malicious acts comp"
+    },
+    "node_5_75": {
+      "id_in_run": 194,
+      "parent_id": "node_4_42",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.46813186813186813,
+      "prior": 0.75,
+      "posterior": 0.3598901098901099,
+      "hypothesis": "Generative AI Attack Simplicity: Adversarial cases involving Generative AI systems utilize significantly fewer unique 'Techniques' per case compared t"
+    },
+    "node_6_30": {
+      "id_in_run": 195,
+      "parent_id": "node_5_45",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The 'Gatekeeper Effect': Systems that have undergone an agency-level Internal Review are significantly more likely to have secured a formal Authority "
+    },
+    "node_5_76": {
+      "id_in_run": 196,
+      "parent_id": "node_4_46",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5934065934065934,
+      "prior": 0.75,
+      "posterior": 0.2554945054945055,
+      "hypothesis": "The 'Siloed' Risk Management: Systems classified as 'Safety-Impacted' are significantly less likely to implement 'Disparity Mitigation' controls compa"
+    },
+    "node_6_31": {
+      "id_in_run": 197,
+      "parent_id": "node_5_15",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.16589861751152082,
+      "prior": 0.7903225806451613,
+      "posterior": 0.9285714285714286,
+      "hypothesis": "The 'Monitoring Maturity' Gap: AI systems in the 'Operational' phase are significantly more likely to have documented 'Post-Deployment Monitoring' tha"
+    },
+    "node_5_77": {
+      "id_in_run": 198,
+      "parent_id": "node_4_15",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.09415867480383615,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9054054054054054,
+      "hypothesis": "Intentionality of Failure Modes: Incidents classified as 'Intentional Harm' are significantly more likely to manifest as 'Security' or 'Privacy' failu"
+    },
+    "node_6_32": {
+      "id_in_run": 199,
+      "parent_id": "node_5_69",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'Transparency-Accountability' Decoupling: At the agency level, there is no significant positive correlation between 'Transparency' (rate of AI Not"
+    },
+    "node_5_78": {
+      "id_in_run": 200,
+      "parent_id": "node_4_43",
+      "child_ids": [
+        "node_6_37"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5934065934065934,
+      "prior": 0.75,
+      "posterior": 0.2554945054945055,
+      "hypothesis": "The 'Public Transparency' Paradox: Federal AI systems explicitly designated as 'Public Facing' are no more likely to provide 'AI Notice' to users than"
+    },
+    "node_7_4": {
+      "id_in_run": 201,
+      "parent_id": "node_6_2",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5742644452321871,
+      "prior": 0.7258064516129032,
+      "posterior": 0.24725274725274726,
+      "hypothesis": "Governance Culture - Science vs. Security: Agencies with a scientific mandate (e.g., NASA, DOE) demonstrate significantly higher 'Governance Readiness"
+    },
+    "node_7_5": {
+      "id_in_run": 202,
+      "parent_id": "node_6_29",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.18504076568592692,
+      "prior": 0.7661290322580645,
+      "posterior": 0.9203296703296703,
+      "hypothesis": "The 'Procurement' Transparency Barrier: Systems developed via external contracts are significantly less likely to have accessible 'Code Access' or tec"
+    },
+    "node_6_33": {
+      "id_in_run": 203,
+      "parent_id": "node_5_55",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Agencies with safety-critical mandates (DHS, DOT, HHS) demonstrate significantly higher adoption of 'Impact Assessments' than administrative agencies "
+    },
+    "node_6_34": {
+      "id_in_run": 204,
+      "parent_id": "node_5_6",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.01640506329113922,
+      "prior": 0.98,
+      "posterior": 0.9936708860759493,
+      "hypothesis": "AI systems procured commercially ('COTS') exhibit significantly lower compliance with 'Code Access' requirements compared to systems developed 'In-Hou"
+    },
+    "node_6_35": {
+      "id_in_run": 205,
+      "parent_id": "node_5_61",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.19163417227933363,
+      "prior": 0.9838709677419355,
+      "posterior": 0.8241758241758241,
+      "hypothesis": "Commercial AI Transparency Gap: AI systems procured commercially (COTS) by the federal government are statistically less likely to provide 'Code Acces"
+    },
+    "node_5_79": {
+      "id_in_run": 206,
+      "parent_id": "node_4_11",
+      "child_ids": [
+        "node_6_86"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.08294930875576041,
+      "prior": 0.8951612903225806,
+      "posterior": 0.9642857142857143,
+      "hypothesis": "Governance Competency Clustering: Organizations that implement 'Impact Assessments' are statistically highly likely to also implement 'Stakeholder Con"
+    },
+    "node_5_80": {
+      "id_in_run": 207,
+      "parent_id": "node_4_39",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'Rights-Compliance Paradox': Federal AI Use Cases classified as 'Rights-Impacting' (inferred from purpose text) do not show a statistically signif"
+    },
+    "node_6_36": {
+      "id_in_run": 208,
+      "parent_id": "node_5_52",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "Adversarial Complexity: In ATLAS cases, adversarial attacks that achieve the 'Impact' tactic (successful damage/disruption) utilize a significantly hi"
+    },
+    "node_5_81": {
+      "id_in_run": 209,
+      "parent_id": "node_4_47",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4375044310528181,
+      "prior": 0.6612903225806451,
+      "posterior": 0.2967032967032967,
+      "hypothesis": "Kill Chain Complexity: Adversarial attacks resulting in 'Impact' (destruction/disruption) involve a significantly higher count of distinct 'Techniques"
+    },
+    "node_5_82": {
+      "id_in_run": 210,
+      "parent_id": "node_4_16",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "Transparency-Accountability Link: Agencies that lack access to the source code of their AI systems (Code Access = No) are significantly less likely to"
+    },
+    "node_6_37": {
+      "id_in_run": 211,
+      "parent_id": "node_5_78",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.09826302729528535,
+      "prior": 0.7258064516129032,
+      "posterior": 0.8076923076923077,
+      "hypothesis": "The 'Financial Malice' Profile: The 'Financial and Insurance' sector has a significantly higher proportion of incidents labeled as 'Intentional Harm' "
+    },
+    "node_5_83": {
+      "id_in_run": 212,
+      "parent_id": "node_4_51",
+      "child_ids": [
+        "node_6_72"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5098192130450194,
+      "prior": 0.6693548387096774,
+      "posterior": 0.2445054945054945,
+      "hypothesis": "The Autonomy-Physical Risk Link: AI systems operating at 'High' or 'Full' autonomy levels are statistically more likely to result in 'Physical' harm, "
+    },
+    "node_5_84": {
+      "id_in_run": 213,
+      "parent_id": "node_4_40",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.006380716058135416,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7472527472527473,
+      "hypothesis": "The 'Assessment-Action' Link: Agencies that perform formal 'Impact Assessments' are statistically more likely to implement concrete 'Disparity Mitigat"
+    },
+    "node_6_38": {
+      "id_in_run": 214,
+      "parent_id": "node_5_70",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.2949308755760368,
+      "prior": 0.9838709677419355,
+      "posterior": 0.7380952380952381,
+      "hypothesis": "The 'Biometric Rights' Correlation: AI incidents involving Facial Recognition or Biometrics are significantly more likely to fall under the 'Civil Rig"
+    },
+    "node_5_85": {
+      "id_in_run": 215,
+      "parent_id": "node_4_48",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.39858206309819205,
+      "prior": 0.6370967741935484,
+      "posterior": 0.30494505494505497,
+      "hypothesis": "The Reality Gap: Sectors with the highest frequency of reported AI incidents (from AIID) show the lowest average Governance Readiness scores (from EO1"
+    },
+    "node_6_39": {
+      "id_in_run": 216,
+      "parent_id": "node_5_58",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.14675646933711442,
+      "prior": 0.8145161290322581,
+      "posterior": 0.9368131868131868,
+      "hypothesis": "The 'Commercial Opacity' Effect: Government AI systems acquired from commercial vendors are significantly less likely to have accessible technical doc"
+    },
+    "node_7_6": {
+      "id_in_run": 217,
+      "parent_id": "node_6_6",
+      "child_ids": [
+        "node_8_0"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5806451612903226,
+      "prior": 0.7338709677419355,
+      "posterior": 0.25,
+      "hypothesis": "Autonomy-Harm Escalation: AI incidents involving systems with 'High' autonomy are significantly more likely to result in 'Physical' tangible harm comp"
+    },
+    "node_6_40": {
+      "id_in_run": 218,
+      "parent_id": "node_5_42",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4081531371853952,
+      "prior": 0.5241935483870968,
+      "posterior": 0.18406593406593408,
+      "hypothesis": "The Autonomy-Harm Hypothesis: Fully autonomous systems are significantly more associated with 'Tangible Harm' than systems with 'Human-in-the-loop' (A"
+    },
+    "node_6_41": {
+      "id_in_run": 219,
+      "parent_id": "node_5_24",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The Legacy Gap: Systems in the 'Operations and Maintenance' stage are statistically less likely to have a completed 'Impact Assessment' than systems i"
+    },
+    "node_5_86": {
+      "id_in_run": 220,
+      "parent_id": "node_4_1",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.14037575327897903,
+      "prior": 0.8225806451612904,
+      "posterior": 0.9395604395604396,
+      "hypothesis": "Adversarial Attack Chains: In AI security incidents, the tactic 'Exfiltration' (TA0010) is statistically dependent on the presence of 'Collection' (TA"
+    },
+    "node_6_42": {
+      "id_in_run": 221,
+      "parent_id": "node_5_60",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6744416873449132,
+      "prior": 0.9274193548387096,
+      "posterior": 0.36538461538461536,
+      "hypothesis": "The Healthcare Threat Gap: The 'Healthcare' sector is significantly underrepresented in adversarial threat models (ATLAS) relative to its prevalence i"
+    },
+    "node_5_87": {
+      "id_in_run": 222,
+      "parent_id": "node_4_21",
+      "child_ids": [
+        "node_6_57",
+        "node_6_66"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5868131868131867,
+      "prior": 0.75,
+      "posterior": 0.260989010989011,
+      "hypothesis": "Adversarial Kill Chain: In the ATLAS dataset, case studies that involve 'Reconnaissance' tactics are statistically more likely to also involve 'Resour"
+    },
+    "node_6_43": {
+      "id_in_run": 223,
+      "parent_id": "node_5_64",
+      "child_ids": [
+        "node_7_21"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "Autonomy-Safety Escalation: Incidents involving 'High Autonomy' systems are significantly more likely to result in 'Physical Safety' harms compared to"
+    },
+    "node_7_7": {
+      "id_in_run": 224,
+      "parent_id": "node_6_18",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.5806451612903226,
+      "prior": 0.2661290322580645,
+      "posterior": 0.75,
+      "hypothesis": "The 'Paper Compliance' Hypothesis: Agencies that perform 'Impact Assessments' are significantly more likely to also perform 'Real-World Testing' compa"
+    },
+    "node_8_0": {
+      "id_in_run": 225,
+      "parent_id": "node_7_6",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.3381779510811768,
+      "prior": 0.6774193548387096,
+      "posterior": 0.3956043956043956,
+      "hypothesis": "The Generative Governance Gap: AI use cases involving 'Language' or 'Chat' (Text modality) are significantly less likely to have undergone an 'Impact "
+    },
+    "node_6_44": {
+      "id_in_run": 226,
+      "parent_id": "node_5_13",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5806451612903226,
+      "prior": 0.9838709677419355,
+      "posterior": 0.5,
+      "hypothesis": "Healthcare Equity vs. Transport Safety: In the AIID dataset, incidents in the 'Healthcare' sector are significantly more likely to be classified as 'D"
+    },
+    "node_5_88": {
+      "id_in_run": 227,
+      "parent_id": "node_4_42",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Commercial Obscurity: Federal AI systems procured from commercial vendors are significantly less likely to provide 'Open' code access compared to syst"
+    },
+    "node_5_89": {
+      "id_in_run": 228,
+      "parent_id": "node_4_52",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.14037575327897903,
+      "prior": 0.9274193548387096,
+      "posterior": 0.8104395604395604,
+      "hypothesis": "Adversarial Tactic-Gap Alignment: In the ATLAS dataset, attacks utilizing 'Exfiltration' tactics are predominantly associated with gaps in 'System Int"
+    },
+    "node_6_45": {
+      "id_in_run": 229,
+      "parent_id": "node_5_5",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.3696561503013116,
+      "prior": 0.7338709677419355,
+      "posterior": 0.4258241758241758,
+      "hypothesis": "Rights vs. Safety Focus: Systems classified as 'Rights-Impacting' are significantly more likely to implement 'Bias Mitigation' than 'Safety-Impacting'"
+    },
+    "node_5_90": {
+      "id_in_run": 230,
+      "parent_id": "node_4_4",
+      "child_ids": [
+        "node_6_53"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5806451612903226,
+      "prior": 0.7338709677419355,
+      "posterior": 0.25,
+      "hypothesis": "The 'High Stakes' Compliance Gap: Systems self-identified as 'High Impact' in the federal inventory do not show a statistically significant higher rat"
+    },
+    "node_6_46": {
+      "id_in_run": 231,
+      "parent_id": "node_5_37",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "The 'Evasion-Mitigation' Void: In adversarial cases (ATLAS), attacks classified as 'Evasion' involve a significantly higher number of 'Competency Gaps"
+    },
+    "node_5_91": {
+      "id_in_run": 232,
+      "parent_id": "node_4_30",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.22141935483870973,
+      "prior": 0.8145161290322581,
+      "posterior": 0.63,
+      "hypothesis": "The 'Failure Mode Determinism': 'Specification Failures' (misaligned goals) are significantly more prevalent in 'Social Media' and 'Advertising' secto"
+    },
+    "node_5_92": {
+      "id_in_run": 233,
+      "parent_id": "node_4_26",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Lifecycle Governance Decay: AI systems in the 'Operation' phase have significantly lower aggregated governance scores compared to systems in the 'Deve"
+    },
+    "node_6_47": {
+      "id_in_run": 234,
+      "parent_id": "node_5_29",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.1474654377880184,
+      "prior": 0.7419354838709677,
+      "posterior": 0.6190476190476191,
+      "hypothesis": "Technology-Driven Autonomy: AI incidents involving 'Robotics' technologies exhibit significantly higher autonomy levels than incidents involving 'Lang"
+    },
+    "node_6_48": {
+      "id_in_run": 235,
+      "parent_id": "node_5_31",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5995746189294576,
+      "prior": 0.7661290322580645,
+      "posterior": 0.2664835164835165,
+      "hypothesis": "Sector-Specific Intentionality: The 'Law Enforcement' sector is significantly more likely to report incidents classified as 'Intentional Harm' compare"
+    },
+    "node_6_49": {
+      "id_in_run": 236,
+      "parent_id": "node_5_17",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "Adversarial attacks in the ATLAS dataset that achieve the 'Impact' tactic utilize a significantly higher average number of unique 'Techniques' than at"
+    },
+    "node_6_50": {
+      "id_in_run": 237,
+      "parent_id": "node_5_1",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The 'Code Sovereignty' Gap: AI systems developed by external contractors are significantly less likely to grant government agencies full access to sou"
+    },
+    "node_5_93": {
+      "id_in_run": 238,
+      "parent_id": "node_4_9",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.00021269053527115387,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7417582417582418,
+      "hypothesis": "The 'Autonomous' Escalation: High-autonomy AI systems (e.g., those that act independently) are significantly more likely to cause 'Collective/Societal"
+    },
+    "node_6_51": {
+      "id_in_run": 239,
+      "parent_id": "node_5_22",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5793103448275863,
+      "prior": 0.75,
+      "posterior": 0.2672413793103448,
+      "hypothesis": "Assessment-Monitoring Decoupling: In federal AI deployments (EO13960), there is no significant positive correlation between performing an 'Impact Asse"
+    },
+    "node_6_52": {
+      "id_in_run": 240,
+      "parent_id": "node_5_44",
+      "child_ids": [
+        "node_7_20"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.24341170038272278,
+      "prior": 0.9274193548387096,
+      "posterior": 0.7245762711864406,
+      "hypothesis": "Sector-Specific Harm Domains: AI incidents in the 'Government' sector are disproportionately associated with 'Civil Rights' or 'Liberty' harms compare"
+    },
+    "node_6_53": {
+      "id_in_run": 241,
+      "parent_id": "node_5_90",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'Legacy Governance' Lag: AI systems implemented prior to the 2021 Executive Order show significantly lower compliance with 'Bias Mitigation' contr"
+    },
+    "node_6_54": {
+      "id_in_run": 242,
+      "parent_id": "node_5_5",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.10847217298830207,
+      "prior": 0.8629032258064516,
+      "posterior": 0.9532967032967034,
+      "hypothesis": "Sectoral Harm Fingerprints: The 'Financial' sector is disproportionately associated with 'Economic' harm incidents, whereas 'Public Sector' incidents "
+    },
+    "node_6_55": {
+      "id_in_run": 243,
+      "parent_id": "node_5_38",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'ATO-Security' Correlation: The presence of an 'Authorization to Operate' (ATO) is strongly correlated with 'Monitoring' (Integration Readiness) b"
+    },
+    "node_7_8": {
+      "id_in_run": 244,
+      "parent_id": "node_6_3",
+      "child_ids": [
+        "node_8_1"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.7395249911378944,
+      "prior": 0.9596774193548387,
+      "posterior": 0.3434065934065934,
+      "hypothesis": "The Evasion-Robustness Link: In adversarial AI cases, the use of 'Evasion' tactics is strongly predictive of a 'Model Robustness' competency gap, wher"
+    },
+    "node_8_1": {
+      "id_in_run": 245,
+      "parent_id": "node_7_8",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Commercial Opacity: Commercially acquired AI systems are significantly less likely to provide 'Code Access' for governance review compared to governme"
+    },
+    "node_7_9": {
+      "id_in_run": 246,
+      "parent_id": "node_6_3",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.48025522864232534,
+      "prior": 0.7903225806451613,
+      "posterior": 0.3901098901098901,
+      "hypothesis": "The Commercial Compliance Gap: Federal AI systems procured from Commercial sources (COTS) are significantly less likely to have completed 'Impact Asse"
+    },
+    "node_6_56": {
+      "id_in_run": 247,
+      "parent_id": "node_5_54",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Vendor Opacity: AI systems acquired from commercial vendors are significantly less likely to provide 'Code Access' compared to custom-developed system"
+    },
+    "node_5_94": {
+      "id_in_run": 248,
+      "parent_id": "node_4_31",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.16845090393477494,
+      "prior": 0.6370967741935484,
+      "posterior": 0.7774725274725275,
+      "hypothesis": "Autonomy-Severity Paradox: Higher levels of system autonomy in AI incidents correlate with higher 'Harm Severity' scores, as the removal of human over"
+    },
+    "node_6_57": {
+      "id_in_run": 249,
+      "parent_id": "node_5_87",
+      "child_ids": [
+        "node_7_11"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5804324707550513,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25824175824175827,
+      "hypothesis": "Diagnosability of Tangible Harm: AI incidents resulting in 'Tangible' harm (e.g., physical, financial) are significantly more likely to have a specifi"
+    },
+    "node_6_58": {
+      "id_in_run": 250,
+      "parent_id": "node_5_60",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.69549805033676,
+      "prior": 0.8790322580645161,
+      "posterior": 0.29945054945054944,
+      "hypothesis": "The Autonomy-Physicality Link: High-autonomy AI systems (e.g., autonomous vehicles/robots) are statistically more likely to cause 'Physical' harm, whe"
+    },
+    "node_8_2": {
+      "id_in_run": 251,
+      "parent_id": "node_7_2",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6763559021623539,
+      "prior": 0.8548387096774194,
+      "posterior": 0.29120879120879123,
+      "hypothesis": "The Biometric Bias-Mitigation Gap: Federal AI systems involving 'Facial Recognition' or 'Biometrics' report *lower* rates of specific 'Disparity Mitig"
+    },
+    "node_6_59": {
+      "id_in_run": 252,
+      "parent_id": "node_5_74",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Sector-Specific Harm Profiles: The 'Healthcare' sector is associated with a significantly higher proportion of 'Physical/Safety' harm domains compared"
+    },
+    "node_6_60": {
+      "id_in_run": 253,
+      "parent_id": "node_5_28",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5934065934065934,
+      "prior": 0.75,
+      "posterior": 0.2554945054945055,
+      "hypothesis": "The 'Legacy Governance Debt': AI systems in the 'Operation and Maintenance' stage in the EO 13960 inventory are significantly less likely to have a do"
+    },
+    "node_6_61": {
+      "id_in_run": 254,
+      "parent_id": "node_5_8",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.1254874158099965,
+      "prior": 0.7419354838709677,
+      "posterior": 0.6373626373626373,
+      "hypothesis": "The 'Public-Facing' Commercial Gap: AI systems providing a direct 'Public Service' are significantly less likely to be 'Commercial' (COTS) products co"
+    },
+    "node_6_62": {
+      "id_in_run": 255,
+      "parent_id": "node_5_10",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.0,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7419354838709677,
+      "hypothesis": "The Autonomy-Severity Paradox: In the AI Incident Database, incidents involving 'High Autonomy' systems are significantly more likely to result in 'Ph"
+    },
+    "node_6_63": {
+      "id_in_run": 256,
+      "parent_id": "node_5_51",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Risk-Control Misalignment: In federal AI deployments, systems self-classified as 'High Impact' are not statistically more likely to possess 'Independe"
+    },
+    "node_6_64": {
+      "id_in_run": 257,
+      "parent_id": "node_5_14",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.22460120524636662,
+      "prior": 0.9838709677419355,
+      "posterior": 0.7967032967032966,
+      "hypothesis": "The Vendor 'Black Box' Paradox: Government use cases relying on 'Commercial' AI are statistically less likely to possess 'Code Access' or perform 'Imp"
+    },
+    "node_8_3": {
+      "id_in_run": 258,
+      "parent_id": "node_7_0",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5408720311946118,
+      "prior": 0.7419354838709677,
+      "posterior": 0.29120879120879123,
+      "hypothesis": "The 'Adversarial Governance Gap' Hypothesis: Adversarial AI attacks (ATLAS cases) are significantly more likely to exploit gaps in 'Trust Readiness' ("
+    },
+    "node_6_65": {
+      "id_in_run": 259,
+      "parent_id": "node_5_34",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4094292803970223,
+      "prior": 0.7258064516129032,
+      "posterior": 0.38461538461538464,
+      "hypothesis": "The 'Automation-Overconfidence' Paradox: Systems flagged as fully 'Autonomous' in the federal inventory are significantly less likely to have 'Key Ris"
+    },
+    "node_7_10": {
+      "id_in_run": 260,
+      "parent_id": "node_6_13",
+      "child_ids": [],
+      "status": "FAILED",
+      "surprise": null,
+      "prior": null,
+      "posterior": null,
+      "hypothesis": "The 'Generative' Harm Shift: Incidents involving Generative AI technologies are statistically more likely to manifest as 'Reputational' or 'Psychologi"
+    },
+    "node_7_11": {
+      "id_in_run": 261,
+      "parent_id": "node_6_57",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "Control Clustering: The governance controls 'Real World Testing' and 'Independent Evaluation' are positively correlated, suggesting they form a cohere"
+    },
+    "node_6_66": {
+      "id_in_run": 262,
+      "parent_id": "node_5_87",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.025522864232541662,
+      "prior": 0.782258064516129,
+      "posterior": 0.760989010989011,
+      "hypothesis": "Generative Sector Bias: 'Generative AI' incidents in the AIID dataset are disproportionately concentrated in the 'Technology' and 'Information' sector"
+    },
+    "node_6_67": {
+      "id_in_run": 263,
+      "parent_id": "node_5_43",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5509492444788842,
+      "prior": 0.6810344827586207,
+      "posterior": 0.22191011235955055,
+      "hypothesis": "The 'Missing Mitigation' Cluster: In the incident coding dataset, 'Evasion' tactics are associated with a significantly higher count of 'Competency Ga"
+    },
+    "node_5_95": {
+      "id_in_run": 264,
+      "parent_id": "node_4_50",
+      "child_ids": [
+        "node_6_81"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.43431407302375036,
+      "prior": 0.782258064516129,
+      "posterior": 0.42032967032967034,
+      "hypothesis": "Autonomy-Intent Inversion: Incidents involving 'Intentional' harm (malicious use) are strongly associated with lower levels of AI autonomy, whereas 'U"
+    },
+    "node_5_96": {
+      "id_in_run": 265,
+      "parent_id": "node_4_45",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.11999999999999997,
+      "prior": 0.75,
+      "posterior": 0.85,
+      "hypothesis": "Data Governance Cascade: The presence of a 'Data Catalog' (Q31) is a strong predictor for the presence of 'Data Documentation' (Q34), indicating these"
+    },
+    "node_6_68": {
+      "id_in_run": 266,
+      "parent_id": "node_5_67",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5676710386387805,
+      "prior": 0.7258064516129032,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "Defense vs Civilian Transparency: Defense and Security agencies are significantly less likely to report having an 'Appeal Process' (Q65) for their AI "
+    },
+    "node_7_12": {
+      "id_in_run": 267,
+      "parent_id": "node_6_26",
+      "child_ids": [
+        "node_8_4"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The 'Autonomy-Harm' Escalation: AI systems with 'High' autonomy levels are significantly more likely to be associated with 'Tangible Harm' (Physical i"
+    },
+    "node_6_69": {
+      "id_in_run": 268,
+      "parent_id": "node_5_50",
+      "child_ids": [
+        "node_7_16"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.54236086494151,
+      "prior": 0.6854838709677419,
+      "posterior": 0.23351648351648352,
+      "hypothesis": "The 'Post-EO' Compliance Bump: AI systems initiated after the issuance of Executive Order 13960 (December 2020) demonstrate statistically higher adher"
+    },
+    "node_6_70": {
+      "id_in_run": 269,
+      "parent_id": "node_5_35",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4287841191066997,
+      "prior": 0.7419354838709677,
+      "posterior": 0.38461538461538464,
+      "hypothesis": "Adversarial Kill-Chain Complexity: Adversarial attacks classified as 'Exfiltration' (Model Stealing/Inversion) involve a significantly higher number o"
+    },
+    "node_6_71": {
+      "id_in_run": 270,
+      "parent_id": "node_5_56",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.20666666666666658,
+      "prior": 0.7416666666666667,
+      "posterior": 0.9138888888888889,
+      "hypothesis": "The Fairness Blindspot: Systems classified strictly as 'Safety-Impacting' are significantly less likely to undergo 'Disparity/Bias Mitigation' compare"
+    },
+    "node_6_72": {
+      "id_in_run": 271,
+      "parent_id": "node_5_83",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.019142148174406248,
+      "prior": 0.9758064516129032,
+      "posterior": 0.9917582417582418,
+      "hypothesis": "The 'Physicality' of Failure Severity: Incidents involving 'Robotics' or 'Autonomous Vehicles' have a significantly higher 'Harm Severity Score' (deri"
+    },
+    "node_5_97": {
+      "id_in_run": 272,
+      "parent_id": "node_4_51",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.587025877348458,
+      "prior": 0.7419354838709677,
+      "posterior": 0.25274725274725274,
+      "hypothesis": "The Justice Sector Transparency Deficit: Agencies in the 'Law Enforcement' and 'Justice' topic areas are statistically less likely to implement 'Publi"
+    },
+    "node_6_73": {
+      "id_in_run": 273,
+      "parent_id": "node_5_41",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.030202056008507647,
+      "prior": 0.3548387096774194,
+      "posterior": 0.32967032967032966,
+      "hypothesis": "Intentionality vs. Severity: Incidents involving 'Intentional Harm' (Malicious Use) result in statistically higher 'AI Harm Levels' than incidents cau"
+    },
+    "node_7_13": {
+      "id_in_run": 274,
+      "parent_id": "node_6_22",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.7322935129386742,
+      "prior": 0.9838709677419355,
+      "posterior": 0.37362637362637363,
+      "hypothesis": "Surveillance Secrecy: AI use cases categorized under 'Law Enforcement' or 'National Security' are significantly less likely to provide 'Public Notice'"
+    },
+    "node_6_74": {
+      "id_in_run": 275,
+      "parent_id": "node_5_33",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.23183268344558663,
+      "prior": 0.7096774193548387,
+      "posterior": 0.5164835164835165,
+      "hypothesis": "Sector-Specific Failure Modes: The 'Healthcare' sector is significantly more likely to experience 'Unsafe System Behavior' failures compared to the 'G"
+    },
+    "node_7_14": {
+      "id_in_run": 276,
+      "parent_id": "node_6_9",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.20418291386033316,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9120879120879121,
+      "hypothesis": "Operational AI systems (in 'O&M' stage) are significantly less likely to comply with 'AI Notice' requirements compared to systems in 'Implementation' "
+    },
+    "node_5_98": {
+      "id_in_run": 277,
+      "parent_id": "node_4_19",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5208791208791209,
+      "prior": 0.75,
+      "posterior": 0.3159340659340659,
+      "hypothesis": "In real-world AI incidents, higher levels of system autonomy (High) are significantly associated with 'Physical' harm domains, whereas lower autonomy "
+    },
+    "node_6_75": {
+      "id_in_run": 278,
+      "parent_id": "node_5_48",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.2370054777845405,
+      "prior": 0.9758064516129032,
+      "posterior": 0.7783018867924528,
+      "hypothesis": "Sector-Blind Security: The distribution of victim sectors in real-world AI incidents (AIID) differs significantly from the target sectors in adversari"
+    },
+    "node_6_76": {
+      "id_in_run": 279,
+      "parent_id": "node_5_16",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5995746189294576,
+      "prior": 0.7661290322580645,
+      "posterior": 0.2664835164835165,
+      "hypothesis": "Public Sector Intentionality: Incidents arising from 'Public Sector' deployments are significantly more likely to be classified as 'Intentional Harm' "
+    },
+    "node_6_77": {
+      "id_in_run": 280,
+      "parent_id": "node_5_47",
+      "child_ids": [],
+      "status": "FAILED",
+      "surprise": null,
+      "prior": null,
+      "posterior": null,
+      "hypothesis": "Sector-Specific Harm Profiles: The 'Healthcare' sector is significantly more likely to experience 'Physical' harm incidents, whereas the 'Financial' s"
+    },
+    "node_7_15": {
+      "id_in_run": 281,
+      "parent_id": "node_6_23",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.38922367954626014,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4175824175824176,
+      "hypothesis": "The 'Tactic-Gap' Fingerprint: In incident coding, adversarial 'Exfiltration' tactics are significantly more likely to be mapped to 'Access Control' co"
+    },
+    "node_6_78": {
+      "id_in_run": 282,
+      "parent_id": "node_5_46",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.17206664303438493,
+      "prior": 0.7741935483870968,
+      "posterior": 0.9175824175824175,
+      "hypothesis": "The 'Risk-Governance' Decoupling: 'High-Stakes' Use Cases (Law Enforcement, National Security) do not have significantly higher rates of documented 'I"
+    },
+    "node_7_16": {
+      "id_in_run": 283,
+      "parent_id": "node_6_69",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5013115916341723,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3241758241758242,
+      "hypothesis": "The 'Autonomy-Harm' Escalation: Incidents involving 'High' autonomy systems (e.g., autonomous vehicles, robots) are statistically more likely to resul"
+    },
+    "node_8_4": {
+      "id_in_run": 284,
+      "parent_id": "node_7_12",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.19780219780219777,
+      "prior": 0.75,
+      "posterior": 0.9148351648351648,
+      "hypothesis": "The 'Commercial Opacity' Effect: AI systems procured from commercial vendors ('Commercial COTS') exhibit significantly lower rates of data documentati"
+    },
+    "node_7_17": {
+      "id_in_run": 285,
+      "parent_id": "node_6_19",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5678837291740517,
+      "prior": 0.717741935483871,
+      "posterior": 0.2445054945054945,
+      "hypothesis": "Adversarial Complexity: ATLAS case studies involving 'Generative' AI (LLMs, Chatbots) involve a significantly higher count of unique 'Techniques' per "
+    },
+    "node_6_79": {
+      "id_in_run": 286,
+      "parent_id": "node_5_4",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.3956043956043956,
+      "prior": 0.5,
+      "posterior": 0.17032967032967034,
+      "hypothesis": "GenAI Attack Surface: Adversarial cases in ATLAS involving 'Generative' AI technologies exhibit a significantly higher number of distinct attack 'Tact"
+    },
+    "node_6_80": {
+      "id_in_run": 287,
+      "parent_id": "node_5_72",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.1528637261356156,
+      "prior": 0.8467741935483871,
+      "posterior": 0.7193877551020408,
+      "hypothesis": "The Robustness Gap: Adversarial AI incidents exploit 'System Safety' competency gaps significantly more frequently than 'Privacy' gaps."
+    },
+    "node_7_18": {
+      "id_in_run": 288,
+      "parent_id": "node_6_27",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.521091811414392,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3076923076923077,
+      "hypothesis": "Retirement Risk: Retired or Decommissioned AI systems are significantly more likely to have been 'Rights-Impacting' compared to currently Active syste"
+    },
+    "node_6_81": {
+      "id_in_run": 289,
+      "parent_id": "node_5_95",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.019142148174406248,
+      "prior": 0.9758064516129032,
+      "posterior": 0.9917582417582418,
+      "hypothesis": "Government AI systems involving 'Biometric' or 'Facial Recognition' technologies are significantly more likely to report active 'Disparity Mitigation'"
+    },
+    "node_5_99": {
+      "id_in_run": 290,
+      "parent_id": "node_4_50",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.19142148174406234,
+      "prior": 0.7580645161290323,
+      "posterior": 0.9175824175824175,
+      "hypothesis": "The Safety-Governance Gap: AI systems deployed in safety-critical agencies (Health, Energy, Transportation, Homeland Security) do not demonstrate a st"
+    },
+    "node_6_82": {
+      "id_in_run": 291,
+      "parent_id": "node_5_36",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.19142148174406234,
+      "prior": 0.7580645161290323,
+      "posterior": 0.9175824175824175,
+      "hypothesis": "The 'Vendor-Reliance' Opacity: Commercial-Off-The-Shelf (COTS) AI systems in the federal inventory have significantly lower compliance with 'Data Docu"
+    },
+    "node_7_19": {
+      "id_in_run": 292,
+      "parent_id": "node_6_24",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.03317972350230414,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7142857142857143,
+      "hypothesis": "The 'Sector-Tech' Specificity: 'Healthcare' sector incidents are predominantly driven by 'Computer Vision' failures, whereas 'Financial' sector incide"
+    },
+    "node_6_83": {
+      "id_in_run": 293,
+      "parent_id": "node_5_44",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "Commercial Opacity: In federal AI deployments (EO 13960), systems procured from commercial vendors are statistically less likely to grant government a"
+    },
+    "node_7_20": {
+      "id_in_run": 294,
+      "parent_id": "node_6_52",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.3828429634881248,
+      "prior": 0.4838709677419355,
+      "posterior": 0.16483516483516483,
+      "hypothesis": "Agencies with high 'Basic Control' (Tier 1) scores also demonstrate greater transparency by having significantly higher rates of public code access."
+    },
+    "node_7_21": {
+      "id_in_run": 295,
+      "parent_id": "node_6_43",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.31669620701878765,
+      "prior": 0.7419354838709677,
+      "posterior": 0.47802197802197804,
+      "hypothesis": "Malice and Monetization: Incidents classified as 'Intentional Harm' are significantly more likely to result in 'Economic/Financial' or 'Privacy' harms"
+    },
+    "node_6_84": {
+      "id_in_run": 296,
+      "parent_id": "node_5_64",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.3824175824175824,
+      "prior": 0.75,
+      "posterior": 0.43131868131868134,
+      "hypothesis": "ATLAS Tactic-Gap Fingerprinting: In adversarial cases, 'Evasion' tactics are significantly associated with gaps in 'Robustness' competencies, distinct"
+    },
+    "node_5_100": {
+      "id_in_run": 297,
+      "parent_id": "node_4_25",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.2998936547323644,
+      "prior": 0.3790322580645161,
+      "posterior": 0.12912087912087913,
+      "hypothesis": "The Governance-Silo Hypothesis: There is no statistically significant correlation between having an 'Impact Assessment' and undergoing 'Independent Ev"
+    },
+    "node_6_85": {
+      "id_in_run": 298,
+      "parent_id": "node_5_62",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4024104927330734,
+      "prior": 0.7419354838709677,
+      "posterior": 0.4065934065934066,
+      "hypothesis": "The 'Physical-Impact' Link (ATLAS - Revised): Adversarial attacks in 'Physical' sectors (inferred from case descriptions) are significantly more likel"
+    },
+    "node_6_86": {
+      "id_in_run": 299,
+      "parent_id": "node_5_79",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.012761432116270831,
+      "prior": 0.9838709677419355,
+      "posterior": 0.9945054945054945,
+      "hypothesis": "The Vendor Opacity Effect: AI systems procured from commercial vendors (COTS) exhibit statistically significantly lower levels of 'Code Access' and 'D"
+    },
+    "node_6_87": {
+      "id_in_run": 300,
+      "parent_id": "node_5_61",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.019780219780219776,
+      "prior": 0.5,
+      "posterior": 0.4835164835164835,
+      "hypothesis": "Harm-Autonomy Decoupling: While overall severity may not differ, 'High Autonomy' systems are statistically more likely to cause 'Physical' harm, where"
+    }
+  }
+}

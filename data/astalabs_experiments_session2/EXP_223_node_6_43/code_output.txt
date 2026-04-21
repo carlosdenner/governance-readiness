@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+AIID Incidents loaded: 1362 rows
+Using Autonomy Column: Autonomy Level
+Using Text/Context Columns for Harm classification: ['description', 'title', 'summary', 'Alleged harmed or nearly harmed parties', 'Harm Domain', 'Tangible Harm', 'AI Harm Level', 'Harm Distribution Basis', 'Special Interest Intangible Harm', 'Intentional Harm', 'harm_type', 'primary_harm_types']
+
+Rows mapped and ready for analysis: 78
+Sample of mapped data:
+     Autonomy_Bin    Harm_Bin
+1758          Low    Physical
+1759          Low    Physical
+1760          Low  Intangible
+1761         High    Physical
+1762          Low  Intangible
+
+--- Contingency Table ---
+Harm_Bin      Intangible  Physical
+Autonomy_Bin                      
+High                  18         3
+Low                   35        22
+
+Chi-Square Statistic: 3.1231
+P-value: 0.0772
+Result: NOT statistically significant (p >= 0.05).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Plot (or Clustered Bar Chart).
+*   **Purpose:** This plot compares the frequency of "Incident Counts" across two categorical variables: "Autonomy Level" (High vs. Low) and "Harm Type" (Intangible vs. Physical). Grouping the bars allows for direct comparison of harm types within each autonomy level, as well as comparing across levels.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Categories:** Two discrete categories labeled "High" and "Low". The labels are oriented vertically.
+*   **Y-axis:**
+    *   **Title:** "Incident Count"
+    *   **Range:** The axis ranges from 0 to 35, with major grid/tick marks at intervals of 5.
+    *   **Units:** Integer count (number of incidents).
+
+### 3. Data Trends
+*   **Tallest and Shortest Bars:**
+    *   The **tallest bar** represents "Intangible" harm in the "Low" autonomy category, with a count of approximately **35**.
+    *   The **shortest bar** represents "Physical" harm in the "High" autonomy category, with a count of approximately **3**.
+*   **Intangible vs. Physical Harm:**
+    *   Across both autonomy levels, "Intangible" harm (blue bars) is consistently higher than "Physical" harm (orange bars).
+*   **Autonomy Level Comparison:**
+    *   **Low Autonomy:** Shows a significantly higher volume of total incidents compared to High Autonomy. The Intangible count is at the maximum of the scale (35), and Physical harm is substantial (approx. 22).
+    *   **High Autonomy:** Shows fewer total incidents. While Intangible harm is moderate (approx. 18), Physical harm is nearly negligible (approx. 3).
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Harm Type by Autonomy Level" centered at the top.
+*   **Legend:** Located in the top right corner.
+    *   **Title:** "Harm Type"
+    *   **Keys:**
+        *   **Blue:** Represents "Intangible" harm.
+        *   **Orange:** Represents "Physical" harm.
+
+### 5. Statistical Insights
+*   **Prevalence of Intangible Harm:** Regardless of the system's autonomy level, incidents resulting in intangible harm are the dominant failure mode in this dataset.
+*   **Safety Correlation with Autonomy:** There appears to be an inverse relationship between autonomy level and incident frequency. The "High" autonomy group is associated with fewer incidents overall (roughly 21 total) compared to the "Low" autonomy group (roughly 57 total). This could suggest that higher autonomy systems in this context are safer or perform better.
+*   **Physical Safety Disparity:** The reduction in physical harm is particularly drastic when moving from Low to High autonomy. Physical incidents drop from ~22 in the Low setting to just ~3 in the High setting. This suggests high autonomy systems are particularly effective at mitigating physical risks compared to their lower autonomy counterparts.
+==================================================

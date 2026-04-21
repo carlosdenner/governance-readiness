@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis regarding the prevalence of 'Human-in-the-Loop Approval Gates'. The analysis revealed that this architecture control is present in 13.0% (3/23) of 'Integration Readiness' requirements but is completely absent (0/19) in 'Trust Readiness' requirements. This finding directly contradicts the hypothesis, which predicted a higher prevalence in Trust competencies. Furthermore, the Fisher's Exact Test yielded a p-value of 0.2387, indicating that the observed difference is not statistically significant. Therefore, the hypothesis is rejected on both directional and statistical grounds.",
+  "child_ids": [
+    "node_4_3",
+    "node_4_6"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport sys\n\n# Load dataset\ntry:\n    df = pd.read_csv('../step2_crosswalk_matrix.csv')\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('step2_crosswalk_matrix.csv')\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        sys.exit(1)\n\n# Define target column and bundle column\ncontrol_col = 'Human-in-the-Loop Approval Gates'\nbundle_col = 'bundle'\n\n# Preprocess: Convert 'X' to 1, others to 0\ndf['has_control'] = df[control_col].apply(lambda x: 1 if str(x).strip().upper() == 'X' else 0)\n\n# Generate Contingency Table\n# We ensure all possible values (0 and 1) are present for both bundles to ensure a 2x2 matrix\ncontingency = pd.crosstab(df[bundle_col], df['has_control'])\n\n# Ensure columns 0 and 1 exist (in case one is missing entirely from the dataset)\nif 0 not in contingency.columns:\n    contingency[0] = 0\nif 1 not in contingency.columns:\n    contingency[1] = 0\n    \n# Sort columns to be [0, 1] for consistent interpretation: 0=Absent, 1=Present\ncontingency = contingency[[0, 1]]\n\nprint(\"=== Contingency Table (Rows=Bundle, Cols=Control Presence) ===\")\nprint(contingency)\nprint(\"\\n\")\n\n# Calculate percentages for reporting\nbundle_stats = df.groupby(bundle_col)['has_control'].agg(['count', 'sum', 'mean'])\nbundle_stats['percentage'] = bundle_stats['mean'] * 100\nprint(\"=== Descriptive Statistics ===\")\nprint(bundle_stats)\nprint(\"\\n\")\n\n# Perform Fisher's Exact Test\n# Fisher's is chosen over Chi-square due to small sample size (N=42)\n# The contingency table index usually sorts alphabetically: Integration, Trust.\n# We need to pass the 2x2 matrix.\ntry:\n    odds_ratio, p_value = stats.fisher_exact(contingency)\n    print(\"=== Fisher's Exact Test Results ===\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\n    print(f\"P-value: {p_value:.4f}\")\n    \n    alpha = 0.05\n    if p_value < alpha:\n        print(f\"Result: Statistically Significant (p < {alpha})\")\n    else:\n        print(f\"Result: Not Statistically Significant (p >= {alpha})\")\nexcept Exception as e:\n    print(f\"Error performing statistical test: {e}\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\ncolors = ['skyblue' if b == 'Integration Readiness' else 'salmon' for b in bundle_stats.index]\nbars = plt.bar(bundle_stats.index, bundle_stats['percentage'], color=colors, edgecolor='black')\n\nplt.title(f\"Prevalence of '{control_col}' by Bundle\")\nplt.ylabel('Percentage of Requirements with Control (%)')\nplt.xlabel('Competency Bundle')\nplt.ylim(0, 100)\n\n# Add value labels\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 1,\n             f'{height:.1f}%',\n             ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: === Contingency Table (Rows=Bundle, Cols=Control Presence) ===\nhas_control             0  1\nbundle                      \nIntegration Readiness  20  3\nTrust Readiness        19  0\n\n\n=== Descriptive Statistics ===\n                       count  sum      mean  percentage\nbundle                                                 \nIntegration Readiness     23    3  0.130435   13.043478\nTrust Readiness           19    0  0.000000    0.000000\n\n\n=== Fisher's Exact Test Results ===\nOdds Ratio: 0.0000\nP-value: 0.2387\nResult: Not Statistically Significant (p >= 0.05)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Vertical Bar Plot.\n*   **Purpose:** To compare the percentage prevalence of a specific control mechanism (\"Human-in-the-Loop Approval Gates\") across distinct categories (\"Competency Bundles\").\n\n**2. Axes**\n*   **X-axis:**\n    *   **Title:** \"Competency Bundle\"\n    *   **Categories:** Two distinct categories are displayed: \"Integration Readiness\" and \"Trust Readiness.\"\n*   **Y-axis:**\n    *   **Title:** \"Percentage of Requirements with Control (%)\"\n    *   **Range:** The scale ranges from 0 to 100, marked in increments of 20 (0, 20, 40, 60, 80, 100).\n\n**3. Data Trends**\n*   **Tallest Bar:** The \"Integration Readiness\" bundle represents the highest value.\n*   **Shortest Bar:** The \"Trust Readiness\" bundle represents the lowest value.\n*   **Pattern:** There is a significant disparity between the two categories. While one bundle shows a measurable presence of the control, the other shows a complete absence.\n\n**4. Annotations and Legends**\n*   **Chart Title:** \"Prevalence of 'Human-in-the-Loop Approval Gates' by Bundle\" appears at the top.\n*   **Data Labels:** Exact percentage values are annotated directly above each bar to provide precise readings:\n    *   Integration Readiness: **13.0%**\n    *   Trust Readiness: **0.0%**\n*   **Styling:** The bars are filled with a light blue color and outlined in black.\n\n**5. Statistical Insights**\n*   **Prevalence in Integration:** 13.0% of the requirements within the \"Integration Readiness\" bundle include 'Human-in-the-Loop Approval Gates.' This suggests that human oversight is a minority but notable component of integration procedures.\n*   **Absence in Trust:** 0.0% of the requirements within the \"Trust Readiness\" bundle utilize these approval gates. This indicates that human manual approval is currently not a factor in the requirements defined for Trust Readiness in this dataset.\n*   **Comparative Insight:** Use of human approval gates is exclusively associated with Integration Readiness in this comparison, implying distinct operational or compliance standards between the two competency bundles.\n==================================================",
+  "created_at": "2026-02-20T21:55:35.554554+00:00",
+  "creation_idx": 14,
+  "experiment_id": "node_3_4",
+  "experiment_plan": {
+    "deliverables": "Contingency table, statistical test results, and a bar chart showing the percentage of requirements in each bundle that map to Human-in-the-Loop controls.",
+    "objective": "Verify if human oversight mechanisms are structurally bound to Trust competencies rather than Integration competencies.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Identify the column 'Human-in-the-Loop Approval Gates' and the 'bundle' column.\n3. Create a contingency table counting the presence ('X') vs. absence of this control for each bundle ('Trust Readiness' vs. 'Integration Readiness').\n4. Perform a Fisher's Exact Test or Chi-square test to evaluate the association."
+  },
+  "hypothesis": "The 'Human-in-the-Loop Approval Gates' architecture control is significantly more prevalent in 'Trust Readiness' governance requirements than in 'Integration Readiness' requirements.",
+  "id_in_run": 13,
+  "is_surprising": true,
+  "parent_id": "node_2_5",
+  "posterior": 0.21074380165289255,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.21074380165289255,
+    "n": 90.0,
+    "prior_params": [
+      25.5,
+      5.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8225806451612904,
+  "prior_belief": {
+    "_empirical_mean": 0.8333333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 10.0,
+    "maybe_false": 0.0,
+    "maybe_true": 20.0,
+    "mean": 0.8225806451612904,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis regarding the prevalence of 'Human-in-the-Loop Approval Gates'. The analysis revealed that this architecture control is present in 13.0% (3/23) of 'Integration Readiness' requirements but is completely absent (0/19) in 'Trust Readiness' requirements. This finding directly contradicts the hypothesis, which predicted a higher prevalence in Trust competencies. Furthermore, the Fisher's Exact Test yielded a p-value of 0.2387, indicating that the observed difference is not statistically significant. Therefore, the hypothesis is rejected on both directional and statistical grounds.",
+  "rich_outputs": null,
+  "runtime_ms": 149890.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.710095284777494
+}

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully executed using '37_custom_code' as a proxy for commercial status after previous debugging revealed '10_commercial_ai' contained unstructured text. The analysis compared 245 'Commercial/COTS' systems (No custom code) against 722 'Custom/GOTS' systems (Yes custom code). \n\nThe results show a directional trend supporting the 'Commercial Opacity' hypothesis: Commercial systems had a lower rate of reported Independent Evaluation (3.67%) compared to Custom systems (5.96%). The Odds Ratio of 0.60 suggests Commercial systems are roughly 40% less likely to have independent evaluations. However, the Chi-square test yielded a p-value of 0.2284, which is above the standard 0.05 significance threshold. Therefore, while the data suggests a potential gap in transparency for commercial systems, the difference is not statistically significant in this sample size.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport os\n\n# Define file path\nfilename = 'astalabs_discovery_all_data.csv'\npossible_paths = [filename, f'../{filename}']\nfilepath = next((p for p in possible_paths if os.path.exists(p)), None)\n\nif not filepath:\n    print(f\"Error: {filename} not found in current or parent directory.\")\n    exit(1)\n\nprint(f\"Loading dataset from {filepath}...\")\ndf = pd.read_csv(filepath, low_memory=False)\n\n# Filter for EO 13960 data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Total EO 13960 records: {len(df_eo)}\")\n\n# NOTE: Previous exploration showed '10_commercial_ai' contains use-case descriptions (e.g., 'Searching for information...'),\n# not a binary Commercial/Custom flag. \n# Column '37_custom_code' contains 'Yes'/'No' values which is a better proxy for Commercial Opacity.\n# 'No' Custom Code implies Commercial/COTS (Opaque).\n# 'Yes' Custom Code implies Government/Custom (Transparent).\n\n# 1. Define Commercial vs Custom based on '37_custom_code'\ndef categorize_source(val):\n    if pd.isna(val):\n        return np.nan\n    s = str(val).lower().strip()\n    if s == 'no':\n        return 'Commercial (COTS)'  # No custom code -> Commercial\n    elif s == 'yes':\n        return 'Custom (GOTS)'      # Custom code -> Government/Custom\n    return np.nan\n\ndf_eo['source_category'] = df_eo['37_custom_code'].apply(categorize_source)\n\n# Filter to valid rows\ndf_valid = df_eo.dropna(subset=['source_category']).copy()\nprint(f\"Records with valid source category (Commercial/Custom): {len(df_valid)}\")\nprint(df_valid['source_category'].value_counts())\n\n# 2. Define Independent Evaluation Status\n# '55_independent_eval' contains 'Yes...', 'TRUE', 'Planned', 'NaN', etc.\n# Hypothesis requires 'having undergone', so 'Planned' is treated as 0.\ndef check_evaluation(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).lower().strip()\n    # affirmative keywords\n    if 'yes' in s or 'true' in s:\n        return 1\n    return 0\n\ndf_valid['has_eval'] = df_valid['55_independent_eval'].apply(check_evaluation)\n\n# 3. Create Contingency Table\ncontingency = pd.crosstab(df_valid['source_category'], df_valid['has_eval'])\n# Ensure columns are 0 and 1\nif 0 not in contingency.columns:\n    contingency[0] = 0\nif 1 not in contingency.columns:\n    contingency[1] = 0\ncontingency = contingency[[0, 1]]\ncontingency.columns = ['No Eval', 'Has Eval']\n\nprint(\"\\nContingency Table (Custom Code Status vs. Independent Eval):\")\nprint(contingency)\n\n# 4. Statistical Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency)\nprint(f\"\\nChi-square statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# 5. Odds Ratio\n# Commercial (No Eval) = a, Commercial (Has Eval) = b\n# Custom (No Eval) = c, Custom (Has Eval) = d\ntry:\n    comm_row = contingency.loc['Commercial (COTS)']\n    cust_row = contingency.loc['Custom (GOTS)']\n    \n    a = comm_row['No Eval']\n    b = comm_row['Has Eval']\n    c = cust_row['No Eval']\n    d = cust_row['Has Eval']\n    \n    # Add smoothing if zeros exist\n    if a*d == 0 or b*c == 0:\n        print(\"\\n(Using Haldane-Anscombe correction for zero cells)\")\n        odds_ratio = ((b + 0.5) * (c + 0.5)) / ((a + 0.5) * (d + 0.5))\n    else:\n        odds_ratio = (b * c) / (a * d)\n        \n    print(f\"Odds Ratio (Commercial likelihood of Eval vs Custom): {odds_ratio:.4f}\")\n    \n    # Interpret\n    comm_rate = b / (a + b) * 100\n    cust_rate = d / (c + d) * 100\n    print(f\"\\nEvaluation Rate [Commercial/COTS]: {comm_rate:.2f}%\")\n    print(f\"Evaluation Rate [Custom/GOTS]:     {cust_rate:.2f}%\")\n    \nexcept KeyError as e:\n    print(f\"Error calculating odds ratio: {e}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nTotal EO 13960 records: 1757\nRecords with valid source category (Commercial/Custom): 967\nsource_category\nCustom (GOTS)        722\nCommercial (COTS)    245\nName: count, dtype: int64\n\nContingency Table (Custom Code Status vs. Independent Eval):\n                   No Eval  Has Eval\nsource_category                     \nCommercial (COTS)      236         9\nCustom (GOTS)          679        43\n\nChi-square statistic: 1.4508\nP-value: 2.2840e-01\nOdds Ratio (Commercial likelihood of Eval vs Custom): 0.6022\n\nEvaluation Rate [Commercial/COTS]: 3.67%\nEvaluation Rate [Custom/GOTS]:     5.96%\n",
+  "created_at": "2026-02-22T07:25:08.930405+00:00",
+  "creation_idx": 136,
+  "experiment_id": "node_6_8",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistic, p-value, and Odds Ratio.",
+    "objective": "Compare independent evaluation rates between commercial and non-commercial AI systems.",
+    "steps": "1. Filter for `source_table` = 'eo13960_scored'.\n2. Categorize `10_commercial_ai` into 'Commercial' (e.g., 'Yes', 'Commercial', 'COTS') and 'Non-Commercial' (e.g., 'No', 'GOTS', 'Custom').\n3. Convert `55_independent_eval` to binary (1 for affirmative evidence, 0 for negative/missing).\n4. Create a contingency table.\n5. Perform a Chi-square test and calculate the Odds Ratio."
+  },
+  "hypothesis": "Commercial Opacity: In the EO13960 dataset, AI systems procured from 'Commercial' sources are statistically less likely to report having undergone 'Independent Evaluation' compared to 'Government-Developed' (custom) systems, due to vendor proprietary barriers.",
+  "id_in_run": 135,
+  "is_surprising": false,
+  "parent_id": "node_5_22",
+  "posterior": 0.6868131868131868,
+  "posterior_belief": {
+    "_empirical_mean": 0.6583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 38.0,
+    "mean": 0.6868131868131868,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 22.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully implemented the analysis plan after correcting for data quality issues identified in the initial attempts. The programmer correctly pivoted to using '37_custom_code' as a reliable proxy for the Commercial (COTS) vs. Custom (GOTS) distinction and applied appropriate text parsing to identify affirmative independent evaluations.\n\nSummary of Findings:\n1. **Hypothesis**: The hypothesis that commercial AI systems are less likely to undergo independent evaluation ('Commercial Opacity') was tested.\n2. **Results**: The analysis found a directional trend supporting the hypothesis. Systems identified as Commercial/COTS (via lack of custom code) had a lower independent evaluation rate (3.67%, n=245) compared to Custom/GOTS systems (5.96%, n=722).\n3. **Statistical Significance**: The observed difference yielded a Chi-square statistic of 1.45 and a p-value of 0.228. Consequently, the result is not statistically significant at the p<0.05 level.\n4. **Conclusion**: While the Odds Ratio (0.60) suggests commercial systems are 40% less likely to report independent evaluation, the null hypothesis cannot be rejected based on this sample. The 'Commercial Opacity' effect is observed directionally but lacks statistical robustness in the current dataset.",
+  "rich_outputs": null,
+  "runtime_ms": 274400.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.06614675646933711
+}

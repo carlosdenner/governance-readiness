@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step2_crosswalk_matrix.csv
+Identified 18 architecture control columns.
+Trust Readiness samples: 19
+Integration Readiness samples: 23
+
+--- Trust Readiness Internal Consistency ---
+Mean Jaccard Similarity: 0.2516
+Median Jaccard Similarity: 0.2000
+Std Dev: 0.3024
+Count of pairs: 171
+
+--- Integration Readiness Internal Consistency ---
+Mean Jaccard Similarity: 0.1866
+Median Jaccard Similarity: 0.0000
+Std Dev: 0.2785
+Count of pairs: 253
+
+--- Mann-Whitney U Test ---
+U-statistic: 18745.0
+P-value (one-sided, Integration > Trust): 9.9478e-01
+Result: Not Statistically Significant.
+
+STDERR:
+<ipython-input-1-20dae8ca516a>:103: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([trust_sims, integ_sims], labels=['Trust Readiness', 'Integration Readiness'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the image provided, here is a detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot visualizes the distribution of numerical data (Jaccard Similarity Scores) across distinct categorical groups ("Bundles"). It displays statistical summaries such as the minimum, first quartile (Q1), median, third quartile (Q3), maximum (excluding outliers), and outliers.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Represents the categories of "Bundles".
+    *   **Categories:** "Trust Readiness" and "Integration Readiness".
+*   **Y-Axis:**
+    *   **Label:** "Jaccard Similarity Score".
+    *   **Range:** 0.0 to 1.0 (representing a normalized similarity ratio).
+    *   **Units:** The score is a dimensionless ratio/coefficient between 0 and 1.
+
+### 3. Data Trends
+*   **Trust Readiness (Left Box):**
+    *   **Median:** The median line (orange) is located at **0.2**.
+    *   **Spread:** The interquartile range (the box) spans from **0.0 (Q1)** to **0.5 (Q3)**.
+    *   **Range:** The whiskers extend from **0.0** all the way to **1.0**, indicating that the data covers the full spectrum of possible similarity scores.
+*   **Integration Readiness (Right Box):**
+    *   **Median:** The median line is at **0.0**, indicating that more than half of the pairwise comparisons in this bundle have zero similarity.
+    *   **Spread:** The interquartile range spans from **0.0** to approximately **0.33**.
+    *   **Range:** The top whisker extends to approximately **0.65**.
+    *   **Outliers:** There is a distinct outlier (represented by a circle) at **1.0**, indicating at least one pair (or a cluster of pairs) with perfect similarity, despite the generally low scores of the group.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Pairwise Jaccard Similarities by Bundle" clearly defines the context of the data.
+*   **Grid Lines:** Horizontal dashed grid lines appear at intervals of 0.2 (0.0, 0.2, 0.4, etc.) to assist in estimating the values of the box plot elements.
+*   **Color Coding:** The boxes are white with black borders, and the median is marked in **orange**.
+
+### 5. Statistical Insights
+*   **Higher Overall Similarity in Trust Readiness:** The "Trust Readiness" bundle shows a higher tendency for similarity compared to "Integration Readiness." Its median is higher (0.2 vs 0.0), and its upper quartile reaches 0.5 compared to roughly 0.33 for the other group.
+*   **Zero-Inflated Data:** Both groups have a first quartile (Q1) of 0.0, and "Integration Readiness" even has a median of 0.0. This suggests that for a significant portion of pairs in both bundles, there is no overlap (Jaccard similarity of 0). This is particularly dominant in the "Integration Readiness" bundle.
+*   **Variability:** "Trust Readiness" exhibits higher variability. Its distribution stretches consistently from 0 to 1. In contrast, "Integration Readiness" is more compressed toward the lower end (0 to ~0.65), except for the specific outliers at 1.0.
+*   **Outlier Behavior:** While "Integration Readiness" has generally lower similarity scores, the presence of outliers at 1.0 suggests that there are specific, isolated cases within that bundle that are identical, whereas the rest are largely dissimilar.
+==================================================

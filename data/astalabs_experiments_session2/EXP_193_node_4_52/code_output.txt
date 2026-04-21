@@ -1,0 +1,22 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID Incidents: 1362
+Records available for analysis: 177
+
+Contingency Table (Autonomy vs Intentionality):
+intent_bin    Intentional  Unintentional
+autonomy_bin                            
+High                    3             71
+Low                     5             98
+
+Matrix for Fisher's Test:
+ [[np.int64(5), np.int64(98)], [np.int64(3), np.int64(71)]]
+
+--- Statistical Results ---
+Odds Ratio: 1.2075
+P-Value (one-sided 'greater'): 0.5524
+
+Interpretation:
+% of Low Autonomy incidents that were Intentional: 4.9%
+% of High Autonomy incidents that were Intentional: 4.1%
+
+Result: Not Statistically Significant.

@@ -1,0 +1,11 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 52 ATLAS cases.
+
+Contingency Table (Frequency of Defense Evasion Tactics):
+           No Defense Evasion  Has Defense Evasion
+Non-GenAI                  21                   18
+GenAI                       8                    5
+
+Fisher's Exact Test p-value: 0.7519
+Odds Ratio: 0.7292
+Result: No statistically significant difference found.

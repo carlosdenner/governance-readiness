@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Subset shape: (1757, 196)
+
+--- Value Counts for '10_commercial_ai' (Top 5) ---
+10_commercial_ai
+None of the above.                                                                      1357
+Searching for information using AI.                                                      109
+NaN                                                                                       47
+Creating visual representations of data sets for reports and presentations using AI.      38
+Summarizing the key points of a lengthy report using AI.                                  37
+Name: count, dtype: int64
+
+--- Commercial vs Custom Counts ---
+is_commercial
+0.0    1357
+1.0     353
+Name: count, dtype: int64
+
+--- Value Counts for '52_impact_assessment' ---
+52_impact_assessment
+NaN                        1557
+No                           63
+Yes                          58
+Planned or in-progress.      31
+YES                           1
+Name: count, dtype: int64
+
+--- Value Counts for '55_independent_eval' ---
+55_independent_eval
+NaN                                                                                                      1595
+Planned or in-progress                                                                                     59
+Yes – by the CAIO                                                                                          22
+Yes – by another appropriate agency office that was not directly involved in the system’s development      18
+TRUE                                                                                                       10
+Name: count, dtype: int64
+
+=== Analysis for: Impact Assessment (Control 52) ===
+Contingency Table (Rows: 0=Custom, 1=Comm; Cols: 0=No, 1=Yes):
+has_impact_assess     0   1
+is_commercial              
+0                  1310  47
+1                   341  12
+Compliance Rate (Custom):     3.46%
+Compliance Rate (Commercial): 3.40%
+Chi-Square Statistic:         0.0000
+P-Value:                      1.00000
+Odds Ratio (Comm vs Cust):    0.9808
+Result: No significant difference.
+
+=== Analysis for: Independent Evaluation (Control 55) ===
+Contingency Table (Rows: 0=Custom, 1=Comm; Cols: 0=No, 1=Yes):
+has_indep_eval     0   1
+is_commercial           
+0               1323  34
+1                345   8
+Compliance Rate (Custom):     2.51%
+Compliance Rate (Commercial): 2.27%
+Chi-Square Statistic:         0.0043
+P-Value:                      0.94763
+Odds Ratio (Comm vs Cust):    0.9023
+Result: No significant difference.

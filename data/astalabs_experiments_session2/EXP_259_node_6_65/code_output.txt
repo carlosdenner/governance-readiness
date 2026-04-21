@@ -1,0 +1,23 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Analysis of Automation-Overconfidence Paradox ---
+
+Sample Sizes:
+Autonomy_Class
+Human-Assisted    143
+Autonomous          7
+Name: count, dtype: int64
+
+Risk Identification Stats:
+                Total  Risks_Identified      Rate
+Autonomy_Class                                   
+Autonomous          7                 6  0.857143
+Human-Assisted    143                88  0.615385
+
+Contingency Table (Rows: Auto, Human; Cols: Identified, Not Identified):
+[[np.int64(6), np.int64(1)], [np.int64(88), np.int64(55)]]
+
+Fisher's Exact Test Results:
+Odds Ratio: 3.7500
+P-value: 2.5777e-01
+Conclusion: No statistically significant difference found.
+Direction: Autonomous systems have a HIGHER (or equal) risk identification rate.

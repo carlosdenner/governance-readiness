@@ -1,0 +1,59 @@
+{
+  "analysis": "The experiment successfully loaded 'step2_competency_statements.csv' and mapped the categorical 'confidence' levels to numerical scores (High=3, Medium=2, Low=1). \n\nDescriptive statistics show nearly identical high levels of confidence for both competency bundles:\n- **Integration Readiness:** Mean = 2.87 (SD = 0.34, n = 23)\n- **Trust Readiness:** Mean = 2.84 (SD = 0.37, n = 19)\n\nThe Mann-Whitney U test resulted in a U-statistic of 224.5 and a p-value of 0.81867. Since the p-value is significantly greater than 0.05, the difference is not statistically significant.\n\n**Conclusion:** The hypothesis that 'Integration Readiness' competencies have higher empirical confidence than 'Trust Readiness' is **not supported**. The analysis indicates that both the engineering-focused (Integration) and governance-focused (Trust) competencies in this dataset are supported by similarly high-confidence evidence from the literature sources.",
+  "child_ids": [
+    "node_3_1",
+    "node_3_5",
+    "node_3_17"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import mannwhitneyu\nimport os\nimport sys\nimport subprocess\n\ndef install(package):\n    subprocess.check_call([sys.executable, \"-m\", \"pip\", \"install\", \"--quiet\", package])\n\ntry:\n    from scipy.stats import mannwhitneyu\nexcept ImportError:\n    install('scipy')\n    from scipy.stats import mannwhitneyu\n\n# Handle file loading based on location note\nfilename = 'step2_competency_statements.csv'\npossible_paths = [f\"../{filename}\", filename]\nfile_path = None\n\nfor path in possible_paths:\n    if os.path.exists(path):\n        file_path = path\n        break\n\nif not file_path:\n    print(f\"Error: Could not find {filename} in {possible_paths}\")\nelse:\n    print(f\"Loading dataset from: {file_path}\")\n    df = pd.read_csv(file_path)\n\n    # Map categorical confidence to numerical scores\n    confidence_map = {'high': 3, 'medium': 2, 'low': 1}\n    \n    # Normalize string to handle case/whitespace\n    df['confidence_mapped'] = df['confidence'].astype(str).str.lower().str.strip().map(confidence_map)\n\n    # Validation\n    if df['confidence_mapped'].isnull().any():\n        print(\"Warning: Some confidence values could not be mapped. Dropping NaNs.\")\n        print(\"Unique raw values:\", df['confidence'].unique())\n        df = df.dropna(subset=['confidence_mapped'])\n\n    # Group by bundle\n    trust_bundle = 'Trust Readiness'\n    integration_bundle = 'Integration Readiness'\n    \n    group_stats = df.groupby('bundle')['confidence_mapped'].agg(['count', 'mean', 'std'])\n    print(\"\\n=== Descriptive Statistics (Confidence Score: High=3, Medium=2, Low=1) ===\")\n    print(group_stats)\n\n    # Prepare vectors for statistical test\n    trust_scores = df[df['bundle'] == trust_bundle]['confidence_mapped']\n    integration_scores = df[df['bundle'] == integration_bundle]['confidence_mapped']\n\n    if len(trust_scores) == 0 or len(integration_scores) == 0:\n        print(\"\\nError: One of the bundles has no data. Cannot perform statistical test.\")\n    else:\n        # Mann-Whitney U Test (Two-sided)\n        # Using two-sided to detect any difference, though hypothesis suggests Integration > Trust\n        u_stat, p_val = mannwhitneyu(integration_scores, trust_scores, alternative='two-sided')\n\n        print(\"\\n=== Mann-Whitney U Test Results ===\")\n        print(f\"Comparison: {integration_bundle} vs {trust_bundle}\")\n        print(f\"U-statistic: {u_stat}\")\n        print(f\"P-value: {p_val:.5f}\")\n        \n        alpha = 0.05\n        if p_val < alpha:\n            direction = integration_bundle if integration_scores.mean() > trust_scores.mean() else trust_bundle\n            print(f\"Conclusion: Statistically significant difference detected (p < {alpha}).\")\n            print(f\"Direction: {direction} has higher confidence scores.\")\n        else:\n            print(f\"Conclusion: No statistically significant difference detected (p >= {alpha}).\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_competency_statements.csv\n\n=== Descriptive Statistics (Confidence Score: High=3, Medium=2, Low=1) ===\n                       count      mean       std\nbundle                                          \nIntegration Readiness     23  2.869565  0.344350\nTrust Readiness           19  2.842105  0.374634\n\n=== Mann-Whitney U Test Results ===\nComparison: Integration Readiness vs Trust Readiness\nU-statistic: 224.5\nP-value: 0.81867\nConclusion: No statistically significant difference detected (p >= 0.05).\n",
+  "created_at": "2026-02-20T21:31:16.722208+00:00",
+  "creation_idx": 3,
+  "experiment_id": "node_2_1",
+  "experiment_plan": {
+    "deliverables": "Mean confidence scores, Mann-Whitney U test statistic, and p-value.",
+    "objective": "Compare the evidence confidence levels between bundles.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Map the categorical 'confidence' column to numerical values (High=3, Medium=2, Low=1).\n3. Group by 'bundle'.\n4. Calculate mean and standard deviation of confidence scores for Trust vs. Integration.\n5. Perform a Mann-Whitney U test (ordinal data) to determine if one bundle has statistically higher confidence rankings than the other."
+  },
+  "hypothesis": "Competencies classified as 'Integration Readiness' have significantly higher empirical 'Confidence' scores in the literature than 'Trust Readiness' competencies, reflecting a mature engineering body of knowledge versus a nascent governance frameworks.",
+  "id_in_run": 2,
+  "is_surprising": true,
+  "parent_id": "node_1_0",
+  "posterior": 0.19421487603305784,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.19421487603305784,
+    "n": 90.0,
+    "prior_params": [
+      23.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7580645161290323,
+  "prior_belief": {
+    "_empirical_mean": 0.7666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 2.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7580645161290323,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented according to the plan. The code successfully loaded the target dataset ('step2_competency_statements.csv'), correctly handled file path variations, mapped categorical confidence ratings to numerical values, and executed the specified statistical test (Mann-Whitney U). \n\n**Summary of Findings:**\n- **Hypothesis:** The experiment tested whether 'Integration Readiness' competencies possess significantly higher evidence confidence than 'Trust Readiness' competencies.\n- **Results:** The analysis showed nearly identical mean confidence scores for Integration Readiness (Mean=2.87, SD=0.34) and Trust Readiness (Mean=2.84, SD=0.37). The Mann-Whitney U test yielded a p-value of 0.819, which is far above the significance threshold (alpha=0.05).\n- **Conclusion:** The hypothesis is rejected. There is no statistically significant difference in the strength of literature evidence between the two competency bundles; both are supported by high-confidence sources.",
+  "rich_outputs": null,
+  "runtime_ms": 169310.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.654401536951808
+}

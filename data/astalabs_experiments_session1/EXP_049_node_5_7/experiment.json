@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully analyzed the prevalence of 'Audit Logging & Telemetry' in 'step2_crosswalk_matrix.csv' after correcting the file path. The data reveals that this architecture control is extremely rare across the entire dataset. It appears in only **4.3%** (1/23) of 'Integration Readiness' requirements and is completely absent (**0.0%**, 0/19) from 'Trust Readiness' requirements.\n\nThe Fisher's Exact Test yielded a p-value of **1.0**, confirming that the observed difference is not statistically significant. Consequently, the hypothesis that 'Audit Logging & Telemetry' is significantly more prevalent in 'Trust Readiness' is **rejected**. The results indicate that this specific control is not currently a primary differentiator for governance-focused competencies in this framework, and is in fact slightly (though not significantly) more associated with the engineering/integration bundle.",
+  "child_ids": [
+    "node_6_3"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport os\n\n# Try to locate the file in the current directory or one level up\nfilename = 'step2_crosswalk_matrix.csv'\nif os.path.exists(filename):\n    file_path = filename\nelif os.path.exists(f'../{filename}'):\n    file_path = f'../{filename}'\nelse:\n    raise FileNotFoundError(f\"Could not find {filename} in current or parent directory.\")\n\nprint(f\"Loading dataset from: {file_path}\")\ndf = pd.read_csv(file_path)\n\n# Target columns\ncontrol_col = 'Audit Logging & Telemetry'\nbundle_col = 'bundle'\n\n# Clean and prepare data\n# Treat 'X' as Present (1) and NaN/Empty as Absent (0)\ndf['has_control'] = df[control_col].fillna('').apply(lambda x: 1 if str(x).strip().upper() == 'X' else 0)\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(df[bundle_col], df['has_control'])\n\n# Ensure both 0 (Absent) and 1 (Present) columns exist\nif 0 not in contingency_table.columns:\n    contingency_table[0] = 0\nif 1 not in contingency_table.columns:\n    contingency_table[1] = 0\n\n# Reorder columns to Absent (0), Present (1)\ncontingency_table = contingency_table[[0, 1]]\ncontingency_table.columns = ['Absent', 'Present']\n\nprint(\"\\n--- Contingency Table (Count) ---\")\nprint(contingency_table)\n\n# Calculate Percentages\ncontingency_pct = contingency_table.div(contingency_table.sum(axis=1), axis=0) * 100\nprint(\"\\n--- Contingency Table (Percentage) ---\")\nprint(contingency_pct)\n\n# Perform Fisher's Exact Test\ntry:\n    # Extract counts for the test\n    # Row 1: Integration Readiness\n    # Row 2: Trust Readiness\n    # Columns: Present, Absent (swapped from table for Odds Ratio interpretation: Present/Absent)\n    \n    ir_present = contingency_table.loc['Integration Readiness', 'Present']\n    ir_absent = contingency_table.loc['Integration Readiness', 'Absent']\n    tr_present = contingency_table.loc['Trust Readiness', 'Present']\n    tr_absent = contingency_table.loc['Trust Readiness', 'Absent']\n    \n    # Matrix for Fisher's: [[Trust_Present, Trust_Absent], [Integration_Present, Integration_Absent]]\n    # Testing if Trust has higher prevalence than Integration\n    fisher_matrix = [[tr_present, tr_absent], [ir_present, ir_absent]]\n    \n    odds_ratio, p_value = stats.fisher_exact(fisher_matrix, alternative='two-sided')\n\n    print(\"\\n--- Statistical Test Results ---\")\n    print(f\"Fisher's Exact Test P-value: {p_value:.4f}\")\n    print(f\"Odds Ratio (Trust/Integration): {odds_ratio:.4f}\")\n    \n    alpha = 0.05\n    if p_value < alpha:\n        print(\"Result: Statistically Significant (Reject Null Hypothesis)\")\n    else:\n        print(\"Result: Not Statistically Significant (Fail to Reject Null Hypothesis)\")\n\nexcept KeyError as e:\n    print(f\"Error processing bundles for stats: {e}\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\nbundles = contingency_pct.index\npercentages = contingency_pct['Present']\n\n# Color mapping\ncolors = ['salmon' if 'Trust' in b else 'skyblue' for b in bundles]\n\nbars = plt.bar(bundles, percentages, color=colors)\n\nplt.title(f\"Prevalence of '{control_col}' by Bundle\")\nplt.ylabel('Percentage of Requirements with Control (%)')\nplt.xlabel('Competency Bundle')\nplt.ylim(0, 100)\n\n# Add value labels\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 1,\n             f'{height:.1f}%',\n             ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_crosswalk_matrix.csv\n\n--- Contingency Table (Count) ---\n                       Absent  Present\nbundle                                \nIntegration Readiness      22        1\nTrust Readiness            19        0\n\n--- Contingency Table (Percentage) ---\n                           Absent   Present\nbundle                                     \nIntegration Readiness   95.652174  4.347826\nTrust Readiness        100.000000  0.000000\n\n--- Statistical Test Results ---\nFisher's Exact Test P-value: 1.0000\nOdds Ratio (Trust/Integration): 0.0000\nResult: Not Statistically Significant (Fail to Reject Null Hypothesis)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot (Column Chart).\n*   **Purpose:** To compare the prevalence (percentage) of a specific control feature, \"Audit Logging & Telemetry,\" across distinct categorical groups known as \"Competency Bundles.\"\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Competency Bundle\"\n    *   **Categories:** The axis displays two discrete categories: \"Integration Readiness\" and \"Trust Readiness.\"\n*   **Y-Axis:**\n    *   **Label:** \"Percentage of Requirements with Control (%)\"\n    *   **Range:** The axis ranges from 0 to 100.\n    *   **Scale:** The scale is linear with major tick marks every 20 units (0, 20, 40, 60, 80, 100).\n\n### 3. Data Trends\n*   **Tallest Bar:** The \"Integration Readiness\" category has the highest value, represented by a light blue bar.\n*   **Shortest Bar:** The \"Trust Readiness\" category has the lowest value, represented by the absence of a visible bar (height is zero).\n*   **Pattern:** Both categories show extremely low prevalence values. The data is heavily skewed toward the bottom of the 0-100% scale, indicating that this specific control is rare in both bundles.\n\n### 4. Annotations and Legends\n*   **Title:** \"Prevalence of 'Audit Logging & Telemetry' by Bundle\" appears at the top center.\n*   **Data Labels:**\n    *   Above the \"Integration Readiness\" bar, there is a specific numerical annotation: **\"4.3%\"**.\n    *   Above the \"Trust Readiness\" position, there is a specific numerical annotation: **\"0.0%\"**.\n*   **Legend:** There is no separate legend box; the categories are identified directly on the x-axis.\n\n### 5. Statistical Insights\n*   **Absence in Trust Readiness:** The \"Trust Readiness\" bundle has zero coverage (0.0%) for \"Audit Logging & Telemetry,\" suggesting this specific control is currently completely missing from that bundle's requirements.\n*   **Low Prevalence in Integration Readiness:** While \"Integration Readiness\" performs better than \"Trust Readiness,\" the prevalence is still very low at only 4.3%. This indicates that less than 1 in 20 requirements in this bundle include this control.\n*   **Overall Gap:** The data highlights a significant gap in \"Audit Logging & Telemetry\" controls across both competency bundles analyzed. Neither bundle comes close to substantial coverage.\n==================================================",
+  "created_at": "2026-02-20T23:07:04.766382+00:00",
+  "creation_idx": 50,
+  "experiment_id": "node_5_7",
+  "experiment_plan": {
+    "deliverables": "1. A contingency table of control presence by bundle.\n2. Fisher's Exact Test results (p-value, odds ratio).\n3. A bar chart comparing the percentage of requirements containing 'Audit Logging & Telemetry' in Trust vs. Integration bundles.",
+    "objective": "Verify if observability controls are structurally biased towards governance bundles by comparing the frequency of the 'Audit Logging & Telemetry' control in 'Trust Readiness' versus 'Integration Readiness' requirements.",
+    "steps": "1. Load the dataset 'step2_crosswalk_matrix.csv'.\n2. Verify the existence of the columns 'Audit Logging & Telemetry' and 'bundle'.\n3. Preprocess the 'Audit Logging & Telemetry' column to create a binary variable (1 if value is 'X', 0 otherwise).\n4. Create a contingency table showing the count of requirements with and without this control for each 'bundle' category ('Trust Readiness' vs. 'Integration Readiness').\n5. Calculate the percentage prevalence of the control in each bundle.\n6. Perform a Fisher's Exact Test on the contingency table to determine if the difference in prevalence is statistically significant (p < 0.05)."
+  },
+  "hypothesis": "The 'Audit Logging & Telemetry' architecture control is significantly more prevalent in 'Trust Readiness' requirements than in 'Integration Readiness' requirements, serving as a primary mechanism for governance verification.",
+  "id_in_run": 49,
+  "is_surprising": true,
+  "parent_id": "node_4_6",
+  "posterior": 0.20454545454545456,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.20454545454545456,
+    "n": 90.0,
+    "prior_params": [
+      24.75,
+      6.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7983870967741935,
+  "prior_belief": {
+    "_empirical_mean": 0.8083333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 7.0,
+    "maybe_false": 0.0,
+    "maybe_true": 23.0,
+    "mean": 0.7983870967741935,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully re-run with the correct file path. The analysis faithfully implements the experiment plan, generating the required contingency table, statistical test (Fisher's Exact Test), and visualization. The results are clear: the 'Audit Logging & Telemetry' control is nearly absent in this dataset (found in only 1 Integration requirement and 0 Trust requirements), leading to a p-value of 1.0. The hypothesis is correctly rejected based on these findings.",
+  "rich_outputs": null,
+  "runtime_ms": 211980.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6892101293428615
+}

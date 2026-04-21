@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: === Descriptive Statistics: Control Density by Bundle ===
+                       count      mean       std  min  25%  50%  75%  max
+bundle                                                                   
+Integration Readiness   23.0  2.000000  0.522233  1.0  2.0  2.0  2.0  3.0
+Trust Readiness         19.0  1.631579  0.760886  1.0  1.0  1.0  2.0  3.0
+
+=== T-Test Results ===
+Trust Readiness Mean: 1.63 (n=19)
+Integration Readiness Mean: 2.00 (n=23)
+T-statistic: -1.7907
+P-value: 0.0831
+Result: No significant difference detected (p >= 0.05).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Overlaid Density Histogram (or Bar Chart visualizing density distributions).
+*   **Purpose:** The plot compares the probability distribution of the "Number of Controls Mapped" for two different categories: "Trust Readiness" and "Integration Readiness." It shows the relative frequency (density) of items having 1, 2, or 3 controls mapped within each bundle.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Number of Controls Mapped"
+    *   **Range:** The axis displays discrete integer values representing counts: **1, 2, and 3**.
+*   **Y-Axis:**
+    *   **Label:** "Density"
+    *   **Range:** The values range from **0.0 to roughly 0.75**.
+    *   **Description:** This axis represents the proportion or relative frequency of the data falling into each bin. Since it is a density plot, the sum of the bar heights for each category likely sums to 1.0 (100%).
+
+### 3. Data Trends
+The plot reveals distinct distribution patterns for the two readiness bundles:
+
+*   **Trust Readiness (Light Blue Bars):**
+    *   **Trend:** This distribution is right-skewed or decreasing.
+    *   **Dominant Value:** The highest density is at **1 Control Mapped** (approximately 0.53 or 53%).
+    *   **Pattern:** As the number of controls increases, the density decreases. There is a moderate amount at 2 controls (~0.31) and the lowest amount at 3 controls (~0.16).
+    *   **Interpretation:** Items in the "Trust Readiness" bundle are most likely to map to a single control.
+
+*   **Integration Readiness (Orange Bars):**
+    *   **Trend:** This distribution is centered and peaked (bell-shaped).
+    *   **Dominant Value:** There is a very strong peak at **2 Controls Mapped** (approximately 0.74 or 74%).
+    *   **Pattern:** The densities for 1 control and 3 controls are nearly symmetrical and low (both appear to be around 0.13).
+    *   **Interpretation:** Items in the "Integration Readiness" bundle predominantly map to exactly two controls.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Architecture Control Density by Readiness Bundle" located at the top center.
+*   **Legend:** Located in the top-right corner.
+    *   **Light Blue Square:** Represents the "Trust Readiness" dataset.
+    *   **Orange Square:** Represents the "Integration Readiness" dataset.
+*   **Grid:** Horizontal grid lines appear at 0.1 intervals to assist in reading density values.
+
+### 5. Statistical Insights
+*   **Divergent Behavior:** The two bundles exhibit contrasting structural complexity. "Trust Readiness" tends to be simpler, often involving a single control mapping, whereas "Integration Readiness" is more complex but highly standardized, converging strongly on pairs of controls (2 mappings).
+*   **Predictability:** "Integration Readiness" is more predictable regarding control density, as nearly three-quarters of its data falls into a single category (2 controls). "Trust Readiness" has more variance, spreading its density more significantly across 1 and 2 controls.
+*   **Mode Comparison:** The mode for Trust Readiness is 1, while the mode for Integration Readiness is 2.
+==================================================

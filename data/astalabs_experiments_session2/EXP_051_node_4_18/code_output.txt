@@ -1,0 +1,71 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading datasets...
+Loaded 42 rows from CSV step2_crosswalk_matrix.
+Loaded 42 rows from JSON context_crosswalk_evidence.
+Merged dataset shape: (42, 8)
+Found functions: <StringArray>
+[               'GOVERN',                   'MAP',               'MEASURE',
+                'MANAGE',            'GOVERNANCE',          'TRANSPARENCY',
+       'HUMAN OVERSIGHT', 'ACCURACY & ROBUSTNESS',              'SECURITY']
+Length: 9, dtype: str
+
+Descriptive Statistics:
+                       count      mean       std  min   25%  50%   75%  max
+function                                                                   
+ACCURACY & ROBUSTNESS    1.0  2.000000       NaN  2.0  2.00  2.0  2.00  2.0
+GOVERN                   7.0  1.571429  0.975900  1.0  1.00  1.0  2.00  3.0
+GOVERNANCE               4.0  2.000000  0.816497  1.0  1.75  2.0  2.25  3.0
+HUMAN OVERSIGHT          1.0  2.000000       NaN  2.0  2.00  2.0  2.00  2.0
+MANAGE                   5.0  1.800000  0.447214  1.0  2.00  2.0  2.00  2.0
+MAP                      6.0  2.333333  0.516398  2.0  2.00  2.0  2.75  3.0
+MEASURE                  5.0  1.800000  0.447214  1.0  2.00  2.0  2.00  2.0
+SECURITY                10.0  1.900000  0.567646  1.0  2.00  2.0  2.00  3.0
+TRANSPARENCY             3.0  1.333333  0.577350  1.0  1.00  1.0  1.50  2.0
+
+Kruskal-Wallis Test Results:
+Statistic: 7.5440
+P-value: 0.4792
+Result: No significant difference found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot visualizes the distribution, central tendency, and variability of the "Number of Mapped Controls" across different "NIST Function" categories. It allows for a quick comparison of how control density varies between different functional areas of the framework.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "NIST Function"
+    *   **Labels:** Categorical variables representing specific functions: GOVERN, MAP, MEASURE, MANAGE, GOVERNANCE, TRANSPARENCY, HUMAN OVERSIGHT, ACCURACY & ROBUSTNESS, SECURITY.
+*   **Y-Axis:**
+    *   **Title:** "Number of Mapped Controls"
+    *   **Range:** The axis spans from 1.00 to 3.00, formatted with decimal places.
+    *   **Units:** Count (integer values representing the number of controls).
+
+### 3. Data Trends
+*   **High Variability:**
+    *   **GOVERNANCE:** Shows the largest interquartile range (the height of the blue box) and whiskers extending from 1.0 to 3.0, indicating the most variation in the number of controls mapped to this function.
+    *   **GOVERN:** Also shows significant spread, covering the full range of the y-axis (1 to 3).
+    *   **MAP:** The distribution is skewed higher compared to others, with the box extending towards the upper limit (approx. 2.75).
+*   **Low Variability / Consistency:**
+    *   **HUMAN OVERSIGHT** and **ACCURACY & ROBUSTNESS:** These categories appear as flat lines at the 2.0 mark. This indicates zero variance; every data point in these categories has exactly 2 mapped controls.
+    *   **MEASURE** and **MANAGE:** These are highly concentrated at 2.0, appearing almost as flat lines, but with single outliers at 1.0.
+*   **Lower Values:**
+    *   **TRANSPARENCY:** The distribution is skewed lower, with the median or lower quartile pushing down towards 1.0 and 1.5.
+
+### 4. Annotations and Legends
+*   **Title:** "Architectural Control Density by NIST Function" is clearly displayed at the top.
+*   **Outliers:** Small circles represent outliers (data points that fall significantly outside the typical range). These are visible for:
+    *   **MEASURE:** Outlier at 1.0.
+    *   **MANAGE:** Outlier at 1.0.
+    *   **SECURITY:** Outliers at both 1.0 and 3.0.
+*   **Grid Lines:** Horizontal dashed grid lines are included to assist in estimating the y-axis values for the boxes and whiskers.
+
+### 5. Statistical Insights
+*   **Central Tendency is ~2:** Across almost all categories, the median value (often represented by the line inside the box) hovers around 2 mapped controls. This suggests a standardized approach where most functional areas are typically addressed by two architectural controls.
+*   **Governance Complexity:** The presence of both "GOVERN" and "GOVERNANCE" as categories is notable (potentially indicating data from slightly different frameworks or versions). Both show high variability compared to technical categories like "ACCURACY," suggesting that governance functions are applied less inconsistently or depend heavily on the specific context.
+*   **Standardization in Technical Functions:** Technical functions like "HUMAN OVERSIGHT" and "ACCURACY & ROBUSTNESS" are extremely rigid (flat lines), suggesting a strict "one-size-fits-all" mapping (likely 2 controls) for these areas in the architecture being analyzed.
+*   **Security Distribution:** While the "SECURITY" function is centered at 2, the presence of outliers at both the minimum (1) and maximum (3) suggests edge cases where security is either lighter or heavier than the standard configuration.
+==================================================

@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment was successfully executed following the insights from the previous debugging step. The programmer correctly mapped the specific dataset values ('AI tangible harm event' as High Severity; 'AI tangible harm near-miss', 'issue', and 'none' as Low Severity) to the analysis categories. \n\nThe analysis of 191 qualified incidents revealed:\n- **Pre-2021 (N=140):** 25.71% High Severity (36 incidents).\n- **Post-2020 (N=51):** 15.69% High Severity (8 incidents).\n\nContrary to the hypothesis, the proportion of high-severity incidents actually decreased in the post-2020 period in this sample, although the Chi-square test (p=0.2070) indicates that this difference is not statistically significant. Therefore, the hypothesis that AI incident severity has significantly escalated in the post-2020 era is rejected based on this dataset.",
+  "child_ids": [
+    "node_6_52",
+    "node_6_83"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\nimport os\n\ndef run_experiment():\n    try:\n        print(\"Starting Temporal Severity Escalation Experiment...\")\n        \n        # 1. Load Dataset\n        filename = 'astalabs_discovery_all_data.csv'\n        if not os.path.exists(filename):\n            if os.path.exists(f'../{filename}'):\n                filename = f'../{filename}'\n            else:\n                print(\"Error: Dataset not found.\")\n                return\n\n        df = pd.read_csv(filename, low_memory=False)\n        \n        # 2. Filter for AIID incidents\n        aiid = df[df['source_table'] == 'aiid_incidents'].copy()\n        print(f\"AIID Incidents loaded: {len(aiid)}\")\n\n        # 3. Process Dates\n        aiid['date'] = pd.to_datetime(aiid['date'], errors='coerce')\n        aiid = aiid.dropna(subset=['date'])\n        aiid['year'] = aiid['date'].dt.year\n        \n        # Define Periods\n        # Pre-2021 (<= 2020) and Post-2020 (>= 2021)\n        aiid['Period'] = aiid['year'].apply(lambda x: 'Post-2020' if x >= 2021 else 'Pre-2021')\n        \n        # 4. Process Severity (Using schema found in debug)\n        # High: 'AI tangible harm event'\n        # Low: 'AI tangible harm near-miss', 'AI tangible harm issue', 'none'\n        sev_col = 'AI Harm Level'\n        \n        def map_severity(val):\n            if pd.isna(val):\n                return None\n            val = str(val).strip()\n            if val == 'AI tangible harm event':\n                return 'High_Severity'\n            elif val in ['AI tangible harm near-miss', 'AI tangible harm issue', 'none']:\n                return 'Low_Severity'\n            return None\n\n        aiid['Severity_Class'] = aiid[sev_col].apply(map_severity)\n        \n        # Filter for valid analysis rows\n        analysis_df = aiid.dropna(subset=['Severity_Class']).copy()\n        \n        print(f\"Records included in analysis: {len(analysis_df)}\")\n        print(\"Distribution of Severity Classes:\")\n        print(analysis_df['Severity_Class'].value_counts())\n\n        # 5. Contingency Table\n        ct = pd.crosstab(analysis_df['Period'], analysis_df['Severity_Class'])\n        # Ensure consistent order\n        ct = ct.reindex(index=['Pre-2021', 'Post-2020'], columns=['Low_Severity', 'High_Severity'], fill_value=0)\n        \n        print(\"\\n--- Contingency Table ---\")\n        print(ct)\n\n        # 6. Chi-Square Test\n        chi2, p, dof, expected = chi2_contingency(ct)\n        print(f\"\\nChi-Square Statistic: {chi2:.4f}\")\n        print(f\"P-Value: {p:.4f}\")\n        \n        # Interpretation\n        if p < 0.05:\n            print(\"Result: Statistically significant difference found.\")\n        else:\n            print(\"Result: No statistically significant difference found.\")\n\n        # 7. Proportions\n        props = pd.crosstab(analysis_df['Period'], analysis_df['Severity_Class'], normalize='index') * 100\n        print(\"\\n--- Proportions (%) ---\")\n        print(props.round(2))\n\n    except Exception as e:\n        print(f\"An error occurred: {e}\")\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting Temporal Severity Escalation Experiment...\nAIID Incidents loaded: 1362\nRecords included in analysis: 191\nDistribution of Severity Classes:\nSeverity_Class\nLow_Severity     147\nHigh_Severity     44\nName: count, dtype: int64\n\n--- Contingency Table ---\nSeverity_Class  Low_Severity  High_Severity\nPeriod                                     \nPre-2021                 104             36\nPost-2020                 43              8\n\nChi-Square Statistic: 1.5924\nP-Value: 0.2070\nResult: No statistically significant difference found.\n\n--- Proportions (%) ---\nSeverity_Class  High_Severity  Low_Severity\nPeriod                                     \nPost-2020               15.69         84.31\nPre-2021                25.71         74.29\n",
+  "created_at": "2026-02-22T07:25:08.931248+00:00",
+  "creation_idx": 137,
+  "experiment_id": "node_5_44",
+  "experiment_plan": {
+    "deliverables": "Yearly distribution plot (optional), Contingency table, Chi-square stats.",
+    "objective": "Evaluate if incident severity has increased over time.",
+    "steps": "1. Filter dataset for 'aiid_incidents'.\n2. Convert 'date' to datetime objects and extract the Year.\n3. Create a 'Period' variable: 'Pre-2021' (<= 2020) and 'Post-2020' (>= 2021).\n4. Bin '75_AI Harm Level' into 'High_Severity' (e.g., 'Critical', 'Severe', 'Death') and 'Low_Severity' (e.g., 'Minor', 'Moderate', 'Near miss').\n5. Generate a contingency table and run a Chi-square test."
+  },
+  "hypothesis": "Temporal Severity Escalation: The proportion of AI incidents classified as 'Severe' or 'Critical' in the AIID dataset has increased significantly in the post-2020 era (2021-Present) compared to the pre-2021 era, reflecting the deployment of more capable and risky systems.",
+  "id_in_run": 136,
+  "is_surprising": true,
+  "parent_id": "node_4_27",
+  "posterior": 0.21703296703296704,
+  "posterior_belief": {
+    "_empirical_mean": 0.016666666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 56.0,
+    "definitely_true": 0.0,
+    "maybe_false": 4.0,
+    "maybe_true": 0.0,
+    "mean": 0.21703296703296704,
+    "n": 60.0,
+    "prior_params": [
+      18.75,
+      12.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6048387096774194,
+  "prior_belief": {
+    "_empirical_mean": 0.6083333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 2.0,
+    "maybe_true": 15.0,
+    "mean": 0.6048387096774194,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 13.0
+  },
+  "review": "The experiment was successfully executed. Initial assumptions about the data schema (expecting keywords like 'Critical' or 'Severe') were incorrect, but the programmer successfully debugged the dataset, identified the actual taxonomy ('AI tangible harm event', 'AI tangible harm near-miss', etc.), and adapted the mapping logic accordingly. The analysis of 191 dated incidents revealed that the proportion of high-severity incidents actually decreased from 25.7% in the Pre-2021 era to 15.7% in the Post-2020 era, though this difference was not statistically significant (p=0.207). Consequently, the hypothesis that incident severity has escalated over time is rejected based on this sample.",
+  "rich_outputs": null,
+  "runtime_ms": 288790.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4653668911733428
+}

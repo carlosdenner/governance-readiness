@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between readiness deficiencies and failure modes using the 6 incidents where a dominant gap was identified (4 'Integration-dominant', 2 'Trust-dominant'). \n\n**Findings:**\n- **Integration-dominant:** 4 incidents, 100% classified as 'Prevention' failures.\n- **Trust-dominant:** 2 incidents, 100% classified as 'Prevention' failures.\n\n**Hypothesis Evaluation:**\nThe hypothesis is **REJECTED**. It predicted that 'Integration Readiness' deficiencies would manifest as 'Detection' or 'Response' failures. However, the data shows that Integration gaps in this subset exclusively resulted in 'Prevention' failures (4/4). \n\n**Statistical Significance:**\nFisher's Exact Test yielded a p-value of 1.0. This is because there was zero variance in the dependent variable (Failure Mode)—every single incident in the subset was a Prevention failure. \n\n**Conclusion:**\nBoth governance (Trust) and engineering (Integration) gaps appear to manifest primarily as prevention failures in this specific subset of data, contradicting the expectation that engineering gaps would correlate with detection/response issues.",
+  "child_ids": [
+    "node_5_3",
+    "node_5_26"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nfrom scipy.stats import fisher_exact\nimport os\n\n# Handle file loading robustly\nfilename = 'step3_incident_coding.csv'\nif os.path.exists(filename):\n    filepath = filename\nelif os.path.exists(os.path.join('..', filename)):\n    filepath = os.path.join('..', filename)\nelse:\n    print(f\"File {filename} not found.\")\n    exit(1)\n\ndf = pd.read_csv(filepath)\nprint(f\"Loaded dataset with {len(df)} records.\")\n\n# 1. Clean and Inspect Columns\nprint(\"\\n--- unique values in trust_integration_split ---\")\nprint(df['trust_integration_split'].unique())\n\n# Normalize column for filtering\ndf['split_norm'] = df['trust_integration_split'].astype(str).str.strip().str.lower()\n\n# 2. Filter out 'both' to isolate dominant factors\n# We look for rows that do NOT contain 'both' but ARE valid\n# Based on metadata, we expect roughly 6 records here\nsubset = df[~df['split_norm'].str.contains('both')].copy()\n\n# 3. Categorize into Trust vs Integration\ndef classify_split(val):\n    if 'trust' in val:\n        return 'Trust'\n    elif 'integration' in val:\n        return 'Integration'\n    return None\n\nsubset['group'] = subset['split_norm'].apply(classify_split)\nsubset = subset.dropna(subset=['group'])\n\nprint(f\"\\nFiltered subset size: {len(subset)}\")\nprint(subset['group'].value_counts())\n\n# 4. Categorize Failure Mode\ndef classify_failure(val):\n    val_str = str(val).lower()\n    if 'prevention' in val_str:\n        return 'Prevention'\n    else:\n        return 'Detection/Response'\n\nsubset['failure_type'] = subset['failure_mode'].apply(classify_failure)\n\n# 5. Contingency Table\nct = pd.crosstab(subset['group'], subset['failure_type'])\nprint(\"\\n--- Contingency Table ---\")\nprint(ct)\n\n# Ensure 2x2 shape for Fisher Test\nexpected_rows = ['Integration', 'Trust']\nexpected_cols = ['Detection/Response', 'Prevention']\nct_full = ct.reindex(index=expected_rows, columns=expected_cols, fill_value=0)\nprint(\"\\n--- Full Table for Stats ---\")\nprint(ct_full)\n\n# 6. Statistical Test (Fisher's Exact)\nif ct_full.values.sum() > 0:\n    odds_ratio, p_value = fisher_exact(ct_full)\n    print(f\"\\nFisher's Exact Test Results:\")\n    print(f\"Odds Ratio: {odds_ratio}\")\n    print(f\"P-value: {p_value:.4f}\")\n    \n    if p_value < 0.05:\n        print(\"Conclusion: Statistically significant association found.\")\n    else:\n        print(\"Conclusion: No statistically significant association (likely due to small sample size).\")\nelse:\n    print(\"Not enough data for statistical testing.\")\n\n# 7. Visualization\nif not ct_full.empty and ct_full.values.sum() > 0:\n    plt.figure(figsize=(8, 6))\n    ct_full.plot(kind='bar', stacked=True, color=['#ff9999', '#66b3ff'], ax=plt.gca())\n    plt.title('Failure Mode by Readiness Dominance')\n    plt.xlabel('Dominant Readiness Gap')\n    plt.ylabel('Incident Count')\n    plt.xticks(rotation=0)\n    plt.legend(title='Failure Mode')\n    plt.tight_layout()\n    plt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loaded dataset with 52 records.\n\n--- unique values in trust_integration_split ---\n<StringArray>\n['both', 'trust-dominant', 'integration-dominant']\nLength: 3, dtype: str\n\nFiltered subset size: 6\ngroup\nIntegration    4\nTrust          2\nName: count, dtype: int64\n\n--- Contingency Table ---\nfailure_type  Prevention\ngroup                   \nIntegration            4\nTrust                  2\n\n--- Full Table for Stats ---\nfailure_type  Detection/Response  Prevention\ngroup                                       \nIntegration                    0           4\nTrust                          0           2\n\nFisher's Exact Test Results:\nOdds Ratio: nan\nP-value: 1.0000\nConclusion: No statistically significant association (likely due to small sample size).\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Vertical Bar Plot (specifically designed as a grouped bar chart, though only one group has visible data).\n*   **Purpose:** The plot compares the count of incidents categorized by \"Failure Mode\" (Prevention vs. Detection/Response) across different \"Dominant Readiness Gaps\" (Integration and Trust).\n\n**2. Axes**\n*   **X-axis:**\n    *   **Title:** \"Dominant Readiness Gap\"\n    *   **Labels:** The axis features categorical variables: \"Integration\" and \"Trust\".\n*   **Y-axis:**\n    *   **Title:** \"Incident Count\"\n    *   **Range:** The values range from 0.0 to a maximum tick of 4.0, with intervals of 0.5.\n\n**3. Data Trends**\n*   **Dominant Category:** The \"Integration\" category represents the highest number of incidents.\n*   **Comparison:**\n    *   **Integration:** Shows a count of **4.0** incidents related to \"Prevention\".\n    *   **Trust:** Shows a count of **2.0** incidents related to \"Prevention\".\n*   **Missing/Zero Values:** There are no visible bars for the \"Detection/Response\" failure mode (Pink/Red) for either category, indicating a count of zero for this specific failure mode in this dataset.\n*   **Pattern:** The chart indicates that \"Prevention\" failures are twice as common in scenarios with an \"Integration\" readiness gap compared to those with a \"Trust\" readiness gap.\n\n**4. Annotations and Legends**\n*   **Chart Title:** \"Failure Mode by Readiness Dominance\" is displayed at the top center.\n*   **Legend:** Located in the top right corner with the title \"Failure Mode\".\n    *   **Pink/Light Red:** Represents \"Detection/Response\".\n    *   **Blue/Light Blue:** Represents \"Prevention\".\n\n**5. Statistical Insights**\n*   **Exclusive Failure Mode:** Within the scope of this data, 100% of the recorded incidents are classified as \"Prevention\" failures. There were no \"Detection/Response\" incidents recorded for these specific readiness gaps.\n*   **Risk Area:** The \"Integration\" readiness gap appears to be a more significant driver of Prevention failures (4 incidents) than the \"Trust\" gap (2 incidents). This suggests that efforts to improve system readiness should prioritize addressing Integration gaps to reduce the overall incident count.\n==================================================",
+  "created_at": "2026-02-20T22:24:50.671116+00:00",
+  "creation_idx": 30,
+  "experiment_id": "node_4_7",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table of Readiness Split vs. Failure Mode.\n2. Fisher's Exact Test results (p-value, odds ratio).\n3. Stacked bar chart visualization.",
+    "objective": "To statistically validate whether governance-related (Trust) gaps correlate with prevention failures while engineering (Integration) gaps correlate with detection/response failures.",
+    "steps": "1. Load the dataset 'step3_incident_coding.csv' from the current directory.\n2. Filter the dataset to include only incidents where 'trust_integration_split' is either 'Trust-dominant' or 'Integration-dominant'.\n3. Create a binary failure mode variable: map 'Prevention' to 'Prevention' and map 'Detection'/'Response' to 'Detection/Response'.\n4. Generate a contingency table of 'trust_integration_split' (rows) vs. the binary failure mode (columns).\n5. Perform Fisher's Exact Test on the contingency table to calculate the p-value and odds ratio.\n6. Visualize the relationship using a stacked bar chart showing the proportion of failure modes for each dominance type."
+  },
+  "hypothesis": "Incidents linked to 'Trust Readiness' deficiencies are significantly more likely to manifest as 'Prevention Failures', whereas 'Integration Readiness' deficiencies are more likely to manifest as 'Detection' or 'Response' failures.",
+  "id_in_run": 29,
+  "is_surprising": true,
+  "parent_id": "node_3_0",
+  "posterior": 0.36983471074380164,
+  "posterior_belief": {
+    "_empirical_mean": 0.24166666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 3.0,
+    "definitely_true": 0.0,
+    "maybe_false": 87.0,
+    "maybe_true": 0.0,
+    "mean": 0.36983471074380164,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "Hypothesis: Incidents linked to 'Trust Readiness' deficiencies are significantly more likely to manifest as 'Prevention Failures', whereas 'Integration Readiness' deficiencies are more likely to manifest as 'Detection' or 'Response' failures.\n\nExperiment Results: The experiment was faithfully implemented using the 'step3_incident_coding.csv' dataset. The analysis filtered for incidents with a dominant readiness gap, resulting in a subset of 6 incidents (2 Trust-dominant, 4 Integration-dominant). The failure modes were mapped to a binary classification (Prevention vs. Detection/Response) and analyzed using a contingency table and Fisher's Exact Test.\n\nFindings:\n1. Hypothesis Rejection: The hypothesis is rejected. While Trust-dominant incidents manifested as Prevention Failures (consistent with the hypothesis), Integration-dominant incidents also exclusively manifested as Prevention Failures (4/4), contradicting the prediction that they would lead to Detection/Response failures.\n2. Statistical Evidence: Fisher's Exact Test yielded a p-value of 1.0, reflecting identical distributions (100% Prevention) in both groups.\n3. Limitations: The validity of the statistical test is constrained by the small sample size (n=6), as 88% of the dataset (46/52 incidents) possessed 'Both' gap types and were excluded to test the specific dominance hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 331850.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.43185860293167194
+}

@@ -1,0 +1,71 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Lifecycle Governance Decay
+Loaded EO 13960 data: 1757 records
+Mapped 'ato' to column: 40_has_ato
+Mapped 'impact' to column: 52_impact_assessment
+Mapped 'eval' to column: 55_independent_eval
+Mapped 'notice' to column: 59_ai_notice
+Mapped 'bias' to column: 62_disparity_mitigation
+Using stage column: 16_dev_stage
+Unique development stages: <StringArray>
+[ 'Implementation and Assessment', 'Acquisition and/or Development',
+                      'Initiated',                        'Retired',
+      'Operation and Maintenance',                  'In production',
+                     'In mission',                        'Planned',
+                              nan]
+Length: 9, dtype: str
+Records after stage filtering: 1287
+lifecycle_group
+Operation      916
+Development    371
+Name: count, dtype: int64
+
+--- Results ---
+Development: Mean Score = 0.38, Median = 0.0, n = 371
+Operation:   Mean Score = 0.57, Median = 1.0, n = 916
+Mann-Whitney U Test: U=144590.5, p-value=0.0000
+Result: Statistically significant difference found.
+
+STDERR:
+<ipython-input-1-d8ef9eb33965>:103: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(boxplot_data, labels=['Development', 'Operation'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot is used to display the distribution of numerical data (Governance Score) across different categorical groups (Lifecycle Stages). It visualizes the five-number summary: minimum, first quartile (Q1), median, third quartile (Q3), and maximum, along with potential outliers.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Labels:** Represents the lifecycle stages: **"Development"** and **"Operation"**.
+    *   **Type:** Categorical variable.
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Governance Score (0-5)".
+    *   **Units/Range:** The axis is numerical. While the label indicates a theoretical scale of 0 to 5, the visible axis ticks range from **0.0 to 3.0** in increments of 0.5.
+
+### 3. Data Trends
+*   **"Development" Stage:**
+    *   **Median:** The median line (orange) is at **0.0**, indicating that at least half of the projects in the development stage have a governance score of 0.
+    *   **Interquartile Range (IQR):** The box extends from 0.0 to 1.0.
+    *   **Range:** The whiskers extend from 0.0 up to **2.0**, which is the maximum non-outlier value.
+    *   **Outliers:** There are no visible outliers for this group.
+*   **"Operation" Stage:**
+    *   **Median:** The median line (orange) appears at **1.0** (located at the top of the box), suggesting a higher central tendency than the Development stage.
+    *   **Interquartile Range (IQR):** Similar to Development, the box spans from 0.0 to 1.0.
+    *   **Range:** The whiskers extend from 0.0 to **2.0**.
+    *   **Outliers:** There is a distinct outlier plotted as a circle at the value **3.0**.
+
+### 4. Annotations and Legends
+*   **Title:** The plot is titled **"Governance Score by Lifecycle Stage"**.
+*   **Grid Lines:** Horizontal dashed grid lines are present at 0.5 intervals to aid in reading the y-axis values.
+*   **Outlier Marker:** A small circle above the "Operation" whisker indicates a data point that is statistically distant from the rest of the data.
+
+### 5. Statistical Insights
+*   **Low Overall Scores:** despite the axis label suggesting a scale of 0-5, the actual data is concentrated at the lower end. No data point exceeds a score of 3, and the vast majority of data falls between 0 and 2. This suggests that governance scores are generally low across both lifecycle stages.
+*   **Comparison of Stages:** The **Operation** stage performs slightly better than the **Development** stage. The median score for Operations is 1.0, whereas for Development it is 0.0.
+*   **Distribution Skew:** Both distributions are positively skewed (skewed right). The data is clustered near zero, with whiskers extending upwards.
+*   **Variability:** The **Operation** stage shows higher variability in the upper range, evidenced by the presence of an outlier at 3.0, indicating that while rare, some operation-stage projects achieve higher governance scores than any observed development-stage projects.
+==================================================

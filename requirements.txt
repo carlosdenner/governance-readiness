@@ -1,0 +1,10 @@
+# Core analysis
+pandas>=2.1
+pyyaml>=6.0
+numpy>=1.24
+matplotlib>=3.7
+statsmodels>=0.14
+
+# Agentic pipeline (optional — only for analysis/agents/)
+openai>=1.0
+langchain-openai>=0.3

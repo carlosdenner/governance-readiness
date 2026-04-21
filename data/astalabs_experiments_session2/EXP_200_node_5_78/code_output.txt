@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1757 records from EO 13960.
+
+--- Categorization ---
+Public Facing: 255
+Internal/Non-Public: 1502
+
+--- Descriptive Statistics ---
+Public-Facing Systems (255):
+  With AI Notice: 26 (10.20%)
+Internal/Other Systems (1502):
+  With AI Notice: 42 (2.80%)
+
+--- Statistical Test Results (Chi-Square) ---
+Chi2 Statistic: 30.1255
+P-value: 4.0496e-08
+
+--- Interpretation ---
+Result: Significant difference detected.
+Direction: Public-facing systems are significantly MORE likely to provide notice.
+Hypothesis Status: REJECTED (Transparency works better for public systems).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot is designed to compare the prevalence (rates) of AI notices between two distinct categorical groups: "Public Facing" deployments and "Internal/Non-Public" deployments.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Title:** "Percentage with AI Notice (%)"
+    *   **Unit:** Percentage.
+    *   **Range:** The axis is scaled from **0 to 12**, with major tick marks at intervals of 2 (0, 2, 4, 6, 8, 10, 12).
+*   **X-Axis:**
+    *   **Title:** The axis does not have a specific title, but it represents "Deployment Type."
+    *   **Labels:** It features two distinct categories: **"Public Facing"** and **"Internal/Non-Public"**.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"Public Facing"** category corresponds to the tallest bar (colored red), indicating the highest value in the dataset.
+*   **Shortest Bar:** The **"Internal/Non-Public"** category corresponds to the shortest bar (colored grey), indicating a significantly lower value.
+*   **Pattern:** There is a stark contrast between the two categories. The visual disparity highlights that AI notices are much more common in public-facing contexts compared to internal ones.
+
+### 4. Annotations and Legends
+*   **Bar Annotations:** The exact values are annotated in bold text directly above each bar for clarity:
+    *   Public Facing: **10.2%**
+    *   Internal/Non-Public: **2.8%**
+*   **Title:** The chart title, **"Transparency Gap: AI Notice Rates by Deployment Type,"** provides context for the data, explicitly framing the difference in values as a "gap" in transparency.
+*   **Color Coding:** The use of distinct colors (Red for Public Facing vs. Grey for Internal) reinforces the contrast between the primary focus group and the secondary group.
+
+### 5. Statistical Insights
+*   **Significant Disparity:** There is a large "transparency gap" of **7.4 percentage points** between the two groups.
+*   **Relative Likelihood:** Public-facing AI deployments are **more than 3.6 times as likely** ($10.2 \div 2.8 \approx 3.64$) to carry an AI notice compared to internal or non-public deployments.
+*   **Conclusion:** The data suggests that while AI transparency (in the form of notices) is relatively low overall (peaking at roughly 10%), organizations are significantly more diligent about disclosing AI usage to the public than they are for internal or non-public applications.
+==================================================

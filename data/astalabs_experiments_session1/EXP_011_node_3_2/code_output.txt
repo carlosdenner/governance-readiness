@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded step3_mitigation_gaps.csv from current directory
+
+Unique Categories Identified: <StringArray>
+['Technical - Cyber', 'Technical - ML', 'Policy']
+Length: 3, dtype: str
+
+Incident Count Statistics by Category:
+                   count       mean       std  min  max
+category                                               
+Policy                 7  13.285714  4.151879    8   20
+Technical - Cyber     12  13.500000  7.090326    6   33
+Technical - ML        16  15.375000  7.762087    2   31
+
+One-way ANOVA Results:
+F-statistic: 0.3422
+P-value: 0.7128
+Result: No statistically significant difference found between categories (Fail to reject H0).
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a box-and-whisker plot).
+*   **Purpose:** This plot is designed to visualize and compare the distribution of numerical data ("Incident Count") across distinct categorical groups ("Mitigation Category"). It effectively displays the median, quartiles, range, and potential outliers for each category.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Category"
+    *   **Categories:** Three distinct groups representing mitigation types: "Policy", "Technical - Cyber", and "Technical - ML".
+*   **Y-Axis:**
+    *   **Label:** "Incident Count"
+    *   **Range:** The visual scale displays tick marks from **5 to 30**. The actual data extends slightly beyond these bounds, ranging from approximately **2 to 33**.
+
+### 3. Data Trends
+*   **Policy:**
+    *   Shows a relatively compact distribution.
+    *   The median appears to be around **13**.
+    *   The data ranges from approximately **8 to 20**, with no visible outliers.
+*   **Technical - Cyber:**
+    *   This group has the most compact Interquartile Range (IQR), indicating consistency in the majority of the data.
+    *   The median is the lowest of the three groups, sitting at roughly **12.5**.
+    *   **Outlier:** There is a significant outlier visible as a circle at the top of the plot, representing a value of approximately **33**. This indicates a single instance (or rare cluster) with a much higher incident count than typical for this category.
+*   **Technical - ML:**
+    *   This category exhibits the **highest variability** (spread).
+    *   The box (IQR) is the tallest, and the whiskers extend the furthest, ranging from a low of roughly **2** to a high of roughly **31**.
+    *   The median is the highest among the groups, at approximately **14**.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Incident Counts by Mitigation Category" clearly states the subject of the analysis.
+*   **Color Coding:**
+    *   **Blue Boxes:** Represent the Interquartile Range (IQR), encompassing the middle 50% of the data (25th to 75th percentile).
+    *   **Green Lines:** Indicate the median value for each category.
+    *   **Black Whiskers:** Extend to the minimum and maximum values within 1.5 times the IQR.
+    *   **Circle:** Represents an outlier point falling outside the whiskers.
+*   **Grid:** A grid overlay is provided to help estimate values on the Y-axis.
+
+### 5. Statistical Insights
+*   **Central Tendency:** The median incident counts are fairly similar across all three categories, hovering between 12.5 and 14. This suggests that the "typical" number of incidents is comparable regardless of the mitigation category.
+*   **Volatility in ML:** The "Technical - ML" category is the least predictable. It has incidents ranging from very low (near 0) to very high (over 30). This broad spread suggests that technical mitigations involving Machine Learning may behave inconsistently or apply to a wider variety of scenarios than the other categories.
+*   **Consistency in Cyber:** Apart from the single extreme outlier, the "Technical - Cyber" category shows the most consistent performance (smallest box), suggesting that typical cyber mitigation incidents fall within a narrower expected range than policy or ML-based mitigations.
+==================================================

@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+--- Analysis 1: Exfiltration vs Integration (Access/Network) Gaps ---
+Gap: Integration      False  True 
+Tactic: Exfiltration              
+False                     1     36
+True                      1     14
+Fisher Exact p-value: 0.4977
+Odds Ratio: 0.3889
+
+--- Analysis 2: Evasion vs Trust (Robustness/Model) Gaps ---
+Gap: Trust       False  True 
+Tactic: Evasion              
+False               14     15
+True                 0     23
+Fisher Exact p-value: 0.0001
+Odds Ratio: inf
+
+--- Correlation Matrix (Phi Coefficient approximation) ---
+               is_exfil  is_evasion  has_int_gap  has_trust_gap
+is_exfil       1.000000   -0.139704    -0.093385      -0.187715
+is_evasion    -0.139704    1.000000     0.178113       0.540552
+has_int_gap   -0.093385    0.178113     1.000000      -0.121395
+has_trust_gap -0.187715    0.540552    -0.121395       1.000000

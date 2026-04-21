@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 Scored Subset: 1757 rows
+Analysis Subset (Commercial vs In-House): 920 rows
+procurement_type
+Commercial    481
+In-House      439
+Name: count, dtype: int64
+Code Access Distribution:
+ has_code_access
+1    486
+0    434
+Name: count, dtype: int64
+
+Contingency Table:
+                   No Access  Access
+procurement_type                   
+Commercial              349     132
+In-House                 85     354
+
+Chi-square Statistic: 258.4928
+P-value: 3.6564e-58
+Odds of No Access (Commercial): 2.6439
+Odds of No Access (In-House): 0.2401
+Odds Ratio (Commercial vs In-House for No Access): 11.0112
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares a specific metric ("Proportion with Code Access") across two distinct categorical groups ("Commercial" and "In-House" procurement sources). It is designed to visualize the magnitude of difference—or "gap"—between these two groups.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** Implicitly represents "Procurement Source" based on the chart title and category names.
+    *   **Categories:** The axis features two discrete categories: **"Commercial"** and **"In-House"**.
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Proportion with Code Access".
+    *   **Units:** The axis is scaled in decimals representing proportions (0.0 to 1.0), which corresponds to 0% to 100%.
+    *   **Range:** The tick marks range from **0.0 to 1.0**, with an interval of 0.2. The visible plot area extends slightly to roughly 1.1 to accommodate the bar height and labels.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"In-House"** bar (colored light blue) is the tallest, indicating a high prevalence of code access.
+*   **Shortest Bar:** The **"Commercial"** bar (colored red) is significantly shorter, indicating a low prevalence of code access.
+*   **Pattern:** There is a stark contrast between the two categories. The visual disparity suggests that code accessibility is heavily dependent on the source of the software, with In-House solutions offering vastly superior transparency compared to Commercial ones.
+
+### 4. Annotations and Legends
+*   **Title:** "Vendor Transparency Gap: Code Access by Procurement Source" – This title frames the data as an issue of transparency, specifically highlighting a "gap."
+*   **Data Labels:**
+    *   **Commercial:** Annotated with **"27.4%"** sitting directly atop the red bar.
+    *   **In-House:** Annotated with **"80.6%"** sitting directly atop the blue bar.
+    *   *Note:* While the Y-axis uses decimal notation (e.g., 0.8), the annotations translate these figures into percentages for easier reading.
+*   **Color Coding:** The use of **Red** for Commercial (often associated with "stop" or "warning") and **Blue** for In-House helps reinforce the negative transparency implication of the Commercial bar versus the positive implication of the In-House bar.
+
+### 5. Statistical Insights
+*   **Significant Disparity:** There is a massive "transparency gap" of **53.2 percentage points** between the two groups ($80.6\% - 27.4\%$).
+*   **Relative Likelihood:** Code access is nearly **3 times more likely** ($\approx 2.94x$) to be available for In-House procurement compared to Commercial vendors.
+*   **Conclusion:** The data strongly supports the hypothesis that commercial vendors are often "black boxes," restricting code access for the majority of their products (nearly 3/4ths), whereas in-house development projects maintain code transparency in the vast majority of cases (over 4/5ths).
+==================================================

@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Found Tactic Mappings:
+  Poisoning IDs: []
+  Evasion IDs: ['AML.TA0007']
+
+--- Analysis Categories ---
+category
+Evasion      30
+Other        14
+Mixed         6
+Poisoning     2
+Name: count, dtype: int64
+
+Evasion (n=30): Mean=0.97
+Poisoning (n=2): Mean=1.00
+
+Welch's T-Test: t=-1.0000, p-value=0.3256
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  res = hypotest_fun_out(*samples, **kwds)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot compares the distribution of the "Number of Missing Controls" between two different categories: "Evasion" and "Poisoning". It is designed to visualize the central tendency (median), spread, and potential outliers in the data for each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** The axis represents categorical data with two groups: **"Evasion"** and **"Poisoning"**.
+*   **Y-Axis:**
+    *   **Title:** **"Number of Missing Controls"**.
+    *   **Range:** The visual scale ranges from **0.0 to 1.0**, with tick marks at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+    *   **Units:** While not explicitly specified as a percentage or raw count, the discrete values (0 and 1) suggest this is likely a count of controls, or a binary indicator (0 = present, 1 = missing).
+
+### 3. Data Trends
+*   **Collapsed Boxes:** For both "Evasion" and "Poisoning", the "box" portion of the plot is collapsed into a single orange line at the value **1.0**. This indicates that the Median, 25th percentile (Q1), and 75th percentile (Q3) are all identical at 1.0.
+*   **Poisoning:** The data for the "Poisoning" category appears to be constant. There is an orange line at **1.0**, with no visible whiskers or outliers. This suggests that every data point for "Poisoning" in this dataset has a value of 1.
+*   **Evasion:** Similar to Poisoning, the median and interquartile range are compressed at **1.0**. However, there is a distinct **outlier** represented by a hollow circle at **0.0**.
+
+### 4. Annotations and Legends
+*   **Title:** The chart is titled **"Competency Gaps: Evasion vs. Poisoning"**, indicating the context is likely cybersecurity or machine learning security (Adversarial ML), analyzing where defenses or competencies are lacking.
+*   **Grid Lines:** Horizontal dashed grid lines are present at every 0.2 interval on the y-axis to aid in reading the values.
+*   **Colors:** The central tendency markers (medians) are colored **orange**, while the outlier is a black circle.
+
+### 5. Statistical Insights
+*   **High Uniformity:** The data is extremely uniform. For both attack types (Evasion and Poisoning), the "Number of Missing Controls" is almost universally **1**. This suggests a consistent gap in competency or defense where exactly one control is missing across the board.
+*   **The Evasion Exception:** The key statistical difference is the outlier in the "Evasion" category at **0.0**. This indicates that there was at least one instance (or a small number of instances) regarding Evasion where there were **zero** missing controls (i.e., the controls were fully present/competent).
+*   **Comparison:** While both categories show a significant gap (consistently sitting at 1.0), the "Poisoning" category is strictly worse in terms of consistency, as it has no recorded instances of 0 missing controls, whereas "Evasion" has at least one successful case of 0 missing controls.
+==================================================

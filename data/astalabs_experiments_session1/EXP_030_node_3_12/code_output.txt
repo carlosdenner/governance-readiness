@@ -1,0 +1,44 @@
+exitcode: 0 (execution succeeded)
+Code output: === Control Density Analysis: NIST vs EU AI Act ===
+NIST Group (n=23): Mean = 1.8696, Std = 0.6944
+EU Group   (n=9): Mean = 1.6667, Std = 0.7071
+Difference in Means: 0.2029
+T-Test Results: t-statistic = 0.7335, p-value = 0.4750
+Result: No Statistically Significant Difference (Fail to Reject Null Hypothesis)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart with Error Bars.
+*   **Purpose:** The plot compares the mean values of "Control Density" between two distinct regulatory/framework categories ("NIST Family" and "EU AI Act"). The inclusion of error bars indicates the variability or uncertainty associated with these mean measurements.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** Categorical variables representing two frameworks: **"NIST Family"** and **"EU AI Act"**.
+    *   **Nature:** Nominal/Categorical.
+*   **Y-Axis:**
+    *   **Label:** **"Mean Control Density (Mapped Controls per Req)"**.
+    *   **Units:** The unit is a count ratio (Mapped Controls per Requirement).
+    *   **Value Range:** The axis scale ranges from **0.0 to 3.5**, with grid lines marking increments of 0.5.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"NIST Family"** (blue) bar is the tallest, indicating a higher average control density.
+*   **Shortest Bar:** The **"EU AI Act"** (green) bar is shorter.
+*   **Specific Values:**
+    *   **NIST Family:** Approximately **1.87**.
+    *   **EU AI Act:** Approximately **1.67**.
+*   **Comparison:** The NIST Family framework has a higher mean control density compared to the EU AI Act. Specifically, the NIST Family averages 0.20 more mapped controls per requirement than the EU AI Act.
+
+### 4. Annotations and Legends
+*   **Title:** "Comparison of Technical Prescription: NIST vs EU AI Act" – sets the context of the analysis as a comparison of technical specificity or "prescription."
+*   **Data Labels:** The exact mean values are annotated in bold text above the error bars (**1.87** for NIST and **1.67** for EU AI Act).
+*   **Error Bars:** Both bars feature black error bars (whiskers) extending above and below the top of the bar. These represent the variability of the data (likely Standard Deviation or Standard Error). The overlap between the error bars suggests that while the means are different, the distributions of the underlying data points are close.
+*   **Grid:** Dashed horizontal lines serve as a visual aid to estimate values against the Y-axis.
+
+### 5. Statistical Insights
+*   **Technical Prescription:** The metric "Mapped Controls per Req" serves as a proxy for "Technical Prescription." A higher value indicates that for every high-level requirement, there are more specific technical controls defined.
+*   **Granularity:** The **NIST Family** appears to be more technically prescriptive or granular, requiring nearly 2 technical controls per requirement on average (1.87). In contrast, the **EU AI Act** is slightly less prescriptive with a ratio of 1.67.
+*   **Implication:** This suggests that the NIST framework might offer more specific technical guidance or stricter implementation details for each requirement compared to the EU AI Act, which may be higher-level or principal-based in its drafting.
+==================================================

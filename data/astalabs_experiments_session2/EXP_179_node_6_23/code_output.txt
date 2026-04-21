@@ -1,0 +1,20 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 subset shape: (1757, 196)
+
+--- Opt-Out Documentation Rates by Lifecycle Phase ---
+                 count  sum      mean   percent
+lifecycle_phase                                
+Development        626   21  0.033546  3.354633
+Operational        627   54  0.086124  8.612440
+
+--- Contingency Table (0=No, 1=Yes) ---
+has_opt_out        0   1
+lifecycle_phase         
+Development      605  21
+Operational      573  54
+
+--- Chi-Square Test Results ---
+Chi-square Statistic: 14.4683
+P-value: 1.4254e-04
+Conclusion: Statistically significant difference detected.

@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Autonomy-Physical Risk Link' hypothesis using 166 fully coded incidents from the AIID dataset. The analysis refutes the hypothesis.\n\nFindings:\n1.  **No Statistical Significance**: The Chi-Square test yielded a p-value of 0.7572, well above the 0.05 threshold, indicating no significant relationship between Autonomy Level and Harm Type.\n2.  **Harm Distribution**: Contrary to the expectation that High Autonomy would skew heavily toward Physical harm and Low Autonomy toward Intangible harm, the distributions were remarkably similar. Physical harm was the dominant outcome for both High Autonomy (58.3%) and Low/Augmented Autonomy (54.2%) systems.\n3.  **Intangible Harm**: While Intangible harm was slightly more common in Low Autonomy systems (45.8% vs 41.7%), the difference (Cramer's V = 0.024) is negligible.\n\nConclusion: The level of autonomy (High vs. Low/Augmented) is not a predictor of harm type (Physical vs. Intangible) in this dataset. Physical risks remain the primary outcome across all autonomy levels analyzed.",
+  "child_ids": [
+    "node_6_72"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# 1. Load Data\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    print(\"Error: Dataset not found.\")\n    exit(1)\n\n# 2. Filter for AIID Incidents\ndf_aiid = df[df['source_table'] == 'aiid_incidents'].copy()\n\n# 3. Categorize Autonomy Level\n# Mapping based on debug findings: Autonomy1/2 -> Low, Autonomy3 -> High\ndef classify_autonomy(val):\n    s = str(val).lower()\n    if 'autonomy3' in s:\n        return 'High (Autonomous)'\n    elif 'autonomy1' in s or 'autonomy2' in s:\n        return 'Low (Augmented)'\n    return 'Unknown'\n\ndf_aiid['Autonomy_Cat'] = df_aiid['Autonomy Level'].apply(classify_autonomy)\n\n# 4. Categorize Harm Type\n# Use 'Tangible Harm' for Physical and 'Special Interest Intangible Harm' for Intangible\ndef classify_harm(row):\n    # Check Tangible Harm (Physical)\n    tangible = str(row.get('Tangible Harm', '')).lower()\n    is_physical = 'definitively' in tangible or 'imminent' in tangible\n    \n    # Check Intangible Harm\n    intangible_col = str(row.get('Special Interest Intangible Harm', '')).lower()\n    is_intangible = 'yes' in intangible_col\n    \n    if is_physical:\n        return 'Physical'\n    elif is_intangible:\n        return 'Intangible'\n    else:\n        # Fallback: if 'no tangible harm' is explicitly stated and 'Harm Domain' is yes\n        harm_domain = str(row.get('Harm Domain', '')).lower()\n        if 'no tangible' in tangible and 'yes' in harm_domain:\n            return 'Intangible'\n            \n    return 'Unknown'\n\ndf_aiid['Harm_Cat'] = df_aiid.apply(classify_harm, axis=1)\n\n# 5. Filter for Analysis\nanalysis_df = df_aiid[\n    (df_aiid['Autonomy_Cat'] != 'Unknown') &\n    (df_aiid['Harm_Cat'] != 'Unknown')\n].copy()\n\nprint(f\"Data points for analysis: {len(analysis_df)}\")\nprint(\"Distribution:\")\nprint(analysis_df.groupby(['Autonomy_Cat', 'Harm_Cat']).size())\n\n# 6. Statistical Analysis\nct = pd.crosstab(analysis_df['Autonomy_Cat'], analysis_df['Harm_Cat'])\n\nprint(\"\\n--- Contingency Table ---\")\nprint(ct)\n\nif not ct.empty and ct.shape == (2, 2):\n    chi2, p, dof, expected = stats.chi2_contingency(ct)\n    n = ct.sum().sum()\n    cramers_v = np.sqrt(chi2 / (n * 1)) # min_dim - 1 is 1\n    \n    print(\"\\n--- Statistical Test Results ---\")\n    print(f\"Chi-Square: {chi2:.4f}\")\n    print(f\"P-Value: {p:.4e}\")\n    print(f\"Cramer's V: {cramers_v:.4f}\")\n    \n    alpha = 0.05\n    if p < alpha:\n        print(\"\\nResult: Reject Null Hypothesis. Significant association found.\")\n    else:\n        print(\"\\nResult: Fail to reject Null Hypothesis. No significant association.\")\n        \n    # 7. Visualization\n    # Normalize rows to percentages\n    ct_norm = ct.div(ct.sum(axis=1), axis=0) * 100\n    ax = ct_norm.plot(kind='bar', stacked=True, color=['#ff9999', '#66b3ff'], figsize=(8, 6))\n    \n    plt.title('Harm Type Distribution by Autonomy Level')\n    plt.xlabel('Autonomy Level')\n    plt.ylabel('Percentage')\n    plt.legend(title='Harm Type', bbox_to_anchor=(1.05, 1))\n    \n    for c in ax.containers:\n        ax.bar_label(c, fmt='%.1f%%', label_type='center')\n        \n    plt.tight_layout()\n    plt.show()\n\nelif not ct.empty:\n    print(\"\\nNot enough categories for 2x2 Chi-Square. Printing raw counts only.\")\n    print(ct)\nelse:\n    print(\"\\nNo valid data found after filtering.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Data points for analysis: 166\nDistribution:\nAutonomy_Cat       Harm_Cat  \nHigh (Autonomous)  Intangible    20\n                   Physical      28\nLow (Augmented)    Intangible    54\n                   Physical      64\ndtype: int64\n\n--- Contingency Table ---\nHarm_Cat           Intangible  Physical\nAutonomy_Cat                           \nHigh (Autonomous)          20        28\nLow (Augmented)            54        64\n\n--- Statistical Test Results ---\nChi-Square: 0.0956\nP-Value: 7.5721e-01\nCramer's V: 0.0240\n\nResult: Fail to reject Null Hypothesis. No significant association.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** 100% Stacked Bar Chart.\n*   **Purpose:** This chart is used to compare the relative percentage distribution of two categorical variables (\"Intangible\" vs. \"Physical\" harm) across distinct groups (\"High\" vs. \"Low\" autonomy levels). It visualizes how the composition of harm types changes depending on the level of autonomy.\n\n### 2. Axes\n*   **X-axis:**\n    *   **Title:** \"Autonomy Level\"\n    *   **Labels:** Two categorical groups are presented: \"High (Autonomous)\" and \"Low (Augmented)\". The labels are oriented vertically (90 degrees).\n*   **Y-axis:**\n    *   **Title:** \"Percentage\"\n    *   **Range:** The scale runs from 0 to 100.\n    *   **Units:** Percent (%).\n\n### 3. Data Trends\n*   **General Pattern:** In both autonomy levels, \"Physical\" harm constitutes the majority (over 50%) of the distribution, while \"Intangible\" harm constitutes the minority.\n*   **High (Autonomous) Level:**\n    *   **Physical Harm (Blue):** Comprises the larger portion at **58.3%**.\n    *   **Intangible Harm (Pink):** Comprises the smaller portion at **41.7%**.\n*   **Low (Augmented) Level:**\n    *   **Physical Harm (Blue):** Comprises **54.2%**.\n    *   **Intangible Harm (Pink):** Comprises **45.8%**.\n*   **Comparison:** As the autonomy level shifts from High (Autonomous) to Low (Augmented), the proportion of Physical harm decreases slightly, while the proportion of Intangible harm increases.\n\n### 4. Annotations and Legends\n*   **Chart Title:** \"Harm Type Distribution by Autonomy Level\" appears at the top center.\n*   **Legend:** Located on the right side, titled \"Harm Type\". It indicates:\n    *   **Pink/Light Red:** Represents \"Intangible\" harm.\n    *   **Light Blue:** Represents \"Physical\" harm.\n*   **Data Labels:** Specific percentage values are annotated directly inside each bar segment (e.g., \"58.3%\", \"41.7%\"), providing precise data points without needing to estimate from the Y-axis.\n\n### 5. Statistical Insights\n*   **dominance of Physical Harm:** Regardless of whether the system is fully autonomous or augmented (low autonomy), physical harm is the primary concern, consistently accounting for more than half of the recorded harm types.\n*   **Shift in Harm Composition:** There is a notable, albeit small, shift in the distribution based on autonomy.\n    *   **High Autonomy** is associated with a higher likelihood of Physical harm (58.3%) compared to Low Autonomy (54.2%).\n    *   **Low Autonomy (Augmented)** shows a higher relative incidence of Intangible harm (45.8%) compared to High Autonomy (41.7%).\n*   **Conclusion:** While physical risks remain paramount in both scenarios, the data suggests that as human involvement increases (shifting from Autonomous to Augmented), the relative share of intangible harms (potentially psychological, financial, or societal) rises by approximately 4.1 percentage points.\n==================================================",
+  "created_at": "2026-02-22T10:53:02.737291+00:00",
+  "creation_idx": 213,
+  "experiment_id": "node_5_83",
+  "experiment_plan": {
+    "deliverables": "Crosstab of Autonomy vs. Harm; Statistical test results; Stacked bar chart of Harm types by Autonomy level.",
+    "objective": "Test the correlation between Autonomy Level and Harm Type in the AIID dataset.",
+    "steps": "1. Filter AIID data. 2. Clean and categorize 'Autonomy Level' into 'High' (Autonomous) vs 'Low' (Assistive). 3. Categorize 'Tangible Harm' into 'Physical' vs 'Intangible/Economic'. 4. Create a cross-tabulation of Autonomy vs. Harm Type. 5. Calculate Cramér's V or perform a Chi-square test to measure the strength of association."
+  },
+  "hypothesis": "The Autonomy-Physical Risk Link: AI systems operating at 'High' or 'Full' autonomy levels are statistically more likely to result in 'Physical' harm, whereas 'Augmented' or 'Human-in-the-loop' systems predominantly result in 'Intangible' (Economic/Psychological) harm.",
+  "id_in_run": 212,
+  "is_surprising": true,
+  "parent_id": "node_4_51",
+  "posterior": 0.2445054945054945,
+  "posterior_belief": {
+    "_empirical_mean": 0.025,
+    "_type": "boolean_cat",
+    "definitely_false": 54.0,
+    "definitely_true": 0.0,
+    "maybe_false": 6.0,
+    "maybe_true": 0.0,
+    "mean": 0.2445054945054945,
+    "n": 60.0,
+    "prior_params": [
+      20.75,
+      10.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6693548387096774,
+  "prior_belief": {
+    "_empirical_mean": 0.675,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 1.0,
+    "maybe_true": 22.0,
+    "mean": 0.6693548387096774,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 7.0
+  },
+  "review": "The experiment was executed successfully after initial data mapping issues were resolved. The programmer correctly debugged the non-standard schema (e.g., 'Autonomy1', 'Autonomy3') and adjusted the categorization logic to allow for a valid statistical test on 166 incidents. The analysis faithfully tested the hypothesis using Chi-square and Cramer's V tests.",
+  "rich_outputs": null,
+  "runtime_ms": 390110.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5098192130450194
+}

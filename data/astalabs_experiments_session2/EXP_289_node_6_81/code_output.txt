@@ -1,0 +1,20 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 Scored subset shape: (1757, 196)
+Columns identified: Use Case='2_use_case_name', Purpose='11_purpose_benefits', Mitigation='62_disparity_mitigation'
+Biometric systems found: 184 out of 1757
+Systems with Mitigation found: 44 out of 1757
+
+Contingency Table (Rows=Is_Biometric, Cols=Has_Mitigation):
+Has_Mitigation  False  True 
+Is_Biometric                
+False            1549     24
+True              164     20
+
+Biometric Mitigation Rate: 10.87%
+Non-Biometric Mitigation Rate: 1.53%
+
+Chi-Square Test Result:
+Statistic: 55.1408
+P-value: 1.1220e-13
+Result: Statistically Significant (Reject Null Hypothesis)

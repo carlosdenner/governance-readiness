@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: Using columns: Technology='Known AI Technology', Intent='Intentional Harm'
+
+--- Modality Counts ---
+modality
+Vision      97
+Language    11
+Name: count, dtype: int64
+
+--- Intentional vs Unintentional Counts (Processed) ---
+is_intentional
+False    107
+True       1
+Name: count, dtype: int64
+
+--- Contingency Table (Final) ---
+          Unintentional  Intentional
+modality                            
+Language             11            0
+Vision               96            1
+
+Chi-Square Statistic: 0.0000
+P-Value: 1.0000e+00
+Warning: Some expected frequencies are < 5. Fisher's Exact Test is recommended.
+Fisher's Exact Test P-Value: 1.0000e+00
+Result: No statistically significant difference found.
+
+--- Intentional Harm Rates ---
+modality
+Language    0.000000
+Vision      1.030928
+dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** This plot is designed to compare a quantitative metric (the rate of intentional harm) across two distinct categorical groups (AI modalities: Language and Vision).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "AI Modality"
+    *   **Categories:** The axis displays two discrete categories: "Language" and "Vision".
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Intentional Incidents (%)"
+    *   **Range:** The scale ranges from **0.0 to 1.2**, with tick marks at intervals of 0.2 (0.0, 0.2, 0.4, ... 1.2).
+    *   **Units:** The data is presented as a percentage.
+
+### 3. Data Trends
+*   **Highest Value:** The "Vision" category represents the tallest bar (and the only visible bar), indicating a non-zero rate of intentional incidents.
+*   **Lowest Value:** The "Language" category has no visible bar height, indicating a value of zero.
+*   **Pattern:** There is a stark contrast between the two modalities. While Language AI models show no recorded intentional harm incidents in this dataset, Vision AI models show a measurable presence of such incidents.
+
+### 4. Annotations and Legends
+*   **Data Labels:**
+    *   Above the **Language** category, there is an annotation reading **"0.0%"**, confirming the absence of recorded incidents for this group.
+    *   Above the **Vision** category, there is an annotation reading **"1.0%"**, providing the exact value for the bar height.
+*   **Legend:** There is no separate legend provided, as the x-axis labels clearly identify the categories corresponding to the data.
+
+### 5. Statistical Insights
+*   **Discrepancy in Risk:** The data indicates a significant discrepancy in the rate of intentional harm between the two modalities. Vision-based AI systems appear to be the sole contributor to intentional harm incidents in this specific comparison, with a rate of **1.0%**.
+*   **Safety Profile:** Language models, with a rate of **0.0%**, demonstrate a "safer" profile regarding intentional harm in the context of this specific metric and dataset compared to their Vision counterparts.
+*   **Magnitude:** While the visual difference is dramatic due to the comparison with zero, the absolute rate for Vision models is still relatively low at 1.0% (one out of every hundred incidents). However, relative to Language models, the risk is infinitely higher.
+==================================================

@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+EO 13960 subset size: 1757
+Records with valid Development Method: 920
+Records with valid Code Access data: 781
+
+Summary Statistics (Code Access Rates):
+            count      mean    percent
+dev_model                             
+Contracted    390  0.338462  33.846154
+In-House      391  0.905371  90.537084
+
+Contingency Table (0=No Access, 1=Access):
+access_binary  0.0  1.0
+dev_model              
+Contracted     258  132
+In-House        37  354
+
+Chi-Square Test Results:
+Chi-Square Statistic: 264.5628
+P-Value: 1.7376e-59
+Conclusion: Significant relationship between development model and code access.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot (or Bar Chart).
+*   **Purpose:** The plot is designed to compare the percentage of code access between two distinct categorical groups: "Contracted" and "In-House" development models.
+
+**2. Axes**
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Development Model"
+    *   **Categories:** The axis displays two discrete categories: "Contracted" and "In-House".
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Percentage with Code Access (%)"
+    *   **Range:** The scale ranges from 0 to roughly 105, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+    *   **Units:** Percentage (%).
+
+**3. Data Trends**
+*   **Tallest Bar:** The "In-House" category represents the highest value, reaching near the top of the y-axis scale.
+*   **Shortest Bar:** The "Contracted" category is significantly lower, reaching only about one-third of the height of the y-axis.
+*   **Pattern:** There is a stark disparity between the two models. The plot visualizes a massive gap in code access, showing that In-House development is associated with significantly higher access rates compared to Contracted development.
+
+**4. Annotations and Legends**
+*   **Data Labels:** Specific percentage values are annotated directly on top of each bar in bold text to provide precise measurements:
+    *   **Contracted:** 33.8%
+    *   **In-House:** 90.5%
+*   **Color Coding:**
+    *   The "Contracted" bar is colored light red/salmon.
+    *   The "In-House" bar is colored light blue.
+*   **Title:** The chart is titled "Code Access Rates by Development Model".
+
+**5. Statistical Insights**
+*   **Significant Disparity:** There is a 56.7 percentage point difference between the two groups ($90.5\% - 33.8\% = 56.7\%$).
+*   **Relative Comparison:** Code access is nearly **2.7 times more prevalent** in In-House development models compared to Contracted models.
+*   **Operational Implication:** The data suggests a strong operational or security tendency where internal teams are granted almost ubiquitous access to codebases, whereas external contractors are frequently restricted, likely due to security protocols or intellectual property concerns.
+==================================================

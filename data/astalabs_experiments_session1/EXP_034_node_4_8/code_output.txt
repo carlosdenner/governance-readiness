@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step2_crosswalk_matrix.csv (local)
+Identified 18 control columns.
+
+Total control mappings observed: 77
+
+Top 4 controls (Top 20%):
+AI Risk Policy & Accountability Structures     13
+Evaluation & Monitoring Infrastructure         13
+GenAIOps / MLOps Lifecycle Governance          10
+Nondeterminism Controls & Output Validation     6
+dtype: int64
+Cumulative coverage of Top 20% controls: 54.55%
+
+Chi-Square Goodness of Fit Test:
+Chi2 Statistic: 59.2857
+P-value: 1.3779e-06
+Result: Significant deviation from uniform distribution (Reject H0).
+
+Gini Coefficient of Control Applicability: 0.4380
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Horizontal Bar Plot.
+*   **Purpose:** The plot visualizes the frequency distribution of various "Architecture Control Mappings." By sorting the bars in descending order, it acts as a **Pareto analysis**, aiming to identify the "vital few" controls that appear most frequently compared to the "trivial many."
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** Represents specific categories of Architecture Controls (e.g., "AI Risk Policy...", "Data Governance...").
+    *   **Range:** Contains 18 distinct categories.
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Number of Mappings".
+    *   **Units:** Integer counts (Frequency).
+    *   **Range:** The axis ticks range from 0 to 12, though the data extends slightly beyond to a maximum value of 13.
+
+### 3. Data Trends
+*   **Sorting:** The data is sorted in descending order, creating a funnel shape from top to bottom.
+*   **Top Contributors (High Frequency):**
+    *   The most frequent mappings are **"AI Risk Policy & Accountability Structures"** and **"Evaluation & Monitoring Infrastructure,"** both with a count of **13**.
+    *   **"GenAIOps / MLOps Lifecycle Governance"** follows closely with a count of **10**.
+*   **Mid-Range:**
+    *   There is a significant drop-off after the top three. The next cluster ranges from **6 to 4** mappings (e.g., Nondeterminism Controls, Data Governance).
+*   **Low Frequency (The "Long Tail"):**
+    *   The bottom of the chart shows a plateau of items with very low frequency.
+    *   Four categories share the lowest count of **1**: "Multi-Agent Orchestration Pattern," "Single-Agent Orchestration Pattern," "Scalable Modular Architecture (Archetypes)," and "Audit Logging & Telemetry."
+
+### 4. Annotations and Legends
+*   **Title:** "Frequency of Architecture Control Mappings (Pareto Check)" clearly defines the subject and the analytical intent (checking for Pareto distribution).
+*   **Value Labels:** Each bar is annotated with its exact numerical value at the end (e.g., 13, 10, 6, etc.), allowing for precise reading without estimating against the axis grid.
+*   **Color:** All bars use a uniform light blue color, indicating that no secondary variable or grouping is being differentiated; the focus is solely on the count per category.
+
+### 5. Statistical Insights
+*   **Concentration of Focus (Pareto Principle):** The distribution suggests that the architecture is heavily weighted toward high-level Governance and Policy rather than low-level technical implementation details.
+    *   The top 3 categories alone ($13 + 13 + 10 = 36$) account for nearly **47%** of the total count (assuming a sum of roughly 77 mappings).
+    *   The top 5 categories account for approximately **61%** of all mappings.
+*   **Prioritization:** If this data represents gaps or required controls, an organization should prioritize "AI Risk Policy" and "Evaluation Infrastructure" as they constitute the bulk of the mappings.
+*   **Operational vs. Strategic:** The lowest frequency items (Orchestration Patterns, Logging) are tactical/technical execution details, whereas the highest frequency items are strategic/governance focused. This implies the dataset or system being analyzed is currently more focused on establishing rules and monitoring rather than specific architectural patterns.
+==================================================

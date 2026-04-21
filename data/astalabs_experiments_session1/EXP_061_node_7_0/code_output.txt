@@ -1,0 +1,68 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_incident_coding.csv
+
+=== Descriptive Statistics (Technique Count) ===
+Security Incidents (n=36):
+  Mean: 7.50
+  Median: 7.00
+  Std Dev: 3.17
+
+Other Incidents (n=16):
+  Mean: 7.62
+  Median: 8.00
+  Std Dev: 2.42
+
+=== Mann-Whitney U Test Results ===
+U-statistic: 255.5
+P-value (one-sided, Security > Other): 0.74516
+Result: Not statistically significant.
+
+STDERR:
+<ipython-input-1-66ae2b9dbfe7>:62: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  box = plt.boxplot(data, patch_artist=True, labels=labels, widths=0.6)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot (Box-and-Whisker Plot)** overlaid with a **Strip Plot** (also known as a jitter or swarm plot).
+*   **Purpose:** The plot is designed to compare the distributions of "Technique Count" (a measure of complexity) between two distinct categories ("Security" and "Other"). By overlaying the individual data points (the dots) on top of the box plots, it provides a comprehensive view of the data's central tendency (median), spread (interquartile range), and individual observations, preventing the concealment of underlying data structures that simple box plots might hide.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Technique Count (Kill Chain Length)". This represents the number of steps or techniques involved in an attack chain.
+    *   **Range:** The axis is marked from 2 to 16 with an interval of 2. The visible data spans from 1 (lowest point in Security) to 16 (highest point in Security).
+    *   **Units:** Count (integer values).
+*   **X-Axis:**
+    *   **Labels:** Two categorical groups:
+        1.  "Security (n=36)"
+        2.  "Other (n=16)"
+    *   **Meaning:** These labels denote the type of harm being analyzed, with "n=" indicating the sample size for each group.
+
+### 3. Data Trends
+*   **Security Group (Pink Box):**
+    *   **Median:** The orange line is at **7**.
+    *   **Interquartile Range (IQR):** The middle 50% of the data falls between **6 and 9**.
+    *   **Range & Outliers:** The data has a wide spread. While the main whiskers extend from 3 to 12, there are distinct **outliers** at the high end (values of 14, 15, and 16) and one outlier at the low end (value of 1).
+    *   **Cluster:** There is a dense cluster of data points around the median and lower quartile (values 6 and 7).
+
+*   **Other Group (Blue Box):**
+    *   **Median:** The orange line is at **8**, slightly higher than the Security group.
+    *   **Interquartile Range (IQR):** The middle 50% appears to range from approximately **6.5 to 9**.
+    *   **Range & Outliers:** The whiskers extend from 3 to 12. Unlike the Security group, there are **no visible outliers** beyond the whiskers. The data is more contained.
+
+### 4. Annotations and Legends
+*   **Title:** "Complexity of Attack Chains: Security vs. Other Harm Types". This sets the context of the analysis as a cybersecurity risk assessment.
+*   **Sample Size (n):** The X-axis labels include the sample size (`n=36` for Security, `n=16` for Other), which is crucial for interpreting the statistical weight of the data.
+*   **Gridlines:** Horizontal dashed gridlines appear every 2 units, aiding in the precise reading of Y-axis values.
+*   **Color Coding:**
+    *   **Pink/Red:** Represents "Security" harm types.
+    *   **Blue:** Represents "Other" harm types.
+
+### 5. Statistical Insights
+*   **Similar Central Tendency:** Both groups have similar medians (7 vs. 8) and upper quartiles (9). This suggests that the "typical" complexity of an attack is comparable whether it is a security incident or another type of harm.
+*   **Higher Peak Complexity in Security:** The key differentiator is the "long tail" of the Security group. The presence of outliers at technique counts of 14, 15, and 16 indicates that **extreme complexity is a characteristic specific to Security incidents** in this dataset. The "Other" category caps out at a complexity of 12.
+*   **Variability:** The Security group shows greater variability (standard deviation), ranging from 1 to 16, whereas the "Other" group is more consistent, ranging only from 3 to 12.
+*   **Sample Size Consideration:** The insights for the "Other" category are drawn from a smaller sample size (16) compared to "Security" (36), which means the distribution for "Other" might be less robustly defined.
+==================================================

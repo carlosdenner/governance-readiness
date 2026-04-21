@@ -1,0 +1,264 @@
+# Experiment 221: node_6_42
+
+| Property | Value |
+|---|---|
+| **Experiment ID** | `node_6_42` |
+| **ID in Run** | 221 |
+| **Status** | SUCCEEDED |
+| **Created** | 2026-02-22T11:23:03.914747+00:00 |
+| **Runtime** | 244.2s |
+| **Parent** | `node_5_60` |
+| **Children** | None |
+| **Creation Index** | 222 |
+
+---
+
+## Hypothesis
+
+> The Healthcare Threat Gap: The 'Healthcare' sector is significantly
+underrepresented in adversarial threat models (ATLAS) relative to its prevalence
+in actual AI failures (AIID), indicating a misalignment between security
+research and real-world risk.
+
+## Belief Shift
+
+| Metric | Value |
+|---|---|
+| **Prior** | 0.9274 (Definitely True) |
+| **Posterior** | 0.3654 (Maybe False) |
+| **Surprise** | -0.6744 |
+| **Surprise Interpretation** | Strong Negative (hypothesis contradicted) |
+| **Is Surprising?** | Yes |
+
+### Prior Belief Distribution
+| Category | Count |
+|---|---|
+| Definitely True | 23.0 |
+| Maybe True | 7.0 |
+| Uncertain | 0.0 |
+| Maybe False | 0.0 |
+| Definitely False | 0.0 |
+
+### Posterior Belief Distribution
+| Category | Count |
+|---|---|
+| Definitely True | 0.0 |
+| Maybe True | 0.0 |
+| Uncertain | 0.0 |
+| Maybe False | 18.0 |
+| Definitely False | 42.0 |
+
+---
+
+## Experiment Plan
+
+**Objective:** Quantify the mismatch in sector representation between theoretical threats (ATLAS) and actual incidents (AIID).
+
+### Steps
+- 1. Load `atlas_cases` and `aiid_incidents`.
+- 2. Normalize sector columns in both datasets to a common schema (e.g., map 'Medical', 'Health' to 'Healthcare').
+- 3. Calculate the proportion of 'Healthcare' cases in ATLAS vs AIID.
+- 4. Perform a Two-Proportion Z-Test.
+- 5. Report the Z-score and p-value.
+
+### Deliverables
+- Proportion of Healthcare cases in each dataset and test for significant difference.
+
+---
+
+## Analysis
+
+The experiment successfully tested the 'Healthcare Threat Gap' hypothesis using
+the provided datasets. The code analyzed 1,362 real-world incidents from the AI
+Incident Database (AIID) and 52 adversarial case studies from MITRE ATLAS.
+
+**Findings:**
+1.  **Classification:** Using keyword analysis (e.g., 'health', 'medical',
+'hospital') on sector fields and case descriptions:
+    -   **AIID (Real World):** 1.10% (15/1362) were classified as Healthcare.
+    -   **ATLAS (Threat Models):** 0.00% (0/52) were classified as Healthcare.
+
+2.  **Statistical Test:**
+    -   A two-proportion Z-test comparing 1.10% vs 0.00% yielded a **p-value of
+0.4468**.
+
+**Conclusion:**
+The hypothesis is **rejected**. Although the adversarial threat dataset (ATLAS)
+contains zero healthcare cases, the prevalence of healthcare incidents in the
+real-world dataset (AIID) is also extremely low (~1%). As a result, the
+difference in proportions is not statistically significant. The data does not
+support the claim of a significant 'gap' specific to healthcare; rather, it
+indicates that healthcare is a minor category in both current failure
+repositories.
+
+---
+
+## Review
+
+The experiment was successfully executed and the code faithfully implemented the
+analysis plan. After correcting for file path issues in the first attempt, the
+script successfully loaded the data and performed the comparative analysis
+between the AI Incident Database (AIID) and MITRE ATLAS.
+
+**Hypothesis Test Results:**
+1.  **Healthcare Prevalence:**
+    -   **AIID (Real-World Incidents):** 1.10% (15/1,362) of cases were
+identified as healthcare-related using keyword analysis on the 'Sector of
+Deployment'.
+    -   **ATLAS (Threat Models):** 0.00% (0/52) of cases were identified as
+healthcare-related using keyword analysis on case names and summaries.
+
+2.  **Statistical Test:**
+    -   Two-Proportion Z-Test Z-score: 0.7608
+    -   p-value: 0.4468
+
+**Conclusion:**
+The hypothesis that the healthcare sector is *significantly* underrepresented in
+adversarial threat models (ATLAS) compared to real-world failures (AIID) is
+**rejected**. While ATLAS contains zero healthcare cases, the baseline
+prevalence of healthcare incidents in the real-world dataset is also extremely
+low (~1.1%). Given the small sample size of ATLAS (n=52), the absence of
+healthcare cases is not statistically distinguishable from the real-world rate
+(expected count < 1). The data indicates that healthcare is currently a minor
+category in both repositories, rather than a specific gap in threat modeling.
+
+---
+
+## Code
+
+```python
+import pandas as pd
+import numpy as np
+import sys
+import subprocess
+import os
+
+# Ensure statsmodels is installed
+try:
+    from statsmodels.stats.proportion import proportions_ztest
+except ImportError:
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--quiet", "statsmodels"])
+    from statsmodels.stats.proportion import proportions_ztest
+
+def load_data():
+    # Try loading from current directory first, then parent directory
+    files = ['astalabs_discovery_all_data.csv', '../astalabs_discovery_all_data.csv']
+    for f in files:
+        if os.path.exists(f):
+            print(f"Loading dataset from {f}...")
+            return pd.read_csv(f, low_memory=False)
+    print("Error: Dataset not found in current or parent directory.")
+    return None
+
+def run_experiment():
+    df = load_data()
+    if df is None:
+        return
+
+    # Filter data sources
+    aiid = df[df['source_table'] == 'aiid_incidents'].copy()
+    atlas = df[df['source_table'] == 'atlas_cases'].copy()
+
+    print(f"Total AIID Incidents: {len(aiid)}")
+    print(f"Total ATLAS Cases: {len(atlas)}")
+
+    # --- Define Sector Normalization Logic ---
+    # Keywords for healthcare domain
+    health_keywords = ['health', 'medic', 'hospital', 'clinic', 'patient', 'doctor', 'nurse', 'pharm', 'surgery', 'diagnostic', 'biomedical']
+
+    def is_healthcare(text):
+        if not isinstance(text, str):
+            return False
+        text = text.lower()
+        return any(k in text for k in health_keywords)
+
+    # --- Process AIID ---
+    # Metadata suggests 'Sector of Deployment' for AIID
+    # We'll check 'Sector of Deployment' and 'sector'
+    aiid_col = 'Sector of Deployment' if 'Sector of Deployment' in aiid.columns and aiid['Sector of Deployment'].notna().any() else 'sector'
+    print(f"Using AIID sector column: {aiid_col}")
+    
+    aiid['is_healthcare'] = aiid[aiid_col].apply(is_healthcare)
+    
+    # --- Process ATLAS ---
+    # Metadata suggests 'sector' for ATLAS
+    atlas_col = 'sector' if 'sector' in atlas.columns and atlas['sector'].notna().any() else 'Sector of Deployment'
+    # Fallback to checking name/summary if sector is missing (ATLAS is small)
+    if atlas_col not in atlas.columns or atlas[atlas_col].isna().all():
+        print("Warning: ATLAS sector column missing or empty. Using 'name' and 'summary' for context.")
+        atlas['combined_text'] = atlas['name'].fillna('') + ' ' + atlas['summary'].fillna('')
+        atlas['is_healthcare'] = atlas['combined_text'].apply(is_healthcare)
+    else:
+        print(f"Using ATLAS sector column: {atlas_col}")
+        atlas['is_healthcare'] = atlas[atlas_col].apply(is_healthcare)
+
+    # --- Calculate Stats ---
+    n_aiid = len(aiid)
+    k_aiid = aiid['is_healthcare'].sum()
+    prop_aiid = k_aiid / n_aiid if n_aiid > 0 else 0
+
+    n_atlas = len(atlas)
+    k_atlas = atlas['is_healthcare'].sum()
+    prop_atlas = k_atlas / n_atlas if n_atlas > 0 else 0
+
+    print("\n--- Results ---")
+    print(f"AIID (Real Incidents): {k_aiid}/{n_aiid} ({prop_aiid:.2%}) classified as Healthcare")
+    print(f"ATLAS (Threat Models): {k_atlas}/{n_atlas} ({prop_atlas:.2%}) classified as Healthcare")
+
+    # --- Statistical Test ---
+    if n_aiid > 0 and n_atlas > 0:
+        count = np.array([k_aiid, k_atlas])
+        nobs = np.array([n_aiid, n_atlas])
+        
+        # Two-sided Z-test
+        stat, pval = proportions_ztest(count, nobs)
+        print(f"\nTwo-Proportion Z-Test:")
+        print(f"Z-score: {stat:.4f}")
+        print(f"P-value: {pval:.4f}")
+        
+        alpha = 0.05
+        if pval < alpha:
+            print("Result: Statistically Significant Difference")
+            if prop_atlas < prop_aiid:
+                print("Conclusion: Healthcare is significantly UNDER-represented in ATLAS threat models compared to real-world incidents.")
+            else:
+                print("Conclusion: Healthcare is significantly OVER-represented in ATLAS threat models compared to real-world incidents.")
+        else:
+            print("Result: No Statistically Significant Difference")
+    else:
+        print("Insufficient data for statistical testing.")
+
+if __name__ == "__main__":
+    run_experiment()
+```
+
+## Code Output
+
+```
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Total AIID Incidents: 1362
+Total ATLAS Cases: 52
+Using AIID sector column: Sector of Deployment
+Warning: ATLAS sector column missing or empty. Using 'name' and 'summary' for context.
+
+--- Results ---
+AIID (Real Incidents): 15/1362 (1.10%) classified as Healthcare
+ATLAS (Threat Models): 0/52 (0.00%) classified as Healthcare
+
+Two-Proportion Z-Test:
+Z-score: 0.7608
+P-value: 0.4468
+Result: No Statistically Significant Difference
+
+```
+
+---
+
+## Reproducibility Notes
+
+- Raw JSON: `experiment.json`
+- Executable code: `code.py`
+- Original output: `code_output.txt`
+- To reproduce figures locally, run `code.py` with the dataset at
+  `data/astalabs/astalabs_discovery_all_data.csv` in the working directory.

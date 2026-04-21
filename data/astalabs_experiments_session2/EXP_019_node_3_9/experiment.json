@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed the AIID dataset to test if Generative AI incidents skew towards 'Intangible' harms compared to Traditional AI. Utilizing the metadata-verified columns 'Tangible Harm' and 'Special Interest Intangible Harm' for classification, the code identified 70 relevant incidents. The analysis revealed that while 100% of the Generative AI incidents (n=3) were classified as 'Intangible', compared to 64.2% for Traditional AI (n=67), the sample size for Generative AI was too small to yield statistical significance. The Chi-Square test resulted in a p-value of 0.5111. Consequently, the hypothesis is not supported by this dataset; the extreme sparsity of Generative AI incidents with definitive harm flags prevents drawing a statistically valid conclusion despite the visual trend.",
+  "child_ids": [
+    "node_4_12",
+    "node_4_41"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport os\n\n# Check file existence\nfile_path = '../astalabs_discovery_all_data.csv'\nif not os.path.exists(file_path):\n    file_path = 'astalabs_discovery_all_data.csv'\n\nprint(f\"Loading dataset from {file_path}...\")\ndf = pd.read_csv(file_path, low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"AIID Incidents loaded: {len(aiid_df)} rows\")\n\n# 1. Classify Technology\ndef classify_technology(text):\n    if pd.isna(text):\n        return None\n    text = str(text).lower()\n    genai_keywords = ['generative', 'llm', 'large language model', 'gpt', 'diffusion', \n                      'dall-e', 'midjourney', 'stable diffusion', 'transformer', 'chatbot', \n                      'foundation model', 'chatgpt', 'bert', 'palm', 'llama', 'gan', 'stylegan']\n    \n    if any(k in text for k in genai_keywords):\n        return 'Generative AI'\n    return 'Traditional AI'\n\naiid_df['Tech_Type'] = aiid_df['Known AI Technology'].apply(classify_technology)\n\n# 2. Classify Harm\n# Logic: \n# - Tangible if 'Tangible Harm' says it definitively occurred AND 'Special Interest Intangible Harm' is NOT yes.\n# - Intangible if 'Special Interest Intangible Harm' says yes AND 'Tangible Harm' did NOT definitively occur.\n# - Exclude mixed/ambiguous cases to strictly test the skew.\n\ndef classify_harm_composite(row):\n    tangible_val = str(row.get('Tangible Harm', '')).lower()\n    intangible_val = str(row.get('Special Interest Intangible Harm', '')).lower()\n    \n    is_tangible = 'tangible harm definitively occurred' in tangible_val\n    is_intangible = 'yes' in intangible_val\n    \n    if is_tangible and not is_intangible:\n        return 'Tangible'\n    elif is_intangible and not is_tangible:\n        return 'Intangible'\n    else:\n        return None # Mixed or None\n\naiid_df['Harm_Type'] = aiid_df.apply(classify_harm_composite, axis=1)\n\n# 3. Filter Data for Analysis\nanalysis_df = aiid_df.dropna(subset=['Tech_Type', 'Harm_Type']).copy()\n\nprint(f\"\\nData points for analysis: {len(analysis_df)}\")\nprint(\"Distribution by Tech Type:\")\nprint(analysis_df['Tech_Type'].value_counts())\nprint(\"\\nDistribution by Harm Type:\")\nprint(analysis_df['Harm_Type'].value_counts())\n\n# 4. Statistical Test\ncontingency_table = pd.crosstab(analysis_df['Tech_Type'], analysis_df['Harm_Type'])\nprint(\"\\nContingency Table (Observed):\")\nprint(contingency_table)\n\nif not contingency_table.empty and contingency_table.size >= 4:\n    chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n    print(f\"\\nChi-Square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n    \n    # Interpret results\n    alpha = 0.05\n    if p < alpha:\n        print(\"Result: Significant association between AI Technology and Harm Type.\")\n    else:\n        print(\"Result: No significant association found.\")\n\n    # 5. Visualization\n    # Normalize to get percentages for stacked bar to visualize the 'skew'\n    ct_pct = contingency_table.div(contingency_table.sum(axis=1), axis=0) * 100\n    \n    ax = ct_pct.plot(kind='bar', stacked=True, figsize=(10, 6), color=['skyblue', 'salmon'])\n    plt.title('Proportion of Tangible vs Intangible Harms by AI Technology')\n    plt.xlabel('AI Technology Type')\n    plt.ylabel('Percentage')\n    plt.legend(title='Harm Type', bbox_to_anchor=(1.05, 1), loc='upper left')\n    plt.xticks(rotation=0)\n    \n    # Annotate bars\n    for c in ax.containers:\n        ax.bar_label(c, fmt='%.1f%%', label_type='center')\n        \n    plt.tight_layout()\n    plt.show()\nelse:\n    print(\"Insufficient data for Chi-Square test.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nAIID Incidents loaded: 1362 rows\n\nData points for analysis: 70\nDistribution by Tech Type:\nTech_Type\nTraditional AI    67\nGenerative AI      3\nName: count, dtype: int64\n\nDistribution by Harm Type:\nHarm_Type\nIntangible    46\nTangible      24\nName: count, dtype: int64\n\nContingency Table (Observed):\nHarm_Type       Intangible  Tangible\nTech_Type                           \nGenerative AI            3         0\nTraditional AI          43        24\n\nChi-Square Statistic: 0.4319\nP-value: 5.1108e-01\nResult: No significant association found.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** 100% Stacked Bar Chart.\n*   **Purpose:** The plot compares the relative composition of two categories (\"Tangible\" vs. \"Intangible\" harms) across two different groups (\"Generative AI\" and \"Traditional AI\"). It is designed to visualize how the distribution of harm types differs between these two AI technologies.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"AI Technology Type\"\n    *   **Labels:** \"Generative AI\" and \"Traditional AI\"\n*   **Y-Axis:**\n    *   **Title:** \"Percentage\"\n    *   **Range:** 0 to 100\n    *   **Units:** Percent (%)\n\n### 3. Data Trends\n*   **Generative AI:** The bar is monochromatic, indicating a uniform distribution. The data suggests that **100%** of the harms associated with Generative AI in this dataset are classified as **Intangible**. There is a 0.0% share of Tangible harms.\n*   **Traditional AI:** The bar shows a mixed distribution. While **Intangible** harms still constitute the majority at **64.2%**, there is a significant portion of **Tangible** harms at **35.8%**.\n*   **Overall Pattern:** Intangible harms are the dominant category for both technologies, but Traditional AI demonstrates a notable presence of tangible risks that is entirely absent in the Generative AI data shown.\n\n### 4. Annotations and Legends\n*   **Chart Title:** \"Proportion of Tangible vs Intangible Harms by AI Technology\" positioned at the top center.\n*   **Legend:** Located on the right side, titled \"Harm Type\".\n    *   **Light Blue:** Represents \"Intangible\" harms.\n    *   **Salmon/Red:** Represents \"Tangible\" harms.\n*   **Annotations:** Specific percentage values are labeled directly onto the bar segments:\n    *   Generative AI: 100.0% (Intangible), 0.0% (Tangible).\n    *   Traditional AI: 64.2% (Intangible), 35.8% (Tangible).\n\n### 5. Statistical Insights\n*   **Nature of Risks:** The plot indicates a distinct dichotomy in the nature of risks posed by these technologies. Generative AI appears to be exclusively associated with non-physical or indirect harms (intangible), such as misinformation, bias, or privacy violations. In contrast, Traditional AI retains a significant component of physical or direct asset damage (tangible).\n*   **Prevalence of Intangible Harm:** Regardless of the technology type, \"Intangible\" harms are the primary concern, accounting for the majority of incidents in both categories.\n*   **Risk Profile Shift:** Moving from Traditional to Generative AI shifts the risk profile completely away from tangible consequences to purely intangible ones, according to this specific dataset.\n==================================================",
+  "created_at": "2026-02-22T01:56:47.687143+00:00",
+  "creation_idx": 20,
+  "experiment_id": "node_3_9",
+  "experiment_plan": {
+    "deliverables": "Stacked bar chart of Harm Types by AI Technology; Chi-Square test results.",
+    "objective": "Compare harm domains between Generative and Discriminative AI incidents.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` (AIID subset). 2. Classify rows as 'GenAI' or 'Traditional' based on keywords in `Known AI Technology` (e.g., 'LLM', 'Generative', 'GPT' vs 'Regression', 'Vision'). 3. Group `Harm Domain` into 'Tangible' (Physical, Economic) and 'Intangible' (Cultural, Psychological). 4. Perform a Chi-Square test on the Technology vs. Harm Type contingency table."
+  },
+  "hypothesis": "Incidents involving Generative AI technologies result in 'Intangible' harms (e.g., bias, reputation) significantly more often than traditional Discriminative AI, which skews towards 'Tangible' harms.",
+  "id_in_run": 19,
+  "is_surprising": true,
+  "parent_id": "node_2_3",
+  "posterior": 0.5824175824175825,
+  "posterior_belief": {
+    "_empirical_mean": 0.5,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.5824175824175825,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 60.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed. The programmer correctly adapted the data extraction strategy after identifying through debugging that the 'Harm Domain' column contained non-descriptive boolean flags ('yes/no/maybe'), utilizing the 'Tangible Harm' and 'Special Interest Intangible Harm' columns instead. \n\n### Hypothesis Verification:\nThe hypothesis that **Generative AI incidents result in 'Intangible' harms significantly more often than Traditional AI** was **not statistically supported**, primarily due to data limitations.\n\n*   **Data Skew**: The dataset contained only 3 coded Generative AI incidents compared to 67 Traditional AI incidents.\n*   **Observed Trend**: Visually, the data aligned with the hypothesis: 100% of Generative AI incidents (3/3) caused Intangible harm, compared to 64.2% of Traditional AI incidents.\n*   **Statistical Significance**: A Chi-Square test yielded a p-value of 0.5111, indicating the observed difference is not statistically significant given the extremely small sample size of Generative AI cases.\n\nWhile the code functioned correctly and the visualization highlights a potential trend, the scarcity of coded Generative AI data in this specific snapshot prevents a definitive confirmation of the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 302040.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.19142148174406234
+}

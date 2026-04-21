@@ -1,0 +1,74 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Rows in atlas_cases: 52
+Non-null techniques in atlas_cases: 52
+
+Counts:
+Generative AI: 14
+Computer Vision: 8
+Other/Mixed: 30
+
+Generative AI - Technique Count Stats:
+count    14.0
+mean      1.0
+std       0.0
+min       1.0
+25%       1.0
+50%       1.0
+75%       1.0
+max       1.0
+Name: technique_count, dtype: float64
+
+Computer Vision - Technique Count Stats:
+count    8.0
+mean     1.0
+std      0.0
+min      1.0
+25%      1.0
+50%      1.0
+75%      1.0
+max      1.0
+Name: technique_count, dtype: float64
+
+T-test Result: Statistic=nan, p-value=nan
+Conclusion: No significant difference observed.
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  res = hypotest_fun_out(*samples, **kwds)
+<ipython-input-1-08671c043809>:132: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([gen_ai['technique_count'], comp_vis['technique_count']], labels=['Generative AI', 'Computer Vision'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot, here are the detailed observations:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot** (specifically, a degenerate box plot where the distribution has zero variance).
+*   **Purpose:** The plot is designed to compare the distribution of the "Count of Techniques" used in adversarial cases across two different AI domains: Generative AI and Computer Vision.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Categories:** The axis represents categorical data containing two groups: **"Generative AI"** and **"Computer Vision"**.
+*   **Y-Axis:**
+    *   **Title:** **"Count of Techniques"**.
+    *   **Range:** The visible scale is highly zoomed in, ranging from approximately **0.95 to 1.05**.
+    *   **Ticks:** Major tick marks are placed at intervals of 0.02 (0.96, 0.98, 1.00, 1.02, 1.04).
+
+### 3. Data Trends
+*   **Visual Observation:** For both categories ("Generative AI" and "Computer Vision"), the "box" has collapsed into a single horizontal orange line.
+*   **Interpretation:**
+    *   In a standard box plot, the box represents the Interquartile Range (IQR), and the orange line represents the median.
+    *   Because the box is flattened into a single line at the value **1.00**, it indicates that **every single data point** in this dataset has a value of exactly 1.
+    *   There is **no variance**, no spread, and no outliers. The minimum, maximum, median, first quartile, and third quartile are all identical (Value = 1).
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Adversarial Complexity: Techniques per Case" suggests the chart aims to measure how complex adversarial attacks are by counting how many different techniques are combined in a single case.
+*   **Grid Lines:** Horizontal dashed grid lines appear at regular intervals (e.g., 1.00, 1.02) to assist in reading the precise values.
+*   **Color Coding:** The orange lines are standard formatting for the median line in Python plotting libraries (likely Matplotlib), confirming the central tendency is at 1.00.
+
+### 5. Statistical Insights
+*   **Uniformity of Complexity:** The data indicates that for the cases analyzed, adversarial attacks are not complex in terms of technique combinations. Every recorded case utilized exactly **one technique** at a time.
+*   **No Cross-Domain Difference:** There is no difference between Generative AI and Computer Vision regarding this metric. Both fields show an identical pattern of single-technique usage per case.
+*   **Implication:** This suggests that "chaining" multiple adversarial techniques (multi-vector attacks) was not observed in this specific dataset. The attacks are likely isolated or singular in nature rather than composite.
+==================================================

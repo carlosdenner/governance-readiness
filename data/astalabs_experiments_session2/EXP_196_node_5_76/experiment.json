@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Siloed Risk Management' hypothesis by analyzing 77 distinctively classified AI systems (59 Rights-Impacted and 18 Safety-Impacted) from the EO 13960 dataset. Using the corrected column '62_disparity_mitigation', the results revealed a universal absence of documented bias mitigation controls: 0.0% of Rights-Impacted systems (n=59) and 0.0% of Safety-Impacted systems (n=18) reported having these measures. Due to the complete lack of positive cases in either group, a Chi-Square test could not be performed. These findings do not support the hypothesis that Safety-Impacted systems are *uniquely* or *significantly less* likely to have these controls than Rights-Impacted ones; rather, they indicate a systemic gap where *neither* high-impact archetype currently evidences disparity mitigation in the available data.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# Load the dataset\nfilepath = '../astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(filepath, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 scored records\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Validated column name from previous debug\nmitigation_col = '62_disparity_mitigation'\n\n# Clean Impact Type\ndef categorize_impact(val):\n    if pd.isna(val):\n        return None\n    val_str = str(val).lower().strip()\n    \n    # Strict separation: Exclude 'Both'\n    if 'both' in val_str:\n        return None\n    \n    is_safety = 'safety' in val_str\n    is_rights = 'rights' in val_str\n    \n    if is_safety and not is_rights:\n        return 'Safety-Impacted'\n    elif is_rights and not is_safety:\n        return 'Rights-Impacted'\n    return None\n\neo_data['impact_category'] = eo_data['17_impact_type'].apply(categorize_impact)\n\n# Filter for analysis\nanalysis_df = eo_data[eo_data['impact_category'].notna()].copy()\n\n# Binarize Mitigation\ndef check_mitigation(val):\n    if pd.isna(val):\n        return 0\n    # Looking for affirmative 'Yes'\n    if str(val).lower().strip().startswith('yes'):\n        return 1\n    return 0\n\nanalysis_df['has_mitigation'] = analysis_df[mitigation_col].apply(check_mitigation)\n\n# Create Contingency Table\ncontingency = pd.crosstab(analysis_df['impact_category'], analysis_df['has_mitigation'])\n# Ensure we have both columns [0, 1]\ncontingency = contingency.reindex(columns=[0, 1], fill_value=0)\ncontingency.columns = ['No', 'Yes']\n\nprint(\"\\nContingency Table (Impact Type vs. Disparity Mitigation):\")\nprint(contingency)\n\n# Calculate Rates\nrates = analysis_df.groupby('impact_category')['has_mitigation'].mean()\nprint(\"\\nMitigation Rates:\")\nprint(rates)\n\n# Statistical Test Check\ntotal_positives = contingency['Yes'].sum()\n\nif total_positives == 0:\n    print(\"\\nCannot perform Chi-Square test: No positive cases ('Yes') observed in either group.\")\n    print(\"Both groups have 0% compliance rate.\")\n    p_value = 1.0  # Technically undefined, but effectively no difference\nelse:\n    # Only run test if we have data\n    try:\n        chi2, p, dof, expected = stats.chi2_contingency(contingency)\n        print(f\"\\nChi-Square Statistic: {chi2:.4f}\")\n        print(f\"P-value: {p:.6f}\")\n    except ValueError as e:\n        print(f\"\\nStatistical test failed: {e}\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\ncolors = ['#e74c3c' if 'Safety' in idx else '#3498db' for idx in rates.index]\nbars = plt.bar(rates.index, rates.values * 100, color=colors)\n\nplt.title('Disparity Mitigation Controls: Safety vs. Rights Impacted Systems')\nplt.ylabel('Percentage with Mitigation (%)')\nplt.ylim(0, 100)\n\n# Add annotations\nfor bar, idx in zip(bars, rates.index):\n    height = bar.get_height()\n    n_yes = contingency.loc[idx, 'Yes']\n    n_total = contingency.loc[idx].sum()\n    # If height is 0, place text slightly above 0\n    y_pos = height + 1 if height > 0 else 2\n    plt.text(bar.get_x() + bar.get_width()/2, y_pos, \n             f\"{height:.1f}%\\n(n={n_yes}/{n_total})\", \n             ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: \nContingency Table (Impact Type vs. Disparity Mitigation):\n                 No  Yes\nimpact_category         \nRights-Impacted  59    0\nSafety-Impacted  18    0\n\nMitigation Rates:\nimpact_category\nRights-Impacted    0.0\nSafety-Impacted    0.0\nName: has_mitigation, dtype: float64\n\nCannot perform Chi-Square test: No positive cases ('Yes') observed in either group.\nBoth groups have 0% compliance rate.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot.\n*   **Purpose:** The plot is designed to compare the percentage of systems that have implemented \"Disparity Mitigation Controls\" across two distinct categories of systems: \"Rights-Impacted\" and \"Safety-Impacted.\"\n\n### 2. Axes\n*   **Y-Axis:**\n    *   **Label:** \"Percentage with Mitigation (%)\"\n    *   **Range:** 0 to 100.\n    *   **Scale:** Linear, with tick marks every 20 units (0, 20, 40, 60, 80, 100).\n*   **X-Axis:**\n    *   **Label:** The axis represents categorical system types.\n    *   **Categories:** Two distinct groups are labeled: \"Rights-Impacted\" and \"Safety-Impacted.\"\n\n### 3. Data Trends\n*   **Bar Height/Pattern:** There are no visible bars extending upwards from the x-axis.\n*   **Values:** Both categories exhibit a value of exactly 0%.\n*   **Comparison:** There is no variation between the groups; both show a complete absence of the metric being measured (mitigation controls).\n\n### 4. Annotations and Legends\n*   **Annotations:**\n    *   **Above \"Rights-Impacted\":** The text reads **\"0.0% (n=0/59)\"**. This indicates that out of a sample size of 59 systems in this category, 0 had mitigation controls.\n    *   **Above \"Safety-Impacted\":** The text reads **\"0.0% (n=0/18)\"**. This indicates that out of a sample size of 18 systems in this category, 0 had mitigation controls.\n*   **Legend:** There is no legend provided or required, as the categories are explicitly labeled on the x-axis.\n\n### 5. Statistical Insights\n*   **Universal Lack of Mitigation:** The most significant insight is that **none** of the systems surveyed in this study have implemented disparity mitigation controls. This applies to both systems that impact human rights and systems that impact safety.\n*   **Sample Size Context:** The total sample size analyzed is 77 systems (59 Rights-Impacted + 18 Safety-Impacted). The fact that the percentage is 0.0% across a sample of this size suggests a systemic gap in the deployment or documentation of fairness/disparity controls within the specific dataset or domain being analyzed.\n*   **Risk Implication:** Given the high-stakes nature of the categories (Rights and Safety), the complete absence of disparity mitigation controls highlights a potential area of significant ethical or regulatory risk.\n==================================================",
+  "created_at": "2026-02-22T10:14:04.671679+00:00",
+  "creation_idx": 197,
+  "experiment_id": "node_5_76",
+  "experiment_plan": {
+    "deliverables": "Contingency table of Impact Type vs Disparity Mitigation; Bar chart of mitigation rates; Chi-Square test statistics.",
+    "objective": "Compare the implementation rate of bias/disparity mitigation controls between Safety-Impacted and Rights-Impacted AI deployments.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'eo13960_scored'.\n2. Clean '17_impact_type' to isolate rows strictly labeled as 'Safety-Impacted' or 'Rights-Impacted' (exclude others).\n3. Convert '55_disparity_mitigation' into a binary variable (Yes vs No/Other).\n4. Calculate the compliance rate for both groups.\n5. Perform a Chi-Square test of independence."
+  },
+  "hypothesis": "The 'Siloed' Risk Management: Systems classified as 'Safety-Impacted' are significantly less likely to implement 'Disparity Mitigation' controls compared to 'Rights-Impacted' systems, indicating a fragmented approach where safety-critical systems overlook fairness risks.",
+  "id_in_run": 196,
+  "is_surprising": true,
+  "parent_id": "node_4_46",
+  "posterior": 0.2554945054945055,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2554945054945055,
+    "n": 60.0,
+    "prior_params": [
+      23.25,
+      7.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.75,
+  "prior_belief": {
+    "_empirical_mean": 0.7583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 1.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.75,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully tested the 'Siloed Risk Management' hypothesis. After resolving initial column naming issues, the analysis correctly identified the relevant data subset (59 Rights-Impacted and 18 Safety-Impacted systems) and the correct target variable ('62_disparity_mitigation'). The results revealed a universal absence of disparity mitigation controls across the studied federal AI inventory, with a 0% implementation rate for both 'Rights-Impacted' and 'Safety-Impacted' systems. While the lack of variance (0 vs 0) prevented the planned Chi-Square test, the code handled this edge case correctly. The findings do not support the specific hypothesis of a 'divide' between safety and rights systems but rather indicate a systemic gap in governance across both high-impact categories.",
+  "rich_outputs": null,
+  "runtime_ms": 347830.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5934065934065934
+}

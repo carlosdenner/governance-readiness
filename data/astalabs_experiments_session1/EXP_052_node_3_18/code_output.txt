@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_crosswalk_matrix.csv
+
+=== Data Summary ===
+Total records loaded: 42
+Records in analysis (EU vs NIST): 32
+Framework_Family
+NIST    23
+EU       9
+Name: count, dtype: int64
+
+=== Contingency Table (Observed Counts) ===
+bundle            Trust Readiness  Integration Readiness
+Framework_Family                                        
+EU                              5                      4
+NIST                           13                     10
+
+=== Statistical Test Results ===
+Chi-Square Statistic: 0.0000
+Chi-Square P-value:   1.0000
+Fisher's Exact P-value: 1.0000
+Odds Ratio:             0.9615
+
+--- Interpretation ---
+The odds of a requirement mapping to 'Trust Readiness' are 1.04 times higher for NIST than for EU AI Act.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** To visualize and compare the relative proportions of different subgroups ("Competency Bundles") within categorical groups ("Framework Families"). It allows for an easy comparison of the composition of each category rather than the total values.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Framework Family"
+    *   **Labels:** Two categorical variables: "EU" and "NIST".
+*   **Y-Axis:**
+    *   **Title:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** Increments of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **EU Framework:**
+    *   **Trust Readiness (Green):** This is the larger segment, representing 5 items or **56%** of the total.
+    *   **Integration Readiness (Blue):** This is the smaller segment, representing 4 items or **44%** of the total.
+*   **NIST Framework:**
+    *   **Trust Readiness (Green):** This is the larger segment, representing 13 items or **57%** of the total.
+    *   **Integration Readiness (Blue):** This is the smaller segment, representing 10 items or **43%** of the total.
+*   **Overall Pattern:** Both frameworks show a very similar distribution pattern where "Trust Readiness" constitutes the majority (over 50%) compared to "Integration Readiness."
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the upper right corner, titled "Competency Bundle."
+    *   **Green:** Represents "Trust Readiness."
+    *   **Blue:** Represents "Integration Readiness."
+*   **Bar Annotations:** Inside each bar segment, white text provides the specific data values:
+    *   The top number indicates the raw **count** (frequency).
+    *   The bottom number in parentheses indicates the **percentage** relative to that specific column.
+
+### 5. Statistical Insights
+*   **Consistency Across Frameworks:** The most striking insight is the near-identical distribution of competency bundles across both framework families. The difference in "Trust Readiness" is only 1 percentage point (56% for EU vs. 57% for NIST), suggesting that both frameworks prioritize or structure these competencies in a highly similar ratio.
+*   **Sample Size Disparity:** While the proportions are similar, the absolute volume of data differs significantly. The NIST framework contains more than double the total number of competency bundles (Total $n=23$) compared to the EU framework (Total $n=9$).
+*   **Dominance of Trust Readiness:** In both contexts, "Trust Readiness" is the dominant competency bundle, consistently outweighing "Integration Readiness."
+==================================================

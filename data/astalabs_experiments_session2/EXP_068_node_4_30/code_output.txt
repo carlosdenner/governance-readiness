@@ -1,0 +1,76 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Realized Harm Bias Analysis...
+AIID Incidents loaded: 1362 rows
+
+--- Target Group Distribution ---
+Target_Group_Type
+General Public/Other    1296
+Protected Class           66
+Name: count, dtype: int64
+
+Rows with valid Harm Status: 64
+--- Harm Status Distribution ---
+Harm_Status
+Realized Harm     44
+Potential Harm    20
+Name: count, dtype: int64
+
+--- Contingency Table (Counts) ---
+Harm_Status           Potential Harm  Realized Harm
+Target_Group_Type                                  
+General Public/Other              15             32
+Protected Class                    5             12
+
+--- Contingency Table (Percentages) ---
+Harm_Status           Potential Harm  Realized Harm
+Target_Group_Type                                  
+General Public/Other           31.91          68.09
+Protected Class                29.41          70.59
+
+Insufficient data for reliable Chi-Square test (cell counts < 5 or empty).
+
+Experiment Completed Successfully.
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart compares the relative distribution of "Harm Status" (Realized vs. Potential) across two different "Target Groups." By stacking the segments to equal 100%, it focuses on the proportion of each outcome rather than absolute counts.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Target Group"
+    *   **Categories:** Two discrete categories are displayed: "General Public/Other" and "Protected Class".
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Incidents"
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Tick Marks:** Major intervals are marked every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+The plot compares two groups. In both cases, the blue segment ("Realized Harm") is significantly larger than the pink segment ("Potential Harm").
+
+*   **General Public/Other:**
+    *   **Realized Harm (Blue):** 68.1%
+    *   **Potential Harm (Pink):** 31.9%
+    *   **Trend:** Over two-thirds of incidents involving the general public result in realized harm.
+
+*   **Protected Class:**
+    *   **Realized Harm (Blue):** 70.6%
+    *   **Potential Harm (Pink):** 29.4%
+    *   **Trend:** A slightly higher proportion of incidents (over 70%) result in realized harm when the target is a protected class compared to the general public.
+
+### 4. Annotations and Legends
+*   **Legend:** Located to the right of the chart with the title "Harm Status."
+    *   **Pink/Salmon color:** Represents "Potential Harm."
+    *   **Light Blue color:** Represents "Realized Harm."
+*   **Annotations:** Percentage values are explicitly labeled inside each segment of the bars (e.g., "68.1%", "31.9%", etc.) to provide precise data points.
+*   **Grid:** Horizontal dashed gridlines are included at 20% intervals to aid in visual estimation of bar heights.
+*   **Chart Title:** "Realized vs Potential AI Harm by Target Group" clearly defines the scope of the analysis.
+
+### 5. Statistical Insights
+*   **Prevalence of Realized Harm:** Across both target groups, the majority of recorded AI incidents result in actual "Realized Harm" rather than just "Potential Harm." The rate of realized harm is high, hovering around 68-71%.
+*   **Similarity Across Groups:** The distribution of harm types is remarkably similar between the "General Public/Other" and "Protected Class" groups. There is only a **2.5 percentage point difference** in the rate of realized harm between the two (70.6% vs. 68.1%).
+*   **Disproportionate Impact (Slight):** While the difference is small, incidents targeting "Protected Classes" are slightly more likely to result in realized harm compared to incidents targeting the "General Public/Other." Conversely, incidents involving the general public are slightly more likely to remain as "Potential Harm."
+==================================================

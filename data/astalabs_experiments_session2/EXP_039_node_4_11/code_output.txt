@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+AIID Rows: 1362
+
+--- Data for Analysis ---
+Total valid rows: 182
+Autonomy_Bin
+Low Autonomy     129
+High Autonomy     53
+Name: count, dtype: int64
+Harm_Bin
+Potential/No Harm    117
+Realized Harm         65
+Name: count, dtype: int64
+
+--- Contingency Table (Counts) ---
+Harm_Bin       Potential/No Harm  Realized Harm
+Autonomy_Bin                                   
+High Autonomy                 34             19
+Low Autonomy                  83             46
+
+--- Contingency Table (Percentages) ---
+Harm_Bin       Potential/No Harm  Realized Harm
+Autonomy_Bin                                   
+High Autonomy          64.150943      35.849057
+Low Autonomy           64.341085      35.658915
+
+Chi-Square Test Statistic: 0.0000
+P-value: 1.00000
+Result: No significant correlation found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart is used to display the relative percentage of different categories (Harm Outcomes) within specific groups (Autonomy Levels). It allows for an easy comparison of the composition of "Harm Outcome" between "High Autonomy" and "Low Autonomy" scenarios, normalizing the data so that each bar represents 100% of the incidents for that group.
+
+**2. Axes**
+*   **Y-axis:**
+    *   **Label:** "Percentage of Incidents"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Increments of 20 (0, 20, 40, 60, 80, 100).
+*   **X-axis:**
+    *   **Label:** "Autonomy Level"
+    *   **Categories:** Two discrete categories are plotted: "High Autonomy" and "Low Autonomy".
+*   **Title:** "Severity of Harm Event by Autonomy Level"
+
+**3. Data Trends**
+*   **Composition:** For both autonomy levels, the "Potential/No Harm" category (light blue) makes up the majority of the bar, extending from 0% to approximately 64% on the y-axis. Consequently, the "Realized Harm" category (red) comprises the remaining portion, roughly 36% (from ~64% to 100%).
+*   **Comparison:** The distribution is visually identical between the two groups. There is no discernible difference in the ratio of "Potential/No Harm" to "Realized Harm" when comparing "High Autonomy" versus "Low Autonomy."
+
+**4. Annotations and Legends**
+*   **Legend:** Located in the top right corner, titled "Harm Outcome."
+    *   **Light Blue Swatch:** Represents "Potential/No Harm."
+    *   **Red Swatch:** Represents "Realized Harm."
+*   **Annotations:** There are no specific text annotations pointing to data points within the chart area itself.
+
+**5. Statistical Insights**
+*   **Independence of Variables:** The plot strongly suggests that the severity of a harm outcome is independent of the autonomy level. Whether the system is operating with high or low autonomy, the probability of an incident resulting in realized harm versus potential/no harm remains constant.
+*   **Prevalence of Harm:** In this dataset, incidents are more likely to result in "Potential/No Harm" (~64%) than "Realized Harm" (~36%), regardless of the system's autonomy setting.
+==================================================

@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_competency_statements.csv
+
+=== Descriptive Statistics (Word Count) ===
+Trust Readiness (n=19)
+  Mean: 26.63
+  Median: 25.00
+  Std Dev: 3.83
+
+Integration Readiness (n=23)
+  Mean: 26.65
+  Median: 27.00
+  Std Dev: 4.14
+
+=== Independent Samples T-test (Welch's) ===
+T-statistic: -0.0167
+P-value: 0.9868
+Conclusion: Fail to reject null hypothesis. No significant difference in word counts.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Overlapping Density Histogram.
+*   **Purpose:** This plot compares the frequency distributions of word counts for two distinct categories: "Trust Readiness" and "Integration Readiness." By using density on the Y-axis rather than raw count, it allows for a direct comparison of the distribution shapes even if the total number of samples in each category differs.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Word Count"
+    *   **Range:** The axis ticks range from roughly **21 to 39**. (Major ticks are marked at 22.5, 25.0, 27.5, 30.0, 32.5, 35.0, 37.5).
+*   **Y-Axis:**
+    *   **Label:** "Density" (indicating probability density).
+    *   **Range:** The values range from **0.000 to approximately 0.210**. (Major ticks are marked every 0.025 units).
+
+### 3. Data Trends
+*   **Trust Readiness (Blue Bars):**
+    *   **Peak:** The highest density occurs in the bin centered around **25–26 words** (density ~0.200).
+    *   **Secondary Peak:** There is a notable secondary cluster around **33–34 words**.
+    *   **Spread:** The distribution is relatively contained between 21 and 34 words.
+*   **Integration Readiness (Orange Bars):**
+    *   **Peak:** The highest density is in the lower range, around **22–24 words** (density ~0.205).
+    *   **Spread & Outliers:** This distribution is more spread out than the Trust dataset. It includes a noticeable outlier (or small cluster) on the far right, between **37.5 and 39 words**.
+    *   **Shape:** It appears slightly right-skewed, with a heavy concentration on the lower end but a long tail extending to the right.
+
+### 4. Annotations and Legends
+*   **Legend (Top Right):**
+    *   **Blue Square:** Represents the "Trust Readiness" histogram data.
+    *   **Orange Square:** Represents the "Integration Readiness" histogram data.
+    *   **Blue Dashed Line:** Indicates the mean word count for Trust Readiness, calculated at **26.6**.
+    *   **Orange Dashed Line:** Indicates the mean word count for Integration Readiness, calculated at **26.7**.
+*   **Vertical Lines:** Two dashed vertical lines appear on the plot corresponding to the means. Because the values (26.6 and 26.7) are nearly identical, the lines appear almost as a single, overlapping line.
+
+### 5. Statistical Insights
+*   **Identical Averages:** Despite the differences in the shape of the distributions, the mean word counts for both categories are virtually identical (26.6 vs. 26.7). This indicates that, on average, the length of text describing both competencies is the same.
+*   **Variance in Distribution:**
+    *   **Integration Readiness** shows higher variance. It has the shortest descriptions (high density at 22-24) but also the longest descriptions (the bar near 38).
+    *   **Trust Readiness** appears somewhat bimodal, with descriptions clustering heavily in the mid-20s and another distinct group in the low-30s, but lacking the extreme length seen in the Integration data.
+*   **Implication:** While the "center of gravity" for both topics is the same, "Integration Readiness" descriptions are more likely to be brief, balanced out by a few unusually long descriptions, whereas "Trust Readiness" descriptions are more consistently clustered around specific mid-range lengths.
+==================================================

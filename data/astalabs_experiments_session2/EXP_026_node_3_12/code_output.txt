@@ -1,0 +1,75 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID Incidents Loaded: 1362
+
+Data points after filtering: 91
+Autonomy distribution:
+Autonomy_Category
+Low Autonomy     66
+High Autonomy    25
+Name: count, dtype: int64
+Failure distribution:
+Failure_Category
+Robustness           59
+Specification        22
+Human-Interaction    10
+Name: count, dtype: int64
+
+--- Cross-Tabulation (Counts) ---
+Failure_Category   Human-Interaction  Robustness  Specification
+Autonomy_Category                                              
+High Autonomy                      3          14              8
+Low Autonomy                       7          45             14
+
+Chi-Square Statistic: 1.3199
+P-value: 5.1688e-01
+
+--- Row Proportions (Normalized) ---
+Failure_Category   Human-Interaction  Robustness  Specification
+Autonomy_Category                                              
+High Autonomy               0.120000    0.560000       0.320000
+Low Autonomy                0.106061    0.681818       0.212121
+
+High Autonomy -> Specification: 32.0%
+Low Autonomy -> Human-Interaction: 10.6%
+Result: Hypothesis Not Supported (Trends do not match expectations)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This plot is designed to compare the relative distribution (proportion) of three distinct categories of failure modes across two different groups (High Autonomy vs. Low Autonomy). The stacked nature allows the viewer to see the part-to-whole relationship for each group, where the total height always sums to 1.0 (100%).
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "Autonomy Level"
+    *   **Categories:** The axis represents categorical data with two groups: "High Autonomy" and "Low Autonomy".
+*   **Y-axis:**
+    *   **Label:** "Proportion of Incidents"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100% of the incidents).
+    *   **Ticks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Dominant Category:** For both autonomy levels, the **Robustness** failure mode (orange) constitutes the largest proportion of incidents, taking up more than 50% of the bar in both cases.
+*   **High Autonomy:**
+    *   **Specification (Green):** Occupies a significant portion of the top segment (visually estimated at ~32%, from y=0.68 to 1.0).
+    *   **Robustness (Orange):** Occupies the middle segment (visually estimated at ~56%, from y=0.12 to 0.68).
+    *   **Human-Interaction (Blue):** The smallest segment at the bottom (visually estimated at ~12%).
+*   **Low Autonomy:**
+    *   **Specification (Green):** This segment is visibly smaller than in the High Autonomy bar (visually estimated at ~21%, from y=0.79 to 1.0).
+    *   **Robustness (Orange):** This segment appears larger here than in the High Autonomy bar (visually estimated at ~68%, from y=0.11 to 0.79).
+    *   **Human-Interaction (Blue):** Remains roughly consistent with the High Autonomy level, representing a small fraction (visually estimated at ~11%).
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Failure Modes by Autonomy Level" is displayed at the top center.
+*   **Legend:** Located at the top right, titled "Failure Mode," categorizing the colors:
+    *   **Blue:** Human-Interaction
+    *   **Orange:** Robustness
+    *   **Green:** Specification
+
+### 5. Statistical Insights
+*   **Robustness is critical regardless of autonomy:** Robustness issues are the primary driver of failure incidents in both high and low autonomy systems.
+*   **Trade-off between Specification and Robustness:** There is an inverse relationship visible between Specification and Robustness failures. As autonomy decreases (High to Low), the proportion of Specification failures decreases, while the proportion of Robustness failures increases. This suggests that "High Autonomy" systems are more prone to errors in how tasks are specified/defined, whereas "Low Autonomy" systems are more susceptible to robustness issues (likely environmental or operational stability).
+*   **Consistency of Human Interaction:** The proportion of failures attributed to Human-Interaction remains relatively stable and low across both levels. This implies that the level of autonomy (High vs. Low) does not significantly alter the *proportion* of errors caused by human interaction relative to other failure types.
+==================================================

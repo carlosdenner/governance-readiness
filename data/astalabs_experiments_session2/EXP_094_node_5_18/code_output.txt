@@ -1,0 +1,26 @@
+exitcode: 0 (execution succeeded)
+Code output: AIID Incidents loaded: 1362
+
+Classified Subset (Exclusive Categories): 11
+target_sector  target_harm
+Financial      Economic       3
+Healthcare     Economic       2
+               Physical       6
+dtype: int64
+
+--- Contingency Table ---
+target_harm    Economic  Physical
+target_sector                    
+Financial             3         0
+Healthcare            2         6
+
+Fisher's Exact Test p-value: 6.0606e-02
+Odds Ratio: inf
+
+--- Row Percentages ---
+target_harm    Economic  Physical
+target_sector                    
+Financial         100.0       0.0
+Healthcare         25.0      75.0
+
+Result: No statistically significant dependence found.

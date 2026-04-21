@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment tested the hypothesis that competency statements derived from 'OWASP' requirements have significantly higher confidence scores than those from 'NIST' or 'EU' sources. The analysis of 42 competency statements (9 EU, 23 NIST, 10 OWASP) revealed that OWASP-derived statements indeed had a perfect mean confidence score of 3.00 (indicating all were rated 'High'), compared to 2.89 for EU and 2.78 for NIST. However, the One-Way ANOVA yielded an F-statistic of 1.38 and a p-value of 0.2625. Since the p-value is greater than 0.05, the difference in means is not statistically significant. Therefore, the hypothesis is not supported statistically. While OWASP statements appear to have universally high confidence in this dataset, the variance within the NIST and EU groups combined with the sample sizes was not sufficient to declare a significant divergence between the framework sources.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport numpy as np\n\n# [debug] Load dataset to inspect columns and values\n# df_debug = pd.read_csv('../step2_competency_statements.csv')\n# print(df_debug.head())\n# print(df_debug['req_id'].unique())\n# print(df_debug['confidence'].unique())\n\n# 1. Load the dataset\nfile_path = '../step2_competency_statements.csv'\ntry:\n    df = pd.read_csv(file_path)\nexcept FileNotFoundError:\n    # Fallback for local testing if needed, though instructions say one level up\n    df = pd.read_csv('step2_competency_statements.csv')\n\n# 2. Extract Framework Source\ndef extract_source(req_id):\n    if isinstance(req_id, str):\n        if req_id.startswith('NIST'):\n            return 'NIST'\n        elif req_id.startswith('EU'):\n            return 'EU'\n        elif req_id.startswith('OWASP'):\n            return 'OWASP'\n    return 'Other'\n\ndf['source'] = df['req_id'].apply(extract_source)\n\n# Filter out 'Other' if any (though metadata suggests these are the main ones)\ndf = df[df['source'] != 'Other']\n\n# 3. Convert Confidence to Numeric\nconfidence_map = {'High': 3, 'Medium': 2, 'Low': 1, 'high': 3, 'medium': 2, 'low': 1}\ndf['confidence_score'] = df['confidence'].map(confidence_map)\n\n# Remove rows with NaN confidence if any\ndf = df.dropna(subset=['confidence_score'])\n\n# 4. Descriptive Statistics\ngroup_stats = df.groupby('source')['confidence_score'].agg(['count', 'mean', 'std', 'sem'])\nprint(\"=== Descriptive Statistics by Source ===\")\nprint(group_stats)\nprint(\"\\n\")\n\n# 5. Statistical Test (One-Way ANOVA)\n# Extract groups\ngroups = [df[df['source'] == s]['confidence_score'].values for s in ['NIST', 'EU', 'OWASP']]\n\n# Check if we have enough data in each group\nif all(len(g) > 1 for g in groups):\n    f_stat, p_value = stats.f_oneway(*groups)\n    \n    print(\"=== One-Way ANOVA Results ===\")\n    print(f\"F-statistic: {f_stat:.4f}\")\n    print(f\"P-value: {p_value:.4f}\")\n    \n    if p_value < 0.05:\n        print(\"Result: Statistically Significant (p < 0.05)\")\n        # Post-hoc test (Tukey HSD) if significant\n        try:\n            from statsmodels.stats.multicomp import pairwise_tukeyhsd\n            tukey = pairwise_tukeyhsd(endog=df['confidence_score'], groups=df['source'], alpha=0.05)\n            print(\"\\n=== Tukey HSD Post-hoc Test ===\")\n            print(tukey)\n        except ImportError:\n            print(\"statsmodels not installed, skipping Tukey HSD.\")\n    else:\n        print(\"Result: Not Statistically Significant (p >= 0.05)\")\nelse:\n    print(\"Insufficient data in one or more groups to perform ANOVA.\")\n\n# 6. Visualization\nplt.figure(figsize=(10, 6))\nbars = plt.bar(group_stats.index, group_stats['mean'], \n               yerr=group_stats['sem'], capsize=10, \n               color=['#4c72b0', '#55a868', '#c44e52'], alpha=0.8)\n\nplt.title('Mean Confidence Score of Competency Statements by Source Framework')\nplt.xlabel('Framework Source')\nplt.ylabel('Mean Confidence Score (1=Low, 3=High)')\nplt.ylim(0, 3.5)\nplt.grid(axis='y', linestyle='--', alpha=0.7)\n\n# Add value labels\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 0.1,\n             f'{height:.2f}',\n             ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: === Descriptive Statistics by Source ===\n        count      mean       std       sem\nsource                                     \nEU          9  2.888889  0.333333  0.111111\nNIST       23  2.782609  0.421741  0.087939\nOWASP      10  3.000000  0.000000  0.000000\n\n\n=== One-Way ANOVA Results ===\nF-statistic: 1.3844\nP-value: 0.2625\nResult: Not Statistically Significant (p >= 0.05)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot (with error bars).\n*   **Purpose:** The plot compares the mean confidence scores of competency statements across three different source frameworks. It is designed to visualize both the average performance (height of the bar) and the variability or uncertainty (error bars) associated with each source.\n\n### 2. Axes\n*   **X-axis:**\n    *   **Title:** Framework Source\n    *   **Labels:** Categorical variables representing three organizations: **EU**, **NIST**, and **OWASP**.\n*   **Y-axis:**\n    *   **Title:** Mean Confidence Score (1=Low, 3=High)\n    *   **Range:** The visual axis ranges from **0.0 to 3.5**.\n    *   **Intervals:** Tick marks are placed at every 0.5 unit.\n\n### 3. Data Trends\n*   **Tallest Bar:** **OWASP** has the highest mean score.\n*   **Shortest Bar:** **NIST** has the lowest mean score among the three.\n*   **General Pattern:** The scores are relatively close to one another, all falling within the upper end of the scale (between 2.78 and 3.00). This indicates a generally high level of confidence across all three frameworks.\n\n### 4. Annotations and Legends\n*   **Value Labels:** The exact mean values are annotated above each bar:\n    *   EU: **2.89**\n    *   NIST: **2.78**\n    *   OWASP: **3.00**\n*   **Error Bars:** Black \"I\" shaped bars are present on top of the colored bars. These represent the variability (likely Standard Error or Confidence Interval) of the data.\n    *   The error bars for **EU** and **NIST** show visible variability above and below the mean.\n    *   The error bar for **OWASP** is flat/compressed against the top value, suggesting extremely low or zero variance (a ceiling effect).\n\n### 5. Statistical Insights\n*   **High Confidence Overall:** Given the scale is 1 to 3, all three frameworks exhibit very high confidence scores (all > 2.7). This suggests that competency statements derived from these sources are generally viewed as highly reliable or clear by the evaluators.\n*   **OWASP Perfection:** The OWASP framework achieved a perfect mean score of **3.00**. The lack of vertical extension in the error bar suggests there was no variation in the data; essentially, every data point for OWASP was likely a maximum score of 3.\n*   **Comparison of Variability:**\n    *   **NIST** (2.78) and **EU** (2.89) show some disagreement or variation among the scores, as indicated by the length of their error bars.\n    *   **EU** performs slightly better than NIST on average, but the overlap in range suggests the distinction between them is less severe than the distinction between them and OWASP.\n==================================================",
+  "created_at": "2026-02-20T23:17:01.695569+00:00",
+  "creation_idx": 57,
+  "experiment_id": "node_5_9",
+  "experiment_plan": {
+    "deliverables": "Bar chart of Mean Confidence by Source and ANOVA results.",
+    "objective": "Evaluate if source material type influences the confidence of derived competencies.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Extract the framework source from 'req_id' (e.g., starts with 'NIST', 'EU', 'OWASP').\n3. Convert 'confidence' column to numeric (High=3, Medium=2, Low=1).\n4. Perform a One-Way ANOVA to compare mean confidence scores across the three sources.\n5. Post-hoc Tukey test if significant."
+  },
+  "hypothesis": "Competency statements derived from 'OWASP' requirements have significantly higher 'Confidence' scores than those derived from 'NIST' or 'EU' requirements, reflecting stronger consensus on security specificities.",
+  "id_in_run": 56,
+  "is_surprising": true,
+  "parent_id": "node_4_15",
+  "posterior": 0.38016528925619836,
+  "posterior_belief": {
+    "_empirical_mean": 0.25,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 90.0,
+    "maybe_true": 0.0,
+    "mean": 0.38016528925619836,
+    "n": 90.0,
+    "prior_params": [
+      23.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7580645161290323,
+  "prior_belief": {
+    "_empirical_mean": 0.7666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 2.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7580645161290323,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis regarding the influence of framework source on competency confidence. The analysis of 42 competency statements (23 NIST, 9 EU, 10 OWASP) revealed that while OWASP-derived statements achieved a perfect mean confidence score of 3.00 (indicating 100% 'High' confidence), compared to 2.89 for EU and 2.78 for NIST, the difference was not statistically significant. The One-Way ANOVA yielded a p-value of 0.2625 (> 0.05), failing to reject the null hypothesis. Thus, while OWASP sources appear to yield universally high-confidence competencies in this specific dataset, there is insufficient statistical evidence to claim they are significantly superior to NIST or EU sources generally.",
+  "rich_outputs": null,
+  "runtime_ms": 137610.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4385882641272756
+}

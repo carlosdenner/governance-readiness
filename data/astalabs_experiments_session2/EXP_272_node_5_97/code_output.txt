@@ -1,0 +1,78 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Justice Sector Transparency Deficit
+Dataset not found in parent directory. Trying current directory.
+EO 13960 records found: 1757
+
+Group Sizes:
+Sector_Group
+Health/Services     886
+Justice/Security    385
+Name: count, dtype: int64
+
+--- Public Notice Statistics ---
+                  count  sum  percentage
+Sector_Group                            
+Health/Services     886    0         0.0
+Justice/Security    385    0         0.0
+
+--- Appeal Process Statistics ---
+                  count  sum  percentage
+Sector_Group                            
+Health/Services     886    3    0.338600
+Justice/Security    385   18    4.675325
+
+--- Statistical Significance (Z-Test) ---
+Public Notice:
+  Justice/Security Rate: 0.00%
+  Health/Services Rate:  0.00%
+  Z-score: nan
+  P-value: nan
+Appeal Process:
+  Justice/Security Rate: 4.68%
+  Health/Services Rate:  0.34%
+  Z-score: 5.5734
+  P-value: 2.4987e-08
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/statsmodels/stats/weightstats.py:792: RuntimeWarning: invalid value encountered in scalar divide
+  zstat = value / std
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (or Clustered Bar Plot).
+*   **Purpose:** The plot compares the adoption rates of two specific transparency controls ("Public Notice" and "Appeal Process") across two different government sectors ("Justice/Security" and "Health/Services").
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label/Title:** Categorical labels representing the type of transparency control: "Public Notice" and "Appeal Process".
+*   **Y-axis:**
+    *   **Label/Title:** "Adoption Rate".
+    *   **Range:** From 0.0 to 1.0 (representing 0% to 100%).
+    *   **Units:** The axis uses decimal notation (0.2, 0.4, etc.), but the data annotations are presented as percentages.
+
+### 3. Data Trends
+*   **Overall Pattern:** The most striking trend is the extremely low adoption rate across all categories. The vast majority of the chart area is empty, indicating that these transparency controls are rarely implemented in the contexts measured.
+*   **Public Notice:**
+    *   Both sectors ("Justice/Security" and "Health/Services") show an adoption rate of **0.0%**. There are no visible bars for this category.
+*   **Appeal Process:**
+    *   **Tallest Bar:** The "Justice/Security" sector (Red) has the highest value on the chart, though it is still quite low at **4.7%**.
+    *   **Shortest Bar (Non-zero):** The "Health/Services" sector (Blue) has a barely visible bar representing **0.3%**.
+
+### 4. Annotations and Legends
+*   **Title:** "Transparency Controls by Sector (EO 13960)".
+*   **Legend:** Located in the top right corner:
+    *   **Red:** Represents the "Justice/Security" sector.
+    *   **Blue:** Represents the "Health/Services" sector.
+*   **Data Labels:** Percentage values are annotated directly above the corresponding bar locations to provide precise values:
+    *   "0.0%" for both Public Notice categories.
+    *   "4.7%" for Justice/Security under Appeal Process.
+    *   "0.3%" for Health/Services under Appeal Process.
+
+### 5. Statistical Insights
+*   **Zero Compliance for Public Notice:** Neither sector has adopted "Public Notice" controls according to this dataset (0.0% rate).
+*   **Sector Disparity:** There is a notable disparity in the "Appeal Process" category. The Justice/Security sector is more than 15 times more likely to have an appeal process than the Health/Services sector (4.7% vs 0.3%), although both rates are objectively very low.
+*   **Low Maturity:** The fact that the highest adoption rate on the entire chart is less than 5% suggests that the implementation of these specific transparency controls (mandated or suggested by EO 13960) is in a very early or non-existent stage for these sectors.
+==================================================

@@ -1,0 +1,71 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded ATLAS cases: 52
+Sample of 'tactics' column:
+['{{defense_evasion.id}}|{{ml_attack_staging.id}}|{{reconnaissance.id}}|{{resource_development.id}}', '{{defense_evasion.id}}|{{ml_attack_staging.id}}|{{reconnaissance.id}}|{{resource_development.id}}', '{{initial_access.id}}|{{ml_attack_staging.id}}|{{persistence.id}}|{{resource_development.id}}', '{{defense_evasion.id}}|{{discovery.id}}|{{ml_attack_staging.id}}|{{ml_model_access.id}}|{{reconnaissance.id}}|{{resource_development.id}}', '{{impact.id}}|{{initial_access.id}}|{{ml_model_access.id}}|{{reconnaissance.id}}|{{resource_development.id}}', '{{impact.id}}|{{ml_attack_staging.id}}|{{ml_model_access.id}}|{{reconnaissance.id}}|{{resource_development.id}}', '{{collection.id}}|{{impact.id}}|{{resource_development.id}}', '{{ml_attack_staging.id}}|{{reconnaissance.id}}|{{resource_development.id}}', '{{discovery.id}}|{{impact.id}}|{{ml_attack_staging.id}}|{{ml_model_access.id}}', '{{impact.id}}|{{initial_access.id}}|{{ml_model_access.id}}|{{persistence.id}}']
+Sample of 'techniques' column:
+['{{acquire_ml_artifacts_data.id}}|{{craft_adv_manual.id}}|{{evade_model.id}}|{{train_proxy_model.id}}|{{verify_attack.id}}|{{victim_research_preprint.id}}', '{{acquire_ml_artifacts.id}}|{{craft_adv_blackbox.id}}|{{develop_advml.id}}|{{evade_model.id}}|{{verify_attack.id}}|{{victim_research.id}}', '{{craft_adv.id}}|{{obtain_advml.id}}|{{poison_data.id}}|{{supply_chain_data.id}}', 'AML.T0063|{{craft_adv_manual.id}}|{{develop_advml.id}}|{{evade_model.id}}|{{ml_service.id}}|{{victim_research.id}}', 'AML.T0087|{{acquire_hw.id}}|{{establish_accounts.id}}|{{evade_model.id}}|{{harm_financial.id}}|{{ml_service.id}}|{{obtain_advml.id}}|{{obtain_tool.id}}', '{{acquire_ml_artifacts_data.id}}|{{acquire_ml_artifacts_model.id}}|{{craft_adv_transfer.id}}|{{erode_integrity.id}}|{{evade_model.id}}|{{inference_api.id}}|{{ip_theft.id}}|{{replicate_model.id}}|{{victim_research.id}}', '{{acquire_ml_artifacts.id}}|{{erode_integrity.id}}|{{establish_accounts.id}}|{{info_repos.id}}', '{{acquire_ml_artifacts_data.id}}|{{acquire_ml_artifacts_model.id}}|{{acquire_workspaces.id}}|{{proxy_via_artifacts.id}}|{{victim_research.id}}', 'AML.T0063|{{craft_adv_transfer.id}}|{{evade_model.id}}|{{ml_service.id}}|{{replicate_model.id}}', '{{erode_integrity.id}}|{{ml_service.id}}|{{poison_data.id}}|{{supply_chain_data.id}}']
+
+Counts:
+Exfiltration: 15
+Evasion: 23
+Poisoning: 5
+
+Co-occurrences with Exfiltration (Total Exfil Cases: 15):
+Exfiltration + Evasion: 5
+Exfiltration + Poisoning: 1
+
+Jaccard Similarity (Exfiltration, Evasion): 0.1515
+Jaccard Similarity (Exfiltration, Poisoning): 0.0526
+
+Fisher's Test (Exfiltration <-> Evasion) p-value: 0.3688
+Contingency Table (Exfil vs Evasion):
+has_evasion       False  True 
+has_exfiltration              
+False                19     18
+True                 10      5
+
+Fisher's Test (Exfiltration <-> Poisoning) p-value: 1.0000
+Contingency Table (Exfil vs Poisoning):
+has_poisoning     False  True 
+has_exfiltration              
+False                33      4
+True                 14      1
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** The image displays **two side-by-side vertical bar plots**.
+*   **Purpose:** The plots are designed to compare two specific category pairs ("Exfiltration-Evasion" and "Exfiltration-Poisoning") across two different metrics: the frequency of their co-occurrence and their calculated Jaccard Similarity index.
+
+### 2. Axes
+**Left Plot (Co-occurrence Counts):**
+*   **X-axis:** Labeled **"Pair"**, showing two categories: `Exfiltration-Evasion` and `Exfiltration-Poisoning`.
+*   **Y-axis:** Labeled **"Number of Cases"**. The scale is linear, ranging from **0 to 5** with integer increments.
+
+**Right Plot (Jaccard Similarity):**
+*   **X-axis:** Labeled **"Pair"**, showing the same two categories: `Exfiltration-Evasion` and `Exfiltration-Poisoning`.
+*   **Y-axis:** Labeled **"Similarity Index"**. The scale ranges from **0.00 to approximately 0.15**, with tick marks every 0.02 units.
+
+### 3. Data Trends
+*   **Co-occurrence Counts (Left Plot):**
+    *   **Tallest Bar:** The pair `Exfiltration-Evasion` shows a significantly higher frequency, reaching the maximum value on the chart of **5 cases**.
+    *   **Shortest Bar:** The pair `Exfiltration-Poisoning` is much less frequent, with only **1 case**.
+    *   **Pattern:** There is a 5:1 ratio between the two pairs, indicating Exfiltration is far more likely to appear with Evasion than with Poisoning in this dataset.
+
+*   **Jaccard Similarity (Right Plot):**
+    *   **High Value:** The `Exfiltration-Evasion` pair has a similarity index of approximately **0.15**.
+    *   **Low Value:** The `Exfiltration-Poisoning` pair has a significantly lower similarity index, appearing to be slightly above **0.05**.
+    *   **Pattern:** The trend mirrors the count plot; the pair with higher co-occurrence also exhibits a higher similarity score, roughly three times higher than the second pair.
+
+### 4. Annotations and Legends
+*   **Titles:** Each plot has a descriptive title at the top: **"Co-occurrence Counts"** (left) and **"Jaccard Similarity"** (right).
+*   **Legends:** There is no separate legend box, as the categorical labels on the x-axis (`Exfiltration-Evasion` and `Exfiltration-Poisoning`) serve as the identifiers for the data.
+*   **Color:** Both plots use a consistent solid blue color for all bars, indicating they represent the same entities being measured across different metrics.
+
+### 5. Statistical Insights
+*   **Strong Association:** The data suggests a strong relationship between "Exfiltration" and "Evasion" tactics. With 5 co-occurrences and a Jaccard Similarity of ~0.15, these two concepts appear together frequently in the analyzed context (likely cybersecurity threat data).
+*   **Weak Association:** Conversely, "Exfiltration" and "Poisoning" have a weak association. They rarely co-occur (only once), resulting in a low similarity score (~0.05).
+*   **Correlation:** The visual evidence demonstrates a positive correlation between the raw count of co-occurrences and the derived Jaccard Similarity index; as the number of shared cases increases, the similarity metric rises proportionally.
+==================================================

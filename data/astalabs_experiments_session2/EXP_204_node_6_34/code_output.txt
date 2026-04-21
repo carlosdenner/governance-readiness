@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Analysis Data Shape: (781, 198)
+Group Counts:
+system_origin
+In-House                 391
+Commercial/Contractor    390
+Name: count, dtype: int64
+
+Contingency Table (0=No Access, 1=Access):
+has_code_access        0.0  1.0
+system_origin                  
+Commercial/Contractor  258  132
+In-House                37  354
+
+Chi-Square Test Results:
+Chi2 Statistic: 264.5628
+P-value: 1.7376e-59
+
+Code Access Rates:
+system_origin
+Commercial/Contractor    0.338462
+In-House                 0.905371
+Name: has_code_access, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot is designed to compare a quantitative metric (percentage of code access compliance) across two distinct categorical groups (Commercial/Contractor vs. In-House AI systems).
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** "System Origin"
+    *   **Categories:** The axis displays two distinct categories: "Commercial/Contractor" and "In-House".
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Percentage with Code Access (%)"
+    *   **Range:** The numerical tick marks range from 0 to 100, with intervals of 20 (0, 20, 40, 60, 80, 100). The axis limits extend slightly beyond 100 (likely 110) to accommodate the height of the bars and labels.
+    *   **Grid:** Horizontal dashed grid lines appear at every major interval (20%) to aid in readability.
+
+### 3. Data Trends
+*   **Pattern:** There is a stark contrast between the two categories.
+*   **Tallest Bar:** The "In-House" category (represented by a blue bar) is the tallest, indicating a very high level of code access.
+*   **Shortest Bar:** The "Commercial/Contractor" category (represented by a red bar) is significantly shorter, indicating a much lower level of code access.
+*   **Visual Comparison:** The In-House bar is nearly three times the height of the Commercial/Contractor bar.
+
+### 4. Annotations and Legends
+*   **Title:** The chart is titled "Code Access Compliance: Commercial/Contractor vs. In-House AI".
+*   **Data Labels:** Specific values are annotated directly on top of each bar in bold black text:
+    *   Commercial/Contractor: **33.8%**
+    *   In-House: **90.5%**
+*   **Color Coding:** While there is no separate legend box, the bars are color-coded for visual distinction: Red for Commercial/Contractor and Blue for In-House.
+
+### 5. Statistical Insights
+*   **Significant Disparity:** There is a massive gap in code transparency/access depending on the origin of the system. In-House developed AI systems have a 90.5% compliance rate regarding code access, whereas Commercial or Contractor-supplied systems only have a 33.8% compliance rate.
+*   **Magnitude of Difference:** The difference between the two groups is 56.7 percentage points.
+*   **Implication:** An organization is approximately **2.7 times more likely** to have access to the code if the AI system is developed in-house compared to procuring it from a commercial vendor or contractor. This suggests that proprietary restrictions or "black box" delivery methods are prevalent in commercial AI solutions, while internal development prioritizes or inherently possesses code accessibility.
+==================================================

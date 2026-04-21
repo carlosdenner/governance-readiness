@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Black Box Procurement Risk' hypothesis using the EO 13960 dataset. After correcting the column mapping (using `22_dev_method` for procurement source), the code analyzed 920 AI systems, split into Commercial/Vendor (N=481) and Custom/In-House (N=439) categories.\n\n**Findings:**\n1.  **Low Overall Compliance:** Documented disparity mitigation strategies are rare across the board. Only 8.1% of Commercial systems and 10.3% of Custom systems had valid documentation.\n2.  **Hypothesis Evaluation:** While the results directionally support the hypothesis (Custom systems had a slightly higher compliance rate: 10.3% vs 8.1%), the difference is **not statistically significant** (Chi-Square = 1.02, p-value = 0.311). \n\n**Conclusion:** The hypothesis is **not supported**. The data suggests that the lack of bias mitigation documentation is a systemic issue across federal AI deployments, regardless of whether the system is procured from a vendor or developed in-house. The 'Black Box' nature of commercial vendors does not appear to be a statistically significant driver of this transparency gap compared to government-developed systems.",
+  "child_ids": [
+    "node_5_15",
+    "node_5_77"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport os\n\n# Define file path\nfilename = 'astalabs_discovery_all_data.csv'\nif os.path.exists(f'../{filename}'):\n    filepath = f'../{filename}'\nelif os.path.exists(filename):\n    filepath = filename\nelse:\n    filepath = filename \n    print(\"File not found in expected locations, attempting current dir...\")\n\n# Load dataset\ndf = pd.read_csv(filepath, low_memory=False)\n\n# Filter for EO 13960\ntarget_source = 'eo13960_scored'\neo_df = df[df['source_table'] == target_source].copy()\nprint(f\"Filtered for {target_source}: {len(eo_df)} records\")\n\n# Columns\ncol_method = '22_dev_method'\ncol_mitig = '62_disparity_mitigation'\n\n# Map Procurement Method (Commercial vs Custom)\ndef map_procurement(val):\n    s = str(val).strip().lower()\n    if 'contracting' in s and 'in-house' not in s:\n        return 'Commercial (Vendor)'\n    elif 'in-house' in s and 'contracting' not in s:\n        return 'Custom (In-House)'\n    else:\n        return np.nan # Exclude Mixed or Unknown for clean comparison\n\neo_df['procurement_type'] = eo_df[col_method].apply(map_procurement)\n\n# Map Mitigation Status (Documented vs Not)\ndef map_mitigation(val):\n    if pd.isna(val):\n        return 'Not Documented'\n    s = str(val).strip().lower()\n    # Check for non-substantive answers\n    if s in ['nan', 'none', 'n/a', 'no', 'not applicable', 'none.', 'na']:\n        return 'Not Documented'\n    if len(s) < 5: # arbitrarily short strings likely meaningless\n        return 'Not Documented'\n    return 'Documented'\n\neo_df['mitigation_status'] = eo_df[col_mitig].apply(map_mitigation)\n\n# Filter for analysis\nanalysis_df = eo_df.dropna(subset=['procurement_type'])\n\nprint(f\"Records for analysis (Commercial vs Custom): {len(analysis_df)}\")\nprint(\"Breakdown by Procurement Type:\")\nprint(analysis_df['procurement_type'].value_counts())\n\n# Contingency Table\nct = pd.crosstab(analysis_df['procurement_type'], analysis_df['mitigation_status'])\nprint(\"\\nContingency Table (Count):\")\nprint(ct)\n\n# Percentages\nct_pct = pd.crosstab(analysis_df['procurement_type'], analysis_df['mitigation_status'], normalize='index') * 100\nprint(\"\\nContingency Table (Percentage):\")\nprint(ct_pct)\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(ct)\nprint(f\"\\nChi-Square Test Results:\")\nprint(f\"Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Plot\nif 'Documented' in ct_pct.columns:\n    rates = ct_pct['Documented']\nelse:\n    rates = pd.Series([0, 0], index=ct.index)\n\nplt.figure(figsize=(8, 6))\ncolors = ['#ff9999' if 'Commercial' in x else '#66b3ff' for x in rates.index]\nbars = plt.bar(rates.index, rates.values, color=colors, edgecolor='black')\nplt.title('Disparity Mitigation Documentation Rate: Commercial vs Custom AI')\nplt.ylabel('Percent with Documented Mitigation (%)')\nplt.xlabel('Procurement Method')\nplt.ylim(0, max(rates.values)*1.2 if len(rates)>0 and max(rates.values)>0 else 100)\n\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 0.5,\n             f'{height:.1f}%', ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Filtered for eo13960_scored: 1757 records\nRecords for analysis (Commercial vs Custom): 920\nBreakdown by Procurement Type:\nprocurement_type\nCommercial (Vendor)    481\nCustom (In-House)      439\nName: count, dtype: int64\n\nContingency Table (Count):\nmitigation_status    Documented  Not Documented\nprocurement_type                               \nCommercial (Vendor)          39             442\nCustom (In-House)            45             394\n\nContingency Table (Percentage):\nmitigation_status    Documented  Not Documented\nprocurement_type                               \nCommercial (Vendor)    8.108108       91.891892\nCustom (In-House)     10.250569       89.749431\n\nChi-Square Test Results:\nStatistic: 1.0247\nP-value: 3.1140e-01\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot.\n*   **Purpose:** The plot serves to compare categorical data, specifically contrasting the percentage of AI projects that document disparity mitigation efforts based on how the AI was procured (Commercial Vendor vs. Custom In-House development).\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Procurement Method\"\n    *   **Categories:** The axis displays two distinct categories: \"Commercial (Vendor)\" and \"Custom (In-House).\"\n*   **Y-Axis:**\n    *   **Title:** \"Percent with Documented Mitigation (%)\"\n    *   **Units:** Percentage points.\n    *   **Value Range:** The axis scale ranges from 0 to 12, with major tick marks at intervals of 2 (0, 2, 4, 6, 8, 10, 12).\n\n### 3. Data Trends\n*   **Highest Value:** The tallest bar represents \"Custom (In-House)\" AI solutions, reaching a value of **10.3%**.\n*   **Lowest Value:** The shortest bar represents \"Commercial (Vendor)\" AI solutions, reaching a value of **8.1%**.\n*   **Comparison:** There is a visible trend where in-house (custom) solutions show a higher rate of documentation for disparity mitigation compared to commercial (vendor) solutions.\n\n### 4. Annotations and Legends\n*   **Chart Title:** \"Disparity Mitigation Documentation Rate: Commercial vs Custom AI\" provides the overall context for the data.\n*   **Data Labels:** Each bar is annotated with its exact numerical value directly above it (\"8.1%\" for Commercial and \"10.3%\" for Custom), allowing for precise reading without estimating from the y-axis.\n*   **Color Coding:** The bars are distinct in color (salmon/light red for Commercial and light blue for Custom) to visually differentiate the two categories, though no separate legend box is provided or necessary given the clear x-axis labels.\n\n### 5. Statistical Insights\n*   **Performance Gap:** Custom (In-House) AI procurement is associated with a **2.2 percentage point higher** rate of documented disparity mitigation compared to Commercial (Vendor) AI.\n*   **Relative Difference:** Custom solutions are approximately **27% more likely** (2.2 / 8.1) to have documented mitigation than commercial solutions.\n*   **Overall Low Compliance:** Despite the difference between the two methods, the most significant insight is that both rates are quite low. Approximately **90%** of AI projects (89.7% of Custom and 91.9% of Commercial) do **not** have documented disparity mitigation, indicating a widespread lack of documentation regarding fairness and bias mitigation across the industry, regardless of the procurement source.\n==================================================",
+  "created_at": "2026-02-22T03:11:56.559794+00:00",
+  "creation_idx": 47,
+  "experiment_id": "node_4_15",
+  "experiment_plan": {
+    "deliverables": "Contingency table, bar chart of mitigation rates by source type, and Chi-square test results.",
+    "objective": "Compare the presence of bias/disparity mitigation documentation between Commercial and Custom AI systems in the EO 13960 inventory.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for `source_table` == 'eo13960_scored'.\n2. Clean `10_commercial_ai` to binary (Commercial vs. Custom).\n3. Clean `62_disparity_mitigation` to binary (Yes/Present vs. No/None/Null). Note: Treat 'Not Applicable' as No or exclude, but preferably treat as 'No Mitigation'.\n4. Create a contingency table: Commercial Status vs. Disparity Mitigation.\n5. Compute the percentage of systems with mitigation for each group.\n6. Perform a Chi-square test of independence."
+  },
+  "hypothesis": "The 'Black Box' Procurement Risk: Commercially procured AI systems in government are significantly less likely to have documented 'Disparity Mitigation' strategies compared to Custom-developed systems, due to proprietary vendor limitations.",
+  "id_in_run": 46,
+  "is_surprising": true,
+  "parent_id": "node_3_11",
+  "posterior": 0.4175824175824176,
+  "posterior_belief": {
+    "_empirical_mean": 0.24166666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 2.0,
+    "definitely_true": 0.0,
+    "maybe_false": 58.0,
+    "maybe_true": 0.0,
+    "mean": 0.4175824175824176,
+    "n": 60.0,
+    "prior_params": [
+      23.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7580645161290323,
+  "prior_belief": {
+    "_empirical_mean": 0.7666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 2.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7580645161290323,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented and successfully overcame previous data mapping issues. By correctly using the `22_dev_method` column to classify procurement types and implementing robust text cleaning for the `62_disparity_mitigation` field, the analysis provided a valid test of the 'Black Box Procurement Risk' hypothesis.\n\n**Results:**\n- **Sample Size:** 920 AI systems analyzed (481 Commercial, 439 Custom).\n- **Documentation Rates:** Commercial systems had a documented disparity mitigation rate of 8.1% (39/481), while Custom/In-House systems had a rate of 10.3% (45/439).\n- **Statistical Significance:** The Chi-square test yielded a p-value of 0.311 (Statistic=1.02), indicating the difference is not statistically significant.\n\n**Findings:**\nThe hypothesis is **not supported**. While Custom systems showed a marginally higher rate of documentation, the difference is statistically negligible. The primary finding is a systemic lack of transparency: approximately 90% of all federal AI systems lack documented disparity mitigation strategies, regardless of whether they are commercially procured or developed in-house. The 'black box' nature of vendors does not appear to be the primary driver of this documentation gap.",
+  "rich_outputs": null,
+  "runtime_ms": 270500.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.40857851825593755
+}

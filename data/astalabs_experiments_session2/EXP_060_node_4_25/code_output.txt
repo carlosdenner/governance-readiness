@@ -1,0 +1,21 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: The Generative-Malice Link
+Total AIID incidents: 1362
+Incidents with known technology and intent: 115
+Rows used for analysis: 95
+
+--- Contingency Table ---
+Intent_Class    Intentional  Unintentional
+Tech_Class                                
+Discriminative            2             78
+Generative                0             15
+
+--- Intentional Harm Rates ---
+Intent_Class    Intentional  Total  Intentional_Rate
+Tech_Class                                          
+Discriminative            2     80             0.025
+Generative                0     15             0.000
+
+Chi-square Statistic: 0.0000
+P-value: 1.0000e+00
+Result: No statistically significant difference found.

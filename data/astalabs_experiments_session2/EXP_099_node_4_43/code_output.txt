@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting 'Opaque Defense' Hypothesis Experiment...
+EO13960 Records: 1757
+
+Agency Type Distribution (All EO13960):
+agency_type
+Civilian            1574
+Defense/Security     183
+Name: count, dtype: int64
+
+High Impact Systems Identified: 77
+High Impact Agency Distribution:
+agency_type
+Civilian            50
+Defense/Security    27
+Name: count, dtype: int64
+
+Opacity Statistics by Agency Type (High Impact Only):
+                  Total_Systems  Opaque_Systems  Opacity_Rate
+agency_type                                                  
+Civilian                     50               0           0.0
+Defense/Security             27               0           0.0
+Standard Error is 0, cannot perform Z-test.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** The plot is designed to compare the proportions of transparency compliance (categorized as "Opaque" vs. "Transparent/Other") for High Impact AI Systems between two distinct groups: Civilian agencies and Defense/Security agencies.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** The axis represents categorical data with two groups: **"Civilian"** and **"Defense/Security"**.
+    *   **Range:** Discrete categories.
+*   **Y-Axis:**
+    *   **Title:** "Proportion of High Impact Systems".
+    *   **Range:** The scale ranges from **0.0 to 1.0**, representing a probability or percentage (0% to 100%). Tick marks are placed at intervals of 0.2.
+
+### 3. Data Trends
+*   **Civilian Agencies:** The bar is entirely blue, indicating that **100.0%** of the systems fall into the "Transparent/Other" category. Consequently, **0.0%** are classified as "Opaque".
+*   **Defense/Security Agencies:** Identical to the Civilian group, the bar is entirely blue. **100.0%** of the systems are classified as "Transparent/Other," with **0.0%** classified as "Opaque".
+*   **Pattern:** There is a uniform trend across both agency types. No "Opaque" systems appear in the dataset for either category, leading to two identical bars of maximum height (1.0).
+
+### 4. Annotations and Legends
+*   **Title:** "Transparency Compliance: Defense vs Civilian Agencies (High Impact AI Systems)".
+*   **Legend:** Located in the bottom right corner.
+    *   **Red square:** Represents "Opaque (Notice/Opt-out denied)".
+    *   **Blue square:** Represents "Transparent/Other".
+*   **Data Labels:**
+    *   **"100.0%"**: Written in white in the center of the blue portion of both bars, indicating the proportion of compliant/transparent systems.
+    *   **"0.0%"**: Written in white at the baseline of both bars, indicating the proportion of opaque systems.
+
+### 5. Statistical Insights
+*   **Uniform Compliance:** The data suggests perfect uniformity between Civilian and Defense/Security agencies regarding this specific metric. Both sectors show a 100% classification rate into the "Transparent/Other" category for High Impact AI Systems.
+*   **Absence of Opaque Systems:** According to this plot, there are zero recorded instances of "Opaque (Notice/Opt-out denied)" systems for high-impact AI use cases in either agency type.
+*   **Comparison:** There is no statistical disparity between the two groups; the difference in proportions is 0%.
+==================================================

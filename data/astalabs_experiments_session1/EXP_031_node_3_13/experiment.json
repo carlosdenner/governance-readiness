@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully loaded the 'step3_incident_coding.csv' dataset (n=52) and filtered for incidents with distinct competency dominances (excluding 'both'). The analysis revealed an extreme lack of variance in the data: \n\n1.  **Dominance Split:** 88% of incidents (46/52) were classified as 'both', leaving only 6 incidents with distinct dominances (4 'integration-dominant', 2 'trust-dominant').\n2.  **Failure Modes:** 98% of all incidents (51/52) were 'prevention_failure', with only a single 'detection_failure' in the entire dataset (which occurred in the 'both' category).\n3.  **Subset Analysis:** Within the distinct dominance subset (n=6), 100% of incidents were prevention failures. \n\nConsequently, the contingency table was 2x1 (Integration: 4, Trust: 2; both Prevention), rendering statistical testing (Fisher's Exact / Chi-Square) impossible due to zero variance in the dependent variable. The hypothesis could not be tested, but the data strongly suggests that current adversarial AI case studies (MITRE ATLAS) are overwhelmingly characterized by prevention failures where both trust and integration competencies are implicated simultaneously.",
+  "child_ids": [
+    "node_4_12",
+    "node_4_13"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport os\n\n# --- robust file loading ---\nfilename = 'step3_incident_coding.csv'\nfile_paths = [filename, f'../{filename}']\n\ndf = None\nfor path in file_paths:\n    if os.path.exists(path):\n        print(f\"Found dataset at: {path}\")\n        df = pd.read_csv(path)\n        break\n\nif df is None:\n    print(f\"Error: Could not find {filename} in current or parent directory.\")\n    # List current directory contents for debugging if needed, but per instructions, we exit.\n    exit(1)\n\n# --- Data Preparation ---\nprint(\"\\n=== Dataset Statistics ===\")\nprint(f\"Total rows: {len(df)}\")\nprint(\"\\nDistribution of 'trust_integration_split':\")\nprint(df['trust_integration_split'].value_counts())\nprint(\"\\nDistribution of 'failure_mode':\")\nprint(df['failure_mode'].value_counts())\n\n# Filter out 'Both' to focus on distinct dominance\n# We normalize to lowercase to be safe, though metadata suggests 'Both' is capitalized\nsubset = df[~df['trust_integration_split'].str.lower().eq('both')].copy()\nprint(f\"\\nSubset size (excluding 'Both'): {len(subset)}\")\n\nif len(subset) == 0:\n    print(\"No records found with distinct Trust or Integration dominance.\")\n    exit(0)\n\n# Map failure modes\n# Prevention vs Post-Incident (Detection/Response)\nsubset['failure_category'] = subset['failure_mode'].apply(\n    lambda x: 'Prevention' if 'prevention' in str(x).lower() else 'Post-Incident'\n)\n\nprint(\"\\nSubset Failure Category Distribution:\")\nprint(subset['failure_category'].value_counts())\n\n# --- Contingency Table ---\ncontingency_table = pd.crosstab(subset['trust_integration_split'], subset['failure_category'])\nprint(\"\\n=== Contingency Table (Split vs Failure Category) ===\")\nprint(contingency_table)\n\n# --- Statistical Test ---\n# We need at least 2 rows and 2 columns to test independence between variables.\n# If all rows fall into one column (e.g., all Prevention), we cannot run Chi-Square/Fisher.\n\nrows, cols = contingency_table.shape\nif rows >= 2 and cols >= 2:\n    if rows == 2 and cols == 2:\n        odds_ratio, p_value = stats.fisher_exact(contingency_table)\n        print(f\"\\nFisher's Exact Test Results:\")\n        print(f\"Odds Ratio: {odds_ratio}\")\n        print(f\"P-value: {p_value}\")\n    else:\n        chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n        print(f\"\\nChi-Square Test Results:\")\n        print(f\"Chi2 Stat: {chi2}\")\n        print(f\"P-value: {p}\")\nelse:\n    print(\"\\nSkipping statistical test: Contingency table dimensions are insufficient (need at least 2x2).\")\n    print(\"Observed dimensions:\", (rows, cols))\n    print(\"This indicates a lack of variance in one or both variables within the subset.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Found dataset at: step3_incident_coding.csv\n\n=== Dataset Statistics ===\nTotal rows: 52\n\nDistribution of 'trust_integration_split':\ntrust_integration_split\nboth                    46\nintegration-dominant     4\ntrust-dominant           2\nName: count, dtype: int64\n\nDistribution of 'failure_mode':\nfailure_mode\nprevention_failure    51\ndetection_failure      1\nName: count, dtype: int64\n\nSubset size (excluding 'Both'): 6\n\nSubset Failure Category Distribution:\nfailure_category\nPrevention    6\nName: count, dtype: int64\n\n=== Contingency Table (Split vs Failure Category) ===\nfailure_category         Prevention\ntrust_integration_split            \nintegration-dominant              4\ntrust-dominant                    2\n\nSkipping statistical test: Contingency table dimensions are insufficient (need at least 2x2).\nObserved dimensions: (2, 1)\nThis indicates a lack of variance in one or both variables within the subset.\n",
+  "created_at": "2026-02-20T22:30:24.449015+00:00",
+  "creation_idx": 32,
+  "experiment_id": "node_3_13",
+  "experiment_plan": {
+    "deliverables": "1. Value counts of 'trust_integration_split' and 'failure_mode' for the full dataset.\n2. The contingency table for the filtered subset.\n3. Fisher's Exact Test p-value (if applicable) or a statement explaining why the test could not be run.",
+    "objective": "Investigate if the nature of the competency gap (Trust-dominant vs. Integration-dominant) predicts how the failure manifests (Prevention vs. Detection/Response) by analyzing the subset of incidents with distinct dominances.",
+    "steps": "1. Load the dataset 'step3_incident_coding.csv'.\n2. Filter the DataFrame to exclude rows where 'trust_integration_split' is 'Both' (case-insensitive).\n3. Create a new binary column 'failure_category' where 'failure_mode' containing 'prevention' maps to 'Prevention' and all others map to 'Post-Incident'.\n4. Generate a contingency table of 'trust_integration_split' vs. 'failure_category'.\n5. If the contingency table has at least 2 rows and 2 columns, perform a Fisher's Exact Test (or Chi-square if appropriate) to test for independence.\n6. If the table is smaller (e.g., due to zero variance in failure modes), print the table and explicitly state that statistical testing is not possible due to insufficient variance."
+  },
+  "hypothesis": "Incidents with distinct 'Trust' or 'Integration' dominance show different failure mode distributions (Prevention vs. Detection/Response), indicating a structural dependency between the nature of the competency gap and the incident lifecycle stage.",
+  "id_in_run": 31,
+  "is_surprising": true,
+  "parent_id": "node_2_2",
+  "posterior": 0.48760330578512395,
+  "posterior_belief": {
+    "_empirical_mean": 0.4,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 36.0,
+    "maybe_true": 0.0,
+    "mean": 0.48760330578512395,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 54.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented. The code successfully loaded the 'step3_incident_coding.csv' dataset, filtered for distinct dominances, and attempted to generate a contingency table as planned. \n\n**Findings:**\n1.  **Data Skew:** The dataset exhibits extreme skew, with 88% (46/52) of incidents involving 'Both' trust and integration gaps, and 98% (51/52) classified as 'Prevention' failures.\n2.  **Subset Analysis:** The subset of incidents with distinct dominances (n=6) consisted entirely of 'Prevention' failures (4 Integration-dominant, 2 Trust-dominant).\n3.  **Hypothesis Test:** Due to zero variance in the dependent variable (Failure Mode) within the subset, the resulting 2x1 contingency table precluded statistical testing (Fisher's Exact/Chi-Square). \n\n**Conclusion:** The hypothesis could not be statistically validated. The data suggests that current adversarial AI case studies (MITRE ATLAS) predominantly represent multifaceted prevention failures where trust and integration issues co-occur, rather than distinct failure modes driven by isolated competency gaps.",
+  "rich_outputs": null,
+  "runtime_ms": 246960.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.2951768634761347
+}

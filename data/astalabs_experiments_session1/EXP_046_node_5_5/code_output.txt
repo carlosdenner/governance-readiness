@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_crosswalk_matrix.csv
+
+=== Descriptive Statistics ===
+                       Total Requirements  ...  Usage Proportion
+bundle                                     ...                  
+Integration Readiness                  23  ...          0.130435
+Trust Readiness                        19  ...          0.000000
+
+[2 rows x 3 columns]
+
+=== Contingency Table ===
+is_mapped               0  1
+bundle                      
+Integration Readiness  20  3
+Trust Readiness        19  0
+
+=== Statistical Test Results (Chi-square) ===
+Chi2 Statistic: 1.0646
+p-value: 0.3022
+Fisher's Exact Test p-value: 0.2387
+Odds Ratio: 0.0000
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (Vertical Column Chart).
+*   **Purpose:** The plot compares categorical data ("Competency Bundles") against a numerical variable ("Proportion/Usage Rate"). Specifically, it visualizes how frequently requirements map to "Human-in-the-Loop Approval Gates" for two different bundles.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Competency Bundle"
+    *   **Labels:** Two categorical labels are presented vertically: "Integration Readiness" and "Trust Readiness".
+*   **Y-axis:**
+    *   **Title:** "Proportion (Usage Rate)"
+    *   **Range:** The axis ranges from **0.0 to 1.0** (representing 0% to 100%).
+    *   **Intervals:** The scale is marked in increments of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Highest Value:** The "Integration Readiness" bundle represents the highest (and only non-zero) value in this comparison.
+*   **Lowest Value:** The "Trust Readiness" bundle represents the lowest value at exactly zero.
+*   **Pattern:** There is a significant disparity between the two categories. While Integration Readiness has a measurable association with the metric, Trust Readiness has absolutely none.
+
+### 4. Annotations and Legends
+*   **Annotations:** There are explicit numerical annotations placed above each category location to indicate exact values:
+    *   Above **Integration Readiness**: "13.04%"
+    *   Above **Trust Readiness**: "0.00%"
+*   **Legend:** There is no separate legend box; the categories are identified directly by the x-axis labels.
+
+### 5. Statistical Insights
+*   **Exclusivity of Requirements:** The specific requirement of "Human-in-the-Loop Approval Gates" appears to be exclusive to the **Integration Readiness** bundle (13.04%) in this comparison, as the **Trust Readiness** bundle shows a 0.00% mapping rate.
+*   **Low Overall Prevalence:** Even within the Integration Readiness bundle, the usage rate is relatively low (roughly 1 in 8 requirements, or ~13%). This suggests that "Human-in-the-Loop" gates are a minority requirement even where they are present.
+*   **Implication for Automation:** The 0.00% score for Trust Readiness implies that "Trust" requirements in this specific framework either rely entirely on automated validation or do not utilize human approval gates as a control mechanism.
+==================================================

@@ -1,0 +1,76 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_enrichments.json
+Processed 52 incidents with valid competency mappings.
+
+Correlation (Integration Ratio vs Technique Count):
+  Pearson r: -0.1973
+  P-value: 0.1609
+
+Group Sizes:
+group
+High Trust          34
+High Integration    18
+Name: count, dtype: int64
+
+Group Statistics (Technique Count):
+  High Integration Mean: 7.06 (std: 2.86)
+  High Trust Mean:       7.79 (std: 2.98)
+
+T-test results (Welch's):
+  t-statistic: -0.8730
+  p-value: 0.3884
+
+=== Conclusion ===
+Result: No statistically significant difference in technique count between groups.
+
+STDERR:
+<ipython-input-1-a208eb6eac5c>:84: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(boxplot_data, labels=['High Trust (Ratio <= 0.5)', 'High Integration (Ratio > 0.5)'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot (Box-and-Whisker Plot)** overlaid with a **Strip Plot** (jittered scatter plot).
+*   **Purpose:** The plot compares the distribution of "Attack Complexity" (measured by technique count) across two different categories ("High Trust" vs. "High Integration").
+    *   The **box plot** summarizes the distribution statistics: the median (orange line), the interquartile range (the box itself representing the middle 50% of data), and the range of non-outlier data (whiskers).
+    *   The **overlaid red dots** show the individual data points, allowing the viewer to see the sample size and density of the data that might otherwise be hidden by the box summary.
+
+### 2. Axes
+*   **Title:** "Attack Complexity (Technique Count) by Competency Domain"
+*   **Y-Axis:**
+    *   **Label:** "Technique Count"
+    *   **Range:** The axis marks range from 2 to 16, though data points exist as low as 1 and as high as 16.
+    *   **Units:** Count (integer number of techniques).
+*   **X-Axis:**
+    *   **Label/Categories:** This axis is categorical, split into two specific domains based on a ratio:
+        1.  **High Trust (Ratio <= 0.5)**
+        2.  **High Integration (Ratio > 0.5)**
+
+### 3. Data Trends
+*   **High Trust (Ratio <= 0.5):**
+    *   **Median:** The median technique count is **8**.
+    *   **Spread:** The middle 50% of the data (the box) ranges from **6 to 9**.
+    *   **Range:** The whiskers extend from **3 to 12**.
+    *   **Outliers:** There are two distinct high-value outliers at **14** and **16**.
+*   **High Integration (Ratio > 0.5):**
+    *   **Median:** The median technique count is slightly lower, at **7**.
+    *   **Spread:** The middle 50% of the data is tighter, ranging from **6 to 8**.
+    *   **Range:** The whiskers extend from **4 to 10**.
+    *   **Outliers:** There is one high-value outlier at **15** and one low-value outlier at **1**.
+
+### 4. Annotations and Legends
+*   **Box Components:**
+    *   **Orange Line:** Represents the **median** of the dataset.
+    *   **Black Box:** Represents the **Interquartile Range (IQR)** (25th to 75th percentile).
+    *   **Whiskers:** Indicate the range of the data excluding outliers (typically 1.5x the IQR).
+    *   **Open Black Circles:** Represent **statistical outliers**.
+*   **Red Dots:** Represent individual data observations. They are slightly jittered horizontally to prevent them from overlapping perfectly, making it easier to see the density of data points at specific values (e.g., multiple points at value 6 or 8).
+*   **Grid Lines:** Horizontal dashed grey lines are provided at intervals of 2 units to assist with reading the Y-axis values.
+
+### 5. Statistical Insights
+*   **Higher Complexity in "High Trust":** The "High Trust" domain generally exhibits a slightly higher attack complexity. Its median (8) is higher than that of the "High Integration" domain (7), and its upper whisker extends to 12 compared to 10.
+*   **Variance differences:** The "High Trust" domain shows greater variability. Its box is taller (larger IQR), and its whiskers cover a wider range (3-12) compared to the "High Integration" group (4-10). This suggests that attacks in the "High Trust" domain vary more significantly in complexity than those in the "High Integration" domain.
+*   **Outlier Behavior:** Both domains are subject to extreme outliers on the high end (14-16 techniques), indicating that while the average attack uses 7-8 techniques, highly complex attacks are possible in both domains. However, only the "High Integration" domain shows a distinct low-complexity outlier (1 technique).
+==================================================

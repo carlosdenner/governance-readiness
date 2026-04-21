@@ -1,0 +1,39 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+Filtered EO13960 records: 1757
+
+--- Value Counts: 38_code_access ---
+38_code_access
+NaN                                                              765
+Yes – agency has access to source code, but it is not public.    506
+No – agency does not have access to source code.                 359
+Yes – source code is publicly available.                          48
+Yes                                                               47
+                                                                  31
+YES                                                                1
+Name: count, dtype: int64
+
+--- Value Counts: 65_appeal_process ---
+65_appeal_process
+NaN                                                                                                                    1614
+Yes                                                                                                                      76
+No – it is not operationally practical to offer this.                                                                    38
+No – Law, operational limitations, or governmentwide guidance precludes an opportunity for an individual to appeal.      27
+N/A; COTS tool used for code conversion, no individual's information is input into a model.                               1
+Agency CAIO has waived this minimum practice and reported such waiver to OMB.                                             1
+Name: count, dtype: int64
+
+--- Contingency Table ---
+Appeal Process        0   1
+Code Transparency          
+0                  1125  30
+1                   556  46
+
+--- Statistical Results ---
+Chi-Square Statistic: 23.1232
+p-value: 0.00000
+Phi Coefficient: 0.1147
+
+--- Interpretation ---
+Probability of Appeal Process given Open Code: 7.64%
+Probability of Appeal Process given Closed Code: 2.60%

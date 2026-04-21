@@ -1,0 +1,69 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step2_competency_statements.csv. Shape: (42, 8)
+
+Unique confidence levels:
+confidence
+high      36
+medium     6
+Name: count, dtype: int64
+
+=== Descriptive Statistics by Confidence Group ===
+                  count      mean       std  min   25%  50%  75%  max
+confidence_group                                                     
+High               36.0  1.861111  0.639320  1.0  1.00  2.0  2.0  3.0
+Medium/Low          6.0  1.833333  0.752773  1.0  1.25  2.0  2.0  3.0
+
+=== Statistical Test Results (Welch's t-test) ===
+Comparison: High Confidence (n=36) vs Medium/Low Confidence (n=6)
+T-statistic: 0.0854
+P-value: 0.9346
+Result: Not Statistically Significant (Fail to Reject Null Hypothesis)
+
+STDERR:
+<ipython-input-1-7f693195a10f>:67: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.violinplot(x='confidence_group', y='control_count', data=df, inner='box', palette='muted')
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** This is a **Violin Plot** overlaid with a **Box Plot** and a **Strip Plot** (scatter points).
+*   **Purpose:** The violin plot visualizes the probability density of the data at different values, showing the distribution shape. The inner box plot summarizes statistical quartiles (median, interquartile range), and the individual scatter points show the raw data distribution, revealing sample size and clustering.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Evidence Confidence"
+    *   **Labels:** Two categorical groups: "High" and "Medium/Low".
+*   **Y-Axis:**
+    *   **Title:** "Number of Applicable Controls"
+    *   **Range:** The axis is labeled from integers 0 to 4.
+    *   **Units:** Counts (discrete integer values).
+
+### 3. Data Trends
+*   **High Evidence Confidence (Left, Blue):**
+    *   **Shape:** The distribution is multi-modal with distinct "bulges" at integer values 1, 2, and 3.
+    *   **Density:** The widest section (highest density) is at **2 applicable controls**. There is also significant density at 1 and 3.
+    *   **Range:** The data is tightly clustered between approximately 0.5 and 3.5, with no visible points at 0 or 4.
+*   **Medium/Low Evidence Confidence (Right, Orange):**
+    *   **Shape:** The shape is more elongated compared to the "High" category.
+    *   **Density:** Similar to the High category, the highest density is around **2 applicable controls**.
+    *   **Range:** The spread is wider, extending clearly from 0 up to 4. This indicates a higher variance in this category.
+    *   **Points:** The individual data points are sparser than in the "High" category, suggesting a smaller sample size for this group.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Architecture Control Counts by Evidence Confidence" is displayed at the top.
+*   **Grid:** Horizontal dashed grid lines are placed at integer intervals (0, 1, 2, 3, 4) to aid in reading the specific count values.
+*   **Internal Markers:** Inside each violin:
+    *   A thick grey vertical bar represents the Interquartile Range (IQR).
+    *   Black dots represent individual data observations.
+
+### 5. Statistical Insights
+*   **Central Tendency:** For both "High" and "Medium/Low" confidence levels, the most common number of applicable controls is **2**.
+*   **Variance/Spread:** The "Medium/Low" confidence group exhibits higher variance. While the "High" confidence group is strictly bound between 1 and 3 controls, the "Medium/Low" group includes outliers or edge cases reaching up to 4 controls.
+*   **Discrete vs. Continuous Representation:** Although violin plots are typically used for continuous data (hence the smooth curves), the data here is clearly discrete (counts of 1, 2, 3, etc.). The "High" plot reflects this discreteness well with its "bumpy" shape, whereas the "Medium/Low" plot is smoothed out, likely due to the kernel density estimation smoothing over a smaller dataset spread over a wider range.
+*   **Correlation:** There appears to be a relationship where higher evidence confidence correlates with a more predictable number of controls (tighter distribution), whereas lower confidence is associated with a wider range of potential control counts.
+==================================================

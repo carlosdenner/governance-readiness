@@ -1,0 +1,76 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_incident_coding.csv
+
+=== Descriptive Statistics (Technique Count) ===
+Security Group (n=40):
+count    40.000000
+mean      7.525000
+std       3.129574
+min       1.000000
+25%       6.000000
+50%       7.000000
+75%       9.000000
+max      16.000000
+Name: technique_count, dtype: float64
+
+Non-Security Group (n=12):
+count    12.000000
+mean      7.583333
+std       2.274696
+min       4.000000
+25%       6.500000
+50%       7.500000
+75%       9.000000
+max      12.000000
+Name: technique_count, dtype: float64
+
+=== Statistical Test Results (Mann-Whitney U) ===
+U-statistic: 227.0
+P-value: 0.78441
+Result: No statistically significant difference found.
+
+STDERR:
+<ipython-input-1-8ee261e7786f>:78: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Boxplot (or Box-and-Whisker Plot).
+*   **Purpose:** The plot displays the distribution of a numerical variable ("Number of Techniques Used") across two distinct categorical groups ("Security" and "Non-Security"). It allows for a comparison of central tendency (median), dispersion (interquartile range), ranges, and outliers between the two categories.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Title:** Represents the **Harm Category**.
+    *   **Categories:** Two categories are displayed: "Security" and "Non-Security".
+    *   **Metadata:** The axis labels include the sample size ($n$) for each group: Security ($n=40$) and Non-Security ($n=12$).
+*   **Y-Axis:**
+    *   **Label/Title:** **Number of Techniques Used**.
+    *   **Range:** The axis ticks range from 2 to 16, though the data points extend slightly below 2 (to 1).
+    *   **Units:** Count (integer values representing the number of techniques).
+
+### 3. Data Trends
+*   **Security Category ($n=40$):**
+    *   **Median:** The red line sits at approximately **7**.
+    *   **Interquartile Range (IQR):** The box spans from approximately **6** (25th percentile) to **9** (75th percentile).
+    *   **Range:** The whiskers extend from **3** to **12**.
+    *   **Outliers:** This category shows significant outliers. There is a low outlier at **1**, and high outliers at **14, 15, and 16**.
+*   **Non-Security Category ($n=12$):**
+    *   **Median:** The red line is slightly higher than the Security category, positioned around **7.5**.
+    *   **Interquartile Range (IQR):** The box spans from roughly **6.5** to **9**.
+    *   **Range:** The whiskers extend from **4** to **12**.
+    *   **Outliers:** There are **no visible outliers** for this category.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Technique Counts by Harm Category" clearly defines the scope of the analysis.
+*   **Sample Size ($n$):** Annotated directly on the x-axis labels, indicating an unbalanced dataset with significantly more data points for the "Security" category than "Non-Security".
+*   **Grid Lines:** Horizontal dashed grid lines are included to assist in reading specific values on the Y-axis.
+
+### 5. Statistical Insights
+*   **Central Tendency Similarity:** Despite the difference in categories, the median number of techniques used is quite similar, hovering between 7 and 7.5 for both groups. This suggests the typical complexity (in terms of technique count) is comparable regardless of the harm category.
+*   **Variability and Extremes:** The "Security" category exhibits much higher variability than the "Non-Security" category. While the core spread (the box) is similar, the "Security" group contains extreme cases (outliers) reaching up to 16 techniques, whereas the "Non-Security" group is capped at 12.
+*   **Impact of Sample Size:** The presence of outliers in the "Security" group and the lack thereof in the "Non-Security" group may be influenced by the sample size. With nearly 3.5 times more data points in the "Security" group ($n=40$ vs $n=12$), there is a higher statistical probability of capturing edge cases and anomalies.
+*   **Conclusion:** Most incidents, regardless of harm category, utilize between 6 and 9 techniques. However, "Security" incidents have a potential long tail of high-complexity events (14+ techniques) that are not observed in the current "Non-Security" dataset.
+==================================================

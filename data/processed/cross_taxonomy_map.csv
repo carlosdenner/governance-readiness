@@ -1,0 +1,127 @@
+source_taxonomy,source_type,source_id,source_label,target_taxonomy,target_id,target_label,target_pct,relationship,competency_domain
+ATLAS,tactic,AML.TA0000,AI Model Access,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0001,AI Attack Staging,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0004,Initial Access,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0005,Execution,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0006,Persistence,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0007,Defense Evasion,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0010,Exfiltration,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0010,Exfiltration,McKinsey,C4,Regulatory / privacy / compliance,24,threatens,E
+ATLAS,tactic,AML.TA0011,Impact,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0012,Privilege Escalation,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0013,Credential Access,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0014,Command and Control,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0015,Lateral Movement,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0015,Lateral Movement,McKinsey,C2,Integration complexity with existing systems,29,threatens,B|C|F
+ATLAS,tactic,AML.TA0002,Reconnaissance,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0002,Reconnaissance,McKinsey,C1,Talent / capability gaps,31,threatens,F|G
+ATLAS,tactic,AML.TA0003,Resource Development,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0003,Resource Development,McKinsey,C1,Talent / capability gaps,31,threatens,F|G
+ATLAS,tactic,AML.TA0008,Discovery,McKinsey,C5,Lack of modern data foundations,21,threatens,D
+ATLAS,tactic,AML.TA0008,Discovery,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,tactic,AML.TA0009,Collection,McKinsey,C5,Lack of modern data foundations,21,threatens,D
+ATLAS,tactic,AML.TA0009,Collection,McKinsey,C3,Security / reliability / hallucinations,26,threatens,D|E
+ATLAS,mitigation,AML.M0002,Passive AI Output Obfuscation,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0003,Model Hardening,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0004,Restrict Number of AI Model Queries,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0006,Use Ensemble Methods,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0007,Sanitize Training Data,McKinsey,C5,Lack of modern data foundations,21,addresses,D
+ATLAS,mitigation,AML.M0007,Sanitize Training Data,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0008,Validate AI Model,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0009,Use Multi-Modal Sensors,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0010,Input Restoration,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0015,Adversarial Input Detection,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0020,Generative AI Guardrails,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0020,Generative AI Guardrails,McKinsey,C4,Regulatory / privacy / compliance,24,addresses,E
+ATLAS,mitigation,AML.M0022,Generative AI Model Alignment,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0022,Generative AI Model Alignment,McKinsey,C4,Regulatory / privacy / compliance,24,addresses,E
+ATLAS,mitigation,AML.M0034,Deepfake Detection,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0005,Control Access to AI Models and Data at Rest,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0005,Control Access to AI Models and Data at Rest,McKinsey,C5,Lack of modern data foundations,21,addresses,D
+ATLAS,mitigation,AML.M0011,Restrict Library Loading,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0012,Encrypt Sensitive Information,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0012,Encrypt Sensitive Information,McKinsey,C4,Regulatory / privacy / compliance,24,addresses,E
+ATLAS,mitigation,AML.M0013,Code Signing,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0014,Verify AI Artifacts,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0016,Vulnerability Scanning,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0019,Control Access to AI Models and Data in Production,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0019,Control Access to AI Models and Data in Production,McKinsey,C2,Integration complexity with existing systems,29,addresses,B|C|F
+ATLAS,mitigation,AML.M0031,Memory Hardening,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0033,Input and Output Validation for AI Agent Components,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0033,Input and Output Validation for AI Agent Components,McKinsey,C2,Integration complexity with existing systems,29,addresses,B|C|F
+ATLAS,mitigation,AML.M0000,Limit Public Release of Information,McKinsey,C4,Regulatory / privacy / compliance,24,addresses,E
+ATLAS,mitigation,AML.M0001,Limit Model Artifact Release,McKinsey,C4,Regulatory / privacy / compliance,24,addresses,E
+ATLAS,mitigation,AML.M0017,AI Model Distribution Methods,McKinsey,C2,Integration complexity with existing systems,29,addresses,B|C|F
+ATLAS,mitigation,AML.M0017,AI Model Distribution Methods,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0018,User Training,McKinsey,C1,Talent / capability gaps,31,addresses,F|G
+ATLAS,mitigation,AML.M0021,Generative AI Guidelines,McKinsey,C4,Regulatory / privacy / compliance,24,addresses,E
+ATLAS,mitigation,AML.M0021,Generative AI Guidelines,McKinsey,C1,Talent / capability gaps,31,addresses,F|G
+ATLAS,mitigation,AML.M0023,AI Bill of Materials,McKinsey,C5,Lack of modern data foundations,21,addresses,D
+ATLAS,mitigation,AML.M0023,AI Bill of Materials,McKinsey,C4,Regulatory / privacy / compliance,24,addresses,E
+ATLAS,mitigation,AML.M0024,AI Telemetry Logging,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0024,AI Telemetry Logging,McKinsey,C5,Lack of modern data foundations,21,addresses,D
+ATLAS,mitigation,AML.M0025,Maintain AI Dataset Provenance,McKinsey,C5,Lack of modern data foundations,21,addresses,D
+ATLAS,mitigation,AML.M0026,Privileged AI Agent Permissions Configuration,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0026,Privileged AI Agent Permissions Configuration,McKinsey,C2,Integration complexity with existing systems,29,addresses,B|C|F
+ATLAS,mitigation,AML.M0027,Single-User AI Agent Permissions Configuration,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0027,Single-User AI Agent Permissions Configuration,McKinsey,C2,Integration complexity with existing systems,29,addresses,B|C|F
+ATLAS,mitigation,AML.M0028,AI Agent Tools Permissions Configuration,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0028,AI Agent Tools Permissions Configuration,McKinsey,C2,Integration complexity with existing systems,29,addresses,B|C|F
+ATLAS,mitigation,AML.M0029,Human In-the-Loop for AI Agent Actions,McKinsey,C8,Internal resistance / change management,16,addresses,B|F|G
+ATLAS,mitigation,AML.M0029,Human In-the-Loop for AI Agent Actions,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0030,Restrict AI Agent Tool Invocation on Untrusted Data,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+ATLAS,mitigation,AML.M0030,Restrict AI Agent Tool Invocation on Untrusted Data,McKinsey,C5,Lack of modern data foundations,21,addresses,D
+ATLAS,mitigation,AML.M0032,Segmentation of AI Agent Components,McKinsey,C2,Integration complexity with existing systems,29,addresses,B|C|F
+ATLAS,mitigation,AML.M0032,Segmentation of AI Agent Components,McKinsey,C3,Security / reliability / hallucinations,26,addresses,D|E
+AIID-GMF,technical_failure,,Generalization Failure,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Misinformation Generation Hazard,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Misinformation Generation Hazard,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-GMF,technical_failure,,Distributional Bias,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-GMF,technical_failure,,Distributional Bias,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Context Misidentification,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Lack of Transparency,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-GMF,technical_failure,,Unsafe Exposure or Access,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Unsafe Exposure or Access,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-GMF,technical_failure,,Harmful Application,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-GMF,technical_failure,,Algorithmic Bias,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-GMF,technical_failure,,Algorithmic Bias,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Latency Issues,McKinsey,C2,Integration complexity with existing systems,29,evidences,B|C|F
+AIID-GMF,technical_failure,,Adversarial Data,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Gaming Vulnerability,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Privacy Concerns,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-GMF,technical_failure,,Robustness Failure,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Data or Labelling Noise,McKinsey,C5,Lack of modern data foundations,21,evidences,D
+AIID-GMF,technical_failure,,Inadequate Data,McKinsey,C5,Lack of modern data foundations,21,evidences,D
+AIID-GMF,technical_failure,,Limited Dataset,McKinsey,C5,Lack of modern data foundations,21,evidences,D
+AIID-GMF,technical_failure,,Concept Drift,McKinsey,C5,Lack of modern data foundations,21,evidences,D
+AIID-GMF,technical_failure,,Concept Drift,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Misuse,McKinsey,C1,Talent / capability gaps,31,evidences,F|G
+AIID-GMF,technical_failure,,Misuse,McKinsey,C8,Internal resistance / change management,16,evidences,B|F|G
+AIID-GMF,technical_failure,,Lack of Capability Control,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-GMF,technical_failure,,Lack of Capability Control,McKinsey,C2,Integration complexity with existing systems,29,evidences,B|C|F
+AIID-GMF,technical_failure,,Underspecification,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-CSET,harm_level,,AI tangible harm event,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+AIID-CSET,harm_level,,AI tangible harm event,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-CSET,harm_level,,AI tangible harm issue,McKinsey,C4,Regulatory / privacy / compliance,24,evidences,E
+AIID-CSET,harm_level,,AI tangible harm near-miss,McKinsey,C3,Security / reliability / hallucinations,26,evidences,D|E
+EO13960,governance_safeguard,40_has_ato,40 Has Ato,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,50_internal_review,50 Internal Review,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,52_impact_assessment,52 Impact Assessment,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,52_impact_assessment,52 Impact Assessment,McKinsey,C3,Security / reliability / hallucinations,26,measures_readiness_for,D|E
+EO13960,governance_safeguard,56_monitor_postdeploy,56 Monitor Postdeploy,McKinsey,C3,Security / reliability / hallucinations,26,measures_readiness_for,D|E
+EO13960,governance_safeguard,56_monitor_postdeploy,56 Monitor Postdeploy,McKinsey,C7,Difficulty measuring ROI / value,17,measures_readiness_for,A
+EO13960,governance_safeguard,61_adverse_impact,61 Adverse Impact,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,53_real_world_testing,53 Real World Testing,McKinsey,C3,Security / reliability / hallucinations,26,measures_readiness_for,D|E
+EO13960,governance_safeguard,57_autonomous_impact,57 Autonomous Impact,McKinsey,C3,Security / reliability / hallucinations,26,measures_readiness_for,D|E
+EO13960,governance_safeguard,57_autonomous_impact,57 Autonomous Impact,McKinsey,C8,Internal resistance / change management,16,measures_readiness_for,B|F|G
+EO13960,governance_safeguard,63_stakeholder_consult,63 Stakeholder Consult,McKinsey,C8,Internal resistance / change management,16,measures_readiness_for,B|F|G
+EO13960,governance_safeguard,63_stakeholder_consult,63 Stakeholder Consult,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,67_opt_out,67 Opt Out,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,67_opt_out,67 Opt Out,McKinsey,C8,Internal resistance / change management,16,measures_readiness_for,B|F|G
+EO13960,governance_safeguard,65_appeal_process,65 Appeal Process,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,59_ai_notice,59 Ai Notice,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,59_ai_notice,59 Ai Notice,McKinsey,C8,Internal resistance / change management,16,measures_readiness_for,B|F|G
+EO13960,governance_safeguard,55_independent_eval,55 Independent Eval,McKinsey,C3,Security / reliability / hallucinations,26,measures_readiness_for,D|E
+EO13960,governance_safeguard,55_independent_eval,55 Independent Eval,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E
+EO13960,governance_safeguard,54_key_risks,54 Key Risks,McKinsey,C3,Security / reliability / hallucinations,26,measures_readiness_for,D|E
+EO13960,governance_safeguard,62_disparity_mitigation,62 Disparity Mitigation,McKinsey,C4,Regulatory / privacy / compliance,24,measures_readiness_for,E

@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between incident complexity (number of ATLAS techniques) and competency gap breadth (Multi-Domain vs. Single-Domain). \n\n**Descriptive Statistics:**\n- **Multi-Domain (Both):** n=46, Mean=7.57 techniques, Median=7.0, Std Dev=3.05. Range: 1-16.\n- **Single-Domain:** n=6, Mean=7.33 techniques, Median=7.0, Std Dev=1.97. Range: 5-10.\n\n**Statistical Results:**\n- **Method:** Welch's t-test (unequal variances assumed).\n- **Result:** t-statistic = 0.2520, p-value = 0.8070.\n- **Conclusion:** The difference in means (0.24) is negligible and not statistically significant (p > 0.05). \n\n**Key Observations:**\n1. **Hypothesis Rejection:** The data does not support the hypothesis that multi-domain failures involve significantly more attack techniques. The average complexity is nearly identical between the two groups.\n2. **Variance Differences:** As shown in the box plot, Multi-Domain incidents exhibit much higher variance, covering the full spectrum of complexity (1 to 16 techniques), whereas Single-Domain incidents are tightly clustered (5 to 10 techniques). This suggests that while multi-domain failures *can* be more complex (as evidenced by high outliers), they are not *inherently* more complex on average.\n3. **Sample Imbalance:** The analysis is limited by the small sample size of Single-Domain incidents (n=6), which reflects the dataset's domination by multi-domain failures.",
+  "child_ids": [
+    "node_5_4",
+    "node_5_10"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport sys\nimport os\n\n# Define the filename\nfilename = 'step3_incident_coding.csv'\n\n# Attempt to load the dataset, handling potential path issues\nif os.path.exists(filename):\n    df = pd.read_csv(filename)\nelif os.path.exists(f'../{filename}'):\n    df = pd.read_csv(f'../{filename}')\nelse:\n    print(f\"Error: {filename} not found in current or parent directory.\")\n    sys.exit(1)\n\n# Preprocess the data\n# Normalize the grouping column\ndf['split_normalized'] = df['trust_integration_split'].astype(str).str.lower().str.strip()\n\n# Create the Complexity Group variable\n# 'Both' implies Multi-Domain; anything else (Trust-Dominant, Integration-Dominant) is Single-Domain\ndf['domain_complexity'] = df['split_normalized'].apply(\n    lambda x: 'Multi-Domain' if 'both' in x else 'Single-Domain'\n)\n\n# Extract the technique counts for each group\ngroup_multi = df[df['domain_complexity'] == 'Multi-Domain']['technique_count'].dropna()\ngroup_single = df[df['domain_complexity'] == 'Single-Domain']['technique_count'].dropna()\n\n# 1. Descriptive Statistics\nprint(\"=== Descriptive Statistics: Technique Count by Domain Complexity ===\")\nstats_df = df.groupby('domain_complexity')['technique_count'].describe()\nprint(stats_df)\nprint(\"\\n\")\n\n# 2. Statistical Test (Welch's t-test)\n# We use equal_var=False because sample sizes are likely unequal (Metadata suggests 46 vs 6 split)\nt_stat, p_val = stats.ttest_ind(group_multi, group_single, equal_var=False)\n\nprint(\"=== Welch's T-Test Results ===\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value:     {p_val:.4f}\")\n\nalpha = 0.05\nif p_val < alpha:\n    print(\"Conclusion: The difference is statistically significant (Reject H0).\")\nelse:\n    print(\"Conclusion: The difference is NOT statistically significant (Fail to Reject H0).\")\n\n# 3. Visualization\nplt.figure(figsize=(8, 6))\n# Using a boxplot for clear comparison of medians and spread\nplt.boxplot([group_multi, group_single], labels=['Multi-Domain', 'Single-Domain'], patch_artist=True,\n            boxprops=dict(facecolor=\"lightblue\"))\nplt.title('Distribution of Attack Technique Counts by Competency Gap Complexity')\nplt.ylabel('Count of ATLAS Techniques Used')\nplt.xlabel('Competency Domain Gap')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: === Descriptive Statistics: Technique Count by Domain Complexity ===\n                   count      mean       std  min  25%  50%   75%   max\ndomain_complexity                                                      \nMulti-Domain        46.0  7.565217  3.052519  1.0  6.0  7.0  9.00  16.0\nSingle-Domain        6.0  7.333333  1.966384  5.0  6.0  7.0  8.75  10.0\n\n\n=== Welch's T-Test Results ===\nT-statistic: 0.2520\nP-value:     0.8070\nConclusion: The difference is NOT statistically significant (Fail to Reject H0).\n\nSTDERR:\n<ipython-input-1-c0d461a861aa>:59: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot([group_multi, group_single], labels=['Multi-Domain', 'Single-Domain'], patch_artist=True,\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).\n*   **Purpose:** This plot is designed to display and compare the distribution of numerical data (\"Count of ATLAS Techniques Used\") across different categorical groups (\"Multi-Domain\" vs. \"Single-Domain\"). It effectively visualizes the central tendency (median), data spread (interquartile range), and the presence of outliers.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Competency Domain Gap\"\n    *   **Labels:** Categorical variables representing two groups: \"Multi-Domain\" and \"Single-Domain\".\n*   **Y-Axis:**\n    *   **Title:** \"Count of ATLAS Techniques Used\"\n    *   **Units:** Count (integer values representing the number of techniques).\n    *   **Value Range:** The axis ticks range from 2 to 16, though the data points extend from approximately 1 to 16.\n\n### 3. Data Trends\n*   **Multi-Domain (Left Box):**\n    *   **Median:** The orange line sits at **7**, indicating the median number of techniques used is 7.\n    *   **Spread:** The interquartile range (IQR)—represented by the blue box—spans from **6** (25th percentile) to **9** (75th percentile).\n    *   **Range:** The whiskers extend from a lower bound of **3** to an upper bound of **12**.\n    *   **Outliers:** There is significant outlier activity in this category. There is a low outlier at **1** and several high outliers at **14, 15, and 16**. This suggests high variability in this group.\n\n*   **Single-Domain (Right Box):**\n    *   **Median:** The median is also located at **7**, matching the Multi-Domain group.\n    *   **Spread:** The IQR is slightly tighter, ranging from **6** to roughly **8.5 or 9**.\n    *   **Range:** The whiskers indicate a much more contained overall range, spanning from a minimum of **5** to a maximum of **10**.\n    *   **Outliers:** There are **no outliers** visible for this group.\n\n### 4. Annotations and Legends\n*   **Title:** \"Distribution of Attack Technique Counts by Competency Gap Complexity\" sits at the top, clearly defining the scope of the analysis.\n*   **Grid Lines:** Horizontal dashed grid lines appear at intervals of 2 (2, 4, 6... 16) to aid in estimating Y-axis values.\n*   **Color Coding:** The boxes are filled with light blue, and the median is marked with an orange line. Outliers are depicted as hollow circles.\n\n### 5. Statistical Insights\n*   **Similar Central Tendency:** Both the \"Multi-Domain\" and \"Single-Domain\" groups share the same median count of techniques (7). This implies that in a typical scenario, the complexity in terms of the number of techniques used is similar regardless of the domain gap type.\n*   **Difference in Variance:** The primary difference between the groups lies in predictability and variance. The \"Single-Domain\" group is highly consistent; technique counts never drop below 5 or exceed 10.\n*   **Complexity \"Long Tail\":** The \"Multi-Domain\" group exhibits a \"long tail\" of complexity. While the median is the same, the existence of outliers up to 16 indicates that multi-domain gaps have the potential to spiral into significantly more complex scenarios requiring a much higher number of ATLAS techniques than single-domain gaps ever do. Conversely, they also occasionally require very few techniques (outlier at 1), suggesting a wider spectrum of possible scenarios.\n==================================================",
+  "created_at": "2026-02-20T22:45:56.535188+00:00",
+  "creation_idx": 41,
+  "experiment_id": "node_4_10",
+  "experiment_plan": {
+    "deliverables": "1. Descriptive statistics table of technique counts by domain complexity.\n2. T-test results (t-statistic and p-value).\n3. Visualization of technique count distributions.",
+    "objective": "Assess whether the complexity of an attack (technique count) is associated with the breadth of the competency gap (single vs. dual bundle) using the correct file path.",
+    "steps": "1. Load the dataset 'step3_incident_coding.csv' from the current directory.\n2. Create a new column 'domain_complexity' derived from 'trust_integration_split': label as 'Multi-Domain' if the value contains 'both' (case-insensitive), otherwise 'Single-Domain'.\n3. Calculate summary statistics (count, mean, std) for 'technique_count' grouped by 'domain_complexity'.\n4. Perform a Welch's t-test to compare the mean 'technique_count' between 'Multi-Domain' and 'Single-Domain' groups.\n5. Generate a box plot or violin plot comparing the distributions."
+  },
+  "hypothesis": "Incidents classified as involving 'Both' Trust and Integration failures (multi-domain) exhibit a significantly higher 'technique_count' than incidents classified as single-domain failures, supporting the theory that multi-domain failures represent more sophisticated threats.",
+  "id_in_run": 40,
+  "is_surprising": true,
+  "parent_id": "node_3_0",
+  "posterior": 0.19008264462809918,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.19008264462809918,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented and the hypothesis was tested utilizing the correct dataset and statistical methods. The analysis of 'step3_incident_coding.csv' compared the complexity (technique count) of multi-domain failures (n=46) against single-domain failures (n=6). \n\n**Hypothesis Status:** Rejected.\n\n**Key Findings:**\n1.  **No Significant Difference:** The Welch's t-test yielded a p-value of 0.8070, far exceeding the 0.05 threshold. The mean technique count for multi-domain incidents (7.57) was statistically indistinguishable from single-domain incidents (7.33).\n2.  **Structural Variance:** While the medians were identical (7.0), the visualization revealed that multi-domain failures exhibit significantly higher variance (range 1-16) compared to the tightly clustered single-domain failures (range 5-10). This indicates that while multi-domain failures do account for the most complex outliers, they are not inherently more complex on average.",
+  "rich_outputs": null,
+  "runtime_ms": 242590.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6404780999953865
+}

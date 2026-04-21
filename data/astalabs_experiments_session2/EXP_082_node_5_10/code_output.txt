@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: EO13960 Data Shape: (1757, 196)
+
+--- Monitoring Compliance by Development Ownership ---
+            Total Systems  Monitored Systems  Monitoring Rate
+dev_group                                                    
+Contractor            481                 32         0.066528
+In-house              439                 54         0.123007
+
+--- Contingency Table (0=No, 1=Yes) ---
+is_monitored    0   1
+dev_group            
+Contractor    449  32
+In-house      385  54
+
+Chi-Square Statistic: 7.9862
+P-value: 4.7136e-03
+Result: Statistically significant difference detected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart (Column Chart).
+*   **Purpose:** This chart compares the prevalence of continuous monitoring in AI systems across two distinct categories of development ownership: "Contractor" and "In-house."
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Development Ownership"
+    *   **Labels:** Categorical variables representing the two groups: "Contractor" and "In-house."
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Proportion of Systems with Monitoring"
+    *   **Range:** The axis is scaled from 0.00 to 0.14 (with grid lines indicating it could extend slightly to 0.15).
+    *   **Units:** The axis ticks are formatted as decimals (proportions), ranging from 0.00 to 0.14 in increments of 0.02.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "In-house" category (blue bar) represents the higher value.
+*   **Shortest Bar:** The "Contractor" category (salmon/red bar) represents the lower value.
+*   **Pattern:** There is a distinct disparity between the two groups. The proportion of in-house developed systems that utilize continuous monitoring is significantly higher—nearly double—than that of systems developed by contractors.
+
+### 4. Annotations and Legends
+*   **Bar Labels:** Specific percentage values are annotated directly above each bar for clarity:
+    *   Contractor: **6.7%**
+    *   In-house: **12.3%**
+*   **Color Coding:** The bars are distinctively colored (Salmon for Contractor, Blue for In-house) to visually separate the categories, though no separate legend box is provided or necessary given the clear x-axis labels.
+*   **Grid Lines:** Horizontal dashed grid lines are included to assist in estimating values relative to the Y-axis.
+
+### 5. Statistical Insights
+*   **Significant Gap in Standards:** Systems developed in-house are approximately **1.8 times** more likely (12.3% vs. 6.7%) to have continuous monitoring implemented compared to those developed by contractors.
+*   **Low Overall Adoption:** Despite the difference between the groups, the absolute adoption rates for continuous monitoring are low across the board. Even in the higher-performing "In-house" group, only about 1 in 8 systems (12.3%) are continuously monitored.
+*   **Implication:** This data suggests a potential governance gap in outsourced AI development. It implies that external contracts may lack stringent requirements for post-deployment monitoring or that in-house teams have better infrastructure and incentives for long-term system maintenance and observability.
+==================================================

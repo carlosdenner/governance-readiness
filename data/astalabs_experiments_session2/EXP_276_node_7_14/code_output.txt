@@ -1,0 +1,54 @@
+exitcode: 0 (execution succeeded)
+Code output: Total EO13960 records: 1757
+Records available for analysis after cleaning: 94
+
+Contingency Table (Stage vs Notice Compliance):
+notice_compliance  No  Yes
+stage_group               
+New/Dev             2   35
+Operational        21   36
+
+Compliance Rates (%):
+notice_compliance         No        Yes
+stage_group                            
+New/Dev             5.405405  94.594595
+Operational        36.842105  63.157895
+
+Chi-Square Test Results:
+Chi2 Statistic: 10.3568
+P-value: 0.0013
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Chart (or Column Chart).
+*   **Purpose:** The plot compares the percentage of compliance regarding "AI Notice" across two distinct categories of AI development stages ("New/Dev" and "Operational").
+
+**2. Axes**
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Compliance Rate (%)".
+    *   **Units:** Percentage points.
+    *   **Range:** The scale runs from 0 to 100, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+*   **X-Axis (Horizontal):**
+    *   **Label:** Although there is no collective axis title, the categories represent the "Development Stage."
+    *   **Categories:** "New/Dev" and "Operational".
+
+**3. Data Trends**
+*   **Tallest Bar:** The "New/Dev" category (represented by the sky-blue bar) has the highest compliance rate.
+*   **Shortest Bar:** The "Operational" category (represented by the salmon/light red bar) has a significantly lower compliance rate.
+*   **Pattern:** There is a notable downward trend in compliance when moving from the development phase to the operational phase.
+
+**4. Annotations and Legends**
+*   **Chart Title:** "AI Notice Compliance by Development Stage" appears at the top center.
+*   **Data Labels:** The exact percentage values are annotated directly above each bar:
+    *   New/Dev: **94.6%**
+    *   Operational: **63.2%**
+*   **Color Coding:** The bars use distinct colors to differentiate the categories visually (Blue for New/Dev, Red/Salmon for Operational), though a separate legend is not required as the X-axis labels define the categories.
+
+**5. Statistical Insights**
+*   **High Compliance in Development:** Systems in the "New/Dev" stage show a very high compliance rate of **94.6%**, suggesting that new projects are likely being built with current compliance standards in mind (compliance by design).
+*   **Compliance Gap:** There is a significant discrepancy of **31.4 percentage points** between the two stages.
+*   **Operational Risk:** The "Operational" stage has a much lower compliance rate of **63.2%**. This suggests that legacy systems or AI models currently in production may not have been updated to meet new notice requirements, or that enforcement/checks are less rigorous after the initial development phase.
+==================================================

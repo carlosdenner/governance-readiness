@@ -1,0 +1,59 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between evidence confidence and architectural complexity. \n\n**Descriptive Statistics:**\n- **High Confidence:** n=36, Mean=1.86 controls, Std Dev=0.64.\n- **Medium/Low Confidence:** n=6, Mean=1.83 controls, Std Dev=0.75.\n\n**Statistical Testing:**\n- **Method:** Welch's t-test (unequal variances assumed).\n- **Result:** t-statistic = 0.0854, p-value = 0.9346.\n- **Conclusion:** The difference in means (0.028) is negligible and not statistically significant (p > 0.05). \n\n**Visualization:**\nThe violin plot confirms that both groups have a mode of roughly 2 controls. The 'High' confidence group shows a tighter distribution (values 1-3), while the 'Medium/Low' group has a slightly wider spread but a very small sample size, making the kernel density estimation less reliable. \n\n**Hypothesis Evaluation:**\nThe hypothesis that 'High' confidence statements map to significantly more controls is **rejected**. The data suggests that the complexity of the architecture controls is independent of the confidence level of the evidence supporting the competency.",
+  "child_ids": [
+    "node_4_0",
+    "node_4_7",
+    "node_4_10"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport seaborn as sns\nimport sys\nimport os\n\n# 1. Load the dataset\n# Check current directory first, then parent directory to be robust\nfile_name = 'step2_competency_statements.csv'\nif os.path.exists(file_name):\n    file_path = file_name\nelif os.path.exists(f'../{file_name}'):\n    file_path = f'../{file_name}'\nelse:\n    print(f\"Error: {file_name} not found.\")\n    sys.exit(1)\n\ntry:\n    df = pd.read_csv(file_path)\n    print(f\"Successfully loaded {file_path}. Shape: {df.shape}\")\nexcept Exception as e:\n    print(f\"Error loading file: {e}\")\n    sys.exit(1)\n\n# 2. Feature Engineering: Calculate control_count\n# applicable_controls is semicolon-separated. Handle NaNs if any.\ndf['applicable_controls'] = df['applicable_controls'].fillna('')\ndf['control_count'] = df['applicable_controls'].apply(lambda x: len([c.strip() for c in x.split(';') if c.strip()]))\n\n# Check unique confidence levels\nprint(\"\\nUnique confidence levels:\")\nprint(df['confidence'].value_counts())\n\n# 3. Grouping: High vs Not High (Medium/Low)\n# The hypothesis specifically contrasts High vs others.\ndf['confidence_group'] = df['confidence'].apply(lambda x: 'High' if str(x).lower() == 'high' else 'Medium/Low')\n\nhigh_group = df[df['confidence_group'] == 'High']['control_count']\nother_group = df[df['confidence_group'] == 'Medium/Low']['control_count']\n\n# Descriptive Statistics\nprint(\"\\n=== Descriptive Statistics by Confidence Group ===\")\ngroup_stats = df.groupby('confidence_group')['control_count'].describe()\nprint(group_stats)\n\n# 4. Statistical Test (T-test)\n# We assume unequal variances (Welch's t-test)\nt_stat, p_val = stats.ttest_ind(high_group, other_group, equal_var=False)\n\nprint(\"\\n=== Statistical Test Results (Welch's t-test) ===\")\nprint(f\"Comparison: High Confidence (n={len(high_group)}) vs Medium/Low Confidence (n={len(other_group)})\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\n\nalpha = 0.05\nif p_val < alpha:\n    print(\"Result: Statistically Significant (Reject Null Hypothesis)\")\nelse:\n    print(\"Result: Not Statistically Significant (Fail to Reject Null Hypothesis)\")\n\n# 5. Visualization\nplt.figure(figsize=(10, 6))\nsns.violinplot(x='confidence_group', y='control_count', data=df, inner='box', palette='muted')\nplt.title('Distribution of Architecture Control Counts by Evidence Confidence')\nplt.xlabel('Evidence Confidence')\nplt.ylabel('Number of Applicable Controls')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\n\n# Overlay individual points\nsns.stripplot(x='confidence_group', y='control_count', data=df, color='black', alpha=0.5, jitter=True)\n\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Successfully loaded step2_competency_statements.csv. Shape: (42, 8)\n\nUnique confidence levels:\nconfidence\nhigh      36\nmedium     6\nName: count, dtype: int64\n\n=== Descriptive Statistics by Confidence Group ===\n                  count      mean       std  min   25%  50%  75%  max\nconfidence_group                                                     \nHigh               36.0  1.861111  0.639320  1.0  1.00  2.0  2.0  3.0\nMedium/Low          6.0  1.833333  0.752773  1.0  1.25  2.0  2.0  3.0\n\n=== Statistical Test Results (Welch's t-test) ===\nComparison: High Confidence (n=36) vs Medium/Low Confidence (n=6)\nT-statistic: 0.0854\nP-value: 0.9346\nResult: Not Statistically Significant (Fail to Reject Null Hypothesis)\n\nSTDERR:\n<ipython-input-1-7f693195a10f>:67: FutureWarning: \n\nPassing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.\n\n  sns.violinplot(x='confidence_group', y='control_count', data=df, inner='box', palette='muted')\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is a detailed analysis of the plot:\n\n### 1. Plot Type\n*   **Type:** This is a **Violin Plot** overlaid with a **Box Plot** and a **Strip Plot** (scatter points).\n*   **Purpose:** The violin plot visualizes the probability density of the data at different values, showing the distribution shape. The inner box plot summarizes statistical quartiles (median, interquartile range), and the individual scatter points show the raw data distribution, revealing sample size and clustering.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Evidence Confidence\"\n    *   **Labels:** Two categorical groups: \"High\" and \"Medium/Low\".\n*   **Y-Axis:**\n    *   **Title:** \"Number of Applicable Controls\"\n    *   **Range:** The axis is labeled from integers 0 to 4.\n    *   **Units:** Counts (discrete integer values).\n\n### 3. Data Trends\n*   **High Evidence Confidence (Left, Blue):**\n    *   **Shape:** The distribution is multi-modal with distinct \"bulges\" at integer values 1, 2, and 3.\n    *   **Density:** The widest section (highest density) is at **2 applicable controls**. There is also significant density at 1 and 3.\n    *   **Range:** The data is tightly clustered between approximately 0.5 and 3.5, with no visible points at 0 or 4.\n*   **Medium/Low Evidence Confidence (Right, Orange):**\n    *   **Shape:** The shape is more elongated compared to the \"High\" category.\n    *   **Density:** Similar to the High category, the highest density is around **2 applicable controls**.\n    *   **Range:** The spread is wider, extending clearly from 0 up to 4. This indicates a higher variance in this category.\n    *   **Points:** The individual data points are sparser than in the \"High\" category, suggesting a smaller sample size for this group.\n\n### 4. Annotations and Legends\n*   **Title:** \"Distribution of Architecture Control Counts by Evidence Confidence\" is displayed at the top.\n*   **Grid:** Horizontal dashed grid lines are placed at integer intervals (0, 1, 2, 3, 4) to aid in reading the specific count values.\n*   **Internal Markers:** Inside each violin:\n    *   A thick grey vertical bar represents the Interquartile Range (IQR).\n    *   Black dots represent individual data observations.\n\n### 5. Statistical Insights\n*   **Central Tendency:** For both \"High\" and \"Medium/Low\" confidence levels, the most common number of applicable controls is **2**.\n*   **Variance/Spread:** The \"Medium/Low\" confidence group exhibits higher variance. While the \"High\" confidence group is strictly bound between 1 and 3 controls, the \"Medium/Low\" group includes outliers or edge cases reaching up to 4 controls.\n*   **Discrete vs. Continuous Representation:** Although violin plots are typically used for continuous data (hence the smooth curves), the data here is clearly discrete (counts of 1, 2, 3, etc.). The \"High\" plot reflects this discreteness well with its \"bumpy\" shape, whereas the \"Medium/Low\" plot is smoothed out, likely due to the kernel density estimation smoothing over a smaller dataset spread over a wider range.\n*   **Correlation:** There appears to be a relationship where higher evidence confidence correlates with a more predictable number of controls (tighter distribution), whereas lower confidence is associated with a wider range of potential control counts.\n==================================================",
+  "created_at": "2026-02-20T21:49:01.962808+00:00",
+  "creation_idx": 10,
+  "experiment_id": "node_3_0",
+  "experiment_plan": {
+    "deliverables": "Mean control counts by confidence level, ANOVA/T-test results, and a violin plot showing the distribution of control counts for each confidence level.",
+    "objective": "Explore the relationship between the strength of literature evidence and the architectural complexity of the resulting competency.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Create a 'control_count' variable by counting the number of semicolon-separated items in 'applicable_controls'.\n3. Group the data by 'confidence' level ('High' vs. 'Medium'/'Low').\n4. Perform a one-way ANOVA or t-test to compare the mean 'control_count' across confidence levels."
+  },
+  "hypothesis": "Competency statements with 'High' evidence confidence map to a significantly higher number of architecture controls than those with 'Medium' or 'Low' confidence, reflecting a maturity bias in the framework.",
+  "id_in_run": 9,
+  "is_surprising": true,
+  "parent_id": "node_2_5",
+  "posterior": 0.14473684210526316,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.14473684210526316,
+    "n": 90.0,
+    "prior_params": [
+      16.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6875,
+  "prior_belief": {
+    "_empirical_mean": 0.6956521739130435,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 18.0,
+    "mean": 0.6875,
+    "n": 23.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 5.0
+  },
+  "review": "The experiment was faithfully executed and the hypothesis was tested sufficiently. The analysis of 'step2_competency_statements.csv' revealed that 'High' confidence competencies (n=36) map to an average of 1.86 controls, while 'Medium/Low' confidence competencies (n=6) map to an average of 1.83 controls. The Welch's t-test resulted in a p-value of 0.9346, indicating no statistically significant difference between the groups. Consequently, the hypothesis that high-confidence statements require significantly more architecture controls is rejected; the data suggests that architectural complexity is independent of the evidence confidence level.",
+  "rich_outputs": null,
+  "runtime_ms": 188270.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6299286537926594
+}

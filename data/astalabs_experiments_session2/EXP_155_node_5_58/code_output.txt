@@ -1,0 +1,52 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded successfully.
+ATLAS cases found: 52
+
+Sector Analysis:
+  Government/Defense: n=4, Mean Tactic Count=1.00
+  Commercial/Private: n=48, Mean Tactic Count=1.00
+
+Mann-Whitney U Test (Gov > Com):
+  U-statistic=96.0
+  p-value=1.0000
+T-test (two-sided): t=nan, p=nan
+
+Result: No significant difference in tactic chain length between sectors.
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  res = hypotest_fun_out(*samples, **kwds)
+<ipython-input-1-b4b1e6f11034>:93: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([gov_counts, com_counts], labels=['Gov/Def', 'Com/Priv'], patch_artist=True)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (specifically, two collapsed box plots).
+*   **Purpose:** The plot is designed to compare the distribution of distinct tactics used in cyber attacks across two different target sectors: Government/Defense ("Gov/Def") and Commercial/Private ("Com/Priv").
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** Categorical labels representing the target sectors: **"Gov/Def"** and **"Com/Priv"**.
+    *   **Value Range:** N/A (Categorical data).
+*   **Y-Axis:**
+    *   **Title:** **"Number of Distinct Tactics"**.
+    *   **Value Range:** The visible scale ranges from roughly **0.94 to 1.05**, with major grid lines marked at intervals of 0.02 (0.96, 0.98, 1.00, 1.02, 1.04).
+
+### 3. Data Trends
+*   **Observation:** The plot shows two extremely flat features located at the **Y-value of 1.00**.
+*   **Interpretation of Shapes:** In a standard box plot, a box represents the interquartile range (IQR), and the line inside represents the median. Since these plots appear as single flat orange lines, it indicates that the **median, the 25th percentile, and the 75th percentile are all identical** (specifically, they are all equal to 1).
+*   **Pattern:** There is no visible spread or variance. This suggests that for the dataset visualized, nearly every recorded attack involved exactly **1 distinct tactic**, regardless of whether the target was in the Government/Defense sector or the Commercial/Private sector.
+
+### 4. Annotations and Legends
+*   **Title:** "Attack Sophistication: Tactic Counts by Target Sector" — This sets the context that the plot is measuring the complexity of attacks.
+*   **Grid Lines:** Horizontal dashed grid lines are present to assist in reading the Y-axis values precisely.
+*   **Color:** The central lines are orange, which is the default color for the median line in `matplotlib` (a common Python plotting library).
+
+### 5. Statistical Insights
+*   **Uniformity of Attacks:** The most significant insight is the lack of variation. The data indicates that attacks against both sectors are essentially identical in terms of this specific metric: they are mono-tactic attacks.
+*   **Low Sophistication:** If "sophistication" is measured by the number of distinct tactics employed during an intrusion, the attacks in this dataset are of low sophistication (score of 1). Attackers are not chaining multiple distinct tactics types together in these specific instances.
+*   **No Sector Differentiation:** There is no statistical difference between the "Gov/Def" and "Com/Priv" sectors regarding the number of distinct tactics used. Both sectors face the same simple attack structure based on this plot.
+==================================================

@@ -1,0 +1,84 @@
+exitcode: 0 (execution succeeded)
+Code output: === Pareto Analysis Results ===
+Total Mappings (X): 77
+Total Architecture Controls: 18
+Controls needed to cover >= 80% of mappings: 10 (55.6% of controls)
+
+Top 'Compliance Hub' Controls:
+                                    Control  Frequency  Cumulative Percentage
+ AI Risk Policy & Accountability Structures         13              16.883117
+     Evaluation & Monitoring Infrastructure         13              33.766234
+      GenAIOps / MLOps Lifecycle Governance         10              46.753247
+Nondeterminism Controls & Output Validation          6              54.545455
+          Data Governance & Access Controls          5              61.038961
+        Regulatory Compliance Documentation          4              66.233766
+          RAG Architecture & Data Grounding          4              71.428571
+              Threat Modeling & Red-Teaming          3              75.324675
+        Supply Chain & Vendor Risk Controls          3              79.220779
+        Prompt Management & Secret Handling          3              83.116883
+
+Full Pareto Table:
+                                         Control  Frequency  Cumulative Percentage
+0     AI Risk Policy & Accountability Structures         13              16.883117
+1         Evaluation & Monitoring Infrastructure         13              33.766234
+2          GenAIOps / MLOps Lifecycle Governance         10              46.753247
+3    Nondeterminism Controls & Output Validation          6              54.545455
+4              Data Governance & Access Controls          5              61.038961
+5            Regulatory Compliance Documentation          4              66.233766
+6              RAG Architecture & Data Grounding          4              71.428571
+7                  Threat Modeling & Red-Teaming          3              75.324675
+8            Supply Chain & Vendor Risk Controls          3              79.220779
+9            Prompt Management & Secret Handling          3              83.116883
+10              Human-in-the-Loop Approval Gates          3              87.012987
+11        Incident Response & Recovery Playbooks          2              89.610390
+12           Human Override & Control Mechanisms          2              92.207792
+13  Tool-Use Boundaries & Least-Privilege Access          2              94.805195
+14             Multi-Agent Orchestration Pattern          1              96.103896
+15            Single-Agent Orchestration Pattern          1              97.402597
+16    Scalable Modular Architecture (Archetypes)          1              98.701299
+17                     Audit Logging & Telemetry          1             100.000000
+
+STDERR:
+<ipython-input-1-9e119ec5a5c1>:81: UserWarning: set_ticklabels() should only be used with a fixed number of ticks, i.e. after set_ticks() or using a FixedLocator.
+  ax1.set_xticklabels(pareto_df['Control'], rotation=45, ha='right', fontsize=8)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** **Pareto Chart**.
+*   **Purpose:** This chart combines a bar graph and a line graph to prioritize the "Architecture Controls" based on their frequency of mapping to "Governance Requirements." It helps identify the "vital few" controls that address the majority of governance needs, illustrating the Pareto Principle (often known as the 80/20 rule).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Architecture Controls"
+    *   **Content:** Categorical data representing various technical and procedural controls (e.g., "AI Risk Policy & Accountability Structures," "Evaluation & Monitoring Infrastructure"). The labels are rotated 45 degrees for readability.
+*   **Left Y-Axis (Primary):**
+    *   **Label:** "Frequency of Mappings" (colored blue).
+    *   **Range:** 0 to roughly 14 (The scale ticks appear to represent intervals of 2).
+    *   **Units:** Count (integer values).
+*   **Right Y-Axis (Secondary):**
+    *   **Label:** "Cumulative Percentage (%)" (colored red).
+    *   **Range:** 0% to 100%.
+    *   **Units:** Percentage (%).
+
+### 3. Data Trends
+*   **Bar Plot (Frequency):**
+    *   **Tallest Bars:** The first two categories, **"AI Risk Policy & Accountability Structures"** and **"Evaluation & Monitoring Infrastructure,"** are tied for the highest frequency, each with **13 mappings**.
+    *   **Pattern:** There is a steep drop-off after the top three categories. The frequency declines from 13 to 10 ("GenAIOps / MLOps Lifecycle Governance"), then drops to 6, and gradually tapers down to 1.
+    *   **Shortest Bars:** The last four categories (including "Single-Agent Orchestration Pattern" and "Audit Logging & Telemetry") have the lowest frequency, each with only **1 mapping**.
+*   **Line Plot (Cumulative Percentage):**
+    *   The red line starts at approximately 17% and rises steeply initially, reflecting the high impact of the first few categories.
+    *   The slope of the line flattens out significantly after the "Threat Modeling & Red-Teaming" category, indicating diminishing returns for the subsequent controls.
+
+### 4. Annotations and Legends
+*   **Green Dashed Line:** A horizontal line drawn at the **80% mark** on the right Y-axis. This acts as a visual threshold to identify the specific controls required to achieve 80% of the total governance mappings.
+*   **Red Line with Dots:** Connects the cumulative percentage points for each category.
+*   **Color Coding:** The title and axis labels are color-coded (Blue for Frequency, Red for Percentage) to correspond with the visual elements (Blue bars, Red line).
+
+### 5. Statistical Insights
+*   **The "Vital Few":** The chart clearly demonstrates the Pareto Principle. Roughly the first **9 out of 18 categories** (50% of the controls) account for **80% of the governance mappings** (indicated by where the red line crosses the green dashed threshold).
+*   **Top 3 Dominance:** The top three controls ("AI Risk Policy...", "Evaluation & Monitoring...", and "GenAIOps...") account for a significant portion of the total volume (visually appearing to be nearly 50% of all mappings combined).
+*   **Strategic Focus:** Organizations looking to satisfy governance requirements most efficiently should prioritize the implementation of the controls on the left side of the chart (specifically up to "Supply Chain & Vendor Risk Controls"). The controls on the far right, while likely necessary for specific edge cases, contribute significantly less to the aggregate count of governance mappings.
+==================================================

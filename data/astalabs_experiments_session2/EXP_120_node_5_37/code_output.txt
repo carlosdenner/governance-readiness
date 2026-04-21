@@ -1,0 +1,49 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Contingency Table ---
+Harm_Class  Economic/Allocative  Psychological/Reputational
+Tech_Type                                                  
+Generative                    1                          15
+Predictive                   13                          29
+
+Fisher's Exact Test Results:
+P-value: 0.08360
+Result: No Statistically Significant Association
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This plot compares the proportional distribution of different "Harm Domains" (categories of negative impact) across two distinct types of AI technology ("Generative" and "Predictive"). By normalizing the height of the bars to 100%, it allows for an easy comparison of the *ratio* of harm types within each technology category, regardless of the total number of incidents.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "AI Technology Type".
+    *   **Categories:** Two discrete categories labeled "Generative" and "Predictive".
+*   **Y-axis:**
+    *   **Title:** "Percentage of Incidents".
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Increments:** Marks are placed every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Dominant Category:** Across both AI technology types, "Psychological/Reputational" harm (represented by the orange bars) is the majority category.
+*   **Generative AI:** This bar is overwhelmingly dominated by the orange segment. It shows a very high concentration of "Psychological/Reputational" harm compared to a negligible amount of "Economic/Allocative" harm.
+*   **Predictive AI:** While still led by "Psychological/Reputational" harm, this bar shows a much more significant proportion of "Economic/Allocative" harm (the blue segment) compared to the Generative bar. The distribution is roughly 70/30.
+
+### 4. Annotations and Legends
+*   **Legend:** Located on the right side, titled "Harm Domain."
+    *   **Blue:** Represents "Economic/Allocative" harm.
+    *   **Orange:** Represents "Psychological/Reputational" harm.
+*   **Data Labels (Annotations within bars):**
+    *   **Generative / Economic (Blue):** Count: 1, Percentage: 6.2%.
+    *   **Generative / Psychological (Orange):** Count: 15, Percentage: 93.8%.
+    *   **Predictive / Economic (Blue):** Count: 13, Percentage: 31.0%.
+    *   **Predictive / Psychological (Orange):** Count: 29, Percentage: 69.0%.
+
+### 5. Statistical Insights
+*   **Technology-Specific Risks:** There is a clear correlation between the type of AI and the type of harm produced.
+    *   **Generative AI** incidents in this dataset are almost exclusively associated with **Psychological or Reputational** damage (93.8%). Economic harm is an outlier in this category (only 6.2%).
+    *   **Predictive AI** poses a significantly higher risk of **Economic or Allocative** harm (31.0%) compared to Generative AI. This suggests that predictive systems (likely used for decision-making in finance, hiring, or resource distribution) are more prone to affecting people's economic standing than generative systems are.
+*   **Sample Size:** While the bars appear equal in height due to the percentage scaling, the raw counts indicate that the "Predictive" dataset is larger (42 total incidents: 13 + 29) compared to the "Generative" dataset (16 total incidents: 1 + 15).
+==================================================

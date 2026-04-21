@@ -1,0 +1,67 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Total AIID Incidents: 1362
+Rows for analysis (Exclusive categories): 62
+
+Counts by Failure Category:
+Failure_Category
+Safety/Robustness    42
+Bias/Fairness        20
+Name: count, dtype: int64
+
+Counts by Harm Category:
+Harm_Category
+Intangible    41
+Tangible      21
+Name: count, dtype: int64
+
+Contingency Table:
+Harm_Category      Intangible  Tangible
+Failure_Category                       
+Bias/Fairness              20         0
+Safety/Robustness          21        21
+
+Chi-Square Statistic: 12.9720
+P-value: 3.1618e-04
+Result: Significant association found (Reject Null Hypothesis).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically representing a 2x2 contingency table).
+*   **Purpose:** The plot visualizes the frequency of intersections between two categorical variables: "Technical Failure" modes and "Harm Domain" categories. The color intensity corresponds to the count of occurrences in each category intersection.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Technical Failure"
+    *   **Categories:** "Bias/Fairness" (top) and "Safety/Robustness" (bottom).
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Harm Domain (Exclusive)"
+    *   **Categories:** "Intangible" (left) and "Tangible" (right).
+*   **Color Scale (Legend):**
+    *   A vertical bar on the right indicates the magnitude of the values.
+    *   **Range:** 0 to approximately 21.
+    *   **Gradient:** Light blue/white represents low values (0), darkening to deep blue for high values (20+).
+
+### 3. Data Trends
+*   **High Values (Dark Blue):**
+    *   The intersection of **Safety/Robustness** and **Intangible** has a count of **21**.
+    *   The intersection of **Safety/Robustness** and **Tangible** also has a count of **21**.
+    *   The intersection of **Bias/Fairness** and **Intangible** is high as well, with a count of **20**.
+*   **Low Values (White):**
+    *   The intersection of **Bias/Fairness** and **Tangible** is **0**, indicating no occurrences in this category.
+*   **Row Patterns:** The "Safety/Robustness" row shows an even distribution across both harm domains (21 vs. 21). The "Bias/Fairness" row is heavily skewed entirely toward "Intangible" harm.
+
+### 4. Annotations and Legends
+*   **Title:** "Technical Failure Mode vs Harm Domain" prominently displayed at the top.
+*   **Cell Annotations:** The exact integer counts (20, 0, 21, 21) are written inside each cell for precise reading.
+*   **Color Bar:** Located to the right of the heatmap to provide a visual reference for the data magnitude relative to the color intensity.
+
+### 5. Statistical Insights
+*   **Exclusivity of Bias/Fairness:** The most significant insight is that in this dataset, **Bias/Fairness** failures result exclusively in **Intangible** harm (20 counts). There are zero recorded instances of Bias/Fairness leading to Tangible harm.
+*   **Even Split for Safety/Robustness:** **Safety/Robustness** failures are equally likely to result in Intangible or Tangible harm (21 counts each).
+*   **Dominant Failure Mode:** **Safety/Robustness** is the more frequent technical failure mode overall, accounting for 42 total incidents ($21 + 21$), compared to 20 total incidents for Bias/Fairness.
+*   **Dominant Harm Domain:** **Intangible** harm is significantly more common than Tangible harm. Intangible harm accounts for approximately 66% of the data points ($20 + 21 = 41$), while Tangible harm accounts for roughly 34% ($0 + 21 = 21$).
+==================================================

@@ -1,0 +1,28 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Commercial Obscurity hypothesis test (Attempt 2)...
+
+Loaded 1757 rows from EO 13960 dataset.
+
+Analysis set size after filtering: 794
+
+--- Contingency Table ---
+Code_Transparency  Opaque  Transparent
+Procurement_Type                      
+Commercial            383           11
+Custom/Internal       368           32
+
+--- Percentages (Row-wise) ---
+Code_Transparency  Opaque  Transparent
+Procurement_Type                      
+Commercial          97.21         2.79
+Custom/Internal     92.00         8.00
+
+--- Chi-Square Test Results ---
+Chi-square statistic: 9.5185
+p-value: 2.0341e-03
+Degrees of freedom: 1
+
+Result: Statistically SIGNIFICANT difference found.
+Commercial Transparency: 2.79%
+Custom/Internal Transparency: 8.00%
+The data SUPPORTS the hypothesis: Commercial systems are less transparent.

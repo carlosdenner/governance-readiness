@@ -1,0 +1,32 @@
+exitcode: 0 (execution succeeded)
+Code output: AIID Incidents loaded: 1362 rows
+Using Sector Column: Sector of Deployment
+Using Autonomy Column: Autonomy Level
+Rows after sector filtering: 41
+Sector counts:
+mapped_sector
+Transportation    28
+Government        13
+Name: count, dtype: int64
+Rows after autonomy filtering: 39
+
+--- Contingency Table (Sector vs Autonomy) ---
+mapped_autonomy  High  Low
+mapped_sector             
+Government          6    6
+Transportation      2   25
+
+--- Chi-square Test Results ---
+Chi-square Statistic: 6.8156
+P-value: 9.036452e-03
+Result: REJECT Null Hypothesis. Significant difference found.
+
+Proportions (%):
+mapped_autonomy   High    Low
+mapped_sector                
+Government       50.00  50.00
+Transportation    7.41  92.59
+
+Analysis: Transportation High Autonomy Rate: 7.4%
+Analysis: Government High Autonomy Rate: 50.0%
+Conclusion: Hypothesis CONTRADICTED. Government has a higher rate (or equal) of high-autonomy incidents.

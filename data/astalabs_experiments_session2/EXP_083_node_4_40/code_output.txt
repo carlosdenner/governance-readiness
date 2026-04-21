@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+AIID Incidents found: 1362
+
+--- Classification Results ---
+Autonomy_Class  Harm_Class       
+Low Autonomy    Non-Physical Harm    1128
+                Physical Harm         103
+High Autonomy   Non-Physical Harm      68
+                Physical Harm          63
+Name: count, dtype: int64
+
+--- Contingency Table ---
+Harm_Class      Non-Physical Harm  Physical Harm
+Autonomy_Class                                  
+High Autonomy                  68             63
+Low Autonomy                 1128            103
+
+Chi-Square Statistic: 170.8832
+P-Value: 4.7455e-39
+
+RESULT: Statistically significant relationship found.
+High Autonomy systems resulted in Physical Harm in 48.1% of cases.
+Low Autonomy systems resulted in Physical Harm in 8.4% of cases.
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% stacked bar chart).
+*   **Purpose:** To compare the relative distribution (proportion) of two different categories of harm ("Non-Physical" and "Physical") across two distinct groups defined by their autonomy level ("High" and "Low"). This visualization emphasizes the part-to-whole relationship within each group rather than absolute values.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "Autonomy Level"
+    *   **Categories:** Two discrete categories labeled "High Autonomy" and "Low Autonomy" (oriented vertically).
+*   **Y-axis:**
+    *   **Label:** "Proportion of Incidents"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100% of the incidents).
+    *   **Ticks:** Intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **High Autonomy:**
+    *   The distribution is fairly balanced but leans slightly towards non-physical harm.
+    *   **Non-Physical Harm (Yellow):** Accounts for approximately 52% of incidents (estimated visually just above the 0.5 mark).
+    *   **Physical Harm (Red):** Accounts for the remaining ~48% of incidents.
+*   **Low Autonomy:**
+    *   The distribution is heavily skewed.
+    *   **Non-Physical Harm (Yellow):** Dominates the category, accounting for approximately 90-92% of incidents.
+    *   **Physical Harm (Red):** Represents a very small minority, approximately 8-10% of incidents.
+
+### 4. Annotations and Legends
+*   **Title:** "Harm Type Distribution by Autonomy Level" describes the subject matter clearly.
+*   **Legend:** Located to the right of the plot titled "Harm Type".
+    *   **Yellow/Orange Square:** Represents "Non-Physical Harm".
+    *   **Red Square:** Represents "Physical Harm".
+
+### 5. Statistical Insights
+*   **Risk Profile Shift:** There is a distinct shift in the nature of risk associated with increased autonomy. While low autonomy systems result almost exclusively in non-physical harm, high autonomy systems show a nearly even split between physical and non-physical harm.
+*   **Autonomy vs. Physical Safety:** The plot suggests a positive correlation between higher levels of system autonomy and the proportion of physical harm incidents. "High Autonomy" scenarios are significantly more likely to involve physical harm compared to "Low Autonomy" scenarios.
+*   **Prevalence of Non-Physical Harm:** Regardless of autonomy level, non-physical harm constitutes the majority of incidents in both categories, though the margin is vastly different (a bare majority in High Autonomy vs. an overwhelming majority in Low Autonomy).
+==================================================

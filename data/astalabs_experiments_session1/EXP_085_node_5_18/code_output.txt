@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Current working directory: /data
+Dataset loaded successfully from step3_coverage_map.csv.
+
+--- Descriptive Statistics ---
+Trust Readiness:       n=8, Mean=5.62, Variance=42.84, Std Dev=6.55
+Integration Readiness: n=8, Mean=5.50, Variance=37.71, Std Dev=6.14
+
+--- Levene's Test for Equality of Variances (center='median') ---
+Statistic: 0.0037
+P-value: 0.9524
+Result: Variances are not significantly different (Fail to reject H0).
+
+STDERR:
+<ipython-input-1-e73028e043a2>:65: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot with an overlaid Scatter Plot** (often referred to as a box-and-whisker plot with jitter or strip plot overlay).
+*   **Purpose:** It is used to visualize the distribution of "Incident Counts" across two different categories ("Trust Readiness" and "Integration Readiness"). The box plot component summarizes the distribution (median, quartiles, range), while the overlaid points show the specific values of individual data points, allowing the viewer to see the sample size and density of the data.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Title:** Represents categorical groups: **"Trust Readiness"** and **"Integration Readiness"**.
+    *   **Value Range:** Two distinct categories.
+*   **Y-Axis:**
+    *   **Label/Title:** **"Incident Count"**.
+    *   **Units:** Count (numerical frequency).
+    *   **Value Range:** The axis ticks range from **0 to 17.5**, with grid lines every 2.5 units. The actual data extends slightly higher, to approximately 19.
+
+### 3. Data Trends
+*   **Trust Readiness (Left Group):**
+    *   **Distribution:** The data is right-skewed.
+    *   **Clusters:** There is a cluster of data points at the very bottom (0 to 2 incidents), indicating many bundles have few or no incidents.
+    *   **Box Dimensions:** The Interquartile Range (IQR)—represented by the light blue box—spans roughly from 1 to 9. The median (black line inside the box) is approximately 3.5.
+    *   **Outliers:** There is a significant outlier or maximum value near **19**.
+*   **Integration Readiness (Right Group):**
+    *   **Distribution:** Also right-skewed but with a slightly different clustering pattern than the Trust group.
+    *   **Clusters:** Data points cluster near 0-1 and another cluster appears around 7-8.
+    *   **Box Dimensions:** The IQR spans roughly from 1 to 8. The median is slightly higher than the Trust group, sitting at approximately **4.5**.
+    *   **Outliers:** There is a significant maximum value near **18**.
+
+### 4. Annotations and Legends
+*   **Legend:** Located at the bottom center of the chart.
+    *   **Blue Circle:** Represents **"Trust Data"** (corresponding to the Trust Readiness column).
+    *   **Red Circle:** Represents **"Integration Data"** (corresponding to the Integration Readiness column).
+*   **Grid Lines:** Horizontal dashed grey lines facilitate reading specific values on the Y-axis.
+*   **Whiskers:** The black vertical lines extending from the boxes indicate the full range of the data (excluding potential statistical outliers, though here they appear to reach the maximum values).
+
+### 5. Statistical Insights
+*   **High Variability:** Both bundles show a high degree of variability. While the median incident count is low (under 5 for both), the "worst-case" scenarios result in incident counts nearly four times the median (18-19).
+*   **Similarity in Performance:** The two categories perform relatively similarly. Their ranges are almost identical (0-19 vs 0-18), and their interquartile ranges (the middle 50% of the data) overlap significantly.
+*   **Skewed Risk:** The distribution suggests that for both Trust and Integration bundles, the majority of cases run smoothly (low incident counts), but there is a persistent risk of high-incident events, as evidenced by the long upper whiskers and the high data points at the top of the graph.
+*   **Median Comparison:** "Integration Readiness" has a slightly higher median incident count (~4.5) compared to "Trust Readiness" (~3.5), suggesting that, on average, the Integration bundles might experience slightly more incidents, though the sample size appears small.
+==================================================

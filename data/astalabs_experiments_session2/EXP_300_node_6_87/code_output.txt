@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+Loaded 1362 AIID incidents.
+Valid data points for analysis: 185
+
+Contingency Table (Counts):
+Harm_Class      Intangible/Economic
+Autonomy_Class                     
+High Autonomy                    53
+Low Autonomy                    132
+
+Contingency Table (Proportions):
+Harm_Class      Intangible/Economic
+Autonomy_Class                     
+High Autonomy                   1.0
+Low Autonomy                    1.0
+
+Chi-Square Test Results:
+Chi2 Statistic: 0.0000
+P-value: 1.0000e+00
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **stacked bar chart** (specifically a 100% stacked bar chart, though only one category is present).
+*   **Purpose:** The plot is designed to compare the distribution of "Harm Domain" types across different levels of AI autonomy. It aims to visualize what proportion of incidents fall into specific harm categories for both High and Low Autonomy systems.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Categories:** The axis represents discrete categorical data with two groups: "High Autonomy" and "Low Autonomy".
+*   **Y-Axis:**
+    *   **Title:** "Proportion of Incidents"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Units:** The axis uses a decimal ratio scale where 1.0 equals 100%.
+
+### 3. Data Trends
+*   **Bar Height/Composition:** Both bars extend to the maximum value of 1.0 on the Y-axis.
+*   **Uniformity:** There is perfect uniformity between the two categories. For both "High Autonomy" and "Low Autonomy," the bars are identical in height and composition.
+*   **Dominant Category:** There is only one color visible in the bars (steel blue), which corresponds to the "Intangible/Economic" harm domain. This category occupies the entire volume of both bars.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Distribution of Harm Type by Autonomy Level (AIID)". This indicates the data source is likely the AI Incident Database (AIID).
+*   **Legend:** Located in the upper right corner, titled "Harm Domain". It shows a single entry: "Intangible/Economic" represented by a steel blue square.
+*   **Bar Annotations:** The text "100.0%" is written in white, bold font in the center of both bars, explicitly confirming that the single category represents the entirety of the data for both columns.
+
+### 5. Statistical Insights
+*   **Complete Dominance of One Harm Type:** The most significant insight is that for the dataset visualized here, **100% of recorded incidents** related to both High and Low Autonomy systems resulted in "Intangible/Economic" harm.
+*   **Absence of Physical Harm:** The plot implies a complete absence of other harm domains (such as physical harm to persons or property) in this specific subset of data.
+*   **Independence from Autonomy Level:** The level of autonomy (High vs. Low) appears to have no impact on the *type* of harm caused in this context; the outcome is identically economic/intangible regardless of how autonomous the system is.
+==================================================

@@ -1,0 +1,102 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Intentionality of Failure Modes
+Dataset loaded from current directory.
+AIID Incidents loaded: 1362 rows
+Using column for Intent: 'Intentional Harm'
+Intent distribution:
+intent_clean
+Unintentional    1362
+Name: count, dtype: int64
+Using column for Technical Failure: 'Known AI Technical Failure'
+
+Failure Category Distribution:
+failure_category
+Other                 144
+Safety/Reliability    112
+Security/Privacy       22
+Name: count, dtype: int64
+
+Contingency Table:
+failure_category  Other  Safety/Reliability  Security/Privacy
+intent_clean                                                 
+Unintentional       144                 112                22
+
+Chi-square Statistic: 0.0000
+P-value: 1.0000e+00
+
+Standardized Residuals:
+failure_category  Other  Safety/Reliability  Security/Privacy
+intent_clean                                                 
+Unintentional       0.0                 0.0               0.0
+
+Interpretation:
+No significant relationship found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically, an annotated confusion matrix or frequency count visualization).
+*   **Purpose:** The plot visualizes the relationship between "Intent" (on the y-axis) and "Technical Failure Mode" (on the x-axis) by using color intensity and numerical labels to represent the frequency or count of occurrences for each intersection of categories.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** Failure Category
+    *   **Labels:** The axis represents categorical data with three distinct groups: "Other", "Safety/Reliability", and "Security/Privacy".
+*   **Y-Axis:**
+    *   **Title:** Intent
+    *   **Labels:** The axis represents categorical data, showing a single category: "Unintentional".
+*   **Color Scale (Z-Axis equivalent):**
+    *   Represented by a vertical color bar on the right side.
+    *   **Range:** The scale runs from approximately 20 (light yellow) to roughly 145 (dark blue).
+
+### 3. Data Trends
+*   **High Values:** The area of highest density is the intersection of "Unintentional" intent and the "Other" failure category, indicated by the darkest blue color and the value **144**.
+*   **Medium Values:** The intersection of "Unintentional" and "Safety/Reliability" shows a moderate to high frequency with a count of **112**, represented by a medium blue shade.
+*   **Low Values:** The area of lowest density is the intersection of "Unintentional" and "Security/Privacy", indicated by the light yellow color and a significantly lower value of **22**.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Heatmap of Intent vs Technical Failure Mode" clearly defines the scope of the visualization.
+*   **Cell Annotations:** Each cell contains a specific numerical value (144, 112, 22) overlaid on the color, providing exact counts rather than requiring the viewer to estimate based on the color bar.
+*   **Color Legend:** The bar on the right guides the interpretation of the colors, where light yellow represents low frequency and dark blue represents high frequency.
+
+### 5. Statistical Insights
+*   **Dominant Failure Modes:** When the intent is "Unintentional," the vast majority of technical failures fall under the "Other" category (51.8% of the displayed data), followed closely by "Safety/Reliability" (40.3%).
+*   **Disparity in Categories:** There is a significant disparity between "Security/Privacy" failures and the other two categories. "Other" failures occur approximately **6.5 times** more frequently than "Security/Privacy" failures in this dataset.
+*   **Safety vs. Security:** For unintentional incidents, issues related to Safety/Reliability are far more common than those related to Security/Privacy (112 vs 22 counts). This suggests that unintentional errors are much more likely to result in reliability or safety glitches than in security breaches.
+==================================================
+
+=== Plot Analysis (figure 2) ===
+Based on the provided image, here is the analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% stacked bar chart for a single category).
+*   **Purpose:** The plot visualizes the composition of "Technical Failure Modes" within the specific context of "Unintentional" intent. It breaks down the total failures (100%) into three distinct sub-categories to show their relative proportions.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Intent"
+    *   **Category:** There is a single category displayed: "Unintentional" (text is rotated vertically).
+*   **Y-Axis:**
+    *   **Label:** "Percentage"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Linear increments of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Dominant Category:** The **"Other"** category (blue) is the largest segment, appearing to occupy slightly more than half of the total bar (approximately 52%).
+*   **Secondary Category:** **"Safety/Reliability"** (orange) is the second largest component. It spans from roughly the 52% mark up to the 92% mark, representing about 40% of the total.
+*   **Minor Category:** **"Security/Privacy"** (green) is the smallest segment, occupying the top portion of the bar (roughly from 92% to 100%), representing approximately 8%.
+
+### 4. Annotations and Legends
+*   **Plot Title:** "Technical Failure Modes by Intent"
+*   **Legend:** Located on the right side, titled "Failure Category," mapping colors to specific failure types:
+    *   **Blue:** Other
+    *   **Orange:** Safety/Reliability
+    *   **Green:** Security/Privacy
+
+### 5. Statistical Insights
+*   **Majority of Unintentional Failures are Miscellaneous:** More than 50% of the technical failure modes classified as "Unintentional" fall into the "Other" category. This suggests a wide variety of miscellaneous errors that do not fit strictly into safety or security buckets.
+*   **Significant Safety Component:** A substantial portion (approx. 40%) of unintentional failures are attributed to "Safety/Reliability," indicating that when systems fail unintentionally, operational reliability is a major factor.
+*   **Low Security Correlation:** Only a small fraction (approx. <10%) of unintentional failures are categorized as "Security/Privacy." This implies that security and privacy breaches are rarely the primary mode of failure when the intent is unintentional; conversely, it suggests that security/privacy failures might be more strongly associated with *intentional* acts (though that data is not shown here for comparison).
+==================================================

@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: The Intentionality of Greed (Attempt 5 - Text Analysis)...
+Loaded 1362 AIID incidents.
+Records with valid intentionality: 191
+
+Summary Statistics by Inferred Harm Domain:
+                 Total Incidents  Intentionality Rate  Intentional Count
+inferred_domain                                                         
+Civil Rights                  70             0.042857                3.0
+Financial                      6             0.000000                0.0
+Other                         62             0.032258                2.0
+Physical                      53             0.056604                3.0
+
+Contingency Table (0=Unintentional, 1=Intentional):
+is_intentional   0.0  1.0
+inferred_domain          
+Civil Rights      67    3
+Financial          6    0
+Other             60    2
+Physical          50    3
+
+Overall Chi-Square Test: Chi2=0.6932, p-value=8.7479e-01
+
+Pairwise Comparisons (Financial vs X):
+  Financial (0.0%) vs Physical (5.7%): Chi2=0.0000, p=1.0000e+00
+  Financial (0.0%) vs Civil Rights (4.3%): Chi2=0.0000, p=1.0000e+00
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart with Error Bars.
+*   **Purpose:** The plot is designed to compare the "Intentionality Rate" (proportion of incidents deemed intentional) across four different categories of inferred harm domains. The inclusion of error bars indicates the variability or uncertainty (likely standard error or confidence intervals) associated with the mean measurement for each category.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Harm Domain (Inferred)"
+    *   **Categories:** The axis displays categorical data representing four domains: "Civil Rights," "Financial," "Other," and "Physical."
+*   **Y-Axis:**
+    *   **Title:** "Proportion of Intentional Incidents"
+    *   **Units:** The values represent a ratio/proportion (0.0 to 1.0 scale), effectively equivalent to percentages if multiplied by 100.
+    *   **Range:** The axis ticks range from **0.00 to 0.08**, though the error bar for the "Physical" category extends slightly higher, reaching approximately **0.09**.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"Physical"** harm domain has the highest mean intentionality rate, reaching approximately **0.057**.
+*   **Shortest Bar:** The **"Financial"** harm domain has the lowest rate, with a bar that is barely visible, suggesting a value very close to **0.00**.
+*   **Patterns:**
+    *   **"Civil Rights"** shows a moderate rate (approx. **0.043**), very closely aligned with the global average.
+    *   **"Other"** falls below the global average at approximately **0.032**.
+*   **Variability (Error Bars):**
+    *   The **"Physical"** domain has the largest error bar (spanning from ~0.025 to ~0.09), indicating the highest uncertainty or variance in the data for this category.
+    *   The **"Civil Rights"** and **"Other"** domains also show significant error margins.
+    *   The **"Financial"** domain shows a very small error bar, consistent with its near-zero value.
+
+### 4. Annotations and Legends
+*   **Legend:** A legend in the top-left corner identifies the horizontal dashed grey line as the **"Global Average."**
+*   **Global Average Line:** This horizontal dashed line runs across the entire plot at a y-value of approximately **0.042**. It serves as a baseline to see which categories perform above or below the overall mean of the dataset.
+
+### 5. Statistical Insights
+*   **High Uncertainty in Physical Harm:** While "Physical" harm incidents have the highest *average* rate of intentionality, the large error bar overlaps significantly with the "Civil Rights" and "Other" categories. This suggests that while physical harm is seemingly more intentional on average, there is wide variability in the incidents recorded.
+*   **Financial Incidents are Unintentional:** The data suggests a strong statistical finding that incidents falling under the "Financial" harm domain are almost never classified as intentional (the rate is near zero).
+*   **Civil Rights as the Baseline:** The "Civil Rights" domain sits almost exactly on the Global Average line. This implies that the frequency of intentionality in Civil Rights cases is representative of the dataset as a whole.
+*   **Significance:** The error bars for "Civil Rights," "Other," and "Physical" all overlap with the Global Average line. This suggests that, statistically, the deviation of these specific domains from the global average might not be highly significant, unlike the "Financial" domain, which is clearly distinct from the others.
+==================================================

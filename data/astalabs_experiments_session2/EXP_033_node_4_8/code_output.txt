@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 records loaded: 1757
+
+--- Verification of Defense/Security Agencies ---
+  - Department of Homeland Security
+  - Department of State
+
+Records after filtering for known procurement type: 967
+agency_category
+Civilian            890
+Defense/Security     77
+Name: count, dtype: int64
+
+Contingency Table (Agency Category vs Procurement Type):
+procurement_type  Commercial (Buy)  Custom (Build)
+agency_category                                   
+Civilian                       229             661
+Defense/Security                16              61
+
+Chi-square Statistic: 0.6753
+P-value: 4.1122e-01
+
+Proportions (%):
+procurement_type  Commercial (Buy)  Custom (Build)
+agency_category                                   
+Civilian                 25.730337       74.269663
+Defense/Security         20.779221       79.220779
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** To compare the proportional composition of AI procurement strategies ("Commercial" vs. "Custom") across two distinct agency sectors ("Civilian" and "Defense/Security"). This chart visualizes the relative percentage share of each procurement type within the total number of systems for each sector.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Agency Sector"
+    *   **Labels:** Two distinct categories: "Civilian" and "Defense/Security".
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Systems"
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Increments:** Ticks are marked every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Dominance of Custom Solutions:** In both the Civilian and Defense/Security sectors, the "Custom (Build)" strategy (represented by blue) overwhelmingly dominates the "Commercial (Buy)" strategy.
+*   **Comparison of Sectors:**
+    *   **Civilian Agencies:** Approximately three-quarters (74.3%) of systems are custom-built, while roughly one-quarter (25.7%) are commercial off-the-shelf purchases.
+    *   **Defense/Security Agencies:** Reliance on custom-built systems is even higher here, accounting for nearly 80% (79.2%) of systems, with only about one-fifth (20.8%) being commercial.
+*   **Overall Pattern:** There is a consistent trend across government sectors favoring custom development over purchasing commercial AI solutions, though the trend is slightly more pronounced in the defense sector.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "AI Procurement Strategy: Defense/Security vs Civilian Agencies (Strict Mapping)".
+*   **Legend:** Located at the top right, titled "Procurement Type".
+    *   **Orange:** Represents "Commercial (Buy)".
+    *   **Blue:** Represents "Custom (Build)".
+*   **Data Labels:** White text annotations are placed directly inside the bar segments to indicate specific values:
+    *   **Civilian:** 74.3% (Custom) and 25.7% (Commercial).
+    *   **Defense/Security:** 79.2% (Custom) and 20.8% (Commercial).
+
+### 5. Statistical Insights
+*   **Preference for Bespoke Solutions:** The data indicates a strong governmental preference for developing bespoke AI solutions rather than adopting existing commercial products. This suggests that government requirements for AI are likely specialized, unique, or sensitive enough that off-the-shelf commercial products (COTS) are insufficient for the majority of use cases.
+*   **Security Implications:** The Defense/Security sector shows a higher dependency on "Custom (Build)" solutions (79.2% vs 74.3% for Civilian). This 4.9% difference likely reflects the stricter security requirements, classified environments, and highly specialized mission needs inherent to defense operations, which commercial vendors may not accommodate.
+*   **Market Opportunity:** While "Commercial (Buy)" is the minority strategy, it still accounts for 20-25% of the systems. This represents a significant, though secondary, market share for commercial AI vendors selling to the government.
+==================================================

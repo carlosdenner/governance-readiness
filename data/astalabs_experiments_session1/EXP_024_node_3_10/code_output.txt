@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded dataset with shape: (52, 22)
+
+Unique Failure Modes: <StringArray>
+['prevention_failure', 'detection_failure']
+Length: 2, dtype: str
+Unique Bundles: <StringArray>
+['both', 'trust-dominant', 'integration-dominant']
+Length: 3, dtype: str
+
+=== Contingency Table (Failure Phase vs Bundle) ===
+trust_integration_split  both  integration-dominant  trust-dominant
+Failure_Phase                                                      
+Post-Breach                 1                     0               0
+Prevention                 45                     4               2
+
+Chi-Square Test Results:
+Chi2 Statistic: 0.1330
+P-value: 0.9357
+Degrees of Freedom: 2
+Expected Frequencies:
+ [[8.84615385e-01 7.69230769e-02 3.84615385e-02]
+ [4.51153846e+01 3.92307692e+00 1.96153846e+00]]
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Annotated Heatmap (or contingency table visualization).
+*   **Purpose:** The plot visualizes the frequency distribution of incidents across two categorical variables: "Failure Phase" and "Competency Bundle." It is designed to reveal correlations and concentrations of data points within specific intersections of these categories.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Competency Bundle"
+    *   **Labels:** Three categorical labels: "both", "integration-dominant", and "trust-dominant". The labels are rotated 45 degrees for readability.
+*   **Y-Axis:**
+    *   **Title:** "Failure Phase"
+    *   **Labels:** Two categorical labels: "Post-Breach" (top) and "Prevention" (bottom).
+*   **Color Scale (Legend):**
+    *   **Title:** "Incident Count"
+    *   **Range:** The scale runs from 0 (white/lightest blue) to 45 (dark navy blue).
+
+### 3. Data Trends
+*   **Areas of High Concentration:**
+    *   The most significant trend is heavily skewed toward the intersection of the **"Prevention"** phase and the **"both"** competency bundle. This cell contains a count of **45**, which is overwhelmingly higher than any other cell in the matrix.
+*   **Areas of Low Concentration:**
+    *   The **"Post-Breach"** row is nearly devoid of incidents, containing only a single incident in the "both" column and 0 in the others.
+    *   The "integration-dominant" and "trust-dominant" columns show very low activity, with counts of 4 and 2 respectively (both within the Prevention phase).
+*   **Overall Pattern:** The data indicates a strong clustering effect. The vast majority of observations fall into a single category combination (Prevention + both).
+
+### 4. Annotations and Legends
+*   **Cell Annotations:** Each cell in the grid is annotated with the exact numerical count of incidents (e.g., 45, 4, 2, 1, 0, 0), allowing for precise reading of the data without relying solely on color perception.
+*   **Color Bar:** Located on the right side, the color bar indicates that darker shades of blue represent higher incident counts, while lighter shades represent lower counts.
+
+### 5. Statistical Insights
+*   **Dominance of Prevention Phase:** Out of the total incidents displayed ($N=52$), **98% (51/52)** occurred during the "Prevention" phase. Only **2% (1/52)** occurred during the "Post-Breach" phase.
+*   **Dominance of 'both' Competency Bundle:** The "both" category accounts for **88.5% (46/52)** of all incidents.
+*   **Conclusion:** This dataset suggests that failures are predominantly identified or occur during the prevention stage rather than after a breach has occurred. Furthermore, the "both" competency bundle is the primary context for these incidents, while "integration-dominant" and "trust-dominant" bundles are significantly less represented in failure reports.
+==================================================

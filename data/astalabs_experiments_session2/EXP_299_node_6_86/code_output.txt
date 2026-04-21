@@ -1,0 +1,67 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 Scored subset shape: (1757, 196)
+Analyzable subset (COTS vs GOTS) shape: (920, 197)
+Group distribution:
+procurement_type
+Commercial (COTS)    481
+Government (GOTS)    439
+Name: count, dtype: int64
+
+--- Statistical Tests ---
+
+Metric: Code Access
+has_code_access    0.0  1.0
+procurement_type           
+Commercial (COTS)  258  132
+Government (GOTS)   37  354
+GOTS Rate: 90.54%, COTS Rate: 33.85%
+Chi-Square: 264.5628, p-value: 1.7376e-59
+
+Metric: Data Documentation
+has_data_docs      0.0  1.0
+procurement_type           
+Commercial (COTS)  156  299
+Government (GOTS)   49  363
+GOTS Rate: 88.11%, COTS Rate: 65.71%
+Chi-Square: 58.8173, p-value: 1.7302e-14
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart.
+*   **Purpose:** The chart is designed to compare transparency rates between two different sectors (Government AI vs. Commercial AI) across two distinct categories of transparency (Code Access and Data Documentation).
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Transparency Rate (%)".
+    *   **Range:** The visual scale runs from 0 to roughly 110, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+*   **X-Axis:**
+    *   **Labels:** The axis represents categorical data split into two groups: "Code Access" and "Data Documentation."
+
+### 3. Data Trends
+*   **General Pattern:** Government (GOTS) AI systems consistently show significantly higher transparency rates compared to Commercial (COTS) AI systems across both metrics.
+*   **Code Access:**
+    *   This category exhibits the widest disparity.
+    *   **Tallest Bar:** Government (GOTS) at **90.5%**.
+    *   **Shortest Bar:** Commercial (COTS) at **33.8%**.
+*   **Data Documentation:**
+    *   The Government sector remains higher, but the gap is narrower compared to Code Access.
+    *   Government (GOTS) is at **88.1%**.
+    *   Commercial (COTS) is at **65.7%**.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner, distinguishing the two groups:
+    *   **Blue:** Government (GOTS - Government off-the-shelf).
+    *   **Orange:** Commercial (COTS - Commercial off-the-shelf).
+*   **Value Labels:** Exact percentage values are annotated directly above each bar for clarity (e.g., 90.5%, 33.8%).
+*   **Statistical Significance markers:** There are triple asterisks (**\*\*\***) placed above the Government bars in both categories. In scientific plotting, this conventionally indicates a high level of statistical significance (often $p < 0.001$) regarding the difference between the control group (or comparator) and the test group.
+
+### 5. Statistical Insights
+*   **The "Transparency Gap":** The plot visualizes a significant gap in openness between government and commercial AI.
+    *   In **Code Access**, the gap is massive, with Government AI being nearly **2.7 times** more likely to provide code access than Commercial AI (a difference of 56.7 percentage points).
+    *   In **Data Documentation**, the gap persists but is smaller (a difference of 22.4 percentage points).
+*   **Conclusion:** Government-developed AI appears to adhere to much stricter standards of transparency, particularly regarding the ability to review source code, whereas commercial entities are significantly more opaque, especially regarding their codebases. The statistical markers suggest these differences are not due to random chance.
+==================================================

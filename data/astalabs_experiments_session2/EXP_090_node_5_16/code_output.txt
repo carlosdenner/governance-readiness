@@ -1,0 +1,73 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+AIID Incidents loaded: 1362
+
+Records ready for analysis: 154
+Distribution by Autonomy:
+ Autonomy_Clean
+Low/Medium Autonomy    110
+High Autonomy           44
+Name: count, dtype: int64
+Distribution by Harm:
+ Harm_Clean
+Physical/Tangible Harm    92
+Intangible Harm           62
+Name: count, dtype: int64
+
+Contingency Table:
+Harm_Clean           Intangible Harm  Physical/Tangible Harm
+Autonomy_Clean                                              
+High Autonomy                     16                      28
+Low/Medium Autonomy               46                      64
+
+Chi-square Statistic: 0.1951
+p-value: 6.5873e-01
+Cramer's V: 0.0356
+
+Row Proportions (%):
+Harm_Clean           Intangible Harm  Physical/Tangible Harm
+Autonomy_Clean                                              
+High Autonomy              36.363636               63.636364
+Low/Medium Autonomy        41.818182               58.181818
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically a 2x2 contingency table visualization).
+*   **Purpose:** To visualize the frequency distribution or relationship between two categorical variables: "Autonomy Level" and "Harm Type." The color intensity represents the magnitude of the count in each intersection.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** Harm Type
+    *   **Labels:** "Intangible Harm" and "Physical/Tangible Harm".
+*   **Y-Axis:**
+    *   **Title:** Autonomy Level
+    *   **Labels:** "High Autonomy" and "Low/Medium Autonomy".
+*   **Color Bar (Z-Axis equivalent):**
+    *   **Range:** The scale on the right indicates values ranging roughly from just below 20 to just above 60.
+    *   **Gradient:** Light beige indicates lower values, while dark burnt orange indicates higher values.
+
+### 3. Data Trends
+*   **Highest Value:** The intersection of **Low/Medium Autonomy** and **Physical/Tangible Harm** (bottom-right quadrant) contains the highest count at **64**. This is represented by the darkest brown color.
+*   **Lowest Value:** The intersection of **High Autonomy** and **Intangible Harm** (top-left quadrant) contains the lowest count at **16**, represented by the lightest beige color.
+*   **Row Comparison:** The "Low/Medium Autonomy" row generally contains significantly higher values (46 and 64) compared to the "High Autonomy" row (16 and 28).
+*   **Column Comparison:** The "Physical/Tangible Harm" column generally contains higher values (28 and 64) compared to the "Intangible Harm" column (16 and 46).
+
+### 4. Annotations and Legends
+*   **Title:** "Autonomy Level vs. Harm Type" is centered at the top.
+*   **Cell Values:** Each of the four quadrants is annotated with the exact count:
+    *   Top-Left: 16
+    *   Top-Right: 28
+    *   Bottom-Left: 46
+    *   Bottom-Right: 64
+*   **Color Scale Legend:** A vertical bar on the right side provides a reference for the color coding, with tick marks at 20, 30, 40, 50, and 60.
+
+### 5. Statistical Insights
+*   **Total Sample Size:** The total count represented in the plot is **154** ($16 + 28 + 46 + 64$).
+*   **Prevalence of Physical Harm:** Physical/Tangible harm ($28 + 64 = 92$) is more prevalent in this dataset than Intangible harm ($16 + 46 = 62$), regardless of the autonomy level.
+*   **Prevalence of Lower Autonomy:** Incidents involving Low/Medium Autonomy systems ($46 + 64 = 110$) are much more frequent than those involving High Autonomy systems ($16 + 28 = 44$). This suggests that the dataset may be skewed toward lower autonomy systems or that lower autonomy systems are more prone to recorded incidents.
+*   **Dominant Scenario:** The most common scenario is a Low/Medium Autonomy system causing Physical/Tangible Harm (approx. 41.5% of the total).
+*   **Rarest Scenario:** The least common scenario is a High Autonomy system causing Intangible Harm (approx. 10.4% of the total).
+==================================================

@@ -1,0 +1,75 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 subset loaded. Shape: (1757, 196)
+
+Operational Group Size: 627
+Development/Testing Group Size: 351
+
+--- Governance Control Analysis (Mapped) ---
+
+Analyzing 'Post-Deploy Monitoring'
+  Operational: 67/627 (10.69%)
+  Dev/Testing: 20/351 (5.70%)
+  Z-test: z=2.6283, p=8.5824e-03
+  Result: MATURATION DETECTED (Ops > Dev)
+
+Analyzing 'IQA Compliance'
+  Operational: 73/627 (11.64%)
+  Dev/Testing: 47/351 (13.39%)
+  Z-test: z=-0.7990, p=4.2428e-01
+  Result: No Significant Difference
+
+Analyzing 'Risk Assessment'
+  Operational: 56/627 (8.93%)
+  Dev/Testing: 22/351 (6.27%)
+  Z-test: z=1.4749, p=1.4024e-01
+  Result: No Significant Difference
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (Clustered Bar Chart).
+*   **Purpose:** To compare the proportion of "Active Governance" between two distinct environments ("Operational" vs. "Dev/Testing") across three different stages of the governance lifecycle.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title/Labels:** The axis represents categorical stages of the lifecycle: **"Post-Deploy Monitoring"**, **"IQA Compliance"**, and **"Risk Assessment"**.
+    *   **Range:** Categorical (Nominal).
+*   **Y-Axis:**
+    *   **Title:** "Active Governance (Proportion)".
+    *   **Units:** The axis uses decimal proportions ranging from **0.0 to roughly 1.1** (representing 0% to 110%).
+    *   **Note:** While the axis is scaled to 1.0 (100%), the actual data points are quite low, clustering below 0.2 (20%).
+
+### 3. Data Trends
+*   **Post-Deploy Monitoring:**
+    *   **Operational (Blue):** Higher at **10.7%**.
+    *   **Dev/Testing (Orange):** Lower at **5.7%**.
+    *   *Trend:* Operational governance is nearly double that of Dev/Testing in this stage.
+*   **IQA Compliance:**
+    *   **Operational (Blue):** **11.6%**.
+    *   **Dev/Testing (Orange):** Slightly higher at **13.4%**.
+    *   *Trend:* This is the only category where Dev/Testing shows a higher proportion than Operational, though the difference is small.
+*   **Risk Assessment:**
+    *   **Operational (Blue):** **8.9%**.
+    *   **Dev/Testing (Orange):** **6.3%**.
+    *   *Trend:* Operational is slightly higher.
+*   **Overall Pattern:** Active governance proportions are generally low across all categories, with no single metric exceeding 14%.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner.
+    *   Blue: **Operational**
+    *   Orange: **Dev/Testing**
+*   **Bar Labels:** Exact percentage values are annotated directly above each bar (e.g., "10.7%", "13.4%").
+*   **Statistical Annotations (P-values):** Floating above each pair of bars is a p-value indicating the statistical significance of the difference between the two groups.
+    *   Post-Deploy Monitoring: **p=0.009 \*** (includes an asterisk).
+    *   IQA Compliance: **p=0.424**.
+    *   Risk Assessment: **p=0.140**.
+
+### 5. Statistical Insights
+*   **Significant Difference:** The difference in **Post-Deploy Monitoring** is statistically significant (**p=0.009**), indicated by the p-value being less than the standard threshold of 0.05 and the presence of an asterisk. This suggests that "Active Governance" is reliably higher in the Operational environment compared to Dev/Testing for this specific stage.
+*   **Insignificant Differences:**
+    *   For **IQA Compliance** (p=0.424) and **Risk Assessment** (p=0.140), the differences between Operational and Dev/Testing are likely not statistically significant. The observed differences could be due to random chance.
+*   **General Observation:** The vast amount of empty space in the chart (y-axis goes to 1.0, but data peaks at ~0.13) highlights that "Active Governance" is relatively rare in both environments across all three lifecycle stages analyzed.
+==================================================

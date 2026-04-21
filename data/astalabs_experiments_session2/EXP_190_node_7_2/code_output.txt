@@ -1,0 +1,74 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+
+--- '17_impact_type' Value Counts ---
+17_impact_type
+Neither               1491
+Both                   150
+Rights-Impacting\n      59
+NaN                     39
+Safety-impacting        13
+Safety-Impacting         5
+Name: count, dtype: int64
+
+--- '38_code_access' Value Counts ---
+38_code_access
+NaN                                                              765
+Yes – agency has access to source code, but it is not public.    506
+No – agency does not have access to source code.                 359
+Yes – source code is publicly available.                          48
+Yes                                                               47
+                                                                  31
+YES                                                                1
+Name: count, dtype: int64
+
+--- Contingency Table (Impact vs. Code Access) ---
+Code_Access           Closed  Open
+Impact_Level                      
+High (Rights/Safety)      40    37
+Low/Non-Impacting       1115   565
+
+Chi-square Statistic: 6.1729
+P-value: 0.0130
+
+Open Code Access Rates:
+Impact_Level
+High (Rights/Safety)    0.480519
+Low/Non-Impacting       0.336310
+Name: Open, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The chart is designed to compare the proportion of AI systems that have open code access across two distinct categories of impact levels ("High" vs. "Low").
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Impact Category"
+    *   **Categories:** Two discrete categories are presented: "High (Rights/Safety)" and "Low/Non-Impacting".
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Proportion with Open Code Access"
+    *   **Range:** The axis is marked from 0.0 to 0.5, with the visual space extending slightly up to approximately 0.6.
+    *   **Units:** The axis uses decimal proportions (0.0 to 0.5), while the bar annotations convert these to percentages.
+
+### 3. Data Trends
+*   **Comparison:** The bar representing "High (Rights/Safety)" impact is significantly taller than the bar representing "Low/Non-Impacting" systems.
+*   **Tallest Bar:** The "High (Rights/Safety)" category (colored red).
+*   **Shortest Bar:** The "Low/Non-Impacting" category (colored green).
+*   **Visual Coding:** The plot uses color coding to distinguish the categories, utilizing red for High impact and green for Low impact, possibly connoting urgency or risk level associated with the "High" category.
+
+### 4. Annotations and Legends
+*   **Bar Labels:** Exact percentage values are annotated on top of each bar:
+    *   High (Rights/Safety): **48.1%**
+    *   Low/Non-Impacting: **33.6%**
+*   **Title:** "Code Transparency by AI System Impact Level"
+*   **Legend:** There is no separate legend box; the categories are labeled directly on the X-axis.
+
+### 5. Statistical Insights
+*   **Higher Transparency in High-Impact Systems:** Contrary to what might be assumed about proprietary protection in high-stakes technology, this data suggests that AI systems with a high impact on rights and safety are **more likely** to have open code access compared to low-impact systems.
+*   **Quantifiable Difference:** There is a **14.5 percentage point gap** between the two groups (48.1% - 33.6%).
+*   **Prevalence:** Nearly half (48.1%) of the High-Impact systems analyzed provide open code access, whereas only about one-third (33.6%) of the Low/Non-Impacting systems do the same. This suggests that scrutiny or open-source community standards may be more rigorously applied to or adopted by systems that pose higher risks to rights and safety.
+==================================================

@@ -1,0 +1,15 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Total AIID Incidents: 1362
+Total ATLAS Cases: 52
+Using AIID sector column: Sector of Deployment
+Warning: ATLAS sector column missing or empty. Using 'name' and 'summary' for context.
+
+--- Results ---
+AIID (Real Incidents): 15/1362 (1.10%) classified as Healthcare
+ATLAS (Threat Models): 0/52 (0.00%) classified as Healthcare
+
+Two-Proportion Z-Test:
+Z-score: 0.7608
+P-value: 0.4468
+Result: No Statistically Significant Difference

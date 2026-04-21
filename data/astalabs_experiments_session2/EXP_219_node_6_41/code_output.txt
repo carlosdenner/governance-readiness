@@ -1,0 +1,81 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO13960 records loaded: 1757
+
+Distribution of '16_dev_stage':
+16_dev_stage
+Operation and Maintenance         627
+Acquisition and/or Development    351
+Initiated                         329
+Implementation and Assessment     275
+Retired                           133
+Planned                            20
+In production                      14
+In mission                          4
+NaN                                 4
+Name: count, dtype: int64
+
+Records after filtering for relevant lifecycle stages: 1253
+Lifecycle_Group
+Operations (Legacy)         627
+Dev/Implementation (New)    626
+Name: count, dtype: int64
+
+Impact Assessment Distribution:
+Has_Assessment
+No     1192
+Yes      61
+Name: count, dtype: int64
+
+Contingency Table (Count):
+Has_Assessment             No  Yes
+Lifecycle_Group                   
+Dev/Implementation (New)  621    5
+Operations (Legacy)       571   56
+
+Contingency Table (Percentage):
+Has_Assessment                   No       Yes
+Lifecycle_Group                              
+Dev/Implementation (New)  99.201278  0.798722
+Operations (Legacy)       91.068581  8.931419
+
+Chi-Square Test Results:
+Chi2 Statistic: 42.9971
+p-value: 0.0000
+
+Result: Statistically Significant Association found (Reject H0).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart (Column Chart).
+*   **Purpose:** The plot compares the percentage of completed impact assessments across two distinct stages of a project's lifecycle: "Dev/Implementation (New)" and "Operations (Legacy)." It is designed to highlight the disparity in compliance between new developments and legacy operations.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Lifecycle Stage"
+    *   **Categories:** Two categorical variables are presented: "Dev/Implementation (New)" on the left and "Operations (Legacy)" on the right.
+*   **Y-Axis (Vertical):**
+    *   **Title/Label:** "Percentage with Completed Impact Assessment (%)"
+    *   **Units:** Percentage (%).
+    *   **Range:** The axis is marked from 0 to 10 with intervals of 2 (0, 2, 4, 6, 8, 10). The visible range extends slightly above 10, accommodating the data comfortably.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Operations (Legacy)" category (blue bar) is the tallest, reaching a value of 8.9%.
+*   **Shortest Bar:** The "Dev/Implementation (New)" category (red bar) is the shortest, reaching a value of only 0.8%.
+*   **Pattern:** There is a substantial disparity between the two categories. The compliance rate for legacy operations is significantly higher than that for new development/implementation phases. The visual difference indicates over an 11-fold difference in magnitude between the two groups.
+
+### 4. Annotations and Legends
+*   **Data Labels:** Specific numerical percentages are annotated directly above each bar ("0.8%" and "8.9%"). These annotations provide precise values, removing the need to estimate based on the grid lines.
+*   **Grid Lines:** Horizontal dashed grid lines are present at intervals of 2% to assist with visual alignment and scale reading.
+*   **Color Coding:**
+    *   **Red:** Used for "Dev/Implementation (New)," potentially highlighting the critically low nature of this statistic.
+    *   **Blue:** Used for "Operations (Legacy)."
+
+### 5. Statistical Insights
+*   **Significant Compliance Gap:** The data reveals a massive gap in compliance processes depending on the lifecycle stage. Operations (Legacy) projects are over **11 times (11.1x)** more likely to have a completed impact assessment than projects in the Dev/Implementation (New) stage.
+*   **Overall Low Compliance:** Despite "Operations" performing better relatively, the absolute values are objectively low. Even the highest performing category has not reached a 10% compliance rate (8.9%). This suggests a systemic issue where impact assessments are not being completed for the vast majority of projects, regardless of their lifecycle stage.
+*   **Process Bottleneck:** The extremely low rate (0.8%) for new implementations suggests a possible process failure, lack of enforcement, or lack of resources dedicated to impact assessments during the early stages of development.
+==================================================

@@ -1,0 +1,21 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Total EO 13960 records: 1757
+Records with valid source category (Commercial/Custom): 967
+source_category
+Custom (GOTS)        722
+Commercial (COTS)    245
+Name: count, dtype: int64
+
+Contingency Table (Custom Code Status vs. Independent Eval):
+                   No Eval  Has Eval
+source_category                     
+Commercial (COTS)      236         9
+Custom (GOTS)          679        43
+
+Chi-square statistic: 1.4508
+P-value: 2.2840e-01
+Odds Ratio (Commercial likelihood of Eval vs Custom): 0.6022
+
+Evaluation Rate [Commercial/COTS]: 3.67%
+Evaluation Rate [Custom/GOTS]:     5.96%

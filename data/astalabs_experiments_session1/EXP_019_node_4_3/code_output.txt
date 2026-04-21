@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_incident_coding.csv
+
+Unique splits found: <StringArray>
+['both', 'trust-dominant', 'integration-dominant']
+Length: 3, dtype: str
+Unique harms found: <StringArray>
+[             'security', 'intellectual_property',   'bias_discrimination',
+           'reliability',          'supply_chain',               'privacy',
+       'autonomy_misuse']
+Length: 7, dtype: str
+
+Filtered dataset shape: (5, 22)
+
+Contingency Table:
+harm_type                security  privacy
+trust_integration_split                   
+trust-dominant                  1        0
+integration-dominant            4        0
+
+Fisher's Exact Test Results:
+Odds Ratio: nan
+P-value: 1.0000
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically visualizing a contingency table or confusion matrix).
+*   **Purpose:** The plot visualizes the frequency or count of occurrences at the intersection of two categorical variables: "Competency Split" and "Harm Type." It uses color intensity to represent the magnitude of the values, making it easy to spot patterns, dominance, or scarcity of data points.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Harm Type"
+    *   **Labels:** The axis represents categorical data with two specific categories: **"security"** and **"privacy"**.
+*   **Y-Axis:**
+    *   **Title:** "Competency Split"
+    *   **Labels:** The axis represents categorical data with two specific categories: **"trust-dominant"** and **"integration-dominant"**.
+*   **Color Scale (Z-Axis):**
+    *   **Range:** The numerical values range from **0.0 to 4.0**.
+    *   **Gradient:** The color gradient shifts from a pale cream/yellow (representing 0) through teal/green (representing lower numbers like 1-2) to a deep dark blue (representing the maximum value of 4).
+
+### 3. Data Trends
+*   **High Values:** The highest value in the dataset is located at the intersection of **"integration-dominant"** and **"security"**, with a count of **4**. This is visualized by the darkest blue square.
+*   **Low Values:** The lowest values are found in the **"privacy"** column. Both "trust-dominant" and "integration-dominant" splits show a count of **0** for privacy harms, indicated by the palest yellow squares.
+*   **Intermediate Values:** The intersection of "trust-dominant" and "security" shows a low count of **1**, represented by a light green color.
+*   **Overall Pattern:** The data indicates that "security" harms are the only type of harm recorded in this dataset, while "privacy" harms are non-existent. Furthermore, these security harms are heavily skewed toward the "integration-dominant" category.
+
+### 4. Annotations and Legends
+*   **Title:** The chart is titled **"Harm Type by Competency Split"**, clearly defining the two variables being compared.
+*   **Cell Annotations:** Each cell in the 2x2 grid contains a numerical annotation (1, 0, 4, 0) indicating the exact count for that specific intersection.
+*   **Color Bar Legend:** A vertical color bar on the right side provides a reference for interpreting the cell colors, with ticks marking intervals at 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, and 4.0.
+
+### 5. Statistical Insights
+*   **Dominance of Security Harms:** 100% of the recorded data points (5 total) fall under the "security" harm type. There were zero incidents of "privacy" harm.
+*   **Competency Split Distribution:**
+    *   **Integration-dominant:** Accounts for **80%** (4 out of 5) of the total observed harms.
+    *   **Trust-dominant:** Accounts for **20%** (1 out of 5) of the total observed harms.
+*   **Conclusion:** Based on this sample, there is a strong correlation between "integration-dominant" competency splits and "security" issues. Conversely, "privacy" does not appear to be a factor for either competency split in this specific dataset.
+==================================================

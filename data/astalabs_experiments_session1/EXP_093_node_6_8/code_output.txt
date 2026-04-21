@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading step3_coverage_map.csv...
+Integration Readiness (n=8): Mean Incident Count = 5.50
+Trust Readiness (n=8): Mean Incident Count = 5.62
+Integration Counts: [8, 8, 18, 2, 0, 7, 1, 0]
+Trust Counts: [19, 1, 9, 2, 0, 9, 0, 5]
+
+=== Mann-Whitney U Test Results ===
+U-statistic: 30.0
+P-value: 0.8735
+Result: No statistically significant difference found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Bar plot with error bars.
+*   **Purpose:** This plot compares the mean values of a continuous variable ("Incident Count") across two categorical groups ("Competency Bundle"). The error bars are included to visualize the variability or dispersion of the data (likely standard deviation or confidence intervals) around the mean.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Label:** "Competency Bundle"
+    *   **Categories:** Two specific bundles are compared: "Integration Readiness" and "Trust Readiness".
+*   **Y-Axis:**
+    *   **Label:** "Average Incident Count"
+    *   **Range:** The axis is marked in integers from 0 to 8.
+    *   **Format:** Horizontal dashed grid lines appear at every integer interval to assist in reading values.
+
+**3. Data Trends**
+*   **Bar Heights:**
+    *   The **Integration Readiness** bar (light blue) has a mean value of approximately **5.5**.
+    *   The **Trust Readiness** bar (light green) has a mean value slightly higher, approximately **5.6 to 5.7**.
+*   **Comparison:** Visually, the two bars are nearly identical in height, indicating very little difference in the average incident count between the two groups.
+*   **Variability (Error Bars):**
+    *   Both groups show large error bars, extending significantly above and below the mean.
+    *   For Integration Readiness, the range spans roughly from 3.3 to 7.7.
+    *   For Trust Readiness, the range spans roughly from 3.3 to 8.0.
+    *   The substantial overlap of these error bars suggests that the distribution of data points for both groups is quite similar.
+
+**4. Annotations and Legends**
+*   **Title:** "Mean Incident Count by Competency Bundle" appears at the top.
+*   **Statistical Annotation:** A text box is placed centrally over the bars reading **"Mann-Whitney p=0.8735"**. This indicates the result of a statistical hypothesis test performed on the data.
+
+**5. Statistical Insights**
+*   **Hypothesis Test:** The Mann-Whitney U test was used. This is a non-parametric test used to compare whether there is a difference in the dependent variable for two independent groups. It is often used when data is not normally distributed.
+*   **Significance:** The reported p-value is **0.8735**.
+*   **Conclusion:** Since the p-value is significantly higher than the standard threshold for statistical significance (typically $\alpha = 0.05$), we fail to reject the null hypothesis.
+*   **Interpretation:** There is **no statistically significant difference** in the mean incident count between the "Integration Readiness" and "Trust Readiness" bundles. Any slight difference in bar height is likely due to random chance.
+==================================================

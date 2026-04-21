@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Sectoral Autonomy Divergence' hypothesis using the AIID dataset. After resolving previous column identification and value mapping errors, the code successfully categorized 39 relevant incidents. \n\nThe results statistically **contradicted** the hypothesis. The hypothesis predicted that the 'Transportation' sector would have a higher prevalence of 'High Autonomy' incidents. However, the Chi-square test ($p \\approx 0.009$) revealed a significant difference in the opposite direction. The 'Government' sector exhibited a much higher rate of High Autonomy incidents (50.0%, 6/12) compared to the 'Transportation' sector, where incidents were overwhelmingly Low Autonomy (92.6%, 25/27). This suggests that while transportation failures in this dataset are frequent, they typically involve lower-level automation (e.g., driver assistance), whereas government failures often involve more autonomous decision-making systems.",
+  "child_ids": [
+    "node_7_8",
+    "node_7_9"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport sys\nimport os\n\ndef run_experiment():\n    # Load dataset\n    file_path = 'astalabs_discovery_all_data.csv'\n    try:\n        df = pd.read_csv(file_path, low_memory=False)\n    except FileNotFoundError:\n        file_path = '../astalabs_discovery_all_data.csv'\n        df = pd.read_csv(file_path, low_memory=False)\n\n    # Filter for AIID incidents\n    df_incidents = df[df['source_table'] == 'aiid_incidents'].copy()\n    print(f\"AIID Incidents loaded: {len(df_incidents)} rows\")\n\n    # Dynamic Column Identification\n    cols = df_incidents.columns\n    sector_col = next((c for c in cols if 'Sector' in c and 'Deployment' in c), None)\n    autonomy_col = next((c for c in cols if 'Autonomy' in c and 'Level' in c), None)\n\n    print(f\"Using Sector Column: {sector_col}\")\n    print(f\"Using Autonomy Column: {autonomy_col}\")\n\n    if not sector_col or not autonomy_col:\n        print(\"Critical columns missing. Aborting.\")\n        return\n\n    # 1. Map Sector\n    def map_sector(val):\n        if pd.isna(val): return None\n        val_str = str(val).lower().strip()\n        if 'transportation' in val_str:\n            return 'Transportation'\n        if any(x in val_str for x in ['government', 'public', 'administration']):\n            return 'Government'\n        return None\n\n    df_incidents['mapped_sector'] = df_incidents[sector_col].apply(map_sector)\n    \n    # Filter to relevant sectors\n    df_filtered = df_incidents[df_incidents['mapped_sector'].notna()].copy()\n    print(f\"Rows after sector filtering: {len(df_filtered)}\")\n    print(f\"Sector counts:\\n{df_filtered['mapped_sector'].value_counts()}\")\n\n    # 2. Map Autonomy\n    # Mapping based on observed values: ['Autonomy1', 'Autonomy2', 'Autonomy3', 'unclear']\n    # Assumption: 1-2 = Low, 3+ = High\n    def map_autonomy(val):\n        if pd.isna(val): return None\n        val_str = str(val).lower().strip()\n        \n        # Specific dataset tags\n        if 'autonomy1' in val_str or 'autonomy2' in val_str:\n            return 'Low'\n        if 'autonomy3' in val_str or 'autonomy4' in val_str or 'autonomy5' in val_str:\n            return 'High'\n        \n        # Generic text fallback\n        if 'high' in val_str: return 'High'\n        if 'low' in val_str: return 'Low'\n        \n        return None\n\n    df_filtered['mapped_autonomy'] = df_filtered[autonomy_col].apply(map_autonomy)\n    \n    # Filter valid autonomy rows\n    df_final = df_filtered[df_filtered['mapped_autonomy'].notna()].copy()\n    print(f\"Rows after autonomy filtering: {len(df_final)}\")\n    \n    if len(df_final) == 0:\n        print(\"No data available for analysis.\")\n        return\n\n    # 3. Contingency Table\n    contingency = pd.crosstab(df_final['mapped_sector'], df_final['mapped_autonomy'])\n    print(\"\\n--- Contingency Table (Sector vs Autonomy) ---\")\n    print(contingency)\n\n    # 4. Chi-square Test\n    # Ensure we have data in the table to run the test\n    if contingency.size >= 4:\n        chi2, p, dof, expected = stats.chi2_contingency(contingency)\n        print(\"\\n--- Chi-square Test Results ---\")\n        print(f\"Chi-square Statistic: {chi2:.4f}\")\n        print(f\"P-value: {p:.6e}\")\n        \n        # Interpretation\n        alpha = 0.05\n        if p < alpha:\n            print(\"Result: REJECT Null Hypothesis. Significant difference found.\")\n            \n            # Calculate High Autonomy percentages\n            row_props = pd.crosstab(df_final['mapped_sector'], df_final['mapped_autonomy'], normalize='index') * 100\n            print(\"\\nProportions (%):\")\n            print(row_props.round(2))\n            \n            try:\n                trans_high = row_props.loc['Transportation', 'High']\n            except KeyError:\n                trans_high = 0\n            \n            try:\n                gov_high = row_props.loc['Government', 'High']\n            except KeyError:\n                gov_high = 0\n            \n            print(f\"\\nAnalysis: Transportation High Autonomy Rate: {trans_high:.1f}%\")\n            print(f\"Analysis: Government High Autonomy Rate: {gov_high:.1f}%\")\n            \n            if trans_high > gov_high:\n                print(\"Conclusion: Hypothesis SUPPORTED. Transportation has a higher rate of high-autonomy incidents.\")\n            else:\n                print(\"Conclusion: Hypothesis CONTRADICTED. Government has a higher rate (or equal) of high-autonomy incidents.\")\n        else:\n            print(\"Result: FAIL TO REJECT Null Hypothesis. No significant difference in autonomy levels between sectors.\")\n    else:\n        print(\"Contingency table too small for Chi-square test.\")\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: AIID Incidents loaded: 1362 rows\nUsing Sector Column: Sector of Deployment\nUsing Autonomy Column: Autonomy Level\nRows after sector filtering: 41\nSector counts:\nmapped_sector\nTransportation    28\nGovernment        13\nName: count, dtype: int64\nRows after autonomy filtering: 39\n\n--- Contingency Table (Sector vs Autonomy) ---\nmapped_autonomy  High  Low\nmapped_sector             \nGovernment          6    6\nTransportation      2   25\n\n--- Chi-square Test Results ---\nChi-square Statistic: 6.8156\nP-value: 9.036452e-03\nResult: REJECT Null Hypothesis. Significant difference found.\n\nProportions (%):\nmapped_autonomy   High    Low\nmapped_sector                \nGovernment       50.00  50.00\nTransportation    7.41  92.59\n\nAnalysis: Transportation High Autonomy Rate: 7.4%\nAnalysis: Government High Autonomy Rate: 50.0%\nConclusion: Hypothesis CONTRADICTED. Government has a higher rate (or equal) of high-autonomy incidents.\n",
+  "created_at": "2026-02-22T06:48:15.431570+00:00",
+  "creation_idx": 122,
+  "experiment_id": "node_6_3",
+  "experiment_plan": {
+    "deliverables": "Autonomy distribution comparison between Transportation and Government sectors; Test results.",
+    "objective": "Map the risk profile of different sectors regarding AI autonomy levels.",
+    "steps": "1. Filter 'aiid_incidents'. 2. Filter for rows where '78_Sector of Deployment' is 'Transportation' or 'Government'. 3. Map '81_Autonomy Level' to 'High' vs. 'Low'. 4. Create a contingency table (Sector vs. Autonomy). 5. Perform a Chi-square test to see if Autonomy distributions differ significantly by Sector."
+  },
+  "hypothesis": "Sectoral Autonomy Divergence: The 'Transportation' sector suffers significantly more incidents involving 'High Autonomy' systems compared to the 'Government' sector, which is dominated by 'Low Autonomy' failures.",
+  "id_in_run": 121,
+  "is_surprising": true,
+  "parent_id": "node_5_25",
+  "posterior": 0.2967032967032967,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2967032967032967,
+    "n": 60.0,
+    "prior_params": [
+      27.0,
+      4.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8709677419354839,
+  "prior_belief": {
+    "_empirical_mean": 0.8833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 16.0,
+    "maybe_false": 0.0,
+    "maybe_true": 14.0,
+    "mean": 0.8709677419354839,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Sectoral Autonomy Divergence' hypothesis using the AIID dataset after resolving initial data parsing issues (specifically, handling the 'Autonomy1-5' taxonomy and correctly identifying column names). \n\nThe results statistically **contradicted** the hypothesis. The hypothesis proposed that the Transportation sector would be more prone to 'High Autonomy' incidents compared to the Government sector. However, the Chi-square test ($p \\approx 0.009$) indicated a significant difference in the opposite direction. \n\n**Findings:**\n- **Government Sector:** Excluded a much higher relative proportion of 'High Autonomy' failures (50%, 6/12 incidents).\n- **Transportation Sector:** Failures were overwhelmingly 'Low Autonomy' (92.6%, 25/27 incidents).\n\nThis suggests that while transportation incidents are more frequent in raw numbers, they typically involve lower-level automation (e.g., driver assistance or mechanical control systems), whereas government AI failures in this dataset are significantly more likely to involve fully autonomous decision-making systems.",
+  "rich_outputs": null,
+  "runtime_ms": 334070.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6891173342786246
+}

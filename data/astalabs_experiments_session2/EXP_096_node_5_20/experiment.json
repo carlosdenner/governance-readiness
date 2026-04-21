@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Vendor-Bias Blindspot' hypothesis using the EO 13960 dataset. After correcting the initial column identification errors (using `22_dev_method` for development source and `62_disparity_mitigation` for mitigation evidence), the analysis compared 481 'Commercial/Vendor' systems against 439 'Internal/Gov' systems. \n\nThe results **rejected the hypothesis** that commercial systems are less likely to have documented disparity mitigation. The analysis found no statistically significant difference between the two groups (Chi-Square p-value = 0.8443). \n\nInstead, the data revealed a systemic lack of transparency across *both* sectors: only **5.4%** of Commercial systems and **5.9%** of Internal government systems had any documented evidence of disparity mitigation. The vast majority (>94%) of systems in both categories reported 'No', 'N/A', or provided no data regarding how they mitigate bias. This suggests that the 'blindspot' is not specific to vendors but is a pervasive issue in the current federal AI landscape.",
+  "child_ids": [
+    "node_6_21"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\n\n# Load the dataset\nfile_path = '../astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 Scored data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Define columns\ncol_dev = '22_dev_method'\ncol_mitig = '62_disparity_mitigation'\n\n# 1. Map Development Method (Independent Variable)\ndef map_dev_method(val):\n    s = str(val).lower().strip()\n    if 'contracting' in s and 'both' not in s:\n        return 'Commercial/Vendor'\n    elif 'in-house' in s and 'both' not in s:\n        return 'Internal/Gov'\n    return 'Other/Mixed'\n\ndf_eo['dev_source'] = df_eo[col_dev].apply(map_dev_method)\n\n# Filter for only the two distinct groups\ndf_analysis = df_eo[df_eo['dev_source'].isin(['Commercial/Vendor', 'Internal/Gov'])].copy()\n\n# 2. Map Disparity Mitigation (Dependent Variable)\ndef map_mitigation(val):\n    if pd.isna(val):\n        return 'No/Unknown'\n    \n    s = str(val).lower().strip()\n    \n    # List of phrases indicating NO mitigation or Not Applicable\n    negative_indicators = [\n        'nan',\n        'n/a',\n        'not applicable',\n        'none',\n        'no demographic',\n        'not safety',\n        'not rights',\n        'tbd',\n        'unknown'\n    ]\n    \n    # Check if the text starts with negative phrases or matches exactly\n    if any(s.startswith(x) for x in negative_indicators):\n        return 'No/Unknown'\n    \n    # If the text is just \"no\" or very short negative\n    if len(s) < 5 and 'no' in s:\n        return 'No/Unknown'\n        \n    # Otherwise, assume the presence of descriptive text implies evidence\n    return 'Documented'\n\ndf_analysis['mitigation_status'] = df_analysis[col_mitig].apply(map_mitigation)\n\n# 3. Generate Statistics\nprint(f\"\\n--- Analysis Dataset (n={len(df_analysis)}) ---\")\ncontingency_table = pd.crosstab(df_analysis['dev_source'], df_analysis['mitigation_status'])\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Calculate percentages\nprops = pd.crosstab(df_analysis['dev_source'], df_analysis['mitigation_status'], normalize='index')\nprint(\"\\n--- Proportions ---\")\nprint(props)\n\n# 4. Statistical Test (Chi-Square)\nif contingency_table.size > 0:\n    chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n    print(f\"\\nChi-Square Test Results:\\nChi2 Statistic: {chi2:.4f}\\nP-value: {p:.4e}\\nDegrees of Freedom: {dof}\")\n    \n    alpha = 0.05\n    if p < alpha:\n        print(\"Result: Significant difference found. Hypothesis supported or rejected based on direction.\")\n    else:\n        print(\"Result: No significant difference found.\")\nelse:\n    print(\"Insufficient data for statistical test.\")\n\n# 5. Visualization\nplt.figure(figsize=(10, 6))\nax = props.plot(kind='bar', stacked=True, color=['#2ca02c', '#d62728'], figsize=(8, 6))\n\nplt.title('Disparity Mitigation Documentation by Dev Source')\nplt.xlabel('Development Source')\nplt.ylabel('Proportion of Systems')\nplt.legend(title='Mitigation Evidence', loc='upper right', bbox_to_anchor=(1.25, 1))\nplt.xticks(rotation=0)\n\n# Annotate bars\nfor c in ax.containers:\n    ax.bar_label(c, fmt='%.1f%%', label_type='center', color='white', weight='bold')\n\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: \n--- Analysis Dataset (n=920) ---\n\n--- Contingency Table ---\nmitigation_status  Documented  No/Unknown\ndev_source                               \nCommercial/Vendor          26         455\nInternal/Gov               26         413\n\n--- Proportions ---\nmitigation_status  Documented  No/Unknown\ndev_source                               \nCommercial/Vendor    0.054054    0.945946\nInternal/Gov         0.059226    0.940774\n\nChi-Square Test Results:\nChi2 Statistic: 0.0386\nP-value: 8.4433e-01\nDegrees of Freedom: 1\nResult: No significant difference found.\n\n\n=== Plot Analysis (figure 2) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Stacked Bar Plot (specifically, a 100% stacked bar chart).\n*   **Purpose:** The plot compares the distribution of disparity mitigation documentation (Documented vs. No/Unknown) across two different sources of system development (Commercial/Vendor vs. Internal/Gov). It visualizes the proportion of systems within each category that have evidence of mitigation strategies.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Development Source\"\n    *   **Categories:** \"Commercial/Vendor\" and \"Internal/Gov\".\n*   **Y-Axis:**\n    *   **Label:** \"Proportion of Systems\"\n    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).\n    *   **Ticks:** Intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n\n### 3. Data Trends\n*   **Dominant Category:** In both development sources, the vast majority of systems fall into the \"No/Unknown\" category (represented by the red bars). This section takes up nearly the entire height of the plot.\n*   **Minority Category:** The \"Documented\" category (green bars) represents a very small fraction of the systems in both cases.\n*   **Consistency:** The distribution is remarkably similar between the two groups. Both \"Commercial/Vendor\" and \"Internal/Gov\" sources show almost identical proportions of documented versus undocumented systems.\n*   **Visual vs. Label Discrepancy:** The text annotations label the red sections as \"0.9%\" and the green sections as \"0.1%\". However, the Y-axis is a proportion from 0 to 1. Given that the bars fill the entire height (summing to 1.0), it is highly likely the labels represent the proportions **0.9 (90%)** and **0.1 (10%)**, and the percentage sign `%` is a typographical error. If read literally as 0.9%, the bars would not fill the chart. Visually, the green bar sits slightly below the 0.1 tick mark, suggesting the documentation rate is roughly 5-10%.\n\n### 4. Annotations and Legends\n*   **Title:** \"Disparity Mitigation Documentation by Dev Source\"\n*   **Legend:** Located at the top right, labeled \"Mitigation Evidence\".\n    *   **Green:** \"Documented\"\n    *   **Red:** \"No/Unknown\"\n*   **Bar Annotations:**\n    *   White text inside the red bars reads **\"0.9%\"**.\n    *   White text inside the green bars reads **\"0.1%\"**.\n\n### 5. Statistical Insights\n*   **Lack of Documentation:** The primary insight is a systemic lack of documentation regarding disparity mitigation. Regardless of whether a system is developed commercially or internally by the government, roughly 90% (assuming 0.9 proportion) of systems lack evidence of mitigation.\n*   **No Source Advantage:** There is no discernible advantage in documentation practices between commercial vendors and internal government developers; both perform equally poorly according to this metric.\n*   **Transparency Gap:** The data suggests a significant transparency gap in the field, with \"Documented\" systems being the extreme exception rather than the norm.\n==================================================",
+  "created_at": "2026-02-22T05:39:35.595296+00:00",
+  "creation_idx": 97,
+  "experiment_id": "node_5_20",
+  "experiment_plan": {
+    "deliverables": "Comparative bar chart of Disparity Mitigation rates; Statistical test results.",
+    "objective": "Analyze if commercial AI procurement correlates with lower visibility into bias mitigation.",
+    "steps": "1. Filter for `eo13960_scored`.\n2. Use `10_commercial_ai` as the independent variable and `55_disparity_mitigation` as the dependent variable.\n3. Map values to binary logic (e.g., 'Yes' vs 'No/Not Applicable').\n4. Compare mitigation rates between Commercial and Non-Commercial systems.\n5. Perform a Fisher's Exact Test or Chi-square test."
+  },
+  "hypothesis": "The Vendor-Bias Blindspot: Commercial AI systems are significantly less likely to have documented 'Disparity Mitigation' evidence compared to internally developed systems, reflecting a lack of insight into vendor training data.",
+  "id_in_run": 96,
+  "is_surprising": true,
+  "parent_id": "node_4_36",
+  "posterior": 0.25824175824175827,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25824175824175827,
+    "n": 60.0,
+    "prior_params": [
+      23.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7580645161290323,
+  "prior_belief": {
+    "_empirical_mean": 0.7666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 2.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7580645161290323,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Vendor-Bias Blindspot' hypothesis using the EO 13960 dataset. After correcting the initial column identification errors (using `22_dev_method` for development source and `62_disparity_mitigation` for mitigation evidence), the analysis compared 481 'Commercial/Vendor' systems against 439 'Internal/Gov' systems. \n\nThe results **rejected the hypothesis** that commercial systems are less likely to have documented disparity mitigation. The analysis found no statistically significant difference between the two groups (Chi-Square p-value = 0.8443). \n\nInstead, the data revealed a systemic lack of transparency across *both* sectors: only **5.4%** of Commercial systems and **5.9%** of Internal government systems had any documented evidence of disparity mitigation. The vast majority (>94%) of systems in both categories reported 'No', 'N/A', or provided no data regarding how they mitigate bias. This suggests that the 'blindspot' is not specific to vendors but is a pervasive issue in the current federal AI landscape.",
+  "rich_outputs": null,
+  "runtime_ms": 356580.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5997873094647288
+}

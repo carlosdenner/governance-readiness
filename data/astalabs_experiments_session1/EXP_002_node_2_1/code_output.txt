@@ -1,0 +1,14 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_competency_statements.csv
+
+=== Descriptive Statistics (Confidence Score: High=3, Medium=2, Low=1) ===
+                       count      mean       std
+bundle                                          
+Integration Readiness     23  2.869565  0.344350
+Trust Readiness           19  2.842105  0.374634
+
+=== Mann-Whitney U Test Results ===
+Comparison: Integration Readiness vs Trust Readiness
+U-statistic: 224.5
+P-value: 0.81867
+Conclusion: No statistically significant difference detected (p >= 0.05).

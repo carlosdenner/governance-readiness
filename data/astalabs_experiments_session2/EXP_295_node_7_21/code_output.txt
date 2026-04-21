@@ -1,0 +1,26 @@
+exitcode: 0 (execution succeeded)
+Code output: Identified Intent Column: intentional_harm
+Identified Text Columns: ['reports', 'description', 'title', 'summary']
+
+Total Mapped Rows: 81
+Intent Breakdown:
+ intent_mapped
+Unintentional    76
+Intentional       5
+Name: count, dtype: int64
+Harm Breakdown:
+ harm_derived
+Physical Safety      66
+Financial/Privacy    15
+Name: count, dtype: int64
+
+Contingency Table:
+ harm_derived   Financial/Privacy  Physical Safety
+intent_mapped                                    
+Intentional                    2                3
+Unintentional                 13               63
+
+Small sample size detected. Using Fisher's Exact Test.
+Fisher's Exact P-value: 2.2925e-01
+Odds Ratio: 3.2308
+Result: No Statistically Significant Association.

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Risk-Governance Decoupling' hypothesis using the EO 13960 dataset. By keyword-categorizing use cases, the analysis identified 367 'High Stakes' systems (e.g., Enforcement, Health) and 72 'Low Stakes' systems (e.g., Admin, Logistics). \n\nThe results showed a generally low rate of documented governance across the board. High-stakes systems had a 7.08% rate of documented Impact Assessments (26/367), while Low-stakes systems had a 1.39% rate (1/72). Although the rate for high-stakes systems was nominally higher, the Chi-square test returned a p-value of 0.1162, which is above the standard significance threshold of 0.05. \n\nConsequently, the difference is not statistically significant. This supports the hypothesis that governance documentation is 'decoupled' from risk, as there is no statistical evidence that high-risk federal AI systems are subject to significantly more rigorous impact assessment documentation than low-risk administrative systems.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load dataset (trying current directory based on previous success)\nfilename = 'astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(filename, low_memory=False)\nexcept FileNotFoundError:\n    # Fallback to parent directory if current fails, though previous error suggests parent was wrong\n    df = pd.read_csv('../' + filename, low_memory=False)\n\n# Filter for EO 13960 data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Loaded {len(df_eo)} rows from EO 13960 source.\")\n\n# Construct Search Text\n# Concatenate Topic Area and Use Case Name\ndf_eo['search_text'] = (df_eo['8_topic_area'].fillna('') + ' ' + df_eo['2_use_case_name'].fillna('')).str.lower()\n\n# Define Keywords\nhigh_stakes_kw = ['enforcement', 'security', 'surveillance', 'justice', 'health']\nlow_stakes_kw = ['admin', 'operations', 'management', 'logistics', 'finance']\n\n# Vectorized categorization\ndef get_risk_level(text):\n    if any(kw in text for kw in high_stakes_kw):\n        return 'High Stakes'\n    elif any(kw in text for kw in low_stakes_kw):\n        return 'Low Stakes'\n    return 'Other'\n\ndf_eo['risk_level'] = df_eo['search_text'].apply(get_risk_level)\n\n# Categorize Impact Assessment\n# Looking for explicit 'Yes'\ndf_eo['has_impact_assess'] = df_eo['52_impact_assessment'].fillna('No').astype(str).str.strip().str.lower() == 'yes'\ndf_eo['has_impact_assess_int'] = df_eo['has_impact_assess'].astype(int)\n\n# Filter for analysis\ndf_analysis = df_eo[df_eo['risk_level'] != 'Other'].copy()\n\n# Generate Contingency Table\ncontingency = pd.crosstab(df_analysis['risk_level'], df_analysis['has_impact_assess'])\n\nprint(\"\\n--- Contingency Table (Risk Level vs Impact Assessment) ---\")\nprint(contingency)\n\n# Calculate Proportions\nsummary = df_analysis.groupby('risk_level')['has_impact_assess_int'].agg(['count', 'sum', 'mean'])\nsummary.columns = ['Total Cases', 'With Assessment', 'Proportion']\nprint(\"\\n--- Proportions ---\")\nprint(summary)\n\n# Statistical Test\nif contingency.size > 0:\n    chi2, p, dof, expected = chi2_contingency(contingency)\n    print(\"\\n--- Chi-Square Test Results ---\")\n    print(f\"Chi-square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n    \n    if p < 0.05:\n        print(\"Conclusion: Statistically significant difference exists.\")\n    else:\n        print(\"Conclusion: No statistically significant difference found (Governance Decoupling supported).\")\nelse:\n    print(\"Insufficient data for Chi-square test.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loaded 1757 rows from EO 13960 source.\n\n--- Contingency Table (Risk Level vs Impact Assessment) ---\nhas_impact_assess  False  True \nrisk_level                     \nHigh Stakes          341     26\nLow Stakes            71      1\n\n--- Proportions ---\n             Total Cases  With Assessment  Proportion\nrisk_level                                           \nHigh Stakes          367               26    0.070845\nLow Stakes            72                1    0.013889\n\n--- Chi-Square Test Results ---\nChi-square Statistic: 2.4680\nP-value: 1.1618e-01\nConclusion: No statistically significant difference found (Governance Decoupling supported).\n",
+  "created_at": "2026-02-22T14:30:45.780505+00:00",
+  "creation_idx": 283,
+  "experiment_id": "node_6_78",
+  "experiment_plan": {
+    "deliverables": "Proportion of Impact Assessments in High vs Low Stakes groups; Statistical test results.",
+    "objective": "Assess if governance documentation scales with the sensitivity of the AI use case domain.",
+    "steps": "1. Load 'eo13960_scored'.\n2. Create 'Risk_Level': Search `8_topic_area` or `2_use_case_name` for ['Enforcement', 'Security', 'Surveillance', 'Justice', 'Health'] -> 'High Stakes'; ['Admin', 'Operations', 'Management', 'Logistics', 'Finance'] -> 'Low Stakes'.\n3. Create 'Has_Impact_Assess': Map `52_impact_assessment` to binary (Yes=1, No=0).\n4. Compare proportions via Chi-square test."
+  },
+  "hypothesis": "The 'Risk-Governance' Decoupling: 'High-Stakes' Use Cases (Law Enforcement, National Security) do not have significantly higher rates of documented 'Impact Assessments' compared to 'Low-Stakes' (Administrative, Operations) cases, indicating a failure to scale governance with risk.",
+  "id_in_run": 282,
+  "is_surprising": false,
+  "parent_id": "node_5_46",
+  "posterior": 0.9175824175824175,
+  "posterior_belief": {
+    "_empirical_mean": 0.9916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 58.0,
+    "maybe_false": 0.0,
+    "maybe_true": 2.0,
+    "mean": 0.9175824175824175,
+    "n": 60.0,
+    "prior_params": [
+      24.0,
+      7.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7741935483870968,
+  "prior_belief": {
+    "_empirical_mean": 0.7833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 4.0,
+    "maybe_false": 0.0,
+    "maybe_true": 26.0,
+    "mean": 0.7741935483870968,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully implemented the analysis plan. The code correctly loaded the dataset, applied the keyword-based categorization to segment 'High Stakes' (n=367) and 'Low Stakes' (n=72) use cases, and performed the Chi-square test. \n\nThe analysis supports the 'Risk-Governance Decoupling' hypothesis. While 'High Stakes' systems (e.g., Law Enforcement, Health) had a higher nominal rate of documented Impact Assessments (7.1%) compared to 'Low Stakes' systems (1.4%), the difference was not statistically significant (p = 0.116). This suggests that widely deployed federal AI systems currently lack a consistent scaling of governance documentation relative to their risk profile.",
+  "rich_outputs": null,
+  "runtime_ms": 184680.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.17206664303438493
+}

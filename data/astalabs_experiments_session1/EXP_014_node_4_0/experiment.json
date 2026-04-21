@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed `step3_tactic_frequency.csv` to compare the frequency of adversarial tactics associated with 'Trust Readiness' versus 'Integration Readiness'.\n\n**Descriptive Statistics:**\n- **Integration Readiness:** Mean = 29.14, Std Dev = 26.59 (n=7). The high standard deviation and the boxplot indicate extreme variability, with incident counts ranging from ~2 to 77. This suggests that while some technical integration gaps are heavily exploited (e.g., specific execution controls), others are rarely targeted.\n- **Trust Readiness:** Mean = 21.89, Std Dev = 11.82 (n=9). The distribution is much more compact, indicating a consistent, moderate frequency of exploitation for governance-related gaps.\n\n**Statistical Inference:**\nThe Welch's t-test yielded a t-statistic of 0.6720 and a p-value of 0.5209. Since p > 0.05, the observed difference in means (29.14 vs 21.89) is not statistically significant. \n\n**Conclusion:**\nThe hypothesis is **rejected**. Although the mean frequency for Integration tactics is numerically higher, the difference is not statistically significant due to the extreme variance within the Integration group and the small sample size. The data characterizes Integration risks as 'high-variance' (boom or bust) compared to the 'consistent' risk profile of Trust gaps.",
+  "child_ids": [
+    "node_5_2",
+    "node_5_20"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport os\n\n# Locate the dataset\nfilename = 'step3_tactic_frequency.csv'\npaths_to_check = [filename, f\"../{filename}\"]\nfile_path = None\n\nfor path in paths_to_check:\n    if os.path.exists(path):\n        file_path = path\n        break\n\nif not file_path:\n    raise FileNotFoundError(f\"Could not find {filename} in current or parent directory.\")\n\n# 1. Load the dataset\ndf = pd.read_csv(file_path)\nprint(f\"Successfully loaded {filename}\")\nprint(df.head())\n\n# 2. Group data by 'bundle'\ntrust_counts = df[df['bundle'] == 'Trust Readiness']['incident_count']\nintegration_counts = df[df['bundle'] == 'Integration Readiness']['incident_count']\n\n# 3. Descriptive Statistics\nmean_trust = trust_counts.mean()\nmean_integration = integration_counts.mean()\nstd_trust = trust_counts.std()\nstd_integration = integration_counts.std()\n\nprint(\"\\n=== Descriptive Statistics ===\")\nprint(f\"Trust Readiness:       n={len(trust_counts)}, Mean={mean_trust:.2f}, Std Dev={std_trust:.2f}\")\nprint(f\"Integration Readiness: n={len(integration_counts)}, Mean={mean_integration:.2f}, Std Dev={std_integration:.2f}\")\n\n# 4. Perform T-test (Welch's t-test for unequal variances)\nt_stat, p_val = stats.ttest_ind(integration_counts, trust_counts, equal_var=False)\n\nprint(\"\\n=== Statistical Test Results (Welch's t-test) ===\")\nprint(f\"Hypothesis: Integration > Trust\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\n\nalpha = 0.05\nif p_val < alpha:\n    print(\"Result: Statistically Significant Difference\")\nelse:\n    print(\"Result: No Statistically Significant Difference\")\n\n# 5. Visualization\nplt.figure(figsize=(8, 6))\nplt.boxplot([trust_counts, integration_counts], labels=['Trust Readiness', 'Integration Readiness'])\nplt.title('Adversarial Tactic Frequency by Competency Bundle')\nplt.ylabel('Incident Frequency (Count)')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Successfully loaded step3_tactic_frequency.csv\n    tactic_id  ...                          competency_domain\n0  AML.TA0003  ...           Resource & Supply Chain Controls\n1  AML.TA0011  ...              Impact Containment & Recovery\n2  AML.TA0004  ...  Access Boundary & Initial Access Controls\n3  AML.TA0005  ...            Execution Controls & Sandboxing\n4  AML.TA0007  ...                  Defense Evasion Detection\n\n[5 rows x 6 columns]\n\n=== Descriptive Statistics ===\nTrust Readiness:       n=9, Mean=21.89, Std Dev=11.82\nIntegration Readiness: n=7, Mean=29.14, Std Dev=26.59\n\n=== Statistical Test Results (Welch's t-test) ===\nHypothesis: Integration > Trust\nT-statistic: 0.6720\nP-value: 0.5209\nResult: No Statistically Significant Difference\n\nSTDERR:\n<ipython-input-1-776ab0f4a8aa>:57: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot([trust_counts, integration_counts], labels=['Trust Readiness', 'Integration Readiness'])\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).\n*   **Purpose:** This plot visualizes the distribution of numerical data (\"Incident Frequency\") across two different categorical groups (\"Trust Readiness\" and \"Integration Readiness\"). It displays the median, quartiles, variability (spread), and potential outliers for each group.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label/Categories:** Represents \"Competency Bundles\" with two specific categories: **\"Trust Readiness\"** and **\"Integration Readiness\"**.\n*   **Y-Axis:**\n    *   **Title:** **\"Incident Frequency (Count)\"**.\n    *   **Units:** Count (integer values representing the number of incidents).\n    *   **Range:** The axis is marked from **0 to 80** with increments of 10. The visible data spans from approximately 2 to 77.\n\n### 3. Data Trends\n*   **Trust Readiness (Left Box):**\n    *   **Distribution:** The data is relatively compact. The interquartile range (the box itself) spans from approximately **15 to 24**.\n    *   **Median:** The median line (orange) is situated around **17 or 18**.\n    *   **Range:** The whiskers extend from roughly **11 to 34**.\n    *   **Outliers:** There is a distinct, single outlier depicted as a circle at a frequency of approximately **47**.\n\n*   **Integration Readiness (Right Box):**\n    *   **Distribution:** The data is much more spread out compared to Trust Readiness. The interquartile range is tall, spanning from approximately **7 to 39**.\n    *   **Median:** The median is significantly higher than the other group, sitting at approximately **33**.\n    *   **Range:** The whiskers cover a very wide range, extending from a minimum of roughly **2** to a maximum of roughly **77**.\n    *   **Outliers:** No distinct outliers are marked for this category; the variability is inherently high.\n\n### 4. Annotations and Legends\n*   **Title:** \"Adversarial Tactic Frequency by Competency Bundle\" clearly defines the context of the data.\n*   **Grid Lines:** Horizontal dashed grid lines are provided at intervals of 10 to assist in estimating the Y-axis values.\n*   **Box Components:**\n    *   **Orange Line:** Represents the median value.\n    *   **Box Edges:** Represent the 25th percentile (bottom) and 75th percentile (top).\n    *   **Whiskers:** Indicate the range of the data outside the middle 50% (typically 1.5x IQR).\n    *   **Circle:** Represents an outlier point.\n\n### 5. Statistical Insights\n*   **Higher Frequency in Integration Readiness:** On average (median), adversarial tactics appear more frequently in the \"Integration Readiness\" bundle (median ~33) compared to \"Trust Readiness\" (median ~17).\n*   **Variability Differences:** \"Integration Readiness\" shows significantly higher volatility. The incident counts for this category can be very low (near 0) or extremely high (near 80). In contrast, \"Trust Readiness\" is much more consistent and predictable, with most counts clustering between 15 and 25.\n*   **Maximum Impact:** The worst-case scenarios (highest counts) are found in the \"Integration Readiness\" group, where frequencies reach up to ~77. The \"Trust Readiness\" group tops out around 34 (excluding the outlier).\n*   **Anomalies:** While \"Trust Readiness\" is generally consistent, the outlier at 47 suggests that there are rare events where the tactic frequency spikes significantly above the norm for that category.\n==================================================",
+  "created_at": "2026-02-20T21:55:35.560153+00:00",
+  "creation_idx": 15,
+  "experiment_id": "node_4_0",
+  "experiment_plan": {
+    "deliverables": "Mean frequency per tactic by bundle, T-test results, and a boxplot of tactic frequencies.",
+    "objective": "Compare the prevalence of adversarial tactics between the two bundles.",
+    "steps": "1. Load 'step3_tactic_frequency.csv'.\n2. Group the data by 'bundle'.\n3. Perform a t-test to compare the mean 'incident_count' of tactics belonging to 'Trust Readiness' vs. 'Integration Readiness'."
+  },
+  "hypothesis": "The specific adversarial tactics associated with 'Integration Readiness' gaps occur with significantly higher frequency across the incident corpus than tactics associated with 'Trust Readiness' gaps.",
+  "id_in_run": 14,
+  "is_surprising": true,
+  "parent_id": "node_3_0",
+  "posterior": 0.12831858407079647,
+  "posterior_belief": {
+    "_empirical_mean": 0.016666666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 84.0,
+    "definitely_true": 0.0,
+    "maybe_false": 6.0,
+    "maybe_true": 0.0,
+    "mean": 0.12831858407079647,
+    "n": 90.0,
+    "prior_params": [
+      13.0,
+      10.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.5652173913043478,
+  "prior_belief": {
+    "_empirical_mean": 0.5681818181818182,
+    "_type": "boolean_cat",
+    "definitely_false": 1.0,
+    "definitely_true": 0.0,
+    "maybe_false": 3.0,
+    "maybe_true": 11.0,
+    "mean": 0.5652173913043478,
+    "n": 22.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 7.0
+  },
+  "review": "The experiment successfully analyzed the 'step3_tactic_frequency.csv' dataset to compare the prevalence of adversarial tactics between 'Trust Readiness' and 'Integration Readiness' bundles. \n\n**Key Findings:**\n1.  **Descriptive Statistics:** 'Integration Readiness' tactics (n=7) showed a higher mean frequency (29.14) compared to 'Trust Readiness' tactics (n=9, Mean=21.89). However, the Integration group exhibited extreme variance (Standard Deviation = 26.59 vs 11.82 for Trust), with incident counts ranging from ~2 to 77.\n2.  **Statistical Significance:** The Welch's t-test yielded a t-statistic of 0.6720 and a p-value of 0.5209. Since the p-value is greater than 0.05, the observed difference in means is not statistically significant.\n3.  **Visualization:** The boxplot confirms that 'Integration' risks are high-variance (boom-or-bust), while 'Trust' risks are more consistent in their frequency of exploitation.\n\n**Conclusion:** The hypothesis that Integration tactics occur with *significantly* higher frequency is **rejected**. While the raw mean is higher, the statistical evidence does not support a significant difference due to the high variability and small sample size.",
+  "rich_outputs": null,
+  "runtime_ms": 167500.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5070629306376477
+}

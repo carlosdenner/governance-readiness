@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between 'Impact Assessment' and 'Post-Deployment Monitoring' within the EO 13960 dataset (N=1757). The code correctly parsed the sparse text fields into binary variables using heuristic text analysis. The results show that while overall compliance is low (5.2% for assessments, 6.3% for monitoring), there is a very strong, statistically significant positive correlation between the two activities (Phi Coefficient = 0.72, p < 1e-196). The contingency table reveals that of the 92 systems with impact assessments, 74 (80%) also had post-deployment monitoring, whereas only 36 (2.2%) of the 1,665 systems without assessments had monitoring. These findings strongly refute the 'Assessment-Monitoring Decoupling' hypothesis, suggesting instead that governance controls are highly clustered: agencies either apply a comprehensive governance suite or (more commonly) apply none at all.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport os\n\ndef clean_binary_text(val):\n    if pd.isna(val):\n        return 0\n    text = str(val).strip().lower()\n    if not text:\n        return 0\n    \n    # List of terms indicating absence of the control\n    negatives = [\n        'no', 'none', 'n/a', 'not applicable', 'tbd', 'unknown', \n        'false', '0', 'nan', 'not established', 'not currently'\n    ]\n    if text in negatives:\n        return 0\n    \n    # explicit negative phrases\n    if text.startswith('no ') or text.startswith('not '):\n        return 0\n        \n    # Default to 1 (presence of evidence/description)\n    return 1\n\ndef main():\n    filename = 'astalabs_discovery_all_data.csv'\n    \n    # specific check for file existence\n    if not os.path.exists(filename):\n        # fallback to parent if current not found, though previous error suggests parent is wrong\n        if os.path.exists(f'../{filename}'):\n            filename = f'../{filename}'\n        else:\n            print(f\"Error: {filename} not found in current or parent directory.\")\n            return\n            \n    print(f\"Loading dataset from {filename}...\")\n    try:\n        df = pd.read_csv(filename, low_memory=False)\n    except Exception as e:\n        print(f\"Failed to load CSV: {e}\")\n        return\n\n    # Filter for EO 13960 Scored\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"Filtered EO 13960 data: {len(df_eo)} rows\")\n\n    # Columns\n    col_impact = '52_impact_assessment'\n    col_monitor = '56_monitor_postdeploy'\n    \n    # Apply binary classification\n    df_eo['has_impact_assessment'] = df_eo[col_impact].apply(clean_binary_text)\n    df_eo['has_monitoring'] = df_eo[col_monitor].apply(clean_binary_text)\n    \n    # Descriptive stats\n    print(f\"\\nImpact Assessment (1=Yes, 0=No):\\n{df_eo['has_impact_assessment'].value_counts()}\")\n    print(f\"\\nPost-Deployment Monitoring (1=Yes, 0=No):\\n{df_eo['has_monitoring'].value_counts()}\")\n    \n    # Contingency Table\n    contingency = pd.crosstab(df_eo['has_impact_assessment'], df_eo['has_monitoring'])\n    print(\"\\nContingency Table (Rows: Assessment, Cols: Monitoring):\")\n    print(contingency)\n    \n    # Check if we have a valid 2x2\n    if contingency.shape != (2, 2):\n        print(\"\\nWarning: Contingency table is not 2x2 (likely missing 0s or 1s in one dimension). Stats may be degenerate.\")\n\n    # Statistics\n    chi2, p, dof, expected = stats.chi2_contingency(contingency)\n    n = contingency.sum().sum()\n    \n    # Pearson correlation (equivalent to Phi for binary variables, preserving sign)\n    correlation = df_eo['has_impact_assessment'].corr(df_eo['has_monitoring'])\n    \n    print(f\"\\n--- Statistics ---\")\n    print(f\"Chi-Square: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n    print(f\"Phi Coefficient (Pearson r): {correlation:.4f}\")\n    \n    # Interpretation\n    print(\"\\n--- Conclusion ---\")\n    if p < 0.05:\n        if correlation > 0.1:\n            print(\"Result: Significant POSITIVE correlation. (Hypothesis Rejected)\")\n            print(\"Interpretation: Agencies performing impact assessments ARE likely to perform monitoring.\")\n        elif correlation < -0.1:\n            print(\"Result: Significant NEGATIVE correlation. (Hypothesis Supported)\")\n            print(\"Interpretation: Inverse relationship found.\")\n        else:\n            print(\"Result: Statistically significant but negligible effect size.\")\n    else:\n        print(\"Result: No significant correlation found. (Hypothesis Supported)\")\n        print(\"Interpretation: Assessment and Monitoring appear to be decoupled.\")\n\nif __name__ == \"__main__\":\n    main()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nFiltered EO 13960 data: 1757 rows\n\nImpact Assessment (1=Yes, 0=No):\nhas_impact_assessment\n0    1665\n1      92\nName: count, dtype: int64\n\nPost-Deployment Monitoring (1=Yes, 0=No):\nhas_monitoring\n0    1647\n1     110\nName: count, dtype: int64\n\nContingency Table (Rows: Assessment, Cols: Monitoring):\nhas_monitoring            0   1\nhas_impact_assessment          \n0                      1629  36\n1                        18  74\n\n--- Statistics ---\nChi-Square: 896.8497\nP-value: 4.7497e-197\nPhi Coefficient (Pearson r): 0.7197\n\n--- Conclusion ---\nResult: Significant POSITIVE correlation. (Hypothesis Rejected)\nInterpretation: Agencies performing impact assessments ARE likely to perform monitoring.\n",
+  "created_at": "2026-02-22T12:15:40.071156+00:00",
+  "creation_idx": 240,
+  "experiment_id": "node_6_51",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square stats, and Phi coefficient.",
+    "objective": "Test the correlation between pre-deployment impact assessment and post-deployment monitoring.",
+    "steps": "1. Filter for `source_table` = 'eo13960_scored'.\n2. Clean `52_impact_assessment` and `56_monitor_postdeploy` into binary variables (1=Yes/Evidence, 0=No/Missing) using heuristic text analysis (length > 3 or keywords).\n3. Create a contingency table (Assessment vs. Monitoring).\n4. Perform a Chi-square test and calculate Pearson's Phi coefficient (or Cramer's V) for effect size."
+  },
+  "hypothesis": "Assessment-Monitoring Decoupling: In federal AI deployments (EO13960), there is no significant positive correlation between performing an 'Impact Assessment' and conducting 'Post-Deployment Monitoring', suggesting that governance checks are often one-off compliance events rather than continuous lifecycle management.",
+  "id_in_run": 239,
+  "is_surprising": true,
+  "parent_id": "node_5_22",
+  "posterior": 0.2672413793103448,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 56.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2672413793103448,
+    "n": 56.0,
+    "prior_params": [
+      23.25,
+      7.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.75,
+  "prior_belief": {
+    "_empirical_mean": 0.7583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 1.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.75,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully implemented the analysis plan. The code correctly handled the data loading (resolving the initial path error) and applied appropriate heuristic text analysis to parse the sparse binary variables from the EO 13960 dataset.\n\n**Hypothesis:** The experiment tested the 'Assessment-Monitoring Decoupling' hypothesis, which posited that pre-deployment 'Impact Assessments' and 'Post-Deployment Monitoring' are not significantly correlated in federal AI deployments.\n\n**Results:** The analysis of 1,757 AI systems revealed a very strong, statistically significant positive correlation (Phi = 0.72, p < 1e-196). The contingency table showed that 80% (74/92) of systems with an impact assessment also had post-deployment monitoring, whereas only 2.2% (36/1665) of systems without an assessment had monitoring.\n\n**Findings:** The hypothesis is definitively rejected. The results indicate that governance controls are highly 'clustered' rather than decoupled. Agencies tend to either implement a comprehensive governance suite (both assessment and monitoring) or apply minimal controls. The presence of a pre-deployment assessment is a strong predictor of post-deployment monitoring.",
+  "rich_outputs": null,
+  "runtime_ms": 224820.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5793103448275863
+}

@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_incident_coding.csv
+
+Group Sample Sizes:
+Both: 46
+Distinct: 6
+
+Descriptive Statistics for Technique Count:
+          count      mean       std  min  25%  50%   75%   max
+group                                                         
+Both       46.0  7.565217  3.052519  1.0  6.0  7.0  9.00  16.0
+Distinct    6.0  7.333333  1.966384  5.0  6.0  7.0  8.75  10.0
+
+Independent Samples T-Test (Welch's):
+t-statistic: 0.2520
+p-value: 0.8070
+
+Result: No statistically significant difference found.
+
+STDERR:
+<ipython-input-1-a65908e9540a>:59: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([both_counts, distinct_counts], labels=['Both', 'Distinct'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (or Box-and-Whisker Plot).
+*   **Purpose:** This plot is used to visualize and compare the distribution of a quantitative variable ("Number of Techniques Used") across two different categorical groups ("Both" and "Distinct"). It displays the central tendency (median), dispersion (interquartile range), and outliers for each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Categories:** Represents the "Competency Gap Type" with two distinct categories: **"Both"** and **"Distinct"**.
+*   **Y-Axis:**
+    *   **Label:** "Number of Techniques Used".
+    *   **Units:** Count (integer values representing the number of techniques).
+    *   **Range:** The axis spans from **0 to roughly 17**, with tick marks labeled every 2 units (2, 4, 6, ..., 16).
+
+### 3. Data Trends
+*   **Category: "Both"**
+    *   **Spread:** This category exhibits a wide spread of data. The main body of data (the box) ranges from a lower quartile (Q1) of 6 to an upper quartile (Q3) of 9.
+    *   **Whiskers:** The range of non-outlier data extends from a minimum of 3 to a maximum of 12.
+    *   **Outliers:** There are significant outliers present. Specifically, there are high-value outliers at approximately 14, 15, and 16, and a low-value outlier at 1.
+    *   **Median:** The median line (orange) is positioned at 7.
+
+*   **Category: "Distinct"**
+    *   **Spread:** This distribution is much tighter and more consistent than the "Both" category. The box ranges from a lower quartile (Q1) of 6 to an upper quartile (Q3) of roughly 8.5 or 9.
+    *   **Whiskers:** The whiskers indicate a total range of 5 to 10.
+    *   **Outliers:** There are no visible outliers in this category.
+    *   **Median:** The median line is also positioned at 7.
+
+### 4. Annotations and Legends
+*   **Title:** "Attack Sophistication (Technique Count) by Competency Gap Type".
+*   **Grid:** Horizontal dashed grid lines are included to assist in reading the Y-axis values.
+*   **Colors:** The box plot uses standard formatting with black outlines for the boxes and whiskers, and an orange horizontal line to denote the median.
+
+### 5. Statistical Insights
+*   **Central Tendency Similarity:** Interestingly, both the "Both" and "Distinct" competency gap types share the same median value (7 techniques). This indicates that the "typical" or central level of attack sophistication is identical between the two groups.
+*   **Variability Difference:** The key difference lies in consistency. The "Distinct" group represents a very predictable range of sophistication (most attacks use between 5 and 10 techniques). In contrast, the "Both" group is highly volatile; while the middle 50% is similar to the "Distinct" group, the "Both" group includes both the simplest attacks (1 technique) and the most sophisticated attacks (up to 16 techniques).
+*   **Risk Profile:** From a security perspective, the "Both" category presents a more complex risk profile due to the presence of extreme outliers (high sophistication), whereas the "Distinct" category represents a bounded, moderate threat level.
+==================================================

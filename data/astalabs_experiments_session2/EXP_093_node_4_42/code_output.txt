@@ -1,0 +1,41 @@
+exitcode: 0 (execution succeeded)
+Code output: ATLAS cases loaded: 52
+
+--- Co-occurrence Statistics ---
+P(Exfiltration | Collection)     = 8/10 (80.00%)
+P(Exfiltration | Initial Access) = 0/0 (0.00%)
+
+Insufficient data for Z-test.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot compares the conditional probability of a specific cybersecurity tactic ("Exfiltration") occurring based on two different antecedent conditions ("Given Collection" and "Given Initial Access").
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Probability of Exfiltration"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100% probability).
+    *   **Increments:** 0.2.
+*   **X-Axis:**
+    *   **Labels:** The axis features two categorical conditions: "Given Collection" and "Given Initial Access".
+    *   **Context:** These categories refer to stages in a cyber attack lifecycle (likely based on the MITRE ATT&CK framework).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Given Collection" category represents the highest value with a probability of 0.8.
+*   **Shortest Bar:** The "Given Initial Access" category has no visible bar, representing a probability of 0.0.
+*   **Pattern:** There is a stark contrast between the two conditions. The data suggests that the transition to "Exfiltration" is highly likely if the "Collection" stage has already occurred, whereas it is non-existent (or unobserved) directly from "Initial Access."
+
+### 4. Annotations and Legends
+*   **Bar Annotations:**
+    *   **Given Collection:** Annotated with "**80.0% (n=8/10)**". This indicates that out of a sample size of 10 instances where "Collection" was observed, "Exfiltration" followed in 8 of those cases.
+    *   **Given Initial Access:** Annotated with "**0.0% (n=0/0)**". This indicates a probability of 0%, but the sample size notation is distinct.
+
+### 5. Statistical Insights
+*   **High Correlation between Collection and Exfiltration:** The data indicates a strong conditional dependency. If an attacker has successfully performed "Collection," there is an 80% probability they will attempt or succeed at "Exfiltration." This implies that "Collection" is a critical precursor stage to data theft in this specific dataset.
+*   **Undefined/Missing Data for Initial Access:** The annotation "(n=0/0)" for "Given Initial Access" is statistically significant. A denominator of 0 implies that there were **no instances** of the condition "Initial Access" observed in the context of this specific query/dataset. Therefore, the 0.0% probability is not a measure of impossibility, but rather a result of undefined data (division by zero). No statistical conclusion can be drawn regarding the transition from Initial Access to Exfiltration other than a lack of data points.
+*   **Sample Size Limitation:** The insights are based on a very small dataset (n=10 for the first category and n=0 for the second). Conclusions drawn from this plot should be treated as preliminary due to the limited sample size.
+==================================================

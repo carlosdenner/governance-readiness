@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment tested the hypothesis that AI security incidents involve more complex kill chains (higher technique counts) than other harm types (privacy, reliability, etc.). The analysis of 52 case studies revealed that 'Security' incidents (n=36) had a mean technique count of 7.50 (Median=7.0), while 'Other' incidents (n=16) had a slightly higher mean of 7.62 (Median=8.0). A Mann-Whitney U test (one-sided) yielded a p-value of 0.745, failing to reject the null hypothesis; thus, the data does not support the claim that security incidents are significantly more complex. The visualization highlights that while the Security group exhibits greater variance (range 1-16) with distinct high-complexity outliers, the central tendency for attack complexity is remarkably similar across all harm types.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport os\nimport sys\nimport numpy as np\n\n# Robust file loading\nfilename = 'step3_incident_coding.csv'\nfile_path = None\n\nif os.path.exists(filename):\n    file_path = filename\nelif os.path.exists(os.path.join('..', filename)):\n    file_path = os.path.join('..', filename)\nelse:\n    print(f\"Error: {filename} not found in current or parent directory.\")\n    sys.exit(1)\n\nprint(f\"Loading dataset from: {file_path}\")\ndf = pd.read_csv(file_path)\n\n# Data Preparation\n# Group: Security (harm_type == 'security') vs Other\nsecurity_counts = df[df['harm_type'] == 'security']['technique_count']\nother_counts = df[df['harm_type'] != 'security']['technique_count']\n\n# Descriptive Statistics\nprint(\"\\n=== Descriptive Statistics (Technique Count) ===\")\nprint(f\"Security Incidents (n={len(security_counts)}):\")\nprint(f\"  Mean: {security_counts.mean():.2f}\")\nprint(f\"  Median: {security_counts.median():.2f}\")\nprint(f\"  Std Dev: {security_counts.std():.2f}\")\n\nprint(f\"\\nOther Incidents (n={len(other_counts)}):\")\nprint(f\"  Mean: {other_counts.mean():.2f}\")\nprint(f\"  Median: {other_counts.median():.2f}\")\nprint(f\"  Std Dev: {other_counts.std():.2f}\")\n\n# Statistical Analysis: Mann-Whitney U Test\n# Testing if Security > Other\nu_stat, p_val = stats.mannwhitneyu(security_counts, other_counts, alternative='greater')\n\nprint(\"\\n=== Mann-Whitney U Test Results ===\")\nprint(f\"U-statistic: {u_stat}\")\nprint(f\"P-value (one-sided, Security > Other): {p_val:.5f}\")\n\nif p_val < 0.05:\n    print(\"Result: Statistically significant. Security incidents involve significantly more techniques.\")\nelse:\n    print(\"Result: Not statistically significant.\")\n\n# Visualization: Boxplot with Strip Plot overlay\nplt.figure(figsize=(10, 6))\ndata = [security_counts, other_counts]\nlabels = [f'Security (n={len(security_counts)})', f'Other (n={len(other_counts)})']\n\n# Boxplot\nbox = plt.boxplot(data, patch_artist=True, labels=labels, widths=0.6)\n\n# Styling\ncolors = ['#ff9999', '#99ccff']\nfor patch, color in zip(box['boxes'], colors):\n    patch.set_facecolor(color)\n    patch.set_alpha(0.7)\n\n# Add individual data points (jittered)\nfor i, d in enumerate(data):\n    y = d\n    x = np.random.normal(1 + i, 0.04, size=len(y))\n    plt.scatter(x, y, alpha=0.6, color='black', s=20, zorder=3)\n\nplt.title('Complexity of Attack Chains: Security vs. Other Harm Types')\nplt.ylabel('Technique Count (Kill Chain Length)')\nplt.grid(axis='y', linestyle='--', alpha=0.5)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step3_incident_coding.csv\n\n=== Descriptive Statistics (Technique Count) ===\nSecurity Incidents (n=36):\n  Mean: 7.50\n  Median: 7.00\n  Std Dev: 3.17\n\nOther Incidents (n=16):\n  Mean: 7.62\n  Median: 8.00\n  Std Dev: 2.42\n\n=== Mann-Whitney U Test Results ===\nU-statistic: 255.5\nP-value (one-sided, Security > Other): 0.74516\nResult: Not statistically significant.\n\nSTDERR:\n<ipython-input-1-66ae2b9dbfe7>:62: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  box = plt.boxplot(data, patch_artist=True, labels=labels, widths=0.6)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is a detailed analysis:\n\n### 1. Plot Type\n*   **Type:** This is a **Box Plot (Box-and-Whisker Plot)** overlaid with a **Strip Plot** (also known as a jitter or swarm plot).\n*   **Purpose:** The plot is designed to compare the distributions of \"Technique Count\" (a measure of complexity) between two distinct categories (\"Security\" and \"Other\"). By overlaying the individual data points (the dots) on top of the box plots, it provides a comprehensive view of the data's central tendency (median), spread (interquartile range), and individual observations, preventing the concealment of underlying data structures that simple box plots might hide.\n\n### 2. Axes\n*   **Y-Axis:**\n    *   **Label:** \"Technique Count (Kill Chain Length)\". This represents the number of steps or techniques involved in an attack chain.\n    *   **Range:** The axis is marked from 2 to 16 with an interval of 2. The visible data spans from 1 (lowest point in Security) to 16 (highest point in Security).\n    *   **Units:** Count (integer values).\n*   **X-Axis:**\n    *   **Labels:** Two categorical groups:\n        1.  \"Security (n=36)\"\n        2.  \"Other (n=16)\"\n    *   **Meaning:** These labels denote the type of harm being analyzed, with \"n=\" indicating the sample size for each group.\n\n### 3. Data Trends\n*   **Security Group (Pink Box):**\n    *   **Median:** The orange line is at **7**.\n    *   **Interquartile Range (IQR):** The middle 50% of the data falls between **6 and 9**.\n    *   **Range & Outliers:** The data has a wide spread. While the main whiskers extend from 3 to 12, there are distinct **outliers** at the high end (values of 14, 15, and 16) and one outlier at the low end (value of 1).\n    *   **Cluster:** There is a dense cluster of data points around the median and lower quartile (values 6 and 7).\n\n*   **Other Group (Blue Box):**\n    *   **Median:** The orange line is at **8**, slightly higher than the Security group.\n    *   **Interquartile Range (IQR):** The middle 50% appears to range from approximately **6.5 to 9**.\n    *   **Range & Outliers:** The whiskers extend from 3 to 12. Unlike the Security group, there are **no visible outliers** beyond the whiskers. The data is more contained.\n\n### 4. Annotations and Legends\n*   **Title:** \"Complexity of Attack Chains: Security vs. Other Harm Types\". This sets the context of the analysis as a cybersecurity risk assessment.\n*   **Sample Size (n):** The X-axis labels include the sample size (`n=36` for Security, `n=16` for Other), which is crucial for interpreting the statistical weight of the data.\n*   **Gridlines:** Horizontal dashed gridlines appear every 2 units, aiding in the precise reading of Y-axis values.\n*   **Color Coding:**\n    *   **Pink/Red:** Represents \"Security\" harm types.\n    *   **Blue:** Represents \"Other\" harm types.\n\n### 5. Statistical Insights\n*   **Similar Central Tendency:** Both groups have similar medians (7 vs. 8) and upper quartiles (9). This suggests that the \"typical\" complexity of an attack is comparable whether it is a security incident or another type of harm.\n*   **Higher Peak Complexity in Security:** The key differentiator is the \"long tail\" of the Security group. The presence of outliers at technique counts of 14, 15, and 16 indicates that **extreme complexity is a characteristic specific to Security incidents** in this dataset. The \"Other\" category caps out at a complexity of 12.\n*   **Variability:** The Security group shows greater variability (standard deviation), ranging from 1 to 16, whereas the \"Other\" group is more consistent, ranging only from 3 to 12.\n*   **Sample Size Consideration:** The insights for the \"Other\" category are drawn from a smaller sample size (16) compared to \"Security\" (36), which means the distribution for \"Other\" might be less robustly defined.\n==================================================",
+  "created_at": "2026-02-20T23:27:28.395663+00:00",
+  "creation_idx": 62,
+  "experiment_id": "node_7_0",
+  "experiment_plan": {
+    "deliverables": "Violin plot or boxplot of technique counts for Security vs. Other harms, T-test/Mann-Whitney results.",
+    "objective": "Analyze the relationship between harm type and attack complexity.",
+    "steps": "1. Load 'step3_incident_coding.csv'.\n2. Create a binary category: 'Security' (where harm_type == 'security') vs. 'Other' (all other harm types).\n3. Extract the 'technique_count' for both groups.\n4. Perform an Independent Samples T-test (or Mann-Whitney U test) to compare the mean technique counts.\n5. Visualize the distributions."
+  },
+  "hypothesis": "AI incidents resulting in 'Security' harms involve a significantly higher number of adversarial techniques (technique_count) than incidents resulting in 'Privacy' or 'Reliability' harms, indicating that security breaches require more complex kill chains.",
+  "id_in_run": 61,
+  "is_surprising": true,
+  "parent_id": "node_6_1",
+  "posterior": 0.15702479338842976,
+  "posterior_belief": {
+    "_empirical_mean": 0.008333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 87.0,
+    "definitely_true": 0.0,
+    "maybe_false": 3.0,
+    "maybe_true": 0.0,
+    "mean": 0.15702479338842976,
+    "n": 90.0,
+    "prior_params": [
+      18.25,
+      12.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.5887096774193549,
+  "prior_belief": {
+    "_empirical_mean": 0.5916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 9.0,
+    "maybe_true": 20.0,
+    "mean": 0.5887096774193549,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment successfully tested the hypothesis regarding attack complexity (technique count) across different harm types. The analysis of 52 MITRE ATLAS case studies revealed that 'Security' incidents (n=36) had a mean technique count of 7.50 (Median=7.00), while 'Other' incidents (n=16) had a slightly higher mean of 7.62 (Median=8.00). The Mann-Whitney U test yielded a p-value of 0.745 (one-sided), failing to reject the null hypothesis. Consequently, the data does not support the claim that security breaches require more complex kill chains than other harm types (e.g., privacy, reliability). The visualization confirms that while security incidents show a wider range (1-16) and contain the most complex outliers, the central tendency of attack complexity is uniform across harm categories.",
+  "rich_outputs": null,
+  "runtime_ms": 204300.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5010116731485651
+}

@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+AIID Incidents subset size: 1362
+Unique Autonomy Values: <StringArray>
+['Autonomy1', 'Autonomy2', 'Autonomy3', 'unclear', nan]
+Length: 5, dtype: str
+Unique Harm Values: <StringArray>
+[                      'none',     'AI tangible harm event',
+                    'unclear', 'AI tangible harm near-miss',
+                          nan,     'AI tangible harm issue']
+Length: 6, dtype: str
+Data points after cleaning mappings: 177
+
+--- Spearman Correlation ---
+Correlation: 0.2331, p-value: 0.0018
+
+--- Ordinal Logistic Regression ---
+Using sectors: ['information and communication', 'transportation and storage', 'Arts, entertainment and recreation, information and communication', 'human health and social work activities', 'Arts, entertainment and recreation'] and 'Other'
+                             OrderedModel Results                             
+==============================================================================
+Dep. Variable:               harm_ord   Log-Likelihood:                -138.16
+Model:                   OrderedModel   AIC:                             294.3
+Method:            Maximum Likelihood   BIC:                             322.9
+Date:                Sun, 22 Feb 2026                                         
+Time:                        01:22:22                                         
+No. Observations:                 177                                         
+Df Residuals:                     168                                         
+Df Model:                           6                                         
+==================================================================================================================================================
+                                                                                     coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------------------------------------------------------
+autonomy_ord                                                                       0.4356      0.202      2.157      0.031       0.040       0.831
+sector_group_Arts, entertainment and recreation, information and communication    12.6878    605.204      0.021      0.983   -1173.491    1198.866
+sector_group_Other                                                                14.1510    605.203      0.023      0.981   -1172.026    1200.328
+sector_group_human health and social work activities                              14.0108    605.204      0.023      0.982   -1172.167    1200.188
+sector_group_information and communication                                        13.3304    605.203      0.022      0.982   -1172.847    1199.507
+sector_group_transportation and storage                                           16.1441    605.203      0.027      0.979   -1170.033    1202.321
+0/1                                                                               15.6261    605.203      0.026      0.979   -1170.551    1201.803
+1/2                                                                               -1.1833      0.325     -3.646      0.000      -1.819      -0.547
+2/3                                                                               -1.2245      0.345     -3.546      0.000      -1.901      -0.548
+==================================================================================================================================================
+
+--- Odds Ratios (Effect Size) ---
+                                                        2.5%  ...            OR
+autonomy_ord                                        1.040551  ...  1.545848e+00
+sector_group_Arts, entertainment and recreation...  0.000000  ...  3.237883e+05
+sector_group_Other                                  0.000000  ...  1.398650e+06
+sector_group_human health and social work activ...  0.000000  ...  1.215603e+06
+sector_group_information and communication          0.000000  ...  6.156076e+05
+sector_group_transportation and storage             0.000000  ...  1.026390e+07
+0/1                                                 0.000000  ...  6.114002e+06
+1/2                                                 0.162116  ...  3.062548e-01
+2/3                                                 0.149375  ...  2.938950e-01
+
+[9 rows x 3 columns]
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: overflow encountered in exp
+  result = func(self.values, **kwargs)

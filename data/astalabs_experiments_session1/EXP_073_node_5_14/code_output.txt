@@ -1,0 +1,11 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step2_competency_statements.csv
+
+--- Descriptive Statistics ---
+High Confidence (N=36): Mean = 1.8611, Std Dev = 0.6393
+Medium/Low Confidence (N=6): Mean = 1.8333, Std Dev = 0.7528
+
+--- Hypothesis Test Results ---
+T-statistic: 0.0854
+P-value: 0.9346
+Conclusion: The difference is NOT statistically significant (Fail to reject H0).

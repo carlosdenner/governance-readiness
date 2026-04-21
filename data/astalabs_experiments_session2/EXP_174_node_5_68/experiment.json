@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Commercial Opacity' hypothesis using the EO 13960 dataset. \n\n1. **Data Classification**: \n   - **Procurement Type**: Systems describing specific commercial tasks (e.g., 'Scheduling meetings') were classified as 'Commercial' (n=353), while those marked 'None of the above' (indicating mission-specific/internal development) were classified as 'Custom' (n=1357).\n   - **Transparency**: Documentation status was binarized based on the presence of affirmative keywords ('complete', 'partial', 'available') versus negative ones ('missing', 'not available').\n\n2. **Statistical Results**: \n   - The Chi-Square test yielded a statistic of **160.61** and a p-value of **8.31e-37**, indicating an extremely significant relationship between procurement type and transparency.\n   - **Commercial systems** demonstrated a documentation rate of only **17.28%**.\n   - **Custom systems** demonstrated a documentation rate of **55.27%**.\n\n3. **Conclusion**: \n   - The hypothesis is **strongly supported**. Custom/internal AI systems in federal agencies are over **3 times more likely** to have available data documentation compared to commercially procured COTS solutions. This confirms a significant transparency gap where reliance on commercial vendors correlates with reduced governance visibility.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.stats import chi2_contingency\nimport os\n\n# Load dataset\nfile_path = '../astalabs_discovery_all_data.csv'\nif not os.path.exists(file_path):\n    file_path = 'astalabs_discovery_all_data.csv'\n\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    print(f\"Error: Could not find dataset at {file_path}\")\n    exit(1)\n\n# Filter for EO 13960 Scored subset\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# 1. Map Procurement Type (Commercial vs Custom)\n# Logic: 'None of the above.' implies the use case is not a standard commercial tool -> Custom/Mission Specific.\n# Specific descriptions (e.g., 'Scheduling meetings') -> Commercial.\ndef map_procurement(x):\n    if pd.isna(x):\n        return np.nan\n    s = str(x).strip()\n    if s == 'None of the above.':\n        return 'Custom'\n    else:\n        return 'Commercial'\n\ndf_eo['Procurement_Type'] = df_eo['10_commercial_ai'].apply(map_procurement)\n\n# Drop rows where procurement type is unknown\ndf_analysis = df_eo.dropna(subset=['Procurement_Type']).copy()\n\n# 2. Map Documentation Transparency (Has_Documentation)\n# Logic: Identify positive confirmation of documentation while excluding explicit negatives.\ndef map_documentation(x):\n    if pd.isna(x):\n        return 0\n    s = str(x).lower().strip()\n    \n    # Explicit negatives\n    if 'missing' in s or 'not available' in s or 'not reported' in s or s == 'no':\n        return 0\n    \n    # Positives\n    # \"partial\" is considered compliant/present for the purpose of \"Availability of documentation\"\n    if ('complete' in s or \n        'partial' in s or \n        'widely' in s or \n        'yes' in s or \n        'documented' in s or \n        'is available' in s):\n        return 1\n        \n    return 0\n\ndf_analysis['Has_Documentation'] = df_analysis['34_data_docs'].apply(map_documentation)\n\n# 3. Generate Summary Stats\nprint(f\"Analyzed rows: {len(df_analysis)}\")\nprint(\"Distribution of Procurement Type:\")\nprint(df_analysis['Procurement_Type'].value_counts())\n\nprint(\"\\nDistribution of Documentation Status:\")\nprint(df_analysis['Has_Documentation'].value_counts())\n\n# 4. Contingency Table\ncontingency = pd.crosstab(df_analysis['Procurement_Type'], df_analysis['Has_Documentation'])\n# Ensure columns are 0 and 1\nif 0 not in contingency.columns: contingency[0] = 0\nif 1 not in contingency.columns: contingency[1] = 0\ncontingency = contingency[[0, 1]]\ncontingency.columns = ['No Doc', 'Has Doc']\n\nprint(\"\\nContingency Table:\")\nprint(contingency)\n\n# 5. Chi-Square Test\nchi2, p, dof, expected = chi2_contingency(contingency)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# 6. Documentation Rates\nrates = df_analysis.groupby('Procurement_Type')['Has_Documentation'].mean()\ncomm_rate = rates.get('Commercial', 0) * 100\ncust_rate = rates.get('Custom', 0) * 100\n\nprint(f\"\\nDocumentation Rates:\")\nprint(f\"Commercial: {comm_rate:.2f}%\")\nprint(f\"Custom: {cust_rate:.2f}%\")\n\n# 7. Visualization\nplt.figure(figsize=(8, 6))\nbars = plt.bar(['Commercial', 'Custom'], [comm_rate, cust_rate], color=['orange', 'skyblue'], edgecolor='black')\nplt.title('Transparency Gap: Commercial vs Custom AI Documentation')\nplt.ylabel('Percentage of Systems with Data Documentation (%)')\nplt.ylim(0, 100)\n\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 2,\n             f'{height:.1f}%',\n             ha='center', va='bottom')\n\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Analyzed rows: 1710\nDistribution of Procurement Type:\nProcurement_Type\nCustom        1357\nCommercial     353\nName: count, dtype: int64\n\nDistribution of Documentation Status:\nHas_Documentation\n0    899\n1    811\nName: count, dtype: int64\n\nContingency Table:\n                  No Doc  Has Doc\nProcurement_Type                 \nCommercial           292       61\nCustom               607      750\n\nChi-Square Statistic: 160.6143\nP-value: 8.3067e-37\n\nDocumentation Rates:\nCommercial: 17.28%\nCustom: 55.27%\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Chart.\n*   **Purpose:** The plot is designed to compare the prevalence of data documentation between two distinct categories of AI systems: \"Commercial\" and \"Custom.\"\n\n### 2. Axes\n*   **Y-Axis:**\n    *   **Label:** \"Percentage of Systems with Data Documentation (%)\"\n    *   **Range:** 0 to 100.\n    *   **Scale:** Linear, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).\n*   **X-Axis:**\n    *   **Label:** Categorical labels representing the type of AI system: \"Commercial\" and \"Custom.\"\n    *   **Range:** N/A (Categorical data).\n\n### 3. Data Trends\n*   **Commercial Bar (Orange):** This represents the shortest bar in the plot. It indicates a low level of documentation compliance.\n*   **Custom Bar (Light Blue):** This is the tallest bar, visually appearing more than three times the height of the commercial bar.\n*   **Pattern:** There is a distinct and significant upward trend in documentation transparency when moving from Commercial systems to Custom systems.\n\n### 4. Annotations and Legends\n*   **Chart Title:** \"Transparency Gap: Commercial vs Custom AI Documentation\" – This annotation frames the data as a comparison of transparency levels.\n*   **Value Labels:** Exact percentage values are annotated directly above each bar for precision:\n    *   Commercial: **17.3%**\n    *   Custom: **55.3%**\n*   **Gridlines:** Horizontal dashed gridlines are included to assist in visually estimating the bar heights relative to the Y-axis scale.\n\n### 5. Statistical Insights\n*   **Significant Transparency Gap:** There is a 38 percentage point difference between the two categories ($55.3\\% - 17.3\\% = 38.0\\%$).\n*   **Relative Performance:** Custom AI systems are approximately **3.2 times more likely** to have data documentation compared to Commercial AI systems.\n*   **Majority vs. Minority:** While a majority of Custom systems (over half) include data documentation, the vast majority of Commercial systems (82.7%) lack such documentation, highlighting a critical deficiency in transparency within the commercial sector.\n==================================================",
+  "created_at": "2026-02-22T09:12:48.990501+00:00",
+  "creation_idx": 175,
+  "experiment_id": "node_5_68",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistic, p-value, and bar chart comparing documentation rates.",
+    "objective": "Determine if reliance on commercial AI vendors correlates with reduced documentation transparency in government deployments.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for the 'eo13960_scored' source_table.\n2. Clean the '10_commercial_ai' column: standardize values to 'Commercial' (Yes) and 'Custom' (No/Internal).\n3. Clean the '34_data_docs' column: map values to Binary (1 for Yes, 0 for No/Unsure).\n4. Create a contingency table of Commercial Status vs. Data Documentation.\n5. Perform a Chi-Square test of independence.\n6. Calculate the percentage of documented systems in each group."
+  },
+  "hypothesis": "Commercial Opacity: Commercially procured AI systems (COTS) in federal agencies exhibit significantly lower transparency compliance (measured by availability of data documentation) compared to internally developed 'Custom' AI systems.",
+  "id_in_run": 174,
+  "is_surprising": true,
+  "parent_id": "node_4_3",
+  "posterior": 0.9203296703296703,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9203296703296703,
+    "n": 60.0,
+    "prior_params": [
+      23.75,
+      7.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7661290322580645,
+  "prior_belief": {
+    "_empirical_mean": 0.775,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 3.0,
+    "maybe_false": 0.0,
+    "maybe_true": 27.0,
+    "mean": 0.7661290322580645,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Commercial Opacity' hypothesis using the EO 13960 dataset. The implementation correctly adapted to the specific text values found in the survey data (classifying specific commercial use-case descriptions as 'Commercial' and 'None of the above' as 'Custom').\n\n**Hypothesis**: Supported.\n\n**Findings**:\n- **Statistical Significance**: The Chi-Square test revealed an extremely significant relationship ($p < 0.001$, $\\chi^2 = 160.6$) between procurement type and documentation transparency.\n- **Transparency Gap**: \n  - **Custom/Internal Systems** (n=1,357) demonstrated a documentation compliance rate of **55.3%**.\n  - **Commercial (COTS) Systems** (n=353) demonstrated a much lower compliance rate of **17.3%**.\n\n**Conclusion**: The results confirm that commercially procured AI tools in the federal government are significantly less likely to have available data documentation compared to custom-developed systems, highlighting a major governance gap in the supply chain.",
+  "rich_outputs": null,
+  "runtime_ms": 440200.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.18504076568592692
+}

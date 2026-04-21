@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 52 ATLAS cases.
+Detected delimiter for tactics: '|'
+Cases achieving Impact: 36
+Cases NOT achieving Impact: 16
+
+Mean Chain Length (Impact): 5.97 (Median: 6.0)
+Mean Chain Length (No Impact): 5.12 (Median: 5.5)
+
+Mann-Whitney U Test results:
+Statistic: 345.0
+P-value: 0.1276
+Conclusion: No statistically significant difference (p >= 0.05). Hypothesis NOT SUPPORTED.
+
+STDERR:
+<ipython-input-1-0f5787c57a19>:97: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  bp = plt.boxplot([no_impact_group, impact_group],
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot (Box-and-Whisker Plot) with an overlaid Jitter/Strip Plot**.
+*   **Purpose:** The plot compares the distribution of a quantitative variable (chain length) across two categorical groups ("No Impact" vs. "Impact Achieved").
+    *   The **box plot** component visualizes the five-number summary: minimum, first quartile (Q1), median, third quartile (Q3), and maximum.
+    *   The **overlaid dots** show the individual data points, allowing the viewer to see the sample size and specific distribution density, which helps identify if the data is clustered or sparse.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Number of Unique Tactics (Chain Length)".
+    *   **Units:** Count (integer values representing the number of tactics).
+    *   **Range:** The visual axis spans from roughly **0 to 11**. Grid lines are marked at intervals of 2 (2, 4, 6, 8, 10).
+*   **X-Axis:**
+    *   **Label:** Represents the Outcome of the attack.
+    *   **Categories:** Two distinct categories: **"No Impact"** (left) and **"Impact Achieved"** (right).
+
+### 3. Data Trends
+*   **No Impact (Left/Blue Group):**
+    *   **Range:** The data spans from a minimum of **1** to a maximum of **8**.
+    *   **Concentration:** The bulk of the data (the box) is concentrated between **4 and 6.25**.
+    *   **Clustering:** There is a noticeable cluster of data points around the median (approx. 5.5).
+*   **Impact Achieved (Right/Green Group):**
+    *   **Range:** The data has a wider span, ranging from a minimum of **2** to a maximum of **11**.
+    *   **Concentration:** The interquartile range (the box) is positioned higher, roughly between **5 and 7**.
+    *   **Outliers:** There is a clear outlier indicated by a hollow circle at the very top (value **11**), along with a data point at the same level.
+*   **Comparison:** The "Impact Achieved" group generally exhibits higher values and a larger spread (variance) than the "No Impact" group.
+
+### 4. Annotations and Legends
+*   **Title:** "Adversarial Kill Chain Complexity: Impact vs. No Impact". This sets the context that the data relates to cybersecurity attack patterns.
+*   **Color Coding:**
+    *   **Blue/Light Blue:** Represents the "No Impact" category.
+    *   **Green/Light Green:** Represents the "Impact Achieved" category.
+*   **Grid Lines:** Horizontal dashed grey lines are provided at intervals of 2 to assist in estimating the Y-axis values.
+
+### 5. Statistical Insights
+*   **Correlation between Complexity and Success:** There appears to be a positive correlation between the complexity of the kill chain (number of tactics) and the likelihood of achieving an impact. The median for "Impact Achieved" (approx. 6) is higher than the median for "No Impact" (approx. 5.5).
+*   **Variability:** Successful attacks ("Impact Achieved") show greater variability. While impact can be achieved with as few as 2 tactics, the group also contains the most complex chains (up to 11 tactics). In contrast, the "No Impact" group is more tightly clustered and caps out at 8 tactics.
+*   **Minimum Threshold:** The data suggests that a chain length of 1 is insufficient for impact (as the lowest value for "Impact Achieved" is 2, while "No Impact" has a point at 1).
+*   **Upper Extremes:** High complexity (chains of length 9, 10, or 11) is almost exclusively associated with successful impacts, suggesting that highly complex attacks are rarely stopped without some impact occurring (or that complexity is required to bypass defenses).
+==================================================

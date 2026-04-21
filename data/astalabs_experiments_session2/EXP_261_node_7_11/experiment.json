@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully validated the 'Control Clustering' hypothesis using the EO 13960 dataset. After refining the text parsing logic to correctly identify verbose descriptions of 'Real World Testing' (e.g., 'operational environment') and 'Independent Evaluation', the analysis found a statistically significant positive correlation between the two controls.\n\n**Findings:**\n1. **Contingency:**\n   - **No Testing:** 1608 cases had neither; only 1 case had Evaluation without Testing.\n   - **Has Testing:** Of 148 cases with Testing, 52 (35.1%) also had Independent Evaluation.\n2. **Statistics:**\n   - **Chi-Square:** 557.96 (p < 1e-120), indicating the relationship is not random.\n   - **Phi Coefficient:** 0.5635, representing a strong positive association.\n   - **Conditional Probability:** P(Independent Eval | Real World Testing) = 35.14%, compared to <0.1% for cases without testing.\n\n**Conclusion:**\nThe hypothesis is **supported**. The data suggests a strict maturity hierarchy: 'Independent Evaluation' is virtually non-existent (1/1609) unless 'Real World Testing' is arguably already present, confirming they function as a coherent governance bundle where Testing is likely a prerequisite for Evaluation.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 data\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Define column names based on previous exploration\ncol_test = '53_real_world_testing'\ncol_eval = '55_independent_eval'\n\n# strict mapping functions based on unique values\ndef map_testing(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).lower()\n    # 'operational environment' covers both 'Performance evaluation...' and 'Impact evaluation...'\n    if 'operational environment' in s:\n        return 1\n    # Legacy/Simple boolean values\n    if s in ['yes', 'true', '1']:\n        return 1\n    # 'Benchmark evaluation' explicitly states 'not been tested in an operational environment'\n    return 0\n\ndef map_eval(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).lower()\n    # Check for explicit 'yes' or 'true'\n    if s.startswith('yes') or s == 'true' or s == '1':\n        return 1\n    return 0\n\n# Apply mapping\neo_df['has_testing'] = eo_df[col_test].apply(map_testing)\neo_df['has_eval'] = eo_df[col_eval].apply(map_eval)\n\n# Generate Contingency Table\ncontingency = pd.crosstab(eo_df['has_testing'], eo_df['has_eval'])\nprint(\"Contingency Table (Rows: Real World Testing, Cols: Independent Eval):\")\nprint(contingency)\n\n# Stats\nchi2, p, dof, ex = chi2_contingency(contingency)\n\n# Phi Coefficient\nn = contingency.sum().sum()\nphi = np.sqrt(chi2 / n)\n\n# Conditional Probability P(Eval | Testing)\n# Testing=1 is the second row (index 1)\ntry:\n    testing_yes_total = contingency.loc[1].sum()\n    testing_yes_eval_yes = contingency.loc[1, 1]\n    prob_eval_given_testing = testing_yes_eval_yes / testing_yes_total if testing_yes_total > 0 else 0\nexcept KeyError:\n    # Handle case where index 1 might not exist if no testing found\n    prob_eval_given_testing = 0\n    testing_yes_total = 0\n\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\nprint(f\"Phi Coefficient: {phi:.4f}\")\nprint(f\"Conditional Probability P(Independent Eval | Real World Testing): {prob_eval_given_testing:.2%}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Contingency Table (Rows: Real World Testing, Cols: Independent Eval):\nhas_eval        0   1\nhas_testing          \n0            1608   1\n1              96  52\n\nChi-Square Statistic: 557.9624\nP-value: 2.3328e-123\nPhi Coefficient: 0.5635\nConditional Probability P(Independent Eval | Real World Testing): 35.14%\n",
+  "created_at": "2026-02-22T13:29:24.673917+00:00",
+  "creation_idx": 262,
+  "experiment_id": "node_7_11",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Phi coefficient, and conditional probability analysis.",
+    "objective": "Assess the co-occurrence of Testing and Independent Evaluation controls.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table` = 'eo13960_scored'.\n2. Create binary variables for `53_real_world_testing` and `55_independent_eval`.\n3. Generate a 2x2 contingency table.\n4. Calculate the Phi Coefficient (correlation for binary variables) and perform a Chi-square test.\n5. Report the conditional probability: P(Evaluation | Testing)."
+  },
+  "hypothesis": "Control Clustering: The governance controls 'Real World Testing' and 'Independent Evaluation' are positively correlated, suggesting they form a coherent 'Verification & Validation' maturity bundle rather than being applied randomly.",
+  "id_in_run": 261,
+  "is_surprising": true,
+  "parent_id": "node_6_57",
+  "posterior": 0.9120879120879121,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9120879120879121,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully implemented the analysis plan. The refined text parsing logic correctly handled the verbose descriptions in the EO 13960 dataset (e.g., mapping 'Performance evaluation in operational environment' to 'Real World Testing').\n\n**Hypothesis:** Control Clustering (Governance controls 'Real World Testing' and 'Independent Evaluation' are positively correlated).\n\n**Findings:**\n1.  **Data Distribution:**\n    -   **No Testing:** 1609 cases lacked real-world testing. Of these, only **1** case (0.06%) had independent evaluation, indicating that independent evaluation virtually never happens without prior testing.\n    -   **Has Testing:** 148 cases had real-world testing. Of these, **52** cases (35.1%) also had independent evaluation.\n2.  **Statistical Test:**\n    -   **Chi-Square Statistic:** 557.96 (p < 0.001), indicating a highly significant relationship.\n    -   **Phi Coefficient:** 0.5635, showing a strong positive association.\n    -   **Conditional Probability:** P(Independent Eval | Real World Testing) = 35.14%.\n\n**Conclusion:**\nThe hypothesis is **supported**. The data reveals a clear maturity hierarchy or dependency: 'Real World Testing' acts as a prerequisite gate for 'Independent Evaluation'. The near-zero probability of having evaluation without testing suggests these controls are not applied randomly but follow a structured implementation sequence.",
+  "rich_outputs": null,
+  "runtime_ms": 183060.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.20418291386033316
+}

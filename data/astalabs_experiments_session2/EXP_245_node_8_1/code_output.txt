@@ -1,0 +1,15 @@
+exitcode: 0 (execution succeeded)
+Code output: Contingency Table (Group vs Code Access):
+access_binary   No  Yes
+group                  
+Commercial     258  132
+Government      37  354
+
+Commercial (Contracted) Code Access Rate: 33.8% (132/390)
+Government (In-house) Code Access Rate:   90.5% (354/391)
+
+Chi-Square Test Results:
+Statistic: 264.5628
+P-value: 1.737640e-59
+Result: Significant difference found.
+Supports Hypothesis: Commercial systems have significantly lower code access.

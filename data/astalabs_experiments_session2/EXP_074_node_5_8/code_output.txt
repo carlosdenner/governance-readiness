@@ -1,0 +1,23 @@
+exitcode: 0 (execution succeeded)
+Code output: Subset shape: (1757, 196)
+
+Operational Status Distribution:
+is_operational
+1    920
+0    837
+Name: count, dtype: int64
+
+Impact Assessment Distribution:
+has_impact_assessment
+0    1696
+1      61
+Name: count, dtype: int64
+
+--- Contingency Table ---
+                 No Impact Assessment  Has Impact Assessment
+Pre-Operational                   835                      2
+Operational                       861                     59
+
+Chi-Square Statistic: 48.0260
+P-value: 4.2061e-12
+Odds Ratio: 28.6092

@@ -1,0 +1,30 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Filtered EO 13960 data: 1757 rows
+
+Impact Assessment (1=Yes, 0=No):
+has_impact_assessment
+0    1665
+1      92
+Name: count, dtype: int64
+
+Post-Deployment Monitoring (1=Yes, 0=No):
+has_monitoring
+0    1647
+1     110
+Name: count, dtype: int64
+
+Contingency Table (Rows: Assessment, Cols: Monitoring):
+has_monitoring            0   1
+has_impact_assessment          
+0                      1629  36
+1                        18  74
+
+--- Statistics ---
+Chi-Square: 896.8497
+P-value: 4.7497e-197
+Phi Coefficient (Pearson r): 0.7197
+
+--- Conclusion ---
+Result: Significant POSITIVE correlation. (Hypothesis Rejected)
+Interpretation: Agencies performing impact assessments ARE likely to perform monitoring.

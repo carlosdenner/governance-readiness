@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: Error: Dataset not found at '../step2_competency_statements.csv'. Checking current directory...
+Dataset loaded from current directory.
+
+--- Descriptive Statistics ---
+Trust Readiness (n=19): Mean=2.84, Median=3.0, Std=0.37
+Integration Readiness (n=23): Mean=2.87, Median=3.0, Std=0.34
+
+--- Confidence Level Distribution ---
+confidence_cleaned     medium  high
+bundle                             
+Integration Readiness       3    20
+Trust Readiness             3    16
+
+--- Mann-Whitney U Test Results ---
+U-statistic: 212.5
+P-value: 0.8187
+Conclusion: Fail to reject the null hypothesis. No statistically significant difference in confidence levels detected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (with error bars).
+*   **Purpose:** The plot compares the mean "Evidence Confidence Score" between two distinct categories (Competency Bundles). It utilizes error bars to visualize the variability or uncertainty associated with the mean values.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label/Title:** The specific axis title is implied by the main chart title "Competency Bundle."
+    *   **Categories:** The axis displays two distinct categories: **"Trust Readiness"** and **"Integration Readiness."**
+*   **Y-axis:**
+    *   **Label:** "Confidence Score (1=Low, 2=Med, 3=High)". This label provides both the metric name and a key for interpreting the numerical scale.
+    *   **Range:** The axis spans from **0.0 to 3.5**, with tick marks at intervals of 0.5.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"Integration Readiness"** bar (colored green) is the tallest, with a mean value of **2.87**.
+*   **Shortest Bar:** The **"Trust Readiness"** bar (colored blue) is slightly shorter, with a mean value of **2.84**.
+*   **Comparison:** The difference between the two bundles is minimal (only 0.03 points). Both bars are nearing the top of the defined scale (3.0), indicating that the values are clustered at the high end of the spectrum.
+*   **Error Bars:** Both bars feature error bars at the top. The overlap in the vertical range of these error bars relative to the means suggests that the difference between the two groups may not be statistically significant.
+
+### 4. Annotations and Legends
+*   **Value Labels:** The exact mean values (**2.84** and **2.87**) are annotated directly above the error bars for precise reading.
+*   **Gridlines:** Horizontal dashed gridlines are included at every 0.5 interval to assist with visual estimation of bar height.
+*   **Color Coding:** The bars are distinct colors (blue for Trust Readiness, green for Integration Readiness) to visually differentiate the categories, though no separate legend box is provided or necessary given the x-axis labels.
+
+### 5. Statistical Insights
+*   **High Confidence Levels:** Based on the y-axis definition where 3 represents "High," both competency bundles exhibit very high confidence scores (2.84 and 2.87). This indicates that, on average, the evidence provided for both Trust and Integration readiness is considered very reliable or robust.
+*   **Uniformity:** There is a lack of significant disparity between "Trust Readiness" and "Integration Readiness." This suggests that the confidence in evidence is consistent across these different competency areas; one area is not significantly lagging behind or outperforming the other in terms of evidence quality.
+==================================================

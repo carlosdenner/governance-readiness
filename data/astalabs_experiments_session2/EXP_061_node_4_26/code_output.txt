@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: Using Security Column: 40_has_ato
+Using Rights Column: 62_disparity_mitigation
+Summary Statistics:
+                n  security_count  rights_count  security_rate  rights_rate
+Agency_Group                                                               
+Security      385              68             0       0.176623          0.0
+Social        594             212             0       0.356902          0.0
+
+
+Z-test for Security_Control (Social vs Security): z=6.0974, p=0.0000
+Z-test for Rights_Control (Social vs Security): z=nan, p=nan
+
+Prioritization Gap (Security Rate - Rights Rate):
+Agency_Group
+Security    0.176623
+Social      0.356902
+Name: Prioritization_Gap, dtype: float64
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/statsmodels/stats/weightstats.py:792: RuntimeWarning: invalid value encountered in scalar divide
+  zstat = value / std
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot image, here are the detailed observations:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Plot.
+*   **Purpose:** The plot compares the "Prevalence of Control" across two different categories of agencies ("Security" and "Social") for two distinct governance priorities ("Security (ATO)" and "Rights (Bias Mitigation)").
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Agency Type"
+    *   **Labels:** Two categorical groups: "Security" and "Social".
+*   **Y-axis:**
+    *   **Title:** "Prevalence of Control"
+    *   **Range:** The axis starts at 0.00 and extends slightly beyond 0.35, with major tick marks at 0.05 intervals.
+    *   **Units:** The values represent a ratio or proportion (ranging from 0 to roughly 0.36), indicating the frequency or likelihood of specific controls being present.
+
+### 3. Data Trends
+*   **Security (ATO) [Blue Bars]:**
+    *   **Tallest Bar:** The "Social" agency category exhibits the highest prevalence for Security (ATO) controls, with a value reaching approximately **0.36**.
+    *   **Shortest Bar:** The "Security" agency category has a significantly lower prevalence for Security (ATO) controls, appearing to be approximately **0.18**.
+    *   **Pattern:** Surprisingly, Social agencies show a prevalence of security-focused controls that is roughly double that of Security agencies.
+*   **Rights (Bias Mitigation) [Orange Bars]:**
+    *   **Observation:** There are no visible orange bars for either "Security" or "Social" agencies.
+    *   **Trend:** This indicates that the prevalence of "Rights (Bias Mitigation)" controls is either **zero** or negligible/too small to be visualized on this scale for both agency types.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Governance Priorities: Security vs Social Agencies" – This frames the comparison between traditional security compliance and social/ethical compliance.
+*   **Legend (Top Left):**
+    *   **Blue Square:** Represents "Security (ATO)" (Likely referring to "Authority to Operate," a standard compliance measure).
+    *   **Orange Square:** Represents "Rights (Bias Mitigation)" (Reflecting controls related to algorithmic fairness or civil rights).
+
+### 5. Statistical Insights
+*   **Prioritization Imbalance:** The plot reveals a drastic imbalance in governance priorities. While traditional security compliance (ATO) is present in both agency types, governance related to bias mitigation and rights is virtually non-existent in the data presented.
+*   **Counter-Intuitive Finding:** One might expect "Security" agencies to have the highest prevalence of security controls. However, the data shows that **Social agencies** actually implement Security (ATO) controls at a much higher rate (approx. 36%) than Security agencies do (approx. 18%).
+*   **The "Rights" Gap:** The complete absence of visible bars for "Rights (Bias Mitigation)" suggests a potential blind spot in the governance frameworks of these agencies, where technical security is tracked and enforced, but ethical considerations like bias mitigation are not yet prevalent or formally controlled.
+==================================================

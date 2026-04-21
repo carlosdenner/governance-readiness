@@ -1,0 +1,90 @@
+exitcode: 0 (execution succeeded)
+Code output: === Loading Datasets ===
+Datasets loaded successfully.
+
+--- Analysis Summary ---
+                                    Control_Name  ... Incident_Frequency
+6          GenAIOps / MLOps Lifecycle Governance  ...                 39
+10    AI Risk Policy & Accountability Structures  ...                 37
+11                 Threat Modeling & Red-Teaming  ...                 28
+13                     Audit Logging & Telemetry  ...                 26
+4    Nondeterminism Controls & Output Validation  ...                 22
+8            Prompt Management & Secret Handling  ...                 21
+5              RAG Architecture & Data Grounding  ...                 11
+2   Tool-Use Boundaries & Least-Privilege Access  ...                 11
+15           Supply Chain & Vendor Risk Controls  ...                  7
+7         Evaluation & Monitoring Infrastructure  ...                  4
+3               Human-in-the-Loop Approval Gates  ...                  3
+16             Data Governance & Access Controls  ...                  2
+12        Incident Response & Recovery Playbooks  ...                  1
+0             Single-Agent Orchestration Pattern  ...                  0
+1              Multi-Agent Orchestration Pattern  ...                  0
+9     Scalable Modular Architecture (Archetypes)  ...                  0
+14           Regulatory Compliance Documentation  ...                  0
+17           Human Override & Control Mechanisms  ...                  0
+
+[18 rows x 4 columns]
+
+Pearson Correlation: r=0.4840, p=0.0418
+T-Test (Hub vs Spoke): t=1.0779, p=0.3077
+
+--- Control Legend ---
+1: Single-Agent Orchestration Pattern (Spoke)
+2: Multi-Agent Orchestration Pattern (Spoke)
+3: Tool-Use Boundaries & Least-Privilege Access (Spoke)
+4: Human-in-the-Loop Approval Gates (Spoke)
+5: Nondeterminism Controls & Output Validation (Hub)
+6: RAG Architecture & Data Grounding (Hub)
+7: GenAIOps / MLOps Lifecycle Governance (Hub)
+8: Evaluation & Monitoring Infrastructure (Hub)
+9: Prompt Management & Secret Handling (Spoke)
+10: Scalable Modular Architecture (Archetypes) (Spoke)
+11: AI Risk Policy & Accountability Structures (Hub)
+12: Threat Modeling & Red-Teaming (Spoke)
+13: Incident Response & Recovery Playbooks (Spoke)
+14: Audit Logging & Telemetry (Spoke)
+15: Regulatory Compliance Documentation (Hub)
+16: Supply Chain & Vendor Risk Controls (Spoke)
+17: Data Governance & Access Controls (Hub)
+18: Human Override & Control Mechanisms (Spoke)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Scatter Plot.
+*   **Purpose:** The plot visualizes the correlation between a control's theoretical centrality (how connected or central it is within a governance mapping) and its empirical failure rate (how often incidents occur). It distinguishes between two categories of nodes: "Hubs" and "Spokes."
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Theoretical Centrality (Governance Mapping Count).
+    *   **Range:** The axis displays integer values ranging from roughly **0 to 14** (data points exist between 1 and 13).
+*   **Y-Axis:**
+    *   **Label:** Empirical Failure Rate (Incident Count).
+    *   **Range:** The axis displays values ranging from **0 to 40**.
+
+### 3. Data Trends
+*   **Overall Trend:** There is a moderate positive correlation (r=0.48), indicating that as theoretical centrality increases, the incident frequency tends to increase as well.
+*   **Clustering by Group:**
+    *   **Spokes (Blue):** These cluster tightly on the left side of the graph at low centrality values (X values of 1, 2, and 3). While many have near-zero failure rates, there is significant variance, with some spokes (e.g., points 14 and 12) showing high failure rates (over 25).
+    *   **Hubs (Red):** These are spread across the right side of the graph with higher centrality values (X values from 4 to 13).
+*   **High Values:** The highest incident counts are found among the Hubs. Specifically, **point 7** (approx. 39 incidents) and **point 11** (approx. 37 incidents) represent the most failure-prone controls.
+*   **Outliers/Anomalies:**
+    *   **Point 8 (Hub):** Despite having the highest centrality (13), it has a very low failure rate (approx. 4), defying the general trend.
+    *   **Point 12 (Spoke):** Despite low centrality (3), it has a high failure rate (approx. 28).
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top-left corner, identifying:
+    *   **Red Circles:** "Hub" category.
+    *   **Blue Circles:** "Spoke" category.
+    *   **Dashed Grey Line:** "Median Centrality."
+*   **Vertical Line:** A dashed vertical line at **X = 3** marks the median centrality of the dataset. This line effectively separates the "Spokes" (to the left) from the "Hubs" (to the right).
+*   **Data Labels:** Each data point is annotated with a number (e.g., "14", "7", "11"), representing the specific ID of the control or node being plotted.
+*   **Title Annotation:** The title includes the statistical correlation coefficient **(Correlation r=0.48)**.
+
+### 5. Statistical Insights
+*   **Centrality vs. Risk:** The positive correlation implies that "Hub" controls—those that map to many governance requirements—are generally riskier or more prone to incidents than "Spoke" controls. This suggests that complexity or high connectivity may contribute to failure rates.
+*   **Group Separation:** The data shows a clean separation between groups based on centrality. No "Spoke" has a centrality score higher than 3, and no "Hub" has a score lower than 4.
+*   **Variability:** While higher centrality suggests higher risk, it is not a guarantee. The high variance among the Spokes (ranging from 0 to 28 incidents) suggests that factors other than centrality significantly impact the failure rate for low-connectivity controls. Similarly, the low failure rate of Hub point 8 suggests that some highly central controls can be managed effectively.
+==================================================

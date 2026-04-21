@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully analyzed the density of literature evidence supporting the two competency bundles. \n\n**Descriptive Statistics:**\n- **Trust Readiness (n=19):** Mean = 2.21 citations, Std Dev = 0.54.\n- **Integration Readiness (n=23):** Mean = 2.17 citations, Std Dev = 0.39.\n\n**Statistical Inference:**\n- **Method:** Welch's t-test (unequal variances).\n- **Result:** t-statistic = -0.2491, p-value = 0.8049.\n- **Conclusion:** The p-value is significantly greater than 0.05, indicating no statistically significant difference between the means.\n\n**Hypothesis Evaluation:**\nThe hypothesis that 'Integration Readiness' statements are supported by a significantly higher density of evidence is **rejected**. The data reveals a highly uniform evidence depth across the framework, with both bundles averaging approximately 2.2 citations per statement. This suggests that the framework's construction followed a consistent rigorous standard for evidence inclusion, regardless of whether the domain was governance (Trust) or technical engineering (Integration).",
+  "child_ids": [
+    "node_6_7"
+  ],
+  "code": "import pandas as pd\nimport re\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport os\n\n# Define the filename\nfilename = 'step2_competency_statements.csv'\n\n# robustly find the file\nsearch_paths = [filename, f'../{filename}', f'../../{filename}']\nfile_path = None\n\nfor path in search_paths:\n    if os.path.exists(path):\n        file_path = path\n        break\n\nif file_path is None:\n    # Print debug info if file not found\n    print(f\"Could not find {filename} in searched paths: {search_paths}\")\n    print(f\"Current Working Directory: {os.getcwd()}\")\n    print(f\"Files in CWD: {os.listdir('.')}\")\n    try:\n        print(f\"Files in Parent: {os.listdir('..')}\")\n    except Exception as e:\n        print(f\"Could not list parent directory: {e}\")\n    raise FileNotFoundError(f\"{filename} not found\")\n\nprint(f\"Loading dataset from {file_path}...\")\ndf = pd.read_csv(file_path)\n\n# Feature Engineering: Count citations in 'evidence_summary'\ndef count_citations(text):\n    if pd.isna(text):\n        return 0\n    # Matches patterns like [#1], [#12], etc.\n    return len(re.findall(r'\\[#\\d+\\]', str(text)))\n\ndf['citation_count'] = df['evidence_summary'].apply(count_citations)\n\n# Grouping by Bundle\ntrust_group = df[df['bundle'] == 'Trust Readiness']['citation_count']\nintegration_group = df[df['bundle'] == 'Integration Readiness']['citation_count']\n\n# Descriptive Statistics\nprint(\"\\n--- Descriptive Statistics for Citation Counts ---\")\nprint(f\"Trust Readiness (n={len(trust_group)}): Mean={trust_group.mean():.2f}, Std={trust_group.std():.2f}\")\nprint(f\"Integration Readiness (n={len(integration_group)}): Mean={integration_group.mean():.2f}, Std={integration_group.std():.2f}\")\n\n# Statistical Test (Welch's t-test)\nt_stat, p_val = stats.ttest_ind(integration_group, trust_group, equal_var=False)\nprint(\"\\n--- Welch's T-Test Results ---\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\n\nalpha = 0.05\nif p_val < alpha:\n    print(\"Result: Statistically significant difference found.\")\nelse:\n    print(\"Result: No statistically significant difference found.\")\n\n# Visualization\nplt.figure(figsize=(10, 6))\n# Create boxplot data\ndata_to_plot = [trust_group, integration_group]\nlabels = ['Trust Readiness', 'Integration Readiness']\n\nplt.boxplot(data_to_plot, labels=labels, patch_artist=True, \n            boxprops=dict(facecolor='lightblue', color='blue'),\n            medianprops=dict(color='red'))\n\nplt.title('Distribution of Literature Citations per Competency Bundle')\nplt.ylabel('Citation Count per Statement')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from step2_competency_statements.csv...\n\n--- Descriptive Statistics for Citation Counts ---\nTrust Readiness (n=19): Mean=2.21, Std=0.54\nIntegration Readiness (n=23): Mean=2.17, Std=0.39\n\n--- Welch's T-Test Results ---\nT-statistic: -0.2491\nP-value: 0.8049\nResult: No statistically significant difference found.\n\nSTDERR:\n<ipython-input-1-1acc433ea062>:72: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is a detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (or Box-and-Whisker Plot).\n*   **Purpose:** This plot visualizes the distribution, variability, and central tendency of citation counts for two distinct categories (\"Competency Bundles\"). It allows for a quick statistical comparison between the two groups regarding how heavily their constituent statements are cited in the literature.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label/Title:** Represents the categories of \"Competency Bundles\".\n    *   **Categories:** \"Trust Readiness\" and \"Integration Readiness\".\n*   **Y-Axis:**\n    *   **Label/Title:** \"Citation Count per Statement\".\n    *   **Units:** Count (discrete number of citations).\n    *   **Range:** The axis ticks range from 1.00 to 3.00, with grid lines marking intervals of 0.25.\n\n### 3. Data Trends\n*   **Trust Readiness (Left Box):**\n    *   **Median:** The red line indicates a median citation count of **2.0**.\n    *   **Spread (IQR):** The box extends from 2.0 (the 25th percentile/Q1) to 2.5 (the 75th percentile/Q3). The fact that the median line overlaps with the bottom of the box suggests that at least 50% of the data points are concentrated at the value of 2.0.\n    *   **Range:** The upper whisker extends to **3.0**, indicating the maximum non-outlier value.\n    *   **Outliers:** There is a distinct outlier represented by a circle at **1.0**.\n*   **Integration Readiness (Right Box):**\n    *   **Median:** The red line indicates a median citation count of **2.0**.\n    *   **Spread:** The \"box\" appears as a single flat line. This indicates that the 25th percentile, the median, and the 75th percentile are all identical (value of 2.0). There is almost no variance in the main body of the data.\n    *   **Outliers:** There is a single outlier circle at **3.0**.\n\n### 4. Annotations and Legends\n*   **Title:** \"Distribution of Literature Citations per Competency Bundle\" is centered at the top.\n*   **Grid Lines:** Horizontal dashed grey lines are provided to assist in reading the Y-axis values accurately.\n*   **Color Coding:**\n    *   **Blue Box:** Represents the Interquartile Range (IQR).\n    *   **Red Line:** Represents the median value.\n    *   **Black Circles:** Represent statistical outliers.\n\n### 5. Statistical Insights\n*   **Central Tendency:** Both competency bundles have the same median citation count of **2.0** per statement. This suggests that, on average, statements in both categories typically have 2 supporting citations.\n*   **Variability Comparison:**\n    *   **Trust Readiness** shows greater variability. While many statements have 2 citations, a significant portion (the upper quartile) ranges between 2 and 2.5, extending up to 3. There is also a case of lower evidence support (1 citation).\n    *   **Integration Readiness** is highly consistent. The collapsed box suggests that nearly every statement in this bundle has exactly 2 citations, with the sole exception of the outlier(s) at 3.0.\n*   **Skewness:** The \"Trust Readiness\" distribution is skewed upward (positive skew), as the variability extends towards higher values (up to 3.0) from the median, whereas \"Integration Readiness\" shows almost zero distribution width.\n==================================================",
+  "created_at": "2026-02-20T22:45:56.534109+00:00",
+  "creation_idx": 40,
+  "experiment_id": "node_5_2",
+  "experiment_plan": {
+    "deliverables": "Descriptive statistics of citation counts, t-test results, and a boxplot of citation counts by bundle.",
+    "objective": "Compare the empirical grounding strength between the two competency bundles.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Create a new variable 'citation_count' by applying a regex pattern (e.g., '\\[#\\d+\\]') to the 'evidence_summary' column and counting matches per row.\n3. Group data by 'bundle'.\n4. Perform a Welch's t-test to compare the mean 'citation_count' between 'Trust Readiness' and 'Integration Readiness'."
+  },
+  "hypothesis": "Competency statements classified as 'Integration Readiness' are supported by a significantly higher density of literature evidence (citations) than 'Trust Readiness' statements, reflecting a larger volume of technical guidance compared to governance guidance.",
+  "id_in_run": 39,
+  "is_surprising": true,
+  "parent_id": "node_4_0",
+  "posterior": 0.18801652892561985,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.18801652892561985,
+    "n": 90.0,
+    "prior_params": [
+      22.75,
+      8.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7338709677419355,
+  "prior_belief": {
+    "_empirical_mean": 0.7416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.7338709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment was successfully executed. The code correctly loaded the dataset, extracted citation counts using regex, and performed the statistical comparison. The results are valid and the conclusion matches the data.",
+  "rich_outputs": null,
+  "runtime_ms": 208860.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6335163815171759
+}

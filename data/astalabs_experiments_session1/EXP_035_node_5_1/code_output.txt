@@ -1,0 +1,78 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_coverage_map.csv
+
+--- Descriptive Statistics ---
+Trust Readiness (n=8):
+count     8.000000
+mean      5.625000
+std       6.545173
+min       0.000000
+25%       0.750000
+50%       3.500000
+75%       9.000000
+max      19.000000
+Name: incident_count, dtype: float64
+
+Integration Readiness (n=8):
+count     8.000000
+mean      5.500000
+std       6.141196
+min       0.000000
+25%       0.750000
+50%       4.500000
+75%       8.000000
+max      18.000000
+Name: incident_count, dtype: float64
+
+--- Mann-Whitney U Test Results ---
+Hypothesis: Integration Readiness incident counts > Trust Readiness incident counts
+U-statistic: 30.0
+P-value: 0.60461
+Result: No statistically significant difference detected.
+
+STDERR:
+<ipython-input-1-b654a83c30e3>:80: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot with Overlaid Jitter/Strip Plot.
+*   **Purpose:** This plot visualizes the distribution of numerical data ("Number of Mapped Incidents") across categorical groups ("Competency Bundle"). The box plot component summarizes the distribution statistics (median, quartiles, range), while the overlaid red dots represent individual data points, allowing the viewer to see the specific sample size and density of the data.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** Represents the **Competency Bundle** categories.
+    *   **Categories:** Two distinct groups: "Trust Readiness" and "Integration Readiness".
+*   **Y-axis:**
+    *   **Label:** "Number of Mapped Incidents".
+    *   **Units:** Count (integer values).
+    *   **Range:** The axis ticks range from 0.0 to 17.5, with the visual data extending slightly beyond, from a minimum of 0 to a maximum of approximately 19.
+
+### 3. Data Trends
+*   **Trust Readiness:**
+    *   **Median:** The red line inside the box indicates a median incident count of approximately 3.5.
+    *   **Spread:** The Interquartile Range (IQR), represented by the blue box, spans from roughly 1 to 9.
+    *   **Range:** The whiskers extend from a minimum of 0 to a maximum of roughly 19.
+    *   **Observations:** The data includes several points at the low end (0-1) and a single high value near 19, suggesting a wide variance.
+*   **Integration Readiness:**
+    *   **Median:** The median is slightly higher than the Trust Readiness group, sitting at approximately 4.5.
+    *   **Spread:** The IQR is slightly more compressed than the Trust Readiness group, spanning from roughly 1 to 8.
+    *   **Range:** The whiskers extend from 0 to approximately 18.
+    *   **Observations:** Similar to the first group, there is a cluster of values near 0 and distinct high values near 8 and 18.
+
+### 4. Annotations and Legends
+*   **Red Dots:** represent individual data points (observations). Their horizontal position within each category is "jittered" (randomly shifted slightly left or right) to prevent points with the same value from overlapping, ensuring all data points are visible.
+*   **Blue Box:** Represents the middle 50% of the data (Interquartile Range - Q1 to Q3).
+*   **Red Line (inside box):** Indicates the Median value.
+*   **Whiskers (Black lines):** Extend to the minimum and maximum values in the dataset.
+*   **Grid Lines:** Horizontal dashed lines appear at intervals of 2.5 to aid in estimating values.
+
+### 5. Statistical Insights
+*   **Right-Skewed Distribution:** Both "Trust Readiness" and "Integration Readiness" show a right-skewed distribution (positive skew). The distance from the median to the maximum value is much larger than the distance from the median to the minimum value. This indicates that while most bundles have a low number of incidents (often close to zero), there are outlier cases with significantly higher incident counts (18-19).
+*   **High Variability:** There is significant variability in both categories. Incident counts range from 0 all the way to nearly 20, suggesting that "readiness" in these contexts does not guarantee a uniform outcome regarding incident numbers.
+*   **Similarity between Groups:** There is no statistically obvious difference between the two bundles based on visual inspection alone. Their medians, minimums, and maximums are very similar. "Integration Readiness" has a slightly higher median, but "Trust Readiness" has a slightly higher maximum and wider IQR.
+*   **Zero-Inflation:** A notable number of data points (red dots) sit at or near zero for both categories, indicating that a significant portion of these bundles experienced no mapped incidents at all.
+==================================================

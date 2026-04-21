@@ -1,0 +1,75 @@
+exitcode: 0 (execution succeeded)
+Code output: === Contingency Table (Count) ===
+bundle                 Integration Readiness  Trust Readiness
+source                                                       
+EU AI Act (2024/1689)                      4                5
+NIST AI RMF 1.0                            8               11
+NIST GenAI Profile                         2                2
+OWASP Top 10 LLM                           9                1
+
+
+=== Chi-square Test Results ===
+Chi-square Statistic: 6.6643
+p-value: 8.3404e-02
+Degrees of Freedom: 3
+Result: Not Statistically Significant (Fail to reject H0). No evidence of association.
+
+
+=== Distribution by Source (%) ===
+bundle                 Integration Readiness  Trust Readiness
+source                                                       
+EU AI Act (2024/1689)                  44.44            55.56
+NIST AI RMF 1.0                        42.11            57.89
+NIST GenAI Profile                     50.00            50.00
+OWASP Top 10 LLM                       90.00            10.00
+
+
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** To illustrate and compare the relative proportions (percentage distribution) of two distinct categories ("Integration Readiness" and "Trust Readiness") across four different normative frameworks. Each bar totals 100%, allowing for an easy comparison of the composition of requirements rather than absolute volume.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Normative Framework (Source)"
+    *   **Labels:** The axis lists four specific frameworks:
+        1.  EU AI Act (2024/1689)
+        2.  NIST AI RMF 1.0
+        3.  NIST GenAI Profile
+        4.  OWASP Top 10 LLM
+    *   **Formatting:** The labels are rotated approximately 45 degrees to prevent overlapping.
+*   **Y-axis:**
+    *   **Title:** "Percentage of Requirements (%)"
+    *   **Range:** 0 to 100.
+    *   **Increments:** Ticks are marked every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Integration Readiness (Purple):**
+    *   **Lowest Value:** 42% (NIST AI RMF 1.0).
+    *   **Highest Value:** 90% (OWASP Top 10 LLM).
+    *   **Trend:** This category is the minority component for the first two frameworks, reaches parity in the third, and becomes the overwhelming majority in the fourth.
+*   **Trust Readiness (Yellow):**
+    *   **Highest Value:** 58% (NIST AI RMF 1.0).
+    *   **Lowest Value:** 10% (OWASP Top 10 LLM).
+    *   **Trend:** This category dominates the EU AI Act and NIST AI RMF but drops significantly for the OWASP framework.
+*   **Patterns:**
+    *   **Similarity:** The **EU AI Act** and **NIST AI RMF 1.0** show very similar distributions, with a slight preference for Trust Readiness (56% and 58% respectively).
+    *   **Balance:** The **NIST GenAI Profile** is perfectly balanced with a 50/50 split between the two competencies.
+    *   **Outlier:** The **OWASP Top 10 LLM** shows a drastic deviation from the others, heavily favoring Integration Readiness.
+
+### 4. Annotations and Legends
+*   **Legend:** Located on the top right outside the plot area. It defines the color coding for the "Competency Bundle":
+    *   **Purple:** Integration Readiness.
+    *   **Yellow:** Trust Readiness.
+*   **Annotations:** Each segment of the bars contains a white text label indicating the exact percentage value for that segment (e.g., "44%", "56%"). This removes ambiguity regarding the exact split.
+*   **Title:** The chart is titled "Competency Bundle Distribution by Normative Framework."
+
+### 5. Statistical Insights
+*   **Governance vs. Technical Implementation:** The data suggests a distinction in the focus of these frameworks. The **EU AI Act** and **NIST AI RMF 1.0** appear to be broader governance frameworks that prioritize "Trust" (likely covering ethics, safety, and reliability) over pure technical integration.
+*   **Operational Security Focus:** The **OWASP Top 10 LLM** is predominantly focused on **Integration Readiness (90%)**. This aligns with OWASP's general mission of addressing specific security vulnerabilities and technical implementation details rather than high-level policy or trust governance.
+*   **Evolution of Standards:** The **NIST GenAI Profile** (50/50 split) suggests an approach that weighs trust and technical integration equally, possibly indicating a bridge between high-level policy (RMF) and technical threats (OWASP) specifically for Generative AI.
+==================================================

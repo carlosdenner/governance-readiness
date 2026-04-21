@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Current working directory: /data
+Loading dataset from: step2_crosswalk_matrix.csv
+Dataset loaded successfully.
+
+--- Contingency Table ---
+                       No HITL  Has HITL
+bundle                                  
+Integration Readiness       20         3
+Trust Readiness             19         0
+
+Fisher's Exact Test Results:
+Odds Ratio: 0.0000
+P-value: 0.2387
+Result: No statistically significant association found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically visualizing a **Contingency Table** or Confusion Matrix).
+*   **Purpose:** The plot visualizes the frequency distribution and association between two categorical variables: "Competency Bundle" and the presence of "Human-in-the-Loop (HITL) Approval Gates." It allows for quick identification of the most and least common combinations of these factors.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Title/Label:** "Competency Bundle"
+    *   **Categories:** The axis is divided into two categories: "Integration Readiness" (top) and "Trust Readiness" (bottom).
+*   **X-Axis (Horizontal):**
+    *   **Title/Label:** "Has Human-in-the-Loop Approval Gates?"
+    *   **Categories:** The axis is divided into two categories: "No HITL" (left) and "Has HITL" (right).
+*   **Value Ranges:** The axes represent categorical data rather than numerical ranges. The quantitative data is represented within the cells, ranging from a count of **0 to 20**.
+
+### 3. Data Trends
+*   **High Values (Dark Blue Areas):**
+    *   The highest concentration of data is found in the **"No HITL"** column.
+    *   **Integration Readiness + No HITL:** This is the most frequent combination with a count of **20**.
+    *   **Trust Readiness + No HITL:** This is the second most frequent combination with a count of **19**.
+*   **Low Values (Light Blue/White Areas):**
+    *   The **"Has HITL"** column contains significantly fewer data points.
+    *   **Integration Readiness + Has HITL:** A low count of **3**.
+    *   **Trust Readiness + Has HITL:** The lowest possible value, **0**.
+*   **Overall Trend:** There is a strong skew towards "No HITL." Regardless of the Competency Bundle, the vast majority of cases do not have Human-in-the-Loop approval gates.
+
+### 4. Annotations and Legends
+*   **Title:** "Association: Bundle vs Human-in-the-Loop Control" – This clearly defines the two variables being compared.
+*   **Cell Annotations:** Each cell contains a number (20, 3, 19, 0) representing the exact count of observations for that specific intersection of categories.
+*   **Color Scale:** While there is no explicit legend bar, the plot uses a sequential color scheme (white to dark blue), where darker blue indicates a higher frequency count and white indicates zero.
+
+### 5. Statistical Insights
+*   **Dominance of "No HITL":** Out of the total dataset (sum of all cells = 42), **39 cases (approx. 93%)** fall under the "No HITL" category. Only 3 cases have HITL approval gates.
+*   **Exclusive Association:** The "Trust Readiness" bundle appears to be exclusively associated with "No HITL" in this dataset, as there are zero recorded instances of Trust Readiness combined with HITL.
+*   **Bundle Distribution:** The distribution between the two bundles is relatively balanced, with "Integration Readiness" having a total of 23 cases (20+3) and "Trust Readiness" having 19 cases (19+0).
+*   **Implication:** This data suggests that within the context of this experiment or survey, Human-in-the-Loop control is rarely applied to these competency bundles, particularly for Trust Readiness.
+==================================================

@@ -1,0 +1,69 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+
+Total rows in source: 1757
+Rows with valid mapped data: 37
+
+--- Contingency Table (Mapped) ---
+Monitor_Mapped  No  Yes
+IQA_Mapped             
+No               5    5
+Yes              2   25
+
+--- Reindexed Contingency Table ---
+Monitor_Mapped  Yes  No
+IQA_Mapped             
+Yes              25   2
+No                5   5
+
+--- Statistical Results ---
+N: 37
+Chi-Square Statistic: 6.0768
+P-value: 1.3697e-02
+Phi Coefficient: 0.4053
+
+--- Analysis ---
+Result: Statistically Significant Association (Reject Null Hypothesis)
+
+'Paper Tiger' Rate: 7.4% (2/27) of IQA-compliant systems lack operational monitoring.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap representing a **Contingency Table** (or Confusion Matrix).
+*   **Purpose:** To visualize the relationship and overlap between two categorical variables: "IQA Compliance (Policy)" and "Post-Deployment Monitoring (Practice)." It aims to highlight instances where policy aligns with practice versus where "decoupling" (a mismatch) occurs.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "IQA Compliance (Policy)"
+    *   **Categories:** "Yes" (Top row) and "No" (Bottom row).
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Post-Deployment Monitoring (Practice)"
+    *   **Categories:** "Yes" (Left column) and "No" (Right column).
+*   **Value Ranges:** Since the axes represent binary categories, there are no numerical ranges on the axes themselves. The values within the matrix represent frequency counts ranging from **2 to 25**.
+
+### 3. Data Trends
+*   **Highest Value (Darkest Area):** The top-left quadrant (Policy: Yes / Practice: Yes) contains the highest count of **25**. This indicates that in the majority of cases, IQA compliance policy exists, and post-deployment monitoring is actively practiced.
+*   **Lowest Value (Lightest Area):** The top-right quadrant (Policy: Yes / Practice: No) has the lowest count of **2**. This represents a rare scenario where the policy exists, but the practice is not followed.
+*   **Uniform Low Values:** The bottom row shows uniform counts of **5** for both "Yes" and "No" in the Practice category when the Policy is "No."
+
+### 4. Annotations and Legends
+*   **Title:** "Policy-Practice Decoupling: IQA Compliance vs. Post-Deployment Monitoring." This sets the context for the analysis, focusing on how well written rules (policy) match actual behavior (practice).
+*   **Cell Values:** Each of the four cells contains a numerical annotation representing the count for that intersection:
+    *   **25**: Yes Policy / Yes Practice
+    *   **2**: Yes Policy / No Practice
+    *   **5**: No Policy / Yes Practice
+    *   **5**: No Policy / No Practice
+*   **Color Scale:** A sequential color palette (shades of orange/brown) is used, where darker colors indicate higher frequency counts and lighter colors indicate lower counts.
+
+### 5. Statistical Insights
+*   **Total Sample Size:** The total number of observations is **37** ($25 + 2 + 5 + 5$).
+*   **Strong Alignment (Coupling):** There is a high degree of alignment between policy and practice.
+    *   **81%** of cases ($30/37$) show alignment (Yes/Yes or No/No).
+    *   Specifically, the **Yes/Yes** category dominates, accounting for roughly **67.5%** of the total data, suggesting that when a policy is in place, it is usually followed.
+*   **Analysis of Decoupling (Mismatch):**
+    *   **Policy without Practice:** Only **2 cases** show a policy being present without the corresponding monitoring practice. This suggests non-compliance is rare.
+    *   **Practice without Policy:** Interestingly, there are **5 cases** where monitoring occurs ("Yes") despite there being no IQA compliance policy ("No"). This suggests proactive behavior where teams are monitoring deployments even without a formal mandate.
+==================================================

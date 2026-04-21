@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Rows for analysis: 950
+Source distribution:
+ source_type
+Custom        713
+Commercial    237
+Name: count, dtype: int64
+Code Access distribution:
+ has_code_access
+1.0    601
+0.0    349
+Name: count, dtype: int64
+
+Contingency Table (Source Type x Code Access):
+              No Access  Has Access
+source_type                       
+Commercial         211          26
+Custom             138         575
+
+Chi-Square Statistic: 368.5534
+P-value: 3.86514e-82
+
+Access Rates:
+              count  percent_access
+source_type                       
+Commercial     237       10.970464
+Custom         713       80.645161
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot compares categorical data ("Source Type") against a quantitative variable ("Percentage with Code Access"). It is designed to visualize the disparity in code availability between two specific types of Artificial Intelligence sources.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Source Type"
+    *   **Labels:** The axis represents two distinct categories: "Commercial" and "Custom".
+*   **Y-Axis:**
+    *   **Title:** "Percentage with Code Access (%)"
+    *   **Range:** The axis spans from 0 to 100, representing percentage points.
+    *   **Intervals:** The scale is marked in increments of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Custom" category (blue bar) is significantly taller, reaching a value of **80.6%**.
+*   **Shortest Bar:** The "Commercial" category (red bar) is much shorter, reaching a value of **11.0%**.
+*   **Pattern:** There is a stark contrast between the two categories. Custom AI sources are overwhelmingly more likely to provide code access compared to Commercial AI sources. The "Custom" category is nearly 7.3 times higher than the "Commercial" category.
+
+### 4. Annotations and Legends
+*   **Bar Labels:** Exact percentage values are annotated directly above each bar ("11.0%" for Commercial and "80.6%" for Custom) to provide precise data points.
+*   **Title Annotation (P-value):** The plot title includes a statistical significance notation: **"(p=3.87e-82)"**.
+*   **Color Coding:** The bars are distinct in color (Red for Commercial, Blue for Custom) to visually differentiate the categories, though a separate legend is not needed as the X-axis labels explain the grouping.
+
+### 5. Statistical Insights
+*   **Statistical Significance:** The p-value included in the title ($3.87 \times 10^{-82}$) is infinitesimally small (far below standard thresholds like 0.05 or 0.01). This indicates that the difference in code availability between Commercial and Custom AI is **highly statistically significant** and is not due to random chance.
+*   **Availability Gap:** The data suggests a fundamental difference in transparency or distribution models. "Custom" AI models appear to be largely open-source or accessible (over 4/5ths availability), whereas "Commercial" AI models act largely as "black boxes" or proprietary software, with only roughly 1 in 10 offering code access.
+==================================================

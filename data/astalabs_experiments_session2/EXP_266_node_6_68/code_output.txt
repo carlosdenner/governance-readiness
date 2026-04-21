@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Defense vs Civilian Transparency...
+Dataset loaded from current directory.
+Subset 'eo13960_scored' size: 1757
+Unique values in '65_appeal_process': <StringArray>
+[                                                                                                                  nan,
+                                                                                                                 'Yes',
+                                                               'No – it is not operationally practical to offer this.',
+                         'N/A; COTS tool used for code conversion, no individual's information is input into a model.',
+ 'No – Law, operational limitations, or governmentwide guidance precludes an opportunity for an individual to appeal.',
+                                       'Agency CAIO has waived this minimum practice and reported such waiver to OMB.']
+Length: 6, dtype: str
+
+Contingency Table:
+                  No Appeal Process  Has Appeal Process
+Agency_Type                                            
+Civilian                       1314                  58
+Defense/Security                367                  18
+
+Chi-square Statistic: 0.0576
+P-value: 8.1032e-01
+
+Summary Statistics:
+                  No Appeal Process  Has Appeal Process  Total  % with Appeal
+Agency_Type                                                                  
+Civilian                       1314                  58   1372       4.227405
+Defense/Security                367                  18    385       4.675325
+
+Result: No statistically significant difference found between agency types.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** This plot compares a specific metric (percentage of AI systems with appeal processes) across two distinct categorical groups (Civilian agencies vs. Defense/Security agencies).
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Agency Category"
+    *   **Categories:** The axis displays two distinct categories: "Civilian" and "Defense/Security".
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Percentage Reporting Appeal Process (%)"
+    *   **Units:** Percentage (%).
+    *   **Range:** The scale runs from 0 to 5, with increments of 1 unit. The visual range extends slightly beyond 5 to accommodate the bar height.
+
+### 3. Data Trends
+*   **Civilian Agencies:** Represented by the light blue bar on the left, this category shows a lower value of **4.2%**.
+*   **Defense/Security Agencies:** Represented by the salmon-colored bar on the right, this category shows the tallest bar with a value of **4.7%**.
+*   **Overall Trend:** The Defense/Security sector reports a slightly higher percentage of AI systems with appeal processes compared to the Civilian sector, though the difference is marginal (0.5%). Both categories show values below 5%.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Percentage of AI Systems with Appeal Processes by Agency Type" — Clearly defines the scope of the data.
+*   **Value Labels:** Specific percentage values ("4.2%" and "4.7%") are annotated directly above each bar, providing precise data points that might be difficult to infer strictly from the Y-axis scale.
+*   **Color Coding:** The plot uses distinct colors (Blue for Civilian, Salmon for Defense/Security) to visually separate the two categories, though no separate legend box is provided or necessary given the clear X-axis labels.
+
+### 5. Statistical Insights
+*   **Extremely Low Adoption Rates:** The most significant insight is the overall scarcity of appeal processes. In both sectors, less than 5% of AI systems have a reported appeal process. This implies that over 95% of AI systems in these government agencies lack a mechanism for appealing decisions made by the AI.
+*   **Minimal Disparity:** While Defense/Security agencies are slightly ahead of Civilian agencies (4.7% vs 4.2%), the difference is relatively negligible. This suggests that the lack of appeal processes is a systemic issue across both types of government agencies rather than being specific to one sector.
+==================================================

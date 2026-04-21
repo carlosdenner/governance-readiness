@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded. Processing 'eo13960_scored'...
+Rows after filtering for valid PII (Yes/No): 981
+PII Distribution:
+pii_binary
+0.0    810
+1.0    171
+Name: count, dtype: int64
+Bias Mitigation Distribution:
+bias_binary
+0    929
+1     52
+Name: count, dtype: int64
+
+--- Contingency Table ---
+         No Mitigation  Has Mitigation
+No PII             775              35
+Has PII            154              17
+
+Chi-Square: 7.8012, p-value: 5.2212e-03
+P(Mitigation | PII)    = 9.94%
+P(Mitigation | No PII) = 4.32%
+
+--- Conclusion ---
+Statistically Significant Association detected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap / Confusion Matrix-style Contingency Table.
+*   **Purpose:** This plot visualizes the frequency distribution between two categorical variables: the presence of Personally Identifiable Information (PII) and the status of Fairness/Bias Mitigation. It allows for a quick comparison of counts across these intersecting categories using color intensity.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Represents the mitigation status.
+    *   **Categories:** "No Mitigation" and "Has Mitigation".
+*   **Y-Axis:**
+    *   **Label:** Represents the PII status.
+    *   **Categories:** "No PII" and "Has PII".
+*   **Color Scale (Z-Axis):**
+    *   **Legend:** A vertical color bar on the right.
+    *   **Range:** The scale ranges from approximately 0 (lightest green/white) to over 700 (darkest green).
+    *   **Units:** Raw counts of occurrences.
+
+### 3. Data Trends
+*   **High Areas:**
+    *   The overwhelming majority of the data falls in the **top-left quadrant** ("No PII" and "No Mitigation"), with a count of **775**. This cell is colored the darkest green, indicating the highest density.
+*   **Low Areas:**
+    *   The **bottom-right quadrant** ("Has PII" and "Has Mitigation") contains the lowest count at **17**, indicated by the lightest color.
+    *   The **top-right quadrant** ("No PII" and "Has Mitigation") is also very low with a count of **35**.
+*   **Secondary Cluster:**
+    *   The **bottom-left quadrant** ("Has PII" and "No Mitigation") has a moderate count of **154**, represented by a pale green color.
+
+### 4. Annotations and Legends
+*   **Title:** "PII Presence vs. Fairness/Bias Mitigation" clearly defines the two variables being compared.
+*   **Cell Annotations:** Each of the four grid cells contains a numerical annotation (775, 35, 154, 17) providing the exact count for that intersection.
+*   **Color Bar:** The gradient bar on the right provides a visual reference for the magnitude of the counts, moving from light green (low) to dark green (high).
+
+### 5. Statistical Insights
+*   **Prevalence of "No Mitigation":** The vast majority of the dataset (929 out of 981 total entries, or roughly **94.7%**) lacks Fairness/Bias Mitigation, regardless of PII presence.
+*   **Prevalence of "No PII":** Most entries (810 out of 981, or roughly **82.6%**) do not contain PII.
+*   **Intersection of PII and Mitigation:** Even when PII is present (171 cases total), mitigation is rarely applied. Only 17 out of 171 PII-positive cases (approx. **9.9%**) have mitigation.
+*   **Conclusion:** The standard operating procedure for this dataset appears to be omitting mitigation. While mitigation is slightly more common proportionally when PII is present (9.9%) compared to when it is not (4.3%), the overall adoption of Fairness/Bias mitigation strategies is extremely low.
+==================================================

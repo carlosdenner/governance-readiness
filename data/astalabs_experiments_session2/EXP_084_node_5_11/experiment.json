@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Vendor Reliance Trap' hypothesis using the EO 13960 dataset. After correcting the variable selection logic (switching from the descriptive '10_commercial_ai' to the more robust '22_dev_method'), the code successfully classified 920 systems into 'Commercial' (n=481) and 'Government' (n=439) categories. \n\nThe analysis revealed that while Commercial systems did have a lower rate of documented Impact Assessments (4.4%) compared to Government-developed systems (6.6%), the difference was not statistically significant (Chi-square = 1.83, p = 0.177). Consequently, the hypothesis that Commercial systems have *significantly* lower compliance cannot be supported. The data instead suggests a systemic lack of documentation across both development models, with compliance rates below 7% for both groups.",
+  "child_ids": [
+    "node_6_10"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport subprocess\nimport sys\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\nfile_path = 'astalabs_discovery_all_data.csv'\nprint(f\"Loading dataset from {file_path}...\")\n\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    # Fallback if file is in parent directory\n    file_path = '../astalabs_discovery_all_data.csv'\n    df = pd.read_csv(file_path, low_memory=False)\n\n# Filter for EO 13960 data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Filtered EO 13960 records: {len(df_eo)}\")\n\n# --- Variable Creation ---\n\n# Note: '10_commercial_ai' was found to contain use-case descriptions rather than \n# binary source indicators. Using '22_dev_method' as the robust proxy for \n# 'Development Source' (Government vs Vendor).\n\ncol_method = '22_dev_method'\ncol_impact = '52_impact_assessment'\n\n# Define categorization logic for Development Source\ndef classify_source(val):\n    if pd.isna(val):\n        return None\n    s = str(val).lower().strip()\n    if 'in-house' in s and 'contracting' not in s:\n        return 'Government'\n    elif 'contracting' in s and 'in-house' not in s:\n        return 'Commercial'\n    # Exclude 'Both' or other ambiguous cases to ensure clean comparison\n    return None\n\ndf_eo['Development_Source'] = df_eo[col_method].apply(classify_source)\n\n# Define categorization logic for Impact Assessment\n# Strict criteria: Only explicit 'Yes' counts as evidence.\ndef classify_impact(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).lower().strip()\n    if s == 'yes':\n        return 1\n    return 0\n\ndf_eo['Has_Impact_Assessment'] = df_eo[col_impact].apply(classify_impact)\n\n# Filter for valid analysis rows\ndf_analysis = df_eo.dropna(subset=['Development_Source'])\nprint(f\"Records with valid Development Source: {len(df_analysis)}\")\nprint(f\"Distribution of Development Source:\\n{df_analysis['Development_Source'].value_counts()}\")\n\n# --- Statistical Analysis ---\n\n# Contingency Table\ncontingency = pd.crosstab(df_analysis['Development_Source'], df_analysis['Has_Impact_Assessment'])\ncontingency.columns = ['No Assessment', 'Has Assessment']\nprint(\"\\nContingency Table (Source vs Impact Assessment):\")\nprint(contingency)\n\n# Chi-square Test\nchi2, p, dof, expected = chi2_contingency(contingency)\n\n# Compliance Rates\nrates = df_analysis.groupby('Development_Source')['Has_Impact_Assessment'].mean() * 100\nprint(\"\\nCompliance Rates (%):\")\nprint(rates)\n\nprint(f\"\\nChi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.5f}\")\n\n# Interpret\nif p < 0.05:\n    print(\"Result: Statistically Significant.\")\n    if rates['Commercial'] < rates['Government']:\n        print(\"Hypothesis Supported: Commercial systems have significantly LOWER impact assessment rates.\")\n    else:\n        print(\"Hypothesis Rejected: Commercial systems do NOT have lower rates.\")\nelse:\n    print(\"Result: Not Statistically Significant.\")\n\n# --- Visualization ---\nplt.figure(figsize=(8, 6))\ncolors = ['#1f77b4', '#ff7f0e']\nax = rates.plot(kind='bar', color=colors, alpha=0.8)\nplt.title('Impact Assessment Compliance: Commercial vs. Government')\nplt.ylabel('Compliance Rate (%)')\nplt.xlabel('Development Source')\nplt.xticks(rotation=0)\nplt.ylim(0, max(rates.max() + 5, 10))\n\n# Annotate bars\nfor i, v in enumerate(rates):\n    ax.text(i, v + 0.2, f\"{v:.1f}%\", ha='center', fontweight='bold')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nFiltered EO 13960 records: 1757\nRecords with valid Development Source: 920\nDistribution of Development Source:\nDevelopment_Source\nCommercial    481\nGovernment    439\nName: count, dtype: int64\n\nContingency Table (Source vs Impact Assessment):\n                    No Assessment  Has Assessment\nDevelopment_Source                               \nCommercial                    460              21\nGovernment                    410              29\n\nCompliance Rates (%):\nDevelopment_Source\nCommercial    4.365904\nGovernment    6.605923\nName: Has_Impact_Assessment, dtype: float64\n\nChi-square Statistic: 1.8262\nP-value: 0.17658\nResult: Not Statistically Significant.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the analysis of the provided plot, here are the detailed findings:\n\n**1. Plot Type**\n*   **Type:** Vertical Bar Chart.\n*   **Purpose:** The plot compares the \"Impact Assessment Compliance\" rates between two distinct categories of development sources: Commercial and Government.\n\n**2. Axes**\n*   **X-Axis:**\n    *   **Title:** \"Development Source\"\n    *   **Labels:** Two categorical labels: \"Commercial\" and \"Government\".\n*   **Y-Axis:**\n    *   **Title:** \"Compliance Rate (%)\"\n    *   **Range:** The axis is marked in increments of 2, starting from 0 and ending at 10. The visual space extends slightly beyond 10, likely up to 12.\n    *   **Units:** Percentage (%).\n\n**3. Data Trends**\n*   **Tallest Bar:** The \"Government\" category represents the highest value.\n*   **Shortest Bar:** The \"Commercial\" category represents the lowest value.\n*   **Pattern:** There is a clear trend indicating that government-developed sources have a higher compliance rate compared to commercial sources within the context of this dataset.\n\n**4. Annotations and Legends**\n*   **Value Annotations:** Specific data values are annotated directly above each bar in bold text for clarity:\n    *   Commercial: **4.4%**\n    *   Government: **6.6%**\n*   **Chart Title:** \"Impact Assessment Compliance: Commercial vs. Government\" is displayed at the top.\n*   **Color Coding:** The Commercial bar is colored blue, and the Government bar is colored orange, serving to visually distinguish the two categories (though no separate legend box is required as the x-axis is labeled).\n\n**5. Statistical Insights**\n*   **Relative Performance:** The Government sector demonstrates a compliance rate that is **2.2 percentage points higher** than the Commercial sector ($6.6\\% - 4.4\\%$).\n*   **Proportional Difference:** In relative terms, the compliance rate for Government sources is **50% higher** than that of Commercial sources ($6.6 / 4.4 = 1.5$).\n*   **Overall Magnitude:** despite the relative difference, the absolute compliance rates for both sectors are notably low, with neither category reaching even a 7% compliance rate. This suggests a systemic issue with impact assessment compliance regardless of the development source.\n==================================================",
+  "created_at": "2026-02-22T05:04:46.765066+00:00",
+  "creation_idx": 85,
+  "experiment_id": "node_5_11",
+  "experiment_plan": {
+    "deliverables": "Impact Assessment rates for Commercial vs Government systems; Chi-square test results.",
+    "objective": "Compare 'Impact Assessment' compliance rates between Commercial and Government-developed AI systems.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'source_table' = 'eo13960_scored'.\n2. Create a 'Development_Source' variable using '10_commercial_ai': 'Commercial' (Yes) vs 'Government' (No/Custom).\n3. Binarize '52_impact_assessment' (Yes=1, Others=0).\n4. Generate a contingency table and perform a Chi-square test.\n5. Calculate and compare the compliance percentages."
+  },
+  "hypothesis": "The 'Vendor Reliance' Trap: Commercial (COTS) AI systems in federal agencies have significantly lower rates of documented 'Impact Assessments' compared to Government-developed systems, suggesting an over-reliance on vendor assurances.",
+  "id_in_run": 84,
+  "is_surprising": true,
+  "parent_id": "node_4_24",
+  "posterior": 0.41208791208791207,
+  "posterior_belief": {
+    "_empirical_mean": 0.225,
+    "_type": "boolean_cat",
+    "definitely_false": 6.0,
+    "definitely_true": 0.0,
+    "maybe_false": 54.0,
+    "maybe_true": 0.0,
+    "mean": 0.41208791208791207,
+    "n": 60.0,
+    "prior_params": [
+      24.0,
+      7.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7741935483870968,
+  "prior_belief": {
+    "_empirical_mean": 0.7833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 4.0,
+    "maybe_false": 0.0,
+    "maybe_true": 26.0,
+    "mean": 0.7741935483870968,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully executed after correcting the variable selection logic. The programmer correctly identified that '10_commercial_ai' contained descriptive text rather than binary indicators and switched to the more robust '22_dev_method' to distinguish between 'Commercial' (Contractor-developed) and 'Government' (In-house) systems. The statistical analysis was appropriate for the data types.\n\n**Findings:**\n1. **Data Yield:** The analysis successfully categorized 920 systems from the EO 13960 dataset, providing a solid sample size (Commercial n=481, Government n=439).\n2. **Compliance Rates:** Both groups showed very low compliance with documented Impact Assessments. Government-developed systems had a slightly higher rate (6.6%) compared to Commercial systems (4.4%).\n3. **Hypothesis Verification:** The Chi-square test (p = 0.177) indicated that this difference is **not statistically significant**. Therefore, the hypothesis that Commercial systems have *significantly* lower compliance rates is not supported by the data. Instead, the results point to a systemic lack of documentation across federal AI inventories regardless of the development source.",
+  "rich_outputs": null,
+  "runtime_ms": 287140.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4345267635590216
+}

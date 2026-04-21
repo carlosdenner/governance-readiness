@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Data Governance Cascade experiment (Attempt 2)...
+EO 13960 records loaded: 1757
+
+--- Mapping Verification ---
+Catalog (Q31) Sample Mappings:
+    31_data_catalog  has_catalog
+0                No            0
+3               NaN            0
+43              Yes            1
+56            Other            0
+504              NO            0
+
+Docs (Q34) Sample Mappings:
+Raw: Documentation is missing or not available: No documentation ...   -> Mapped: 0
+Raw: nan...                                                            -> Mapped: 0
+Raw: Documentation has been partially completed: Some documentati...   -> Mapped: 1
+Raw: Documentation is complete: Documentation exists regarding th...   -> Mapped: 1
+Raw: Documentation is widely available: Documentation is not only...   -> Mapped: 1
+Raw: Documentation is complete: Documentation exists regarding th...   -> Mapped: 1
+Raw: Documentation has been partially completed: Some documentati...   -> Mapped: 1
+Raw: Data not reported by submitter and will be updated once addi...   -> Mapped: 0
+Raw: Documentation is complete...                                      -> Mapped: 1
+Raw: Documentation is missing or not available...                      -> Mapped: 0
+Raw: Documentation is widely available...                              -> Mapped: 1
+Raw: Documentation is available...                                     -> Mapped: 0
+Raw: Documentation has been partially completed...                     -> Mapped: 1
+Raw:  ...                                                              -> Mapped: 0
+Raw: Yes...                                                            -> Mapped: 0
+Raw: No...                                                             -> Mapped: 0
+Raw: The data is public facing and documented in www.travel.state...   -> Mapped: 0
+Raw: Application source code and documentation. ...                    -> Mapped: 0
+
+--- Contingency Table (Rows=Catalog, Cols=Docs) ---
+has_docs       0    1
+has_catalog          
+0            724  328
+1            230  475
+
+Total Cases: 1757
+Has Catalog: 705 (40.1%)
+Has Docs:    803 (45.7%)
+
+Conditional Probability P(Docs|Catalog): 0.6738
+Baseline Probability P(Docs):          0.4570
+Lift (Strength of Dependency):         1.47x
+
+--- Statistical Tests ---
+Chi-Squared Statistic: 221.4191
+P-Value:               4.4344e-50
+Phi Coefficient:       0.3550
+
+Interpretation:
+Statistically significant relationship detected.
+Effect size: Moderate

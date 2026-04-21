@@ -1,0 +1,33 @@
+exitcode: 0 (execution succeeded)
+Code output: Found dataset at: astalabs_discovery_all_data.csv
+Loaded 1362 AIID incidents and 1757 EO 13960 systems.
+Using Sector column: Sector of Deployment
+
+Top 10 Incident Sectors:
+information and communication                    82
+Arts                                             35
+entertainment and recreation                     35
+transportation and storage                       28
+wholesale and retail trade                       20
+law enforcement                                  16
+human health and social work activities          15
+Education                                        15
+public administration                            13
+administrative and support service activities    11
+Name: count, dtype: int64
+
+Mapping Top Sectors to Agencies:
+  Sector 'transportation and storage' (28) -> ['DOT', 'FAA']
+  Sector 'law enforcement' (16) -> ['DOJ', 'DHS', 'FBI']
+  Sector 'Education' (15) -> ['ED']
+High Risk Agency Pool: ['DHS', 'DOJ', 'DOT', 'ED', 'FAA', 'FBI']
+
+--- Governance Disconnect Analysis --- 
+                      Total_Systems  Risk_ID_Rate  Systems_With_ID
+Risk_Category                                                     
+High_Incident_Sector            183           0.0                0
+Low_Incident_Sector            1574           0.0                0
+
+Chi-Square Test of Independence:
+Statistic: 0.0000, p-value: 1.0000e+00
+Conclusion: No statistically significant difference (Hypothesis Confirmed - Disconnect exists).

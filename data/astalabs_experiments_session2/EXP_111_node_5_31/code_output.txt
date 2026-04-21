@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID incidents: 1362
+Using columns for text analysis: ['title', 'description', 'summary', 'Alleged harmed or nearly harmed parties']
+
+Incidents after filtering for (Healthcare/Financial) and (Physical/Economic): 15
+Distribution:
+analyzed_sector  analyzed_harm
+Financial        Economic         5
+Healthcare       Economic         2
+                 Physical         8
+dtype: int64
+
+Contingency Table:
+analyzed_harm    Economic  Physical
+analyzed_sector                    
+Financial               5         0
+Healthcare              2         8
+
+Chi-Square Test Results:
+Chi2 Statistic: 5.6585
+P-value: 1.7371e-02
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% stacked bar chart).
+*   **Purpose:** The plot is designed to compare the relative proportions of different categories (Harm Types) within specific groups (Sectors). It allows the viewer to see the composition of "Harm" for the Financial sector versus the Healthcare sector.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Sector"
+    *   **Categories:** Two distinct categories are displayed: "Financial" and "Healthcare".
+*   **Y-Axis:**
+    *   **Label:** "Proportion"
+    *   **Range:** The axis ranges from **0.0 to 1.0**, representing a probability or percentage (0% to 100%).
+    *   **Units:** The values are unitless ratios relative to the whole (1.0).
+
+### 3. Data Trends
+*   **Financial Sector:**
+    *   This bar is entirely dominated by one category. The "Economic" portion takes up the entire bar height.
+    *   **Economic Harm:** 1.00 (or 100%).
+    *   **Physical Harm:** 0.00 (or 0%).
+*   **Healthcare Sector:**
+    *   This bar shows a split distribution between the two harm types, though one is clearly dominant.
+    *   **Physical Harm:** This is the dominant category, comprising the upper, larger portion of the bar with a value of **0.80** (80%).
+    *   **Economic Harm:** This comprises the smaller, lower portion of the bar with a value of **0.20** (20%).
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Proportion of Harm Types by Sector (Healthcare vs. Financial)"
+*   **Legend:** Located in the upper right corner, titled "Harm Type (Derived)".
+    *   **Pink/Salmon:** Represents "Economic" harm.
+    *   **Blue:** Represents "Physical" harm.
+*   **Bar Labels:** The specific numerical proportions are annotated directly onto the bars:
+    *   **1.00** and **0.00** on the Financial bar.
+    *   **0.80** and **0.20** on the Healthcare bar.
+
+### 5. Statistical Insights
+*   **Sector-Specific Nature of Harm:** The data suggests a strong correlation between the sector and the type of harm experienced. The Financial sector is depicted as exclusively susceptible to "Economic" harm in this dataset, with zero incidence of "Physical" harm.
+*   **Healthcare Complexity:** While the Financial sector is homogenous in its harm type, the Healthcare sector is heterogeneous. While it is primarily associated with "Physical" harm (likely relating to patient health and safety), a significant minority (20%) of the harm is classified as "Economic."
+*   **Inverse Relationship:** There is an inverse relationship visible between the sectors; where Economic harm is at its maximum (Financial), Physical harm is non-existent, and where Physical harm is dominant (Healthcare), Economic harm is reduced.
+==================================================

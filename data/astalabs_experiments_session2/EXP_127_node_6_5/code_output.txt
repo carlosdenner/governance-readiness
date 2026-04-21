@@ -1,0 +1,71 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 Scored subset shape: (1757, 196)
+
+Raw date sample (first 5 non-null):
+<StringArray>
+['7/1/2023', '8/29/2023', '8/29/2023', '9/15/2023', '1/1/2022']
+Length: 5, dtype: str
+
+Rows with valid dates: 1191 (dropped 566 rows)
+
+Distribution by Era:
+Era
+Modern (2021+)    887
+Legacy (<2021)    304
+Name: count, dtype: int64
+
+Unique values in '52_impact_assessment': <StringArray>
+[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']
+Length: 5, dtype: str
+
+Contingency Table (Era vs. Compliance):
+                Non-Compliant  Compliant
+Era                                     
+Legacy (<2021)            273         31
+Modern (2021+)            858         29
+
+Chi-Square Test Results:
+Statistic: 21.2893
+P-value: 3.9493e-06
+
+Compliance Rates (Proportion 'Yes'):
+Era
+Legacy (<2021)    0.101974
+Modern (2021+)    0.032694
+Name: Compliance, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Bar Chart (Vertical).
+*   **Purpose:** The plot is designed to compare the "Compliance Rate" of Impact Assessments between two distinct categories of systems classified by their era: "Legacy" (older than 2021) and "Modern" (2021 and newer).
+
+**2. Axes**
+*   **X-axis (Horizontal):**
+    *   **Title:** "System Era".
+    *   **Categories:** Two categorical groups: "Legacy (<2021)" and "Modern (2021+)".
+*   **Y-axis (Vertical):**
+    *   **Title:** "Compliance Rate".
+    *   **Value Range:** The axis ranges from **0.0 to 1.0**, representing a probability or proportion (where 1.0 equals 100%).
+    *   **Increments:** Ticks are placed at intervals of 0.2.
+
+**3. Data Trends**
+*   **Legacy Systems (<2021):** Represented by an orange bar. This group shows a significantly higher compliance rate compared to the modern systems.
+*   **Modern Systems (2021+):** Represented by a teal/green bar. This group shows a very low compliance rate.
+*   **Trend:** There is a sharp decline in compliance rates when moving from Legacy systems to Modern systems. The compliance rate for Modern systems is less than a third of that for Legacy systems.
+
+**4. Annotations and Legends**
+*   **Bar Labels:** Specific percentage values are annotated directly above each bar for clarity:
+    *   Legacy: **10.2%**
+    *   Modern: **3.3%**
+*   **Title:** The chart is titled "Impact Assessment Compliance: Legacy vs. Modern Systems".
+*   **Grid Lines:** Horizontal dashed grid lines are included at 0.2 intervals to assist in visual estimation of the bar heights against the Y-axis.
+
+**5. Statistical Insights**
+*   **Significant Disparity:** There is a substantial gap in performance between the two eras. Legacy systems are approximately **3.1 times more compliant** than Modern systems (10.2% vs 3.3%).
+*   **Overall Low Compliance:** Despite the relative difference, both groups exhibit objectively low compliance rates. Even the better-performing Legacy group only achieves a ~10% compliance rate, leaving nearly 90% of systems non-compliant. The Modern group is failing to comply in over 96% of cases.
+*   **Regression in Modern Systems:** The data suggests that newer systems (implemented in or after 2021) are struggling significantly more with Impact Assessment protocols than their predecessors. This could indicate stricter recent regulations, increased system complexity, or a lack of maturity in compliance processes for newer technologies.
+==================================================

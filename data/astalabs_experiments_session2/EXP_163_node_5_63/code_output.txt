@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: Filtered subset size: 478
+Counts per topic in subset:
+topic_mapped
+Health                 233
+Government Services    159
+Law Enforcement         86
+Name: count, dtype: int64
+
+Mitigation distribution (Binary) by Topic:
+has_mitigation         0   1
+topic_mapped                
+Government Services  157   2
+Health               223  10
+Law Enforcement       74  12
+
+Contingency Table:
+has_mitigation         0   1
+topic_mapped                
+Government Services  157   2
+Health               223  10
+Law Enforcement       74  12
+
+Chi-Square Test Results:
+Chi2 Statistic: 19.3704, p-value: 6.2198e-05
+
+Mitigation Rates by Sector:
+topic_mapped
+Government Services    0.012579
+Health                 0.042918
+Law Enforcement        0.139535
+Name: has_mitigation, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The chart is designed to compare categorical data, specifically the proportion of "Disparity Mitigation Reporting" across three different topic areas.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Topic Area"
+    *   **Labels:** The axis displays three distinct categories: "Government Services", "Health", and "Law Enforcement".
+*   **Y-axis:**
+    *   **Title:** "Proportion Reporting Mitigation"
+    *   **Range:** The scale ranges from **0.0 to 1.0**, representing a probability or proportion (0% to 100%).
+    *   **Tick Marks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Tallest Bar:** "Law Enforcement" exhibits the highest reporting rate among the three categories.
+*   **Shortest Bar:** "Government Services" shows the lowest reporting rate.
+*   **Pattern:** There is a visible disparity between the categories. While Government Services and Health have relatively minimal reporting rates (visually small bars), Law Enforcement has a noticeably higher rate, exceeding the other two combined.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner.
+    *   **Red dashed line:** Represented as "Mean Rate (0.07)", indicating the average reporting rate across all data points is 0.07 (or 7%).
+    *   **Blue bar icon:** Labeled "has_mitigation", indicating the bars represent the presence of mitigation reporting.
+*   **Bar Annotations:** Specific percentage values are placed directly above each bar for precision:
+    *   Government Services: **1.3%**
+    *   Health: **4.3%**
+    *   Law Enforcement: **14.0%**
+*   **Reference Line:** A horizontal red dashed line spans the width of the graph at the y-position corresponding to the mean rate of 0.07.
+
+### 5. Statistical Insights
+*   **Law Enforcement is an Outlier:** The Law Enforcement category (14.0%) is the only topic area performing above the overall mean rate of 7%. In fact, its rate is exactly double the mean.
+*   **Below Average Performance:** Both Government Services (1.3%) and Health (4.3%) fall significantly below the mean rate. Government Services reports mitigation efforts at a rate more than 5 times lower than the average.
+*   **Overall Low Reporting:** Despite the Y-axis extending to 1.0 (100%), the highest value on the chart is only 0.14 (14%). This suggests that disparity mitigation reporting is generally a low-frequency event across all observed topic areas.
+==================================================

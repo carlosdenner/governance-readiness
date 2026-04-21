@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment was successfully executed with a corrected contingency table. Analysis of 723 federal AI use cases (413 Text-based, 310 Vision-based) revealed the following:\n\n1.  **Low Governance Baseline**: Documented Impact Assessments are extremely rare for both modalities. Only 21 out of 723 systems (2.9%) had an affirmative assessment.\n2.  **Comparison**: Text-based systems showed a lower assessment rate (2.18%) compared to Vision-based systems (3.87%).\n3.  **Statistical Conclusion**: The Chi-Square test yielded a p-value of 0.2641, which is above the standard alpha of 0.05. Therefore, the difference is **not statistically significant**.\n\nWhile the data directionally suggests a 'governance gap' where text systems are less scrutinized, the hypothesis is technically **rejected** due to lack of statistical significance. The primary insight is the systemic absence of impact assessments across both AI modalities in the current federal inventory.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\nimport os\n\n# 1. Load Dataset\nfilename = 'astalabs_discovery_all_data.csv'\npossible_paths = [filename, f'../{filename}']\nfile_path = None\n\nfor path in possible_paths:\n    if os.path.exists(path):\n        file_path = path\n        break\n\nif file_path is None:\n    # Fallback default\n    file_path = filename\n\ndf = pd.read_csv(file_path, low_memory=False)\n\n# 2. Filter for EO13960\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO13960 records loaded: {len(eo_data)}\")\n\n# 3. Text Processing & Modality Classification\n# Combine columns for keyword search\neo_data['combined_text'] = (eo_data['2_use_case_name'].fillna('') + ' ' + eo_data['11_purpose_benefits'].fillna('')).str.lower()\n\n# Define keywords\ntext_keywords = ['chat', 'language', 'nlp', 'text', 'summariz', 'translat']\nvision_keywords = ['vision', 'image', 'video', 'camera', 'detect', 'surveil']\n\ndef classify_modality(text):\n    if not isinstance(text, str):\n        return 'Other'\n    has_text = any(k in text for k in text_keywords)\n    has_vision = any(k in text for k in vision_keywords)\n    \n    if has_text and not has_vision:\n        return 'Text'\n    elif has_vision and not has_text:\n        return 'Vision'\n    elif has_text and has_vision:\n        return 'Mixed'\n    else:\n        return 'Other'\n\neo_data['modality'] = eo_data['combined_text'].apply(classify_modality)\n\n# 4. Filter for specific modalities\nanalysis_df = eo_data[eo_data['modality'].isin(['Text', 'Vision'])].copy()\nprint(f\"\\nModality Counts:\\n{analysis_df['modality'].value_counts()}\")\n\n# 5. Target Variable Creation\n# Check raw values first\nprint(f\"\\nUnique values in '52_impact_assessment': {analysis_df['52_impact_assessment'].unique()}\")\n\n# Map to Boolean: True if contains 'yes', else False\nanalysis_df['has_assessment'] = analysis_df['52_impact_assessment'].astype(str).str.lower().str.contains('yes')\n\n# 6. Generate Contingency Table\n# Explicitly ensure both rows (Text, Vision) and columns (False, True) exist\n# We use pd.Categorical to enforce structure even if counts are zero\nanalysis_df['modality'] = pd.Categorical(analysis_df['modality'], categories=['Text', 'Vision'])\nanalysis_df['has_assessment'] = pd.Categorical(analysis_df['has_assessment'], categories=[False, True])\n\ncontingency_table = pd.crosstab(analysis_df['modality'], analysis_df['has_assessment'], dropna=False)\n\nprint(\"\\nContingency Table (Modality x Has Assessment):\")\nprint(contingency_table)\n\n# 7. Statistical Test\nchi2, p, dof, expected = chi2_contingency(contingency_table)\n\nprint(f\"\\nChi-Square Results:\")\nprint(f\"Chi2 Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\nprint(f\"Degrees of Freedom: {dof}\")\n\n# 8. Rate Calculation & Conclusion\nrates = analysis_df.groupby('modality', observed=False)['has_assessment'].apply(lambda x: (x == True).mean())\ntext_rate = rates['Text']\nvision_rate = rates['Vision']\n\nprint(f\"\\nAssessment Rates:\")\nprint(f\"Text:   {text_rate:.2%}\")\nprint(f\"Vision: {vision_rate:.2%}\")\n\nalpha = 0.05\nif p < alpha:\n    print(\"\\nConclusion: Statistically Significant Difference.\")\n    if text_rate < vision_rate:\n        print(\"Hypothesis Supported: Text systems have significantly lower assessment rates than Vision systems.\")\n    else:\n        print(\"Hypothesis Rejected (Direction): Text systems have higher assessment rates.\")\nelse:\n    print(\"\\nConclusion: No Statistically Significant Difference found.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: EO13960 records loaded: 1757\n\nModality Counts:\nmodality\nText      413\nVision    310\nName: count, dtype: int64\n\nUnique values in '52_impact_assessment': <StringArray>\n[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']\nLength: 5, dtype: str\n\nContingency Table (Modality x Has Assessment):\nhas_assessment  False  True\nmodality                   \nText              404     9\nVision            298    12\n\nChi-Square Results:\nChi2 Statistic: 1.2473\nP-value: 2.6406e-01\nDegrees of Freedom: 1\n\nAssessment Rates:\nText:   2.18%\nVision: 3.87%\n\nConclusion: No Statistically Significant Difference found.\n",
+  "created_at": "2026-02-22T11:34:22.110033+00:00",
+  "creation_idx": 226,
+  "experiment_id": "node_8_0",
+  "experiment_plan": {
+    "deliverables": "1. Loaded and filtered dataset.\n2. Contingency table of Modality vs. Impact Assessment.\n3. Chi-square test results (statistic, p-value).\n4. Assessment rates for Text vs. Vision systems.",
+    "objective": "Compare governance maturity (Impact Assessments) across AI modalities (Text vs. Vision) using a Chi-square test.",
+    "steps": "1. Load the dataset `astalabs_discovery_all_data.csv`.\n2. Filter for rows where `source_table` is 'eo13960_scored'.\n3. Create a 'Modality' classification based on keywords in columns `2_use_case_name` and `11_purpose_benefits`:\n    - Text Keywords: 'chat', 'language', 'nlp', 'text', 'summariz', 'translate'.\n    - Vision Keywords: 'vision', 'image', 'video', 'camera', 'detect', 'surveil'.\n    - Classification Logic: Assign 'Text' if text-keywords exist and vision-keywords do not. Assign 'Vision' if vision-keywords exist and text-keywords do not. Ignore 'Mixed' or 'Other'.\n4. Create a binary target variable `has_impact_assessment` derived from `52_impact_assessment`. treat values containing 'yes' (case-insensitive) as True, others as False.\n5. Generate a contingency table for Modality (Text/Vision) vs. Impact Assessment (True/False). Ensure the table is explicitly 2x2 even if counts are zero.\n6. Perform a Chi-square test of independence.\n7. Calculate and print the assessment rates for both groups."
+  },
+  "hypothesis": "The Generative Governance Gap: AI use cases involving 'Language' or 'Chat' (Text modality) are significantly less likely to have undergone an 'Impact Assessment' compared to 'Vision' or 'Image' based systems.",
+  "id_in_run": 225,
+  "is_surprising": true,
+  "parent_id": "node_7_6",
+  "posterior": 0.3956043956043956,
+  "posterior_belief": {
+    "_empirical_mean": 0.25,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 60.0,
+    "maybe_true": 0.0,
+    "mean": 0.3956043956043956,
+    "n": 60.0,
+    "prior_params": [
+      21.0,
+      10.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6774193548387096,
+  "prior_belief": {
+    "_empirical_mean": 0.6833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 4.0,
+    "maybe_true": 26.0,
+    "mean": 0.6774193548387096,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed. The file loading issue was resolved, and the contingency table was correctly generated with valid dimensions (2x2), allowing for a proper Chi-Square test. The analysis of 723 federal AI use cases (413 Text vs 310 Vision) revealed a directionally consistent but statistically insignificant difference in governance maturity. Text-based systems had a lower impact assessment rate (2.18%) compared to Vision-based systems (3.87%), but the p-value (0.26) indicates this could be due to chance. The hypothesis is rejected, highlighting a broader finding of systemic low governance documentation (<4%) across all AI modalities in the federal inventory.",
+  "rich_outputs": null,
+  "runtime_ms": 360570.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.3381779510811768
+}

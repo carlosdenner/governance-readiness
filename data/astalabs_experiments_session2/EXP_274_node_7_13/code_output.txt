@@ -1,0 +1,81 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading data...
+EO13960 rows: 1757
+
+Unique values in '8_topic_area':
+<StringArray>
+[                                                'Law & Justice',
+                                              'Mission-Enabling',
+  'Government Services (includes Benefits and Service Delivery)',
+                                              'Health & Medical',
+                                             'Diplomacy & Trade',
+                                         'Education & Workforce',
+                                          'Emergency Management',
+                                                'Transportation',
+                                                         'Other',
+                    'Mission-Enabling (internal agency support)',
+                                               'Science & Space',
+                   'Mission-Enabling (internal agency support) ',
+                                      'Energy & the Environment',
+                                   'Natural Language Processing',
+                                                 'Deep Learning',
+                                           'Statistical Methods',
+                                                'Classification',
+                                     'AIML Platform/Environment',
+                                                           'NLP',
+                                            'Mission-Enabeling ',
+             'Other; Mission-Enabling (internal agency support)',
+ 'Diplomacy & Trade; Mission-Enabling (internal agency support)']
+Length: 22, dtype: str
+
+Unique values in '59_ai_notice':
+  - Online - in the terms or instructions for the service.,In-person,Other
+  - In-person,Other
+  - Online - in the terms or instructions for the service.
+  - N/A - individuals are not interacting with the AI for this use case
+  - None of the above
+  - In-person
+  - Other 
+  - Email
+  - Email 
+  - Other, if other please explain in next question.
+  - Online – in the terms or instruction for the service
+  - In person 
+  - Email , Other, if other please explain in next question.
+  - Agency CAIO has waived this minimum practice and reported such waiver to OMB.
+  - AI is not safety or rights-impacting.
+  - Other
+  - Telephone
+
+Valid rows for analysis: 62
+Group distribution:
+ Group
+Service/Benefits         45
+Surveillance/Security    17
+Name: count, dtype: int64
+Notice distribution:
+ Notice_Provided
+No     39
+Yes    23
+Name: count, dtype: int64
+
+--- Contingency Table (Counts) ---
+Notice_Provided        No  Yes
+Group                         
+Service/Benefits       30   15
+Surveillance/Security   9    8
+
+--- Contingency Table (Percentages) ---
+Notice_Provided           No    Yes
+Group                              
+Service/Benefits       66.67  33.33
+Surveillance/Security  52.94  47.06
+
+--- Statistical Test Results ---
+Chi-Square Statistic: 0.4948
+P-value: 4.8181e-01
+
+--- Interpretation ---
+Surveillance Notice Rate: 47.1%
+Service Notice Rate:      33.3%
+Not Significant: No statistical difference found.

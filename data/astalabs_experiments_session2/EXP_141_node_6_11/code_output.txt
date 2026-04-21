@@ -1,0 +1,102 @@
+exitcode: 0 (execution succeeded)
+Code output: Total Incidents Analysis: 1362
+
+Distribution of Technology Type:
+Technology_Type
+Discriminative/Predictive AI    765
+Generative AI                   597
+Name: count, dtype: int64
+
+Distribution of Harm Class:
+Harm_Class
+Other Harm    1362
+Name: count, dtype: int64
+
+Contingency Table (Technology vs. Harm):
+Harm_Class                    Other Harm
+Technology_Type                         
+Discriminative/Predictive AI         765
+Generative AI                        597
+
+--- Chi-Square Test Results ---
+Chi-Square Statistic: 0.0000
+P-value: 1.0000e+00
+Degrees of Freedom: 0
+
+Row Percentages (Propensity for Harm Type by Tech):
+Harm_Class                    Other Harm
+Technology_Type                         
+Discriminative/Predictive AI       100.0
+Generative AI                      100.0
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap.
+*   **Purpose:** The plot visualizes the magnitude of values using color intensity. In this specific case, it compares the frequency or count of a specific harm category ("Other Harm") across two different types of AI technologies.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Technology Type".
+    *   **Categories:**
+        1.  Discriminative/Predictive AI
+        2.  Generative AI
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Harm Category".
+    *   **Categories:** The plot shows a single category labeled "Other Harm".
+*   **Color Scale (Z-Axis/Legend):**
+    *   The color bar on the right represents the count/value range.
+    *   **Range:** Approximately 600 (light yellow) to 760 (dark blue).
+    *   **Units:** While not explicitly labeled with a unit (e.g., "incidents," "reports"), the integer values suggest a count of occurrences.
+
+### 3. Data Trends
+*   **High Values (Hotspots):** The highest value is found in the top cell corresponding to **Discriminative/Predictive AI**, with a value of **765**. This is represented by a dark blue color.
+*   **Low Values:** The lower value is found in the bottom cell corresponding to **Generative AI**, with a value of **597**. This is represented by a light cream/yellow color.
+*   **Pattern:** There is a distinct difference in magnitude between the two technology types, with Discriminative/Predictive AI showing a significantly higher association with "Other Harm" than Generative AI.
+
+### 4. Annotations and Legends
+*   **Title:** "Heatmap: AI Technology Type vs. Reputational Harm". This sets the context that the data is related to reputational risks or harms.
+*   **Cell Annotations:** The exact numerical values are printed within the cells:
+    *   Top Cell: **765**
+    *   Bottom Cell: **597**
+*   **Color Bar:** A gradient bar on the right side indicates that darker blue colors equate to higher numerical values, while lighter yellow colors equate to lower values.
+
+### 5. Statistical Insights
+*   **Prevalence:** In the category of "Other Harm" (within the context of Reputational Harm), **Discriminative/Predictive AI** is the dominant category, accounting for **765** instances compared to **597** for Generative AI.
+*   **Relative Difference:** Discriminative/Predictive AI has **168 more** recorded instances than Generative AI in this category.
+*   **Proportion:** Discriminative/Predictive AI represents approximately **56%** of the total count displayed (Total = 1362), while Generative AI represents roughly **44%**. This suggests that, for this specific dataset and harm category, traditional predictive AI models are currently associated with a higher volume of reported "Other Harm" issues than newer generative models.
+==================================================
+
+=== Plot Analysis (figure 2) ===
+Based on the provided image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** This plot is designed to compare the percentage distribution of harm classes (specifically "Other Harm" versus "Reputational Harm") across two different categories of Artificial Intelligence technologies.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Label:** "Technology Type"
+    *   **Categories:** The axis displays two distinct categories: "Discriminative/Predictive AI" and "Generative AI". The labels are oriented vertically for readability.
+*   **Y-Axis:**
+    *   **Label:** "Percentage"
+    *   **Range:** The scale ranges from 0 to 100.
+    *   **Units:** Percent (%).
+
+**3. Data Trends**
+*   **Pattern:** The data exhibits a completely uniform pattern. There is no variation between the two categories.
+*   **Bar Heights:** Both the "Discriminative/Predictive AI" bar and the "Generative AI" bar extend to the maximum value of 100 on the y-axis.
+*   **Comparison:** Both technology types show identical results regarding the classification of harm. There are no tallest or shortest bars relative to each other; they are equal.
+
+**4. Annotations and Legends**
+*   **Legend:** A legend is positioned to the right of the plot titled "Harm Class." It indicates that the dark purple color represents "Other Harm."
+*   **Annotations:** Inside each bar, explicitly centered, is the text annotation "100.0%". This numerical label confirms that the entire proportion of the data for both categories falls into the specific class shown.
+*   **Title:** The chart is titled "Proportion of Reputational vs. Other Harm by Technology Type."
+
+**5. Statistical Insights**
+*   **Dominance of "Other Harm":** The most significant insight is that for the dataset visualized here, 100% of the recorded harms for both Discriminative/Predictive AI and Generative AI fall into the "Other Harm" category.
+*   **Absence of Reputational Harm:** Although the title suggests a comparison between "Reputational" and "Other" harm, the graph indicates that "Reputational Harm" is non-existent (0%) in this specific data slice for these technology types.
+*   **Conclusion:** There is no difference in the proportion of harm types between Discriminative/Predictive AI and Generative AI in this context; both exclusively exhibit "Other Harm."
+==================================================

@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded ATLAS cases: 52 records
+
+--- Modality Distribution ---
+modality
+Language    15
+Vision      10
+Name: count, dtype: int64
+
+--- Hypothesis 1: Vision -> Evasion ---
+has_evasion  False  True 
+modality                 
+Language         7      8
+Vision           6      4
+Vision Evasion Rate: 40.00%
+Language Evasion Rate: 53.33%
+Fisher's Exact Test p-value: 0.6882
+
+--- Hypothesis 2: Language -> Impact/Exfiltration ---
+has_impact_exfil  False  True 
+modality                      
+Language              2     13
+Vision                2      8
+Vision Impact/Exfil Rate: 80.00%
+Language Impact/Exfil Rate: 86.67%
+Fisher's Exact Test p-value: 1.0000
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** The image displays **two side-by-side bar plots**.
+*   **Purpose:** The plots compare the proportion of cases exhibiting specific behaviors ("Evasion Tactics" on the left and "Impact/Exfiltration" on the right) across two different AI modalities ("Language" and "Vision").
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "modality"
+    *   **Categories:** Two discrete categories, "Language" and "Vision". The labels are oriented vertically.
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Cases"
+    *   **Units:** The scale is a normalized proportion ranging from 0.0 to 1.0 (representing 0% to 100%).
+    *   **Range:** The axis ticks are marked at 0.0, 0.2, 0.4, 0.6, 0.8, and 1.0.
+
+### 3. Data Trends
+*   **Left Plot (Rate of Evasion Tactics):**
+    *   **Language (Orange Bar):** This is the tallest bar in this plot, reaching approximately **0.53** (or 53%).
+    *   **Vision (Blue Bar):** This bar is shorter, sitting exactly at the **0.40** (40%) line.
+    *   **Trend:** Evasion tactics are observed more frequently in the Language modality compared to Vision.
+
+*   **Right Plot (Rate of Impact/Exfiltration):**
+    *   **Language (Orange Bar):** This is the tallest bar, reaching approximately **0.87** (or 87%).
+    *   **Vision (Blue Bar):** This bar reaches exactly the **0.80** (80%) line.
+    *   **Trend:** Similar to the left plot, the Language modality shows a higher rate than Vision, though the gap is narrower. Additionally, the absolute values for both modalities are significantly higher in this category compared to Evasion Tactics.
+
+### 4. Annotations and Legends
+*   **Titles:**
+    *   Left Chart: "Rate of Evasion Tactics by Modality"
+    *   Right Chart: "Rate of Impact/Exfiltration by Modality"
+*   **Color Coding:** While there is no explicit legend box, the color usage is consistent:
+    *   **Orange:** Represents "Language" modality.
+    *   **Blue/Purple:** Represents "Vision" modality.
+
+### 5. Statistical Insights
+*   **Prevalence of Behavior:** Impact/Exfiltration behaviors are far more common than Evasion Tactics across both modalities. While evasion rates hover between 40-53%, impact/exfiltration rates are very high, between 80-87%.
+*   **Modality Risk Factor:** The **Language modality consistently exhibits higher rates** for both metric categories compared to the Vision modality.
+    *   In *Evasion Tactics*, Language exceeds Vision by approximately 13 percentage points.
+    *   In *Impact/Exfiltration*, Language exceeds Vision by approximately 7 percentage points.
+*   **Conclusion:** Based on this data, text-based (Language) models appear to be more prone to—or more frequently detected performing—these specific adversarial or failure behaviors than image-based (Vision) models.
+==================================================

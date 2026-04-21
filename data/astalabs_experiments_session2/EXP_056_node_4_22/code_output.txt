@@ -1,0 +1,75 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded AIID incidents: 1362
+Using Autonomy column: Autonomy Level
+Autonomy distribution:
+ Autonomy_Bin
+Low     132
+High     53
+Name: count, dtype: int64
+Using Text column for Harm classification: description
+Harm distribution:
+ Harm_Bin
+Other/Unclear           794
+Financial/Intangible    366
+Physical                202
+Name: count, dtype: int64
+Records available for analysis: 68
+
+Contingency Table:
+Harm_Bin      Financial/Intangible  Physical
+Autonomy_Bin                                
+High                            10         7
+Low                             28        23
+
+Chi-Square Statistic: 0.0000
+P-value: 1.0000e+00
+
+Proportions (Row-wise):
+Harm_Bin      Financial/Intangible  Physical
+Autonomy_Bin                                
+High                      0.588235  0.411765
+Low                       0.549020  0.450980
+
+Physical Harm Rate - High Autonomy: 41.2%
+Physical Harm Rate - Low Autonomy: 45.1%
+Result: No significant difference detected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** This chart compares the frequency ("Count of Incidents") of two different categories of harm ("Financial/Intangible" and "Physical") across two levels of autonomy ("High" and "Low"). The stacking allows the viewer to see the total number of incidents for each autonomy level while visualizing the proportion contributed by each harm type.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Labels:** Categorical variables "High" and "Low".
+*   **Y-axis:**
+    *   **Title:** "Count of Incidents"
+    *   **Range:** The axis starts at 0 and extends slightly past 50, with major tick marks at intervals of 10 (0, 10, 20, 30, 40, 50).
+    *   **Units:** Count (integer values representing the number of incidents).
+
+### 3. Data Trends
+*   **Bar Heights (Total Incidents):**
+    *   The **"Low"** autonomy bar is the tallest, indicating a significantly higher total number of incidents (approximately 51 total incidents).
+    *   The **"High"** autonomy bar is the shortest, showing a much lower total frequency of incidents (approximately 17 total incidents).
+*   **Composition Patterns:**
+    *   **High Autonomy:** The "Financial/Intangible" segment (blue) appears to represent roughly 10 incidents, while the "Physical" segment (red) represents roughly 7 incidents. Financial/Intangible harm is slightly more prevalent here.
+    *   **Low Autonomy:** The "Financial/Intangible" segment (blue) is substantial, reaching approximately 28 on the y-axis. The "Physical" segment (red) sits on top, adding roughly another 23 incidents to reach a total just above 50.
+*   **General Trend:** Across both autonomy levels, "Financial/Intangible" harm accounts for a slightly larger portion of the incidents than "Physical" harm, though the distribution is relatively balanced within the "Low" category.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Harm Type by Autonomy Level" is displayed at the top center.
+*   **Legend:** A box in the upper-left corner titled "Harm Type" distinguishes the data series:
+    *   **Light Blue Square:** Represents "Financial/Intangible" harm.
+    *   **Salmon/Light Red Square:** Represents "Physical" harm.
+
+### 5. Statistical Insights
+*   **Volume Disparity:** There is a stark contrast in the volume of reported incidents based on autonomy level. Incidents involving "Low" autonomy systems are approximately **3 times more frequent** in this dataset than those involving "High" autonomy systems.
+*   **Harm Prevalence:** In absolute numbers, both Financial/Intangible and Physical harms occur much more frequently in Low autonomy scenarios.
+    *   Physical harm incidents rise from ~7 in the High autonomy group to ~23 in the Low autonomy group.
+    *   Financial/Intangible incidents rise from 10 in the High autonomy group to ~28 in the Low autonomy group.
+*   **Risk Profile:** While "Low" autonomy has higher raw counts, the ratio of Physical to Financial harm remains somewhat consistent across both levels (Physical harm is roughly 40-45% of the total in both cases), suggesting that the *type* of harm caused may not strongly depend on whether the autonomy level is High or Low, even though the *frequency* differs greatly.
+==================================================

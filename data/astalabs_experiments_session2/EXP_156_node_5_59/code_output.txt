@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Malice is Intangible
+Dataset loaded (local). Shape: (6705, 196)
+ATLAS cases: 52
+AIID incidents: 1362
+Using column 'summary' for ATLAS text mining.
+Using column 'description' for AIID text mining.
+
+ATLAS (Adversarial): 2 / 52 (3.8%) physical harm incidents.
+AIID (General): 195 / 1362 (14.3%) physical harm incidents.
+
+Contingency Table:
+[[np.int64(2), np.int64(50)], [np.int64(195), np.int64(1167)]]
+Fisher's Exact Test p-value: 0.0166
+Odds Ratio: 0.2394
+Result: Statistically Significant. Adversarial attacks are less likely to cause physical harm.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The plot compares the distribution of two mutually exclusive outcomes ("Physical Harm" vs. "Non-Physical / Other") across two different categories of AI failures ("Adversarial" vs. "General"). By normalizing the bars to 100%, it facilitates a direct comparison of proportions rather than raw counts.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title/Labels:** Categorical labels representing the data sources/types: "Adversarial (ATLAS)" and "General (AIID)".
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Incidents".
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Units:** Percentage (%).
+
+### 3. Data Trends
+*   **Adversarial (ATLAS) Category:**
+    *   This category shows a very low incidence of physical harm.
+    *   **Physical Harm (Red):** 3.8%
+    *   **Non-Physical / Other (Blue):** 96.2%
+*   **General (AIID) Category:**
+    *   This category shows a noticeably higher incidence of physical harm compared to the adversarial group.
+    *   **Physical Harm (Red):** 14.3%
+    *   **Non-Physical / Other (Blue):** 85.7%
+*   **Comparison:** The proportion of physical harm in "General" AI failures is nearly four times greater than in "Adversarial" failures (14.3% vs. 3.8%).
+
+### 4. Annotations and Legends
+*   **Title:** "Physical Harm Rate: Adversarial vs General AI Failures".
+*   **Statistical Annotation:** Included in the title is "(p=0.017)", indicating the statistical significance of the difference between the two groups.
+*   **Bar Annotations:** White text overlays on the bars clearly state the exact percentages for each segment (3.8%, 96.2%, 14.3%, 85.7%).
+*   **Legend:** Located at the bottom center-right, identifying the color coding:
+    *   **Red:** Physical Harm
+    *   **Blue:** Non-Physical / Other
+
+### 5. Statistical Insights
+*   **Significant Difference:** The p-value of **0.017** is less than the standard significance threshold of 0.05. This suggests that the difference in physical harm rates between Adversarial and General AI failures is statistically significant and unlikely to be a result of random chance.
+*   **Nature of Failures:** The data indicates that General AI failures (represented by the AIID dataset) pose a significantly higher risk of physical harm compared to Adversarial attacks (represented by the ATLAS dataset). Adversarial incidents appear to be overwhelmingly non-physical (likely involving data theft, model evasion, or digital manipulation rather than physical impact).
+==================================================

@@ -1,0 +1,54 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_competency_statements.csv
+Analyzable records: 42
+
+Spearman Correlation Coefficient: 0.0190
+P-value: 0.9051
+Result: No statistically significant correlation.
+
+Contingency Table (Counts):
+control_density   1   2  3
+confidence_norm           
+High             10  21  5
+Medium            2   3  1
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Scatter plot with a linear regression fit line and a confidence interval band.
+*   **Purpose:** The plot is designed to examine the relationship (correlation) between two variables: "control_density" (independent variable) and "confidence_numeric" (dependent variable).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** `control_density`
+    *   **Range:** The axis ticks are marked from **1.0 to 3.0**, though data points extend slightly beyond these markers (approximately 0.9 to 3.2).
+    *   **Structure:** The data appears to be grouped around discrete values (integers 1, 2, and 3), suggesting the control density was likely measured in integer increments.
+*   **Y-Axis:**
+    *   **Label:** `confidence_numeric`
+    *   **Range:** The axis is labeled with qualitative markers mapped to numeric values: **"Medium (2)"** and **"High (3)"**.
+    *   **Scale:** The numeric scale runs vertically, with points mostly clustered between 2 and 3.5.
+
+### 3. Data Trends
+*   **Clustering:** The data points (teal circles) are distinctly clustered vertically around three x-values: roughly 1.0, 2.0, and 3.0.
+*   **Distribution:**
+    *   The vast majority of the data points are located at the top of the graph, clustered around the "High (3)" confidence level.
+    *   There is a sparse scattering of lower values near or below "Medium (2)" at all three density levels (1, 2, and 3).
+    *   There is one notable outlier at x ≈ 1.9 with a value significantly lower than "Medium (2)".
+*   **Trend Line:** A dark red dotted trend line runs horizontally across the plot. It is effectively flat, indicating that as control density increases, the confidence numeric does not systematically increase or decrease.
+
+### 4. Annotations and Legends
+*   **Title:** "Control Density vs. Evidence Confidence"
+*   **Subtitle (Statistical Annotation):** "(Spearman r=0.02, p=0.905)" – This provides the statistical summary of the correlation.
+*   **Regression Elements:**
+    *   **Dotted Red Line:** Represents the linear fit (regression line).
+    *   **Pink Shaded Region:** Represents the confidence interval for the regression line. The band is wide, indicating uncertainty in the prediction, particularly because the data is not tightly grouped along a line.
+*   **Data Points:** Represented as teal circles with dark outlines.
+
+### 5. Statistical Insights
+*   **No Correlation:** The Spearman correlation coefficient (**r=0.02**) is extremely close to zero. This indicates that there is **virtually no monotonic relationship** between control density and evidence confidence.
+*   **Non-Significance:** The p-value (**p=0.905**) is significantly higher than the standard alpha level of 0.05. This means the result is **not statistically significant**; any slight trend observed is likely due to random chance.
+*   **Visual Interpretation:** The flat regression line confirms the statistical metrics. Changing the control density (x-axis) has no predictive power over the confidence score (y-axis).
+*   **Ceiling Effect:** The data shows a strong "ceiling effect," where most participants or samples reported "High" confidence regardless of the control density, which limits the variability necessary to find a strong correlation.
+==================================================

@@ -1,0 +1,25 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Inspection ---
+Unique sources found in raw data: <StringArray>
+[      'NIST AI RMF 1.0',    'NIST GenAI Profile', 'EU AI Act (2024/1689)',
+      'OWASP Top 10 LLM']
+Length: 4, dtype: str
+Filtered dataset shape: (19, 25)
+Counts per target source:
+target_source
+OWASP Top 10 LLM    10
+EU AI Act            9
+Name: count, dtype: int64
+
+--- Contingency Table ---
+bundle            Integration Readiness  Trust Readiness
+target_source                                           
+EU AI Act                             4                5
+OWASP Top 10 LLM                      9                1
+
+--- Statistical Analysis (Fisher's Exact Test) ---
+Odds Ratio: 0.0889
+P-Value: 0.0573
+
+--- Interpretation ---
+Result: Not Significant (p >= 0.05). No statistical evidence that source predicts bundle.

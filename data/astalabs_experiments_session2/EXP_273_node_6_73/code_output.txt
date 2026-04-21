@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1362 AIID incidents.
+Columns identified:
+ - Intent: Intentional Harm
+ - Harm Level: AI Harm Level
+ - Tangible Harm: Tangible Harm
+
+Valid rows for analysis: 183
+
+--- Descriptive Statistics by Intentionality ---
+                count      mean  median       std
+is_intentional                                   
+False             175  0.408571     0.0  0.647884
+True                8  0.562500     0.0  0.776324
+
+Mann-Whitney U Test (Intentional > Unintentional):
+Statistic=773.50, p-value=0.26601
+RESULT: Not Statistically Significant.
+
+STDERR:
+<ipython-input-1-dec495019639>:99: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.violinplot(x='is_intentional', y='severity_score', data=valid, inner='box', palette='Set2')
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Violin Plot.
+*   **Purpose:** This plot is used to visualize the distribution of numerical data (`Harm Severity Score`) across different categories (`is_intentional`). It combines features of a box plot and a kernel density plot. The width of the "violin" at any given y-value represents the frequency or probability density of data points at that value.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** `is_intentional`
+    *   **Categories:** Two discrete categories are plotted: "Unintentional" (left) and "Intentional" (right).
+*   **Y-axis:**
+    *   **Label:** `Harm Severity Score (0=Near Miss -> 4=Fatal)`
+    *   **Units/Scale:** A numerical score representing severity. While the label indicates a theoretical range of 0 to 4, the plotted y-axis ticks range from **-1.0 to 2.5**.
+    *   **Note on Range:** The extension of the plot shape below 0 and above the highest data points is likely an artifact of the kernel density estimation (smoothing) used to generate the violin shape, rather than representing actual negative harm scores.
+
+### 3. Data Trends
+*   **Unintentional Incidents (Teal/Green):**
+    *   **Shape:** The distribution is heavily weighted towards the bottom. The widest part of the violin is at the 0 mark (Near Miss), indicating the majority of unintentional incidents result in low or no harm.
+    *   **Secondary Peak:** There is a smaller, secondary bulge around the 1.5 mark, suggesting a smaller subset of incidents that result in moderate harm.
+    *   **Range:** The data is more compact vertically, suggesting less variability in severity compared to intentional incidents.
+*   **Intentional Incidents (Orange/Salmon):**
+    *   **Shape:** While there is still a wide base near 0, the distribution is much more "top-heavy" compared to the unintentional group.
+    *   **High Severity Cluster:** There is a significant swelling of the plot between the 1.5 and 2.5 marks. This indicates a much higher density of incidents occurring at higher severity levels compared to the unintentional category.
+    *   **Range:** The plot extends higher vertically, indicating a broader range of outcomes including more severe ones.
+
+### 4. Annotations and Legends
+*   **Title:** "Comparison of Harm Severity: Intentional vs Unintentional AI Incidents".
+*   **Internal Box Plot Elements:** Inside each violin is a grey box plot representation:
+    *   **White Dot:** Represents the **median** value. For both categories, the median appears to be 0 (or extremely close to it).
+    *   **Thick Grey Bar:** Represents the **Interquartile Range (IQR)** (from the 25th to the 75th percentile). The IQR for "Intentional" extends significantly higher than for "Unintentional," reaching up to approximately 1.5.
+    *   **Thin Grey Line:** Represents the "whiskers," showing the rest of the distribution, excluding outliers.
+
+### 5. Statistical Insights
+*   **Base Rate of Severity:** For both intentional and unintentional AI incidents, the **median severity is low** (likely 0/Near Miss). This suggests that the most common outcome for any AI incident, regardless of intent, is a near miss or low harm.
+*   **Risk Profile Variance:** The "Intentional" category exhibits significantly higher variance and a higher upper quartile. Statistically, this means that while the "average" outcome is similar, **intentional incidents carry a much higher risk of escalating to moderate or high severity** compared to unintentional ones.
+*   **Distribution Shape:** The "Unintentional" distribution is clearly bimodal but dominated by the lower mode. The "Intentional" distribution is also bimodal but shows a much stronger secondary mode at the higher severity end, suggesting that when intentional harm occurs, it is frequently aimed at or results in a specific higher tier of severity (around the 1.5–2.0 score range).
+==================================================

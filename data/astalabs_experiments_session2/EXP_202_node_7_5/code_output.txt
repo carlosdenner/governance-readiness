@@ -1,0 +1,83 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 Scored rows: 1757
+
+--- Unique values in '22_dev_method' (Top 10) ---
+22_dev_method
+                                                                                               629
+Developed with contracting resources.                                                          481
+Developed in-house.                                                                            439
+Developed with both contracting and in-house resources.                                        187
+                                                                                                15
+Data not reported by submitter and will be updated once additional information is collected      6
+Name: count, dtype: int64
+
+Rows after filtering Dev Method: 1107
+dev_category
+Contracted    668
+In-house      439
+Name: count, dtype: int64
+
+--- Unique values in '38_code_access' (Top 10) ---
+38_code_access
+Yes – agency has access to source code, but it is not public.    497
+No – agency does not have access to source code.                 324
+                                                                 175
+Yes – source code is publicly available.                          47
+Yes                                                               47
+                                                                  16
+YES                                                                1
+Name: count, dtype: int64
+
+--- Contingency Table (Code Accessibility) ---
+is_accessible    0    1
+dev_category           
+Contracted     430  238
+In-house        85  354
+
+--- Accessibility Rates ---
+dev_category
+Contracted    0.356287
+In-house      0.806378
+Name: is_accessible, dtype: float64
+
+Chi-square Statistic: 213.8995
+P-value: 1.9371e-48
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares categorical data, specifically the proportion of code or technical documentation that is accessible, split between two different software development methods: "Contracted" versus "In-house."
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Development Method"
+    *   **Labels:** The axis represents two discrete categories: "Contracted" and "In-house."
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Proportion with Accessible Code/Docs"
+    *   **Range:** The scale runs from **0.0 to approximately 0.95**, with major tick marks at 0.0, 0.2, 0.4, 0.6, and 0.8.
+    *   **Units:** The values represent a proportion (decimal format), which corresponds to percentages (0.0 = 0%, 1.0 = 100%).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "In-house" category is significantly taller, reaching slightly above the 0.8 mark.
+*   **Shortest Bar:** The "Contracted" category is much shorter, reaching just below the 0.4 mark.
+*   **Pattern:** There is a substantial disparity between the two methods. In-house development shows a much higher rate of accessibility compliance compared to contracted development. The In-house bar is visually more than double the height of the Contracted bar.
+
+### 4. Annotations and Legends
+*   **Bar Annotations:** Specific values are printed directly above each bar to provide exact data points:
+    *   **Contracted:**
+        *   Percentage: **35.6%**
+        *   Sample Size: **(n=668)**
+    *   **In-house:**
+        *   Percentage: **80.6%**
+        *   Sample Size: **(n=439)**
+*   **Title:** The chart is titled "Code/Technical Documentation Accessibility by Development Method."
+
+### 5. Statistical Insights
+*   **Significant Performance Gap:** There is a dramatic difference in accessibility outcomes. **80.6%** of In-house projects had accessible code/documentation, compared to only **35.6%** of Contracted projects. This suggests In-house teams are **more than twice as likely** to produce accessible documentation compared to contractors in this dataset.
+*   **Sample Size Validity:** The sample sizes for both groups are robust ($n=668$ for Contracted and $n=439$ for In-house). Interestingly, despite having a larger sample size (and thus potentially more opportunities for variance), the Contracted group consistently underperforms the In-house group in this metric.
+*   **Implication:** The data strongly suggests that direct oversight or internal standards present in "In-house" development environments may lead to better adherence to accessibility standards than outsourcing ("Contracted").
+==================================================

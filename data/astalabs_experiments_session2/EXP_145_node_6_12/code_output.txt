@@ -1,0 +1,139 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded EO 13960 data with 1757 records.
+
+--- Unique Values in Scoring Columns (Pre-normalization) ---
+38_code_access: <StringArray>
+[             'No – agency does not have access to source code.',
+                                                             nan,
+ 'Yes – agency has access to source code, but it is not public.',
+                      'Yes – source code is publicly available.',
+                                                           'Yes',
+                                                           'YES',
+                                                             ' ']
+Length: 7, dtype: str
+34_data_docs: <StringArray>
+[                                                                                 'Documentation is missing or not available: No documentation exists regarding maintenance, composition, quality, or intended use of the training and evaluation data.',
+                                                                                                                                                                                                                                                     nan,
+ 'Documentation has been partially completed: Some documentation exists (detailing the composition and any statistical bias or measurement skew for training and evaluation purposes), but documentation took place within this use case’s development.',
+                   'Documentation is complete: Documentation exists regarding the maintenance, composition, quality, and intended use of the training and evaluation data, as well as any statistical bias across model features and protected groups. ',
+                                                                                     'Documentation is widely available: Documentation is not only complete, but is widely accessible within the agency, and has an owner and a regular update cadence.',
+                    'Documentation is complete: Documentation exists regarding the maintenance, composition, quality, and intended use of the training and evaluation data, as well as any statistical bias across model features and protected groups.',
+ 'Documentation has been partially completed: Some documentation exists (detailing the composition and any statistical bias or measurement skew for training and evaluation purposes), but documentation took place within this use case's development.',
+                                                                                                                                                           'Data not reported by submitter and will be updated once additional information is collected',
+                                                                                                                                                                                                                             'Documentation is complete',
+                                                                                                                                                                                                             'Documentation is missing or not available',
+                                                                                                                                                                                                                     'Documentation is widely available',
+                                                                                                                                                                                                                            'Documentation is available',
+                                                                                                                                                                                                            'Documentation has been partially completed',
+                                                                                                                                                                                                                                                     ' ',
+                                                                                                                                                                                                                                                   'Yes',
+                                                                                                                                                                                                                                                    'No',
+                                                                                                                                                                                     'The data is public facing and documented in www.travel.state.gov.',
+                                                                                                                                                                                                           'Application source code and documentation. ']
+Length: 18, dtype: str
+56_monitor_postdeploy: <StringArray>
+[                                                                                                                                                                                                                                                                                                                                                                                         nan,
+                                                      'Intermittent and Manually Updated: A plan for monitoring the AI use case is in place, and requires data science teams to work with DevOps engineers to manually update models at scheduled intervals, and create metrics to detect data distribution shifts between the operational environment and the training data for the model. ',
+                                                                                                                                                                            'No monitoring protocols have been established: Necessary infrastructure needed to perform monitoring of AI systems in production is not available and/or a plan to monitor models has not yet been established.',
+                                                                                                'Automated and Regularly Scheduled Updates: Some aspects of the plan to monitor the AI system post-deployment are automated including re-training of models after detecting drift; however, data science teams are still significantly involved in the monitoring and re-deployment process.',
+ 'Established Process of Machine Learning Operations: Alongside automated testing and drift detection, model re-training and re-deployments are supported by continuous integration pipelines that are managed by machine learning and data engineers on the platform, adapting work done by data science team into repeatable scripts for re-training and re-testing a model once deployed.',
+                                                                                                                                                                                                                                                                'use case is not safety impacting or rights impacting; however, a monitoring process for AI performance is under development',
+                                                                                                                                                                                                                                                                                                                                                      'AI is not safety or rights-impacting.']
+Length: 7, dtype: str
+31_data_catalog: <StringArray>
+['No', nan, 'Yes', 'Other', 'NO', ' ']
+Length: 6, dtype: str
+
+--- Composite Score Stats ---
+count    1757.000000
+mean        0.754696
+std         0.845487
+min         0.000000
+25%         0.000000
+50%         0.000000
+75%         1.000000
+max         3.000000
+Name: integration_score, dtype: float64
+
+--- Available Agencies (Top 20) ---
+3_agency
+Department of Health and Human Services               271
+Department of Veterans Affairs                        227
+Department of Homeland Security                       183
+Department of the Interior                            180
+United States Agency for International Development    137
+Department of Agriculture                              89
+Department of Energy                                   79
+Department of Labor                                    70
+Department of Commerce                                 57
+Federal Deposit Insurance Corporation                  55
+Department of the Treasury                             54
+Department of State                                    51
+Board of Governors of the Federal Reserve System       50
+Tennessee Valley Authority                             39
+Securities and Exchange Commission                     28
+General Services Administration                        24
+Social Security Administration                         23
+National Aeronautics and Space Administration          18
+Federal Housing Finance Agency                         18
+Environmental Protection Agency                        17
+Name: count, dtype: int64
+
+--- Cluster Counts ---
+cluster
+Benefits      292
+Scientific    230
+Name: count, dtype: int64
+
+--- T-Test Results ---
+Scientific Mean: 0.84 (n=230)
+Benefits Mean:   0.57 (n=292)
+T-statistic:     3.5113
+P-value:         4.8963e-04
+Result: Statistically Significant Difference
+
+STDERR:
+<ipython-input-1-ca8b91667901>:118: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=['Scientific Agencies', 'Benefits Agencies'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** The plot compares the distribution of "Integration Readiness Scores" between two distinct categories: Scientific Agencies and Benefits Agencies. It effectively displays the median, quartiles, range, and outliers for each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Categorical labels representing the groups being compared: "Scientific Agencies" and "Benefits Agencies."
+    *   **Range:** Two distinct categories.
+*   **Y-Axis:**
+    *   **Label:** "Composite Score (0-4)."
+    *   **Range:** The visual axis displays values from 0.0 to 3.0 in increments of 0.5. Although the label implies a theoretical maximum score of 4, the data plotted only reaches 3.
+
+### 3. Data Trends
+*   **Scientific Agencies (Left Box):**
+    *   **Median:** The median score (indicated by the orange line) appears to be **1.0**. Since the line is at the top of the box, the median overlaps with the 3rd Quartile (75th percentile).
+    *   **Interquartile Range (IQR):** The box spans from a score of 0.0 to 1.0.
+    *   **Whiskers:** The upper whisker extends to **2.0**, indicating the maximum non-outlier value. The lower whisker is at 0.0.
+    *   **Outliers:** There are distinct circular markers at the **3.0** mark, indicating one or more outliers with significantly higher readiness scores compared to the rest of the group.
+
+*   **Benefits Agencies (Right Box):**
+    *   **Median:** The median score is **0.0** (indicated by the orange line at the bottom of the box). This indicates that at least 50% of these agencies have a score of 0.
+    *   **Interquartile Range (IQR):** The box spans from 0.0 to 1.0.
+    *   **Whiskers:** Similar to the scientific agencies, the upper whisker extends to **2.0**.
+    *   **Outliers:** No outliers are visible for this group.
+
+### 4. Annotations and Legends
+*   **Title:** "Integration Readiness Scores by Agency Type."
+*   **Grid Lines:** Horizontal dashed grid lines are included at 0.5 intervals to facilitate easier reading of the score values against the Y-axis.
+*   **No separate legend** is required as the X-axis labels clearly define the data series.
+
+### 5. Statistical Insights
+*   **Overall Low Readiness:** Despite the scale allowing for a score up to 4, the vast majority of data falls between 0 and 2 for both agency types. This suggests a generally low level of integration readiness across the board.
+*   **Scientific Agencies Perform Slightly Better:** Scientific Agencies show a higher central tendency (Median = 1.0) compared to Benefits Agencies (Median = 0.0).
+*   **Skewed Distributions:**
+    *   The "Benefits Agencies" distribution is heavily right-skewed (positively skewed), with the median at the absolute minimum (0). This implies that half or more of these agencies have zero readiness based on this composite score.
+    *   The "Scientific Agencies" are also skewed toward the lower end but show slightly more variation in the upper quartiles and possess high-performing outliers (score of 3.0) that the Benefits Agencies lack.
+==================================================

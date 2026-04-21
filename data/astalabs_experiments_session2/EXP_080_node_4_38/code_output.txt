@@ -1,0 +1,78 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+AIID Incidents subset shape: (1362, 196)
+Columns: Tech='Known AI Technology', Tangible='Tangible Harm', Bias='Harm Distribution Basis'
+
+Rows suitable for analysis: 58
+Category Counts:
+Tech_Category
+Robotics/Vision    37
+NLP/Text           21
+Name: count, dtype: int64
+Harm_Category
+Fairness/Bias      35
+Physical Safety    23
+Name: count, dtype: int64
+
+Contingency Table:
+Harm_Category    Fairness/Bias  Physical Safety
+Tech_Category                                  
+NLP/Text                    16                5
+Robotics/Vision             19               18
+
+Chi-Square Statistic: 2.4940
+P-value: 1.1428e-01
+
+Standardized Residuals:
+Harm_Category    Fairness/Bias  Physical Safety
+Tech_Category                                  
+NLP/Text              0.934759        -1.153107
+Robotics/Vision      -0.704220         0.868717
+
+--- Hypothesis Evaluation ---
+NLP/Text association with Fairness/Bias: Residual = 0.93 (Expected > 1.96)
+Robotics/Vision association with Physical Safety: Residual = 0.87 (Expected > 1.96)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap representing a **Contingency Table**.
+*   **Purpose:** The plot visualizes the frequency distribution between two categorical variables: "AI Technology" and "Harm Domain." It aims to show how often different types of AI technologies are associated with specific categories of harm, using color intensity to represent the magnitude of the counts.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Technology"
+    *   **Categories:** "NLP/Text" (top) and "Robotics/Vision" (bottom).
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Harm Domain"
+    *   **Categories:** "Fairness/Bias" (left) and "Physical Safety" (right).
+*   **Color Scale (Legend):**
+    *   **Range:** The color bar on the right indicates the value range for the counts. It spans from approximately **5** (light yellow) to **19** (dark blue).
+    *   **Units:** The values represent counts (frequency of occurrence).
+
+### 3. Data Trends
+*   **Highest Value:** The intersection of **Robotics/Vision** and **Fairness/Bias** has the highest count at **19**, indicated by the darkest blue color. This is closely followed by Robotics/Vision and Physical Safety at 18.
+*   **Lowest Value:** The intersection of **NLP/Text** and **Physical Safety** has the lowest count at **5**, indicated by the light yellow color.
+*   **Visual Pattern:**
+    *   The **bottom row** (Robotics/Vision) is consistently dark blue, indicating high counts across both harm domains.
+    *   The **top row** (NLP/Text) shows a significant disparity, with a high count in the first column (Fairness/Bias) but a very low count in the second (Physical Safety).
+
+### 4. Annotations and Legends
+*   **Title:** "Contingency Table: AI Technology vs Harm Type" is displayed at the top.
+*   **Cell Annotations:** Each cell contains a number representing the exact count for that specific intersection:
+    *   NLP/Text & Fairness/Bias: **16**
+    *   NLP/Text & Physical Safety: **5**
+    *   Robotics/Vision & Fairness/Bias: **19**
+    *   Robotics/Vision & Physical Safety: **18**
+*   **Color Bar:** Located on the right, providing a reference for interpreting the cell colors, ranging from cream (low) to deep blue (high).
+
+### 5. Statistical Insights
+*   **Technology Comparison:**
+    *   **Robotics/Vision** appears more frequently in this dataset overall (Total: $19 + 18 = 37$) compared to **NLP/Text** (Total: $16 + 5 = 21$).
+    *   **Robotics/Vision** has a balanced distribution of harm types, with nearly equal counts for Fairness/Bias (19) and Physical Safety (18).
+*   **Harm Domain Comparison:**
+    *   **Fairness/Bias** harms are more common in total ($16 + 19 = 35$) compared to **Physical Safety** harms ($5 + 18 = 23$).
+*   **Interaction Effect:** There is a notable interaction between technology type and harm type. **NLP/Text** is heavily skewed toward **Fairness/Bias** issues (over 3x more likely than Physical Safety). This makes logical sense, as text-based models are less likely to cause direct physical harm compared to embodied technologies like robotics. Conversely, Robotics/Vision contributes significantly to both physical safety risks and fairness/bias issues.
+==================================================

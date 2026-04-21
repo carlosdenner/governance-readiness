@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between architecture control density and evidence confidence. The analysis of 42 competency statements yielded a Spearman correlation coefficient of 0.0190 with a p-value of 0.9051, indicating no statistically significant correlation between the number of architecture controls and the confidence level of the competency statement. The hypothesis is therefore rejected. The visualization and contingency table reveal a 'ceiling effect' where the vast majority of statements (36/42) have 'High' confidence regardless of whether they map to 1, 2, or 3 architecture controls. This suggests that the strength of evidence for a governance requirement is independent of its architectural complexity.",
+  "child_ids": [
+    "node_5_1",
+    "node_5_7"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom scipy.stats import spearmanr\nimport numpy as np\nimport os\n\n# Robust file loading strategy\nfilename = 'step2_competency_statements.csv'\nfile_path = filename # Default to current directory\n\nif not os.path.exists(file_path):\n    # Check parent directory if not found in current\n    if os.path.exists(f'../{filename}'):\n        file_path = f'../{filename}'\n    else:\n        # Fallback to current which will raise error, or print warning\n        print(f\"Warning: {filename} not found in current or parent directory. Attempting current.\")\n\nprint(f\"Loading dataset from: {file_path}\")\ndf = pd.read_csv(file_path)\n\n# 1. Derive control_density\n# The applicable_controls column contains semicolon-separated strings.\ndef count_controls(val):\n    if pd.isna(val) or str(val).strip() == '':\n        return 0\n    return len([x for x in str(val).split(';') if x.strip()])\n\ndf['control_density'] = df['applicable_controls'].apply(count_controls)\n\n# 2. Map confidence to numeric\n# Normalize text to title case to handle potential inconsistencies (e.g. 'high', 'High')\nconfidence_map = {'High': 3, 'Medium': 2, 'Low': 1}\ndf['confidence_norm'] = df['confidence'].astype(str).str.strip().str.title()\ndf['confidence_numeric'] = df['confidence_norm'].map(confidence_map)\n\n# Filter out any rows where confidence couldn't be mapped (if any)\ndf_clean = df.dropna(subset=['confidence_numeric'])\n\nprint(f\"Analyzable records: {len(df_clean)}\")\n\n# 3. Calculate Spearman Correlation\n# We use Spearman because 'confidence' is ordinal\ncorr, p_value = spearmanr(df_clean['control_density'], df_clean['confidence_numeric'])\n\nprint(f\"\\nSpearman Correlation Coefficient: {corr:.4f}\")\nprint(f\"P-value: {p_value:.4f}\")\n\n# Interpret results\nalpha = 0.05\nif p_value < alpha:\n    print(\"Result: Statistically significant correlation.\")\nelse:\n    print(\"Result: No statistically significant correlation.\")\n\n# 4. Visualization\nplt.figure(figsize=(10, 6))\n\n# Add jitter for visualization purposes since data is discrete\njitter_x = np.random.uniform(-0.15, 0.15, size=len(df_clean))\njitter_y = np.random.uniform(-0.15, 0.15, size=len(df_clean))\n\nplt.scatter(\n    df_clean['control_density'] + jitter_x, \n    df_clean['confidence_numeric'] + jitter_y, \n    alpha=0.6, \n    c='teal', \n    s=100, \n    edgecolors='black'\n)\n\nplt.title(f'Control Density vs. Evidence Confidence\\n(Spearman r={corr:.2f}, p={p_value:.3f})')\nplt.xlabel('Control Density (Number of Architecture Controls)')\nplt.ylabel('Evidence Confidence')\nplt.yticks([1, 2, 3], ['Low (1)', 'Medium (2)', 'High (3)'])\nplt.grid(True, linestyle='--', alpha=0.5)\n\n# Add a trend line (linear regression fit) just for visual aid, even if correlation is non-parametric\nsns.regplot(\n    x=df_clean['control_density'], \n    y=df_clean['confidence_numeric'], \n    scatter=False, \n    color='darkred', \n    line_kws={'linestyle': ':'}\n)\n\nplt.tight_layout()\nplt.show()\n\n# Print detailed frequency table to help explain the result\nprint(\"\\nContingency Table (Counts):\")\ncrosstab = pd.crosstab(df_clean['confidence_norm'], df_clean['control_density'])\nprint(crosstab)",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_competency_statements.csv\nAnalyzable records: 42\n\nSpearman Correlation Coefficient: 0.0190\nP-value: 0.9051\nResult: No statistically significant correlation.\n\nContingency Table (Counts):\ncontrol_density   1   2  3\nconfidence_norm           \nHigh             10  21  5\nMedium            2   3  1\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Scatter plot with a linear regression fit line and a confidence interval band.\n*   **Purpose:** The plot is designed to examine the relationship (correlation) between two variables: \"control_density\" (independent variable) and \"confidence_numeric\" (dependent variable).\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** `control_density`\n    *   **Range:** The axis ticks are marked from **1.0 to 3.0**, though data points extend slightly beyond these markers (approximately 0.9 to 3.2).\n    *   **Structure:** The data appears to be grouped around discrete values (integers 1, 2, and 3), suggesting the control density was likely measured in integer increments.\n*   **Y-Axis:**\n    *   **Label:** `confidence_numeric`\n    *   **Range:** The axis is labeled with qualitative markers mapped to numeric values: **\"Medium (2)\"** and **\"High (3)\"**.\n    *   **Scale:** The numeric scale runs vertically, with points mostly clustered between 2 and 3.5.\n\n### 3. Data Trends\n*   **Clustering:** The data points (teal circles) are distinctly clustered vertically around three x-values: roughly 1.0, 2.0, and 3.0.\n*   **Distribution:**\n    *   The vast majority of the data points are located at the top of the graph, clustered around the \"High (3)\" confidence level.\n    *   There is a sparse scattering of lower values near or below \"Medium (2)\" at all three density levels (1, 2, and 3).\n    *   There is one notable outlier at x ≈ 1.9 with a value significantly lower than \"Medium (2)\".\n*   **Trend Line:** A dark red dotted trend line runs horizontally across the plot. It is effectively flat, indicating that as control density increases, the confidence numeric does not systematically increase or decrease.\n\n### 4. Annotations and Legends\n*   **Title:** \"Control Density vs. Evidence Confidence\"\n*   **Subtitle (Statistical Annotation):** \"(Spearman r=0.02, p=0.905)\" – This provides the statistical summary of the correlation.\n*   **Regression Elements:**\n    *   **Dotted Red Line:** Represents the linear fit (regression line).\n    *   **Pink Shaded Region:** Represents the confidence interval for the regression line. The band is wide, indicating uncertainty in the prediction, particularly because the data is not tightly grouped along a line.\n*   **Data Points:** Represented as teal circles with dark outlines.\n\n### 5. Statistical Insights\n*   **No Correlation:** The Spearman correlation coefficient (**r=0.02**) is extremely close to zero. This indicates that there is **virtually no monotonic relationship** between control density and evidence confidence.\n*   **Non-Significance:** The p-value (**p=0.905**) is significantly higher than the standard alpha level of 0.05. This means the result is **not statistically significant**; any slight trend observed is likely due to random chance.\n*   **Visual Interpretation:** The flat regression line confirms the statistical metrics. Changing the control density (x-axis) has no predictive power over the confidence score (y-axis).\n*   **Ceiling Effect:** The data shows a strong \"ceiling effect,\" where most participants or samples reported \"High\" confidence regardless of the control density, which limits the variability necessary to find a strong correlation.\n==================================================",
+  "created_at": "2026-02-20T22:21:29.454615+00:00",
+  "creation_idx": 28,
+  "experiment_id": "node_4_6",
+  "experiment_plan": {
+    "deliverables": "Scatter plot with jitter, Spearman correlation coefficient, and p-value.",
+    "objective": "Determine if highly specific, well-evidenced competencies drive more complex architectural requirements.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Derive 'control_density' by counting the number of semicolon-separated items in the 'applicable_controls' column.\n3. Map 'confidence' to a numeric scale (High=3, Medium=2, Low=1).\n4. Calculate the Spearman rank correlation coefficient between 'control_density' and 'confidence'."
+  },
+  "hypothesis": "There is a significant positive correlation between the number of architecture controls a requirement maps to (control density) and the evidence confidence of the resulting competency statement.",
+  "id_in_run": 27,
+  "is_surprising": true,
+  "parent_id": "node_3_4",
+  "posterior": 0.1652892561983471,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.1652892561983471,
+    "n": 90.0,
+    "prior_params": [
+      20.0,
+      11.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6451612903225806,
+  "prior_belief": {
+    "_empirical_mean": 0.65,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 5.0,
+    "maybe_true": 23.0,
+    "mean": 0.6451612903225806,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 2.0
+  },
+  "review": "The experiment was successfully executed after correcting the file path issue. The analysis methodology (Spearman rank correlation) was appropriate for the ordinal nature of the 'confidence' variable. The deliverables—including the correlation coefficient, p-value, contingency table, and visualization—provide a clear basis for evaluating the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 195310.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5569374782568579
+}

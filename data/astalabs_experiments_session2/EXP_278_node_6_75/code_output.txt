@@ -1,0 +1,71 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment...
+Dataset loaded successfully from astalabs_discovery_all_data.csv.
+AIID Incidents count: 1362
+ATLAS Cases count: 52
+
+Sector Distribution (Counts):
+                AIID  ATLAS
+Consumer/Tech     54      0
+Defense/Govt       2      0
+Education         13      0
+Finance            6      0
+Healthcare        15      0
+Other/Unknown   1248     52
+Transportation    24      0
+
+Sector Distribution (Percentages):
+                 AIID_pct  ATLAS_pct
+Consumer/Tech    3.964758        0.0
+Defense/Govt     0.146843        0.0
+Education        0.954479        0.0
+Finance          0.440529        0.0
+Healthcare       1.101322        0.0
+Other/Unknown   91.629956      100.0
+Transportation   1.762115        0.0
+
+Chi-Square Test Results:
+Chi2 Statistic: 4.7341
+p-value: 5.7834e-01
+Degrees of Freedom: 6
+Conclusion: The sector distributions are Not significantly different.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (Clustered Bar Chart).
+*   **Purpose:** The plot compares the distribution of cases across different industry sectors for two distinct datasets: "AIID (Real Incidents)" and "ATLAS (Adversarial Research)." It aims to highlight the differences in sector attribution between real-world AI incidents and theoretical adversarial research.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** The axis represents different **Sectors**.
+    *   **Categories:** Consumer/Tech, Defense/Govt, Education, Finance, Healthcare, Other/Unknown, Transportation.
+*   **Y-Axis:**
+    *   **Label:** **Percentage of Cases**.
+    *   **Value Range:** 0 to 100 (representing 0% to 100%).
+    *   **Units:** Percentage (%).
+
+### 3. Data Trends
+*   **Dominant Category:** The "Other/Unknown" category dominates the chart significantly for both datasets.
+    *   **ATLAS (Orange):** The bar reaches the maximum possible value of **100.0%**.
+    *   **AIID (Blue):** The bar is also extremely high, at **91.6%**.
+*   **Zero Values for ATLAS:** For every specific sector category (Consumer/Tech, Defense/Govt, Education, Finance, Healthcare, Transportation), the ATLAS dataset (Adversarial Research) shows **0.0%**. This indicates that none of the cases in the ATLAS dataset were attributed to these specific sectors.
+*   **Minor Distribution for AIID:** While the vast majority of AIID cases are "Other/Unknown," there is a small distribution across specific sectors:
+    *   **Tallest Specific Sector:** Consumer/Tech at **4.0%**.
+    *   **Followed by:** Transportation (1.8%), Healthcare (1.1%), Education (1.0%), Finance (0.4%), and Defense/Govt (0.1%).
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top-left corner.
+    *   **Blue Square:** Represents "AIID (Real Incidents)".
+    *   **Orange Square:** Represents "ATLAS (Adversarial Research)".
+*   **Annotations:**
+    *   Numerical percentage labels are placed directly above each bar (e.g., "91.6%", "100.0%", "4.0%"). This provides precise data values, removing ambiguity for the viewer.
+*   **Title:** "Sector Distribution: Real-World Incidents vs. Adversarial Research" clearly defines the scope of the comparison.
+
+### 5. Statistical Insights
+*   **Data Specificity Gap:** There is a stark contrast in data labeling between the two groups. The ATLAS dataset classifies **100%** of its cases as "Other/Unknown," suggesting that adversarial research scenarios are either generic/theoretical and not tied to specific industries, or the dataset lacks sector-specific metadata entirely.
+*   **Real-World Variety:** While real-world incidents (AIID) are also heavily skewed toward "Other/Unknown" (91.6%), they demonstrate that incidents *do* occur and are recorded in specific verticals like Consumer Technology and Transportation.
+*   **Sector Vulnerability:** Based on the AIID data, the **Consumer/Tech** sector appears to be the most impacted specific industry (4.0%) relative to others like Finance or Defense, though the high percentage of "Unknown" cases suggests that sector attribution remains a major challenge in classifying AI incidents overall.
+==================================================

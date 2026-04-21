@@ -1,0 +1,67 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 Data Shape: (1757, 196)
+
+Rows available for analysis: 781
+Breakdown by Procurement Type:
+procurement_type
+Government/In-House      391
+Commercial/Contractor    390
+Name: count, dtype: int64
+
+Contingency Table (Count):
+code_access_status     Access Granted  No Access
+procurement_type                                
+Commercial/Contractor             132        258
+Government/In-House               354         37
+
+Contingency Table (Percentage):
+code_access_status     Access Granted  No Access
+procurement_type                                
+Commercial/Contractor           33.85      66.15
+Government/In-House             90.54       9.46
+
+Chi-Square Test Results:
+Chi2 Stat: 264.5628
+P-value: 1.7376e-59
+
+Result: Statistically significant relationship found.
+Commercial/Contractor Access Rate: 33.85%
+Government/In-House Access Rate: 90.54%
+Conclusion: Commercial systems are significantly LESS likely to grant access (33.8% vs 90.5%), supporting the hypothesis.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot image, here are the detailed findings:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically a contingency table visualized as a heatmap).
+*   **Purpose:** The plot visualizes the relationship between "Procurement Type" and "Code Access Status." It uses color intensity and numerical annotations to represent the percentage distribution within these categories, facilitating a quick comparison of code accessibility between commercial and in-house development.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Procurement Type"
+    *   **Categories:** "Commercial/Contractor" (top) and "Government/In-House" (bottom).
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Code Access Status"
+    *   **Categories:** "Access Granted" (left) and "No Access" (right).
+*   **Value Ranges:** The axes represent categorical data. However, the color scale (z-axis) represents percentages, ranging from approximately **10% to 90%**.
+
+### 3. Data Trends
+*   **High Values:** The highest value is found in the **Government/In-House** row under **Access Granted** at **90.5%**, indicated by a dark blue color.
+*   **Low Values:** The lowest value is found in the **Government/In-House** row under **No Access** at **9.5%**, indicated by a dark red color.
+*   **Commercial Trends:** For Commercial/Contractor projects, the trend leans toward restriction. **No Access (66.2%)** is nearly double the rate of **Access Granted (33.8%)**.
+*   **In-House Trends:** For Government/In-House projects, the trend is overwhelmingly open. **Access Granted (90.5%)** dominates **No Access (9.5%)**.
+
+### 4. Annotations and Legends
+*   **Title:** "Code Access: Commercial vs. In-House Development" – clearly defines the subject matter.
+*   **Color Bar (Legend):** Located on the right side, labeled "Percentage." It uses a diverging color palette:
+    *   **Dark Red:** Low percentage (~10%).
+    *   **White/Light Colors:** Mid-range percentages (~50%).
+    *   **Dark Blue:** High percentage (~90%).
+*   **Cell Annotations:** Each cell contains the specific percentage value (e.g., 33.8, 66.2, 90.5, 9.5), providing precise data points alongside the visual color cues.
+
+### 5. Statistical Insights
+*   **Stark Contrast in Transparency:** There is a significant disparity in code availability depending on the procurement method. **Government/In-House** development creates an environment where code is almost always accessible (over 9 out of 10 times).
+*   **Barriers in Outsourcing:** **Commercial/Contractor** development presents a major barrier to code access. In approximately two-thirds of these cases (66.2%), the code remains inaccessible.
+*   **Inverse Relationship:** The data shows an almost inverse relationship between the two procurement types. While in-house development grants access ~90% of the time, commercial development denies it ~66% of the time.
+==================================================

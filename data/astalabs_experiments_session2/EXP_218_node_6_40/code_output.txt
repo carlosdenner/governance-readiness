@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Loading ---
+Total Incidents Loaded: 1362
+
+--- Mapped Data Distribution (Analysis Subset) ---
+Harm_Type       Intangible  Tangible
+Autonomy_Group                      
+High                    34        19
+Low                     83        46
+
+--- Contingency Table for Statistical Test ---
+Harm_Type       Tangible  Intangible
+Autonomy_Group                      
+High                  19          34
+Low                   46          83
+
+--- Fisher's Exact Test Results ---
+Odds Ratio: 1.0083
+P-value: 0.5553
+
+High Autonomy Tangible Rate: 35.85% (19/53)
+Low Autonomy Tangible Rate:  35.66% (46/129)
+
+Result: Not Statistically Significant. The Autonomy-Harm Hypothesis is NOT supported.

@@ -1,0 +1,41 @@
+exitcode: 0 (execution succeeded)
+Code output: === Step 1: Sub-Competencies ===
+      id                 bundle                                             name evidence_strength
+0   AO-1         AI Orientation    CIO Strategic Centrality in AI Agenda-Setting            strong
+1   AO-2         AI Orientation        Strategic Intent and Prioritization of AI          moderate
+2   AO-3         AI Orientation           Resource Commitment to AI Capabilities          moderate
+3   TR-1        Trust Readiness     AI Risk Policy and Accountability Structures            strong
+4   TR-2        Trust Readiness          AI Evaluation and Monitoring Governance            strong
+5   TR-3        Trust Readiness     Regulatory Compliance Translation Capability            strong
+6   TR-4        Trust Readiness                AI Incident Response and Recovery            strong
+7   TR-5        Trust Readiness  Supply Chain and Third-Party AI Risk Governance            strong
+8   IR-1  Integration Readiness             Agentic Architecture & Orchestration            strong
+9   IR-2  Integration Readiness    Lifecycle Governance & Operational Management            strong
+10  IR-3  Integration Readiness       Security, Access, and Contingency Controls            strong
+
+=== Step 3: Coverage Map ===
+   sub_competency_id                        sub_competency_name                 bundle  incident_count
+0               IR-1         Orchestration & Execution Controls  Integration Readiness               8
+1               IR-2       Tool-Use Boundaries & Access Control  Integration Readiness               8
+2               IR-3                  Nondeterminism Management  Integration Readiness              18
+3               IR-4          RAG Architecture & Data Grounding  Integration Readiness               2
+4               IR-5                 GenAIOps / MLOps Lifecycle  Integration Readiness               0
+5               IR-6   Modular Architecture & Resource Controls  Integration Readiness               7
+6               IR-7                 HITL Architecture Patterns  Integration Readiness               1
+7               IR-8     Evaluation & Monitoring Infrastructure  Integration Readiness               0
+8               TR-1               Risk Policy & Accountability        Trust Readiness              19
+9               TR-2    Threat Mapping & Reconnaissance Defense        Trust Readiness               1
+10              TR-3                     Monitoring & Detection        Trust Readiness               9
+11              TR-4  Data Governance & Exfiltration Prevention        Trust Readiness               2
+12              TR-5                      Regulatory Compliance        Trust Readiness               0
+13              TR-6               Incident Response & Recovery        Trust Readiness               9
+14              TR-7                   Human Override & Control        Trust Readiness               0
+15              TR-8            Supply Chain & Third-Party Risk        Trust Readiness               5
+
+=== Step 2: Competency Statements (Head) ===
+  competency_id           bundle confidence                                                                                                     applicable_controls
+0       COMP-01  Trust Readiness       high  AI Risk Policy & Accountability Structures; GenAIOps / MLOps Lifecycle Governance; Regulatory Compliance Documentation
+1       COMP-02  Trust Readiness       high                                                                              AI Risk Policy & Accountability Structures
+2       COMP-03  Trust Readiness     medium                                                                              AI Risk Policy & Accountability Structures
+3       COMP-04  Trust Readiness     medium                                                                              AI Risk Policy & Accountability Structures
+4       COMP-05  Trust Readiness       high                                                                              AI Risk Policy & Accountability Structures

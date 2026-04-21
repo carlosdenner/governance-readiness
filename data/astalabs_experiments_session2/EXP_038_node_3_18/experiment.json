@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed 177 AIID incidents where both autonomy and harm data were available. The contingency table revealed 15 severe harm cases out of 52 high-autonomy incidents (28.8%) compared to 26 severe harm cases out of 125 low-autonomy incidents (20.8%). While the Odds Ratio of 1.54 suggests that high-autonomy systems had higher odds of resulting in severe harm, the Chi-square test (p=0.337) indicates this difference is not statistically significant. Therefore, the hypothesis that high autonomy significantly escalates harm severity cannot be supported by this specific dataset slice.",
+  "child_ids": [
+    "node_4_20",
+    "node_4_27"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport numpy as np\n\ntry:\n    # Load dataset\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    \n    # Filter for AIID incidents\n    aiid = df[df['source_table'] == 'aiid_incidents'].copy()\n    \n    # --- Preprocessing Autonomy Level ---\n    def map_autonomy(val):\n        if pd.isna(val):\n            return np.nan\n        val = str(val).strip()\n        if val == 'Autonomy3':\n            return 'High'\n        elif val in ['Autonomy1', 'Autonomy2']:\n            return 'Low'\n        return np.nan\n\n    aiid['autonomy_bin'] = aiid['Autonomy Level'].apply(map_autonomy)\n    \n    # --- Preprocessing Harm Severity ---\n    def map_severity(val):\n        if pd.isna(val):\n            return np.nan\n        val = str(val).strip()\n        if val == 'AI tangible harm event':\n            return 'Severe'\n        elif val in ['AI tangible harm near-miss', 'AI tangible harm issue', 'none']:\n            return 'Not Severe'\n        return np.nan\n\n    aiid['severity_bin'] = aiid['AI Harm Level'].apply(map_severity)\n    \n    # Drop rows where either variable is NaN\n    analysis_df = aiid.dropna(subset=['autonomy_bin', 'severity_bin'])\n    \n    print(f\"Data points for analysis: {len(analysis_df)}\")\n    \n    # Contingency Table\n    contingency = pd.crosstab(analysis_df['autonomy_bin'], analysis_df['severity_bin'])\n    print(\"\\n--- Contingency Table (Autonomy vs Severity) ---\")\n    print(contingency)\n    \n    if contingency.shape == (2, 2):\n        # Chi-square test\n        chi2, p, dof, expected = stats.chi2_contingency(contingency)\n        \n        print(f\"\\nChi-square Statistic: {chi2:.4f}\")\n        print(f\"P-value: {p:.4f}\")\n        \n        # Odds Ratio Calculation\n        # Standard OR formula: (a*d) / (b*c)\n        # Where a = High+Severe, b = High+NotSevere, c = Low+Severe, d = Low+NotSevere\n        # However, crosstab order depends on sorting. Let's extract explicitly.\n        \n        try:\n            n_high_severe = contingency.loc['High', 'Severe']\n            n_high_not = contingency.loc['High', 'Not Severe']\n            n_low_severe = contingency.loc['Low', 'Severe']\n            n_low_not = contingency.loc['Low', 'Not Severe']\n            \n            if n_high_not * n_low_severe == 0:\n                odds_ratio = np.inf\n            else:\n                odds_ratio = (n_high_severe * n_low_not) / (n_high_not * n_low_severe)\n                \n            print(f\"Odds Ratio (High Autonomy -> Severe Harm): {odds_ratio:.4f}\")\n            \n        except KeyError as e:\n            print(f\"Could not calculate OR due to missing keys in contingency table: {e}\")\n    else:\n        print(\"\\nContingency table is not 2x2. Cannot perform standard binary Odds Ratio calculation.\")\n\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Data points for analysis: 177\n\n--- Contingency Table (Autonomy vs Severity) ---\nseverity_bin  Not Severe  Severe\nautonomy_bin                    \nHigh                  37      15\nLow                   99      26\n\nChi-square Statistic: 0.9220\nP-value: 0.3370\nOdds Ratio (High Autonomy -> Severe Harm): 1.5437\n",
+  "created_at": "2026-02-22T02:49:20.828493+00:00",
+  "creation_idx": 39,
+  "experiment_id": "node_3_18",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistics, and Odds Ratio.",
+    "objective": "Assess the relationship between system autonomy levels and the severity of reported harms.",
+    "steps": "1. Filter for `source_table` = 'aiid_incidents'.\n2. Clean and categorize `Autonomy Level` into 'High' (e.g., 'Autonomous', 'High') and 'Low' (e.g., 'Human in the loop', 'Support').\n3. Clean and categorize `AI Harm Level` into 'Severe' (e.g., 'Critical', 'Severe', 'Death') and 'Not Severe' (e.g., 'Minor', 'Moderate').\n4. Create a contingency table and perform a Chi-square test.\n5. Calculate the Odds Ratio of Severe Harm for High vs. Low Autonomy."
+  },
+  "hypothesis": "Autonomy-Harm Escalation: In the AIID dataset, AI incidents involving 'High' autonomy systems (e.g., systems that act without human intervention) are statistically more likely to result in 'Severe' or 'Critical' harm levels compared to 'Low' autonomy systems (e.g., recommender systems).",
+  "id_in_run": 38,
+  "is_surprising": true,
+  "parent_id": "node_2_2",
+  "posterior": 0.4175824175824176,
+  "posterior_belief": {
+    "_empirical_mean": 0.25,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 60.0,
+    "maybe_true": 0.0,
+    "mean": 0.4175824175824176,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed following the specified plan. The programmer correctly adapted to the specific value schemas found in the dataset (mapping 'Autonomy3' to High and 'AI tangible harm event' to Severe). The analysis of 177 incidents revealed that while High Autonomy systems had a higher rate of severe harm (28.8%) compared to Low Autonomy systems (20.8%), the difference was not statistically significant (Chi-Square=0.92, p=0.34). Thus, the hypothesis that high autonomy significantly escalates harm severity is rejected based on this sample.",
+  "rich_outputs": null,
+  "runtime_ms": 180820.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.38922367954626014
+}

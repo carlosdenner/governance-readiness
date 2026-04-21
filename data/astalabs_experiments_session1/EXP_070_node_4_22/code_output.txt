@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_coverage_map.csv
+
+--- Descriptive Statistics ---
+Trust Readiness: n=8, Mean=5.62, Std=6.55
+Integration Readiness: n=8, Mean=5.50, Std=6.14
+
+--- Normality Check (Shapiro-Wilk) ---
+Trust: W=0.8445, p=0.0837
+Integration: W=0.8443, p=0.0834
+
+Data appears normal. Performing Independent Samples T-test (Welch's).
+
+--- Hypothesis Test Results (Welch's T-test) ---
+Statistic: 0.0394
+P-value: 0.9691
+Result: No Statistically Significant Difference
+
+STDERR:
+<ipython-input-1-0d5c43733226>:61: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  box = plt.boxplot(data_to_plot, patch_artist=True, labels=['Trust Readiness', 'Integration Readiness'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Box Plot with Overlaid Strip Plot (also known as a Box-and-Whisker plot with jittered data points).
+*   **Purpose:** The plot compares the distribution of "Incident Counts" across two different categories ("Trust Readiness" and "Integration Readiness"). The box plot summarizes statistical distribution (median, quartiles, range), while the red dots (strip plot) reveal the individual data points and sample size.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Incident Count".
+    *   **Units:** Count (numerical integer values).
+    *   **Range:** The axis ticks range from 0 to 17.5, but the visual data extends from 0 to approximately 19.
+*   **X-Axis:**
+    *   **Label:** Not explicitly labeled, but represents "Competency Bundle" categories.
+    *   **Categories:** Two specific groups are displayed:
+        1.  **Trust Readiness**
+        2.  **Integration Readiness**
+
+### 3. Data Trends
+*   **Trust Readiness (Left, Blue Box):**
+    *   **Median:** The median line (orange) is positioned roughly at 3.5.
+    *   **Spread (IQR):** The main concentration of data (the box) ranges from approximately 1 to 9.
+    *   **Range:** The whiskers extend from 0 (minimum) to 19 (maximum).
+    *   **Cluster/Distribution:** The red data points show a cluster of low values (between 0 and 2) and a sparse spread for higher values, with a significant maximum value at 19.
+*   **Integration Readiness (Right, Green Box):**
+    *   **Median:** The median line is slightly higher than the Trust group, positioned roughly at 4.5.
+    *   **Spread (IQR):** The interquartile range is slightly tighter than the Trust group, roughly from 1 to 8.
+    *   **Range:** The whiskers extend from 0 (minimum) to 18 (maximum).
+    *   **Cluster/Distribution:** Similar to the Trust group, there is a cluster of values near zero, a small cluster around 7-8, and a single high extreme value at 18.
+
+### 4. Annotations and Legends
+*   **Title:** "Incident Coverage Distribution by Competency Bundle" displayed at the top.
+*   **Data Points:** Small red dots represent individual observations, overlaid to show the actual density of data which is sparse (approx. 6-8 data points per category).
+*   **Grid Lines:** Horizontal dashed grey lines are provided at intervals of 2.5 to assist in reading the Y-axis values.
+*   **Colors:** Light blue is used for "Trust Readiness" and light green for "Integration Readiness" to distinguish the categories visually.
+
+### 5. Statistical Insights
+*   **Skewed Distribution:** Both categories exhibit a strong positive skew (right-skewed). The majority of the data points are clustered at the lower end of the scale (below 10), but the mean is pulled upward by single high-value incidents (18 and 19) in both groups.
+*   **Similarity of Bundles:** There is no statistically significant visual difference between the two bundles. Their ranges (0–19 vs. 0–18), medians (~3.5 vs. ~4.5), and lower quartiles are nearly identical.
+*   **Variability:** Both groups show high variability relative to their medians. For example, while the typical (median) incident count is low (under 5), it is possible to see counts nearly four times that amount in both competency bundles.
+*   **Small Sample Size:** The overlaid red dots reveal that the sample size for this dataset is quite small (likely less than 10 samples per category). This suggests that while the box plot provides a summary, the statistical robustness of the comparison might be limited by the low n-count.
+==================================================

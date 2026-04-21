@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 52 ATLAS cases.
+
+--- Descriptive Statistics ---
+Group 'Has Impact' (n=36):
+  Mean Complexity: 1.00
+  Median Complexity: 1.0
+  Std Dev: 0.00
+
+Group 'No Impact' (n=16):
+  Mean Complexity: 1.00
+  Median Complexity: 1.0
+  Std Dev: 0.00
+
+--- Statistical Test Results ---
+Mann-Whitney U Test: U=288.0, p-value=1.0000
+Welch's T-Test: t=nan, p-value=nan
+
+Result: NO statistically significant difference in complexity found.
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  res = hypotest_fun_out(*samples, **kwds)
+<ipython-input-1-06ef47ef9823>:106: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot** (also known as a box-and-whisker plot).
+*   **Purpose:** The plot is designed to compare the distribution of the "Count of Techniques Used" across two different categorical groups related to adversarial tactics ("No Impact Tactic" vs. "Has Impact Tactic").
+
+### 2. Axes
+*   **Title:** "Adversarial Tactic Complexity by Impact Status"
+*   **X-Axis:**
+    *   **Labels:** The axis represents categorical data with two distinct groups: **"No Impact Tactic"** and **"Has Impact Tactic"**.
+    *   **Range:** Discrete categories.
+*   **Y-Axis:**
+    *   **Label:** "Count of Techniques Used".
+    *   **Range:** The visible numerical scale ranges from approximately **0.95 to 1.05**.
+    *   **Tick Marks:** Major ticks are labeled at intervals of 0.02 (0.96, 0.98, 1.00, 1.02, 1.04).
+
+### 3. Data Trends
+*   **Collapsed Boxes:** The most striking feature of this plot is that the "boxes" appear as single, flat orange lines at the value **1.00** on the Y-axis.
+*   **Zero Variance:** In a standard box plot, a box represents the interquartile range (25th to 75th percentile) and the line inside represents the median. Since the box has zero height and no whiskers are visible, this indicates that **all data points** (or at least the vast majority, including the minimum, maximum, and quartiles) for both categories have a value of exactly **1**.
+*   **Comparison:** There is no visible difference between the "No Impact Tactic" group and the "Has Impact Tactic" group. Both distributions are identical and singular.
+
+### 4. Annotations and Legends
+*   **Grid Lines:** Horizontal dashed grid lines are present at 0.02 intervals to assist in reading the Y-axis values.
+*   **Color Coding:** The orange lines represent the median of the data. The lack of a surrounding box or "whiskers" (often black or blue) confirms the lack of spread in the data.
+
+### 5. Statistical Insights
+*   **Uniform Complexity:** The data indicates that regardless of whether an "Impact Tactic" is present or not, the complexity—measured here as the "Count of Techniques Used"—is constant at **1 technique**.
+*   **Lack of Correlation:** Based on this specific dataset and metric, there is no correlation between the impact status and the number of techniques used. The impact status does not lead to an increase or decrease in technique count.
+*   **Potential Data Artifact:** The fact that the count is exactly 1 for all cases might suggest that the dataset consists of individual events where techniques are logged singly, or that the metric "Count of Techniques" is not granular enough to capture complexity in this context. It suggests that every observed adversarial instance employed exactly one technique.
+==================================================

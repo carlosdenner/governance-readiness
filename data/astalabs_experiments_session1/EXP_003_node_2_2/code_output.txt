@@ -1,0 +1,27 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from ../step3_coverage_map.csv...
+File not found at ../, trying current directory...
+
+Total Sub-competencies per Bundle:
+bundle
+Integration Readiness    8
+Trust Readiness          8
+Name: count, dtype: int64
+
+Uncovered Sub-competencies per Bundle (Count of True):
+bundle
+Integration Readiness    2
+Trust Readiness          2
+Name: is_uncovered, dtype: int64
+
+Contingency Table (Rows: Bundle, Cols: Is Uncovered):
+is_uncovered           False  True 
+bundle                             
+Integration Readiness      6      2
+Trust Readiness            6      2
+
+Fisher's Exact Test Results:
+Odds Ratio: 1.0000
+P-value: 1.0000
+
+Result: The difference in coverage gaps between bundles IS NOT statistically significant.

@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+AIID Incidents loaded: 1362 rows
+Rows with complete data: 199
+Final analysis set: 177 rows
+
+--- Contingency Table ---
+Intent_Bin    Intentional  Unintentional
+Autonomy_Bin                            
+High/Medium             3             71
+Low                     5             98
+
+--- Chi-square Test Results ---
+Chi-square Statistic: 0.0000
+P-value: 1.0000e+00
+Degrees of Freedom: 1
+
+--- Expected Frequencies ---
+Intent_Bin    Intentional  Unintentional
+Autonomy_Bin                            
+High/Medium      3.344633      70.655367
+Low              4.655367      98.344633
+
+Result: No significant association found (fail to reject H0).

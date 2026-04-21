@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment tested the 'Causal Clarity' hypothesis, which posited that AI incidents causing physical harm are more likely to have identified technical root causes than those causing intangible harms. Using data from the AI Incident Database (n=180 categorized incidents), the analysis compared attribution rates between 'Physical' harms (e.g., injury, property damage) and 'Intangible' harms (e.g., discrimination, financial loss). \n\n**Results:**\n- **Attribution Rates:** The proportion of incidents with a known technical failure was nearly identical for both groups: **65.1%** for Physical harms and **64.9%** for Intangible harms.\n- **Statistical Significance:** A Chi-Square test confirmed the lack of difference (Chi2=0.0000, p=1.0000).\n\n**Conclusion:**\nThe hypothesis is **not supported**. Contrary to the expectation that physical accidents offer clearer causal evidence, the data indicates that technical attribution rates are uniform across harm types. Both physical and intangible incidents have a ~65% likelihood of having a documented technical failure type in the database.",
+  "child_ids": [
+    "node_6_24",
+    "node_6_82"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\nprint(\"Starting experiment...\")\n\n# 1. Load Data\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\ndf_incidents = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"Loaded {len(df_incidents)} incidents from AIID.\")\n\n# 2. Define Groups based on 'Tangible Harm' strings found in debug\n# Physical: Actual harm or imminent risk of harm\n# Intangible: Explicitly labeled as 'no tangible harm' (implying other types of harm like allocative/societal)\n\ndef categorize_harm(val):\n    if pd.isna(val):\n        return None\n    s = str(val).lower()\n    \n    # Physical Keywords based on debug output\n    if \"tangible harm definitively occurred\" in s:\n        return \"Physical\"\n    if \"imminent risk\" in s and \"did occur\" in s:\n        return \"Physical\"\n        \n    # Intangible Keywords\n    if \"no tangible harm\" in s:\n        return \"Intangible\"\n        \n    return None\n\ndf_incidents['Harm_Group'] = df_incidents['Tangible Harm'].apply(categorize_harm)\n\n# 3. Define Technical Cause\n# 1 if 'Known AI Technical Failure' is populated, 0 otherwise\ndef has_tech_cause(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).strip()\n    if s in [\"\", \"nan\", \"None\", \"[]\"]:\n        return 0\n    return 1\n\ndf_incidents['Has_Technical_Cause'] = df_incidents['Known AI Technical Failure'].apply(has_tech_cause)\n\n# 4. Filter for Analysis\ndf_analysis = df_incidents.dropna(subset=['Harm_Group']).copy()\n\nprint(\"\\n--- Analysis Groups ---@\")\nprint(df_analysis['Harm_Group'].value_counts())\n\n# 5. Statistical Test\ncontingency = pd.crosstab(df_analysis['Harm_Group'], df_analysis['Has_Technical_Cause'])\nprint(\"\\n--- Contingency Table (0=No Tech Cause, 1=Has Tech Cause) ---\")\nprint(contingency)\n\nif contingency.shape == (2, 2):\n    # Chi-Square Test\n    chi2, p, dof, ex = stats.chi2_contingency(contingency)\n    print(f\"\\nChi-Square Test Results:\\n  Chi2 Statistic: {chi2:.4f}\\n  P-value: {p:.5f}\")\n    \n    # Calculate Attribution Rates\n    rates = df_analysis.groupby('Harm_Group')['Has_Technical_Cause'].mean()\n    print(\"\\n--- Attribution Rates (Proportion with Known Cause) ---\")\n    print(rates)\n    \n    # Visualization\n    plt.figure(figsize=(8, 6))\n    # Color: Red for Physical, Blue for Intangible\n    colors = ['#3498db' if x == 'Intangible' else '#e74c3c' for x in rates.index]\n    bars = plt.bar(rates.index, rates.values, color=colors, alpha=0.8)\n    \n    plt.title('\"Causal Clarity\": Technical Attribution by Harm Type')\n    plt.ylabel('Proportion of Incidents with Identified Technical Failure')\n    plt.ylim(0, max(rates.values) * 1.2 if max(rates.values) > 0 else 1.0)\n    \n    for bar in bars:\n        height = bar.get_height()\n        plt.text(bar.get_x() + bar.get_width()/2., height, \n                 f'{height:.1%}', ha='center', va='bottom')\n    \n    plt.grid(axis='y', linestyle='--', alpha=0.3)\n    plt.show()\n\nelse:\n    print(\"\\nInsufficient data for 2x2 Chi-Square test.\")\n    print(\"Rows with defined Harm Group:\", len(df_analysis))\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting experiment...\nLoaded 1362 incidents from AIID.\n\n--- Analysis Groups ---@\nHarm_Group\nIntangible    94\nPhysical      86\nName: count, dtype: int64\n\n--- Contingency Table (0=No Tech Cause, 1=Has Tech Cause) ---\nHas_Technical_Cause   0   1\nHarm_Group                 \nIntangible           33  61\nPhysical             30  56\n\nChi-Square Test Results:\n  Chi2 Statistic: 0.0000\n  P-value: 1.00000\n\n--- Attribution Rates (Proportion with Known Cause) ---\nHarm_Group\nIntangible    0.648936\nPhysical      0.651163\nName: Has_Technical_Cause, dtype: float64\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Bar Plot.\n*   **Purpose:** The plot compares two categorical variables (\"Intangible\" and \"Physical\" harm types) against a quantitative measure (Proportion of incidents where a technical failure was identified). It is designed to show the similarity or disparity in technical attribution between these two categories.\n\n**2. Axes**\n*   **Y-Axis:**\n    *   **Label:** \"Proportion of Incidents with Identified Technical Failure\".\n    *   **Range:** The axis is scaled from 0.0 to approximately 0.8 (with visible ticks marking intervals of 0.1 up to 0.7).\n    *   **Units:** Proportions (0.0 to 1.0), which are also interpreted as percentages in the annotations.\n*   **X-Axis:**\n    *   **Label:** Implicitly represents \"Harm Type\".\n    *   **Categories:** The axis displays two distinct categories: \"Intangible\" and \"Physical\".\n\n**3. Data Trends**\n*   **Pattern:** The data shows a remarkable consistency between the two categories. There is almost no significant difference in the height of the bars.\n*   **Tallest Bar:** The \"Physical\" category is marginally higher, representing a proportion of roughly 0.651.\n*   **Shortest Bar:** The \"Intangible\" category is slightly lower, representing a proportion of roughly 0.649.\n*   **Comparison:** The visual trend indicates parity; the likelihood of attributing a technical failure is essentially the same regardless of whether the harm type is physical or intangible.\n\n**4. Annotations and Legends**\n*   **Chart Title:** \"Causal Clarity\": Technical Attribution by Harm Type.\n*   **Bar Annotations:** Specific percentage values are placed directly above each bar for precision:\n    *   Intangible: **64.9%**\n    *   Physical: **65.1%**\n*   **Gridlines:** Horizontal dashed gridlines are included at 0.1 intervals to assist in visual estimation of the bar heights.\n\n**5. Statistical Insights**\n*   **Uniformity of Attribution:** The most significant insight is that the rate of identified technical failure is nearly identical across both harm types (a difference of only 0.2%). This suggests that the nature of the harm (whether it touches the physical world or remains intangible/digital) does not impact the likelihood of a technical root cause being identified.\n*   **High Attribution Rate:** For both categories, nearly two-thirds of incidents (approx. 65%) are attributed to identified technical failures. This indicates a relatively high level of \"Causal Clarity\" in the dataset being analyzed.\n==================================================",
+  "created_at": "2026-02-22T06:43:04.673771+00:00",
+  "creation_idx": 120,
+  "experiment_id": "node_5_36",
+  "experiment_plan": {
+    "deliverables": "1. Attribution rates (percentage with known cause) for Physical vs. Intangible harms.\n2. Chi-Square test results.\n3. Bar chart of attribution rates.",
+    "objective": "Test if physical accidents lead to clearer technical root-cause identification than sociotechnical failures.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `aiid_incidents`.\n2. Categorize incidents into 'Physical' (from `Tangible Harm`) and 'Intangible/Allocative' (from `Harm Domain` or `Harm Distribution Basis`).\n3. Create a binary variable `Has_Technical_Cause` (1 if `Known AI Technical Failure` is not null/empty, 0 otherwise).\n4. Perform a Chi-Square test to compare the rate of technical attribution between Physical and Intangible harm groups."
+  },
+  "hypothesis": "The 'Causal Clarity' of Physical Harm: Incidents resulting in 'Physical' harm are significantly more likely to have a specific, identified 'AI Technical Failure' type compared to 'Allocative' or 'Intangible' harms, which often lack technical attribution.",
+  "id_in_run": 119,
+  "is_surprising": true,
+  "parent_id": "node_4_17",
+  "posterior": 0.26373626373626374,
+  "posterior_belief": {
+    "_empirical_mean": 0.016666666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 56.0,
+    "definitely_true": 0.0,
+    "maybe_false": 4.0,
+    "maybe_true": 0.0,
+    "mean": 0.26373626373626374,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Causal Clarity' hypothesis using the AI Incident Database (AIID). After an initial debugging phase to correctly map the 'Tangible Harm' column values, the analysis proceeded with a sample of 180 categorized incidents (94 Intangible, 86 Physical).\n\n**Hypothesis**: Incidents resulting in 'Physical' harm are significantly more likely to have a specific, identified 'AI Technical Failure' compared to 'Intangible' harms.\n\n**Findings**:\n1.  **Uniform Attribution Rates**: Contrary to the hypothesis, the rate of identified technical failures was nearly identical between the two groups: **65.1%** for Physical harms and **64.9%** for Intangible harms.\n2.  **Statistical Significance**: The Chi-Square test yielded a p-value of **1.0000** (Chi2=0.00), indicating absolutely no statistical difference between the groups.\n\n**Conclusion**: The hypothesis is **not supported**. The data suggests that 'Causal Clarity' regarding technical failures is not dependent on whether the harm is physical or intangible; both types of incidents have a ~65% likelihood of having a documented technical root cause in the database.",
+  "rich_outputs": null,
+  "runtime_ms": 308380.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5738390641616448
+}

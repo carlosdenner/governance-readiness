@@ -1,0 +1,8 @@
+exitcode: 1 (execution failed)
+Code output:   [36mCell[39m[36m [39m[32mIn[1][39m[32m, line 41[39m
+[31m    [39m[31mif any(x in val_str for in ['cots', 'commercial', 'vendor', 'service', 'saas', 'bought']):[39m
+                            ^
+[31mSyntaxError[39m[31m:[39m invalid syntax
+
+
+ERROR: {'type': 'SyntaxError', 'message': 'invalid syntax (<ipython-input-1-0a628f02690b>, line 41)', 'traceback': 'Traceback (most recent call last):\n  File "/usr/local/lib/python3.13/site-packages/IPython/core/interactiveshell.py", line 3372, in run_cell_async\n    code_ast = compiler.ast_parse(cell, filename=cell_name)\n  File "/usr/local/lib/python3.13/site-packages/IPython/core/compilerop.py", line 86, in ast_parse\n    return compile(source, filename, symbol, self.flags | PyCF_ONLY_AST, 1)\n  File "<ipython-input-1-0a628f02690b>", line 41\n    if any(x in val_str for in [\'cots\', \'commercial\', \'vendor\', \'service\', \'saas\', \'bought\']):\n                            ^^\nSyntaxError: invalid syntax\n'}

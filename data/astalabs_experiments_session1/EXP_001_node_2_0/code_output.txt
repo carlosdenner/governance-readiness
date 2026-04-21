@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: === Contingency Table (Harm Category vs. Readiness Split) ===
+trust_integration_split  both  integration-dominant  trust-dominant
+harm_category                                                      
+Non-Security                9                     0               0
+Security                   37                     4               2
+
+=== Statistical Test Results (Chi-Square) ===
+Chi2 Statistic: 1.4196
+P-Value: 0.4917
+Degrees of Freedom: 2
+
+=== Row Percentages ===
+trust_integration_split    both  integration-dominant  trust-dominant
+harm_category                                                        
+Non-Security             100.00                   0.0            0.00
+Security                  86.05                   9.3            4.65
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Annotated Heatmap (representing a contingency table).
+*   **Purpose:** To visualize the frequency distribution and relationship between two categorical variables: "Harm Category" and "Competency Split." The color intensity and numerical annotations indicate the count of incidents where these categories intersect.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Competency Split"
+    *   **Labels:** "both", "integration-dominant", "trust-dominant"
+*   **Y-Axis:**
+    *   **Title:** "Harm Category"
+    *   **Labels:** "Non-Security", "Security"
+*   **Color Scale (Legend):**
+    *   **Label:** "Incident Count"
+    *   **Range:** 0 to approximately 37 (based on the maximum data point). The scale uses a gradient from pale yellow (0) to deep blue (high values).
+
+### 3. Data Trends
+*   **Highest Value Area:** The most significant cluster is found at the intersection of **"Security"** and **"both"**, showing a count of **37**. This cell is colored the darkest blue, indicating it is the dominant category combination by a large margin.
+*   **Secondary Cluster:** The intersection of **"Non-Security"** and **"both"** shows a moderate count of **9** (light green).
+*   **Low Value Areas:**
+    *   The "Security" category has minor counts in "integration-dominant" (4) and "trust-dominant" (2).
+    *   The "Non-Security" category has **0** incidents in both "integration-dominant" and "trust-dominant" columns.
+*   **Overall Pattern:** The data is heavily skewed towards the "both" column on the x-axis. Regardless of the Harm Category, the vast majority of incidents fall under the "both" competency split.
+
+### 4. Annotations and Legends
+*   **Cell Annotations:** Each cell in the grid contains a numerical integer representing the exact count of incidents for that specific intersection (e.g., "9", "0", "37").
+*   **Color Bar:** A vertical bar on the right side provides a reference for the color coding, confirming that darker shades represent higher incident counts.
+*   **Title:** The chart is clearly titled "Heatmap: Harm Category vs. Trust/Integration Split".
+
+### 5. Statistical Insights
+*   **Dominance of Security Incidents:** The total number of incidents shown is 52 ($9+0+0+37+4+2$). Of these, "Security" related incidents account for **43** (approx. 83%), while "Non-Security" accounts for **9** (approx. 17%).
+*   **Concentration in "Both" Competency:** The "both" category is overwhelmingly the most common competency split, accounting for **46 out of 52** incidents (approx. 88%).
+*   **Exclusive Distribution:** There is a distinct lack of data for "Non-Security" harms outside of the "both" category. This suggests that whenever a Non-Security harm occurs in this dataset, it is exclusively associated with the "both" competency split.
+*   **Rare Events:** "Integration-dominant" and "Trust-dominant" splits are rare overall, appearing only in the context of Security harms, and even then, in very low numbers ($<10\%$ of total data combined).
+==================================================

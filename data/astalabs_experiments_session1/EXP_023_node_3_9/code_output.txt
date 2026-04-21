@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading step2_competency_statements.csv...
+
+=== Architectural Density Statistics (Controls per Statement) ===
+                           mean  median       std  count       sem
+bundle                                                            
+Integration Readiness  2.000000     2.0  0.522233     23  0.108893
+Trust Readiness        1.684211     2.0  0.749269     19  0.171894
+
+Normality Check (Shapiro-Wilk): Trust (p=0.0005), Integration (p=0.0000)
+
+=== Hypothesis Test Results ===
+Mann-Whitney U Test: U=158.5, p=0.0902
+Welch's T-Test: t=-1.5519, p=0.1308
+Result: No statistically significant difference in control density found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot with Error Bars.
+*   **Purpose:** The plot compares the mean values of "Architecture Control Density" across two distinct categories ("Competency Bundles"). The inclusion of error bars indicates the variability or uncertainty associated with these mean measurements.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Competency Bundle"
+    *   **Labels:** Two categorical groups: "Integration Readiness" and "Trust Readiness".
+*   **Y-Axis:**
+    *   **Title:** "Avg. Number of Controls per Statement"
+    *   **Units:** Count/Ratio (Controls per Statement).
+    *   **Value Range:** The axis is scaled from **0.00 to roughly 2.20**, with tick marks at intervals of **0.25** (0.00, 0.25, 0.50, ..., 2.00).
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"Integration Readiness"** bundle (colored light blue) is the tallest, reaching an average value of **2.00**.
+*   **Shortest Bar:** The **"Trust Readiness"** bundle (colored salmon/light red) is shorter, with an average value of **1.68**.
+*   **Comparison:** There is a clear visible difference between the two categories. The "Integration Readiness" bundle has a higher average control density compared to "Trust Readiness."
+*   **Variability:** Both bars feature error bars (whiskers). The error bars appear roughly similar in absolute length, suggesting comparable variance or standard error between the two datasets, though the "Trust Readiness" error bar extends noticeably further relative to its mean.
+
+### 4. Annotations and Legends
+*   **Value Labels:** The exact mean values are annotated directly above the error bars for clarity:
+    *   **2.00** for Integration Readiness.
+    *   **1.68** for Trust Readiness.
+*   **Grid Lines:** Horizontal dashed grid lines are included to assist with visual estimation of bar heights against the Y-axis.
+*   **Legend:** There is no separate legend box; the bars are distinguished by color and labeled directly on the X-axis.
+
+### 5. Statistical Insights
+*   **Control Density Disparity:** The data suggests that **Integration Readiness** requires or possesses a higher density of architecture controls per statement compared to **Trust Readiness**. Specifically, Integration Readiness has approximately **19% more controls per statement** on average than Trust Readiness ($2.00$ vs $1.68$).
+*   **Significance:** While the exact statistical metric for the error bars (e.g., Standard Deviation, Standard Error, or 95% Confidence Interval) is not specified, the visual separation between the top of the "Trust Readiness" error bar and the mean of the "Integration Readiness" bar suggests a likely meaningful difference between the two groups. However, the error bars do overlap slightly in vertical range (the bottom of the blue error bar and the top of the red error bar appear to occupy similar Y-values around 1.85–1.90), implying that while the means are different, the population distributions may have some overlap.
+==================================================

@@ -1,0 +1,84 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step2_crosswalk_matrix.csv
+
+Filtered Data Shape: (29, 24)
+Source Counts:
+ source
+NIST AI RMF 1.0     19
+OWASP Top 10 LLM    10
+Name: count, dtype: int64
+Bundle Counts:
+ bundle
+Integration Readiness    17
+Trust Readiness          12
+Name: count, dtype: int64
+
+Contingency Table (Observed):
+ bundle            Integration Readiness  Trust Readiness
+source                                                  
+NIST AI RMF 1.0                       8               11
+OWASP Top 10 LLM                      9                1
+
+=== Chi-Square Test Results ===
+Chi-Square Statistic: 4.3786
+P-value: 0.0364
+Degrees of Freedom: 1
+
+Expected Frequencies:
+ bundle            Integration Readiness  Trust Readiness
+source                                                  
+NIST AI RMF 1.0               11.137931         7.862069
+OWASP Top 10 LLM               5.862069         4.137931
+
+=== Interpretation ===
+P-value (0.0364) < 0.05: Reject Null Hypothesis.
+There is a statistically significant association between the Framework Source and the Competency Bundle.
+This supports the hypothesis of framework bias (Security vs Risk).
+
+STDERR:
+<ipython-input-1-28ab67acfa4f>:71: Pandas4Warning: Starting with pandas version 4.0 all arguments of sum will be keyword-only.
+  contingency_props = contingency_table.div(contingency_table.sum(1), axis=0)
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart visualizes the relative distribution (proportions) of two specific categories ("Competency Bundles") within two different groups ("Framework Sources"). By normalizing the height of the bars to 1.0 (100%), it allows for a direct comparison of the composition of requirements between the frameworks, regardless of the total number of requirements in each.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Framework Source"
+    *   **Labels:** Two categorical variables: "NIST AI RMF 1.0" and "OWASP Top 10 LLM".
+*   **Y-Axis:**
+    *   **Title:** "Proportion of Requirements"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Intervals:** Marked at 0.2 increments (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **NIST AI RMF 1.0:**
+    *   Shows a more balanced distribution between the two bundles compared to the OWASP framework.
+    *   The majority share is held by **Trust Readiness** (Orange) at roughly 58%, while **Integration Readiness** (Blue) comprises roughly 42%.
+*   **OWASP Top 10 LLM:**
+    *   Displays a highly skewed distribution.
+    *   It is overwhelmingly dominated by **Integration Readiness** (Blue), which occupies 90% of the bar.
+    *   **Trust Readiness** (Orange) represents a very small minority at only 10%.
+
+### 4. Annotations and Legends
+*   **Legend:** located on the top right, titled "Competency Bundle."
+    *   **Blue:** Represents "Integration Readiness".
+    *   **Orange:** Represents "Trust Readiness".
+*   **Annotations:** White text overlaying the bar segments provides exact values:
+    *   **NIST AI RMF 1.0:**
+        *   Integration Readiness: Count of **8** (42.1%).
+        *   Trust Readiness: Count of **11** (57.9%).
+    *   **OWASP Top 10 LLM:**
+        *   Integration Readiness: Count of **9** (90.0%).
+        *   Trust Readiness: Count of **1** (10.0%).
+
+### 5. Statistical Insights
+*   **Divergent Focus:** The two frameworks prioritize these competency bundles very differently. The **OWASP Top 10 LLM** framework appears to be heavily focused on the technical or operational aspects of implementation (Integration Readiness), whereas the **NIST AI RMF 1.0** places a higher emphasis on governance, reliability, or ethical considerations (Trust Readiness).
+*   **Sample Size:** While the chart is normalized to show proportions, the annotations reveal the sample sizes are relatively small. The NIST column represents a total of 19 requirements (8 + 11), while the OWASP column represents 10 requirements (9 + 1).
+*   **Inverse Relationship:** There is an inverse relationship visible between the frameworks regarding these bundles; where NIST leans toward Trust, OWASP leans heavily toward Integration.
+==================================================

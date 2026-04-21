@@ -1,0 +1,27 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading astalabs_discovery_all_data.csv...
+Dataset loaded successfully.
+ATLAS cases shape: (52, 196)
+Columns containing 'technique': ['n_techniques', 'techniques', 'techniques_used', 'technique_count']
+Column 'n_techniques' has 52 non-null values.
+Source tables for 'n_techniques': <StringArray>
+['atlas_cases']
+Length: 1, dtype: str
+Sample 'n_techniques': 6.0
+Column 'techniques' has 52 non-null values.
+Source tables for 'techniques': <StringArray>
+['atlas_cases']
+Length: 1, dtype: str
+Sample 'techniques': {{acquire_ml_artifacts_data.id}}|{{craft_adv_manual.id}}|{{evade_model.id}}|{{train_proxy_model.id}}|{{verify_attack.id}}|{{victim_research_preprint.id}}
+Column 'techniques_used' has 52 non-null values.
+Source tables for 'techniques_used': <StringArray>
+['step3_incident_coding']
+Length: 1, dtype: str
+Sample 'techniques_used': AML.T0000.001; AML.T0002.000; AML.T0005; AML.T0015; AML.T0042; AML.T0043.003
+Column 'technique_count' has 52 non-null values.
+Source tables for 'technique_count': <StringArray>
+['step3_incident_coding']
+Length: 1, dtype: str
+Sample 'technique_count': 6.0
+Columns containing 'case': ['2_use_case_name', 'case_id', 'case_study_id']
+Sample case_id from atlas_cases: ['AML.CS0000', 'AML.CS0001', 'AML.CS0002', 'AML.CS0003', 'AML.CS0004']

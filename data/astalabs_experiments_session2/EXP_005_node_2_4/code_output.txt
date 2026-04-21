@@ -1,0 +1,77 @@
+exitcode: 0 (execution succeeded)
+Code output: Current working directory: /data
+Loading dataset from: astalabs_discovery_all_data.csv
+Filtered EO 13960 records: 1757
+
+Unique values in '16_dev_stage':
+16_dev_stage
+Operation and Maintenance         627
+Acquisition and/or Development    351
+Initiated                         329
+Implementation and Assessment     275
+Retired                           133
+Planned                            20
+In production                      14
+In mission                          4
+NaN                                 4
+Name: count, dtype: int64
+
+Unique values in '52_impact_assessment':
+52_impact_assessment
+NaN                        1600
+No                           65
+Yes                          60
+Planned or in-progress.      31
+YES                           1
+Name: count, dtype: int64
+
+--- Summary Statistics ---
+               Total Systems  Compliant Systems  Compliance Rate
+stage_group                                                     
+Operation                641                 56         0.087363
+Pre-Operation            351                  2         0.005698
+
+--- Contingency Table ---
+is_compliant     0   1
+stage_group           
+Operation      585  56
+Pre-Operation  349   2
+
+Chi-Square Statistic: 26.0141
+P-Value: 3.3893e-07
+Result: The difference in compliance rates is statistically significant.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (Vertical Bar Chart).
+*   **Purpose:** The plot compares a numerical variable (Compliance Rate) across two distinct categorical groups (Lifecycle Stages: Operation vs. Pre-Operation).
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Lifecycle Stage"
+    *   **Categories:** Two categories are displayed: "Operation" and "Pre-Operation".
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Compliance Rate (Proportion)"
+    *   **Range:** The axis ranges from **0.0 to 1.0**, representing a proportion from 0% to 100%. The tick marks are spaced at intervals of 0.2.
+
+### 3. Data Trends
+*   **Comparison of Heights:** There is a significant disparity between the two categories. The bar for "Operation" is visibly much taller than the bar for "Pre-Operation."
+*   **Tallest Bar:** The "Operation" stage represents the highest value.
+*   **Shortest Bar:** The "Pre-Operation" stage is extremely low, barely registering above the zero line relative to the scale of the graph.
+*   **Overall Magnitude:** Despite the difference between the two bars, both values are quite low on the total scale of 0 to 1.0; the highest value does not even reach the 0.1 (10%) threshold.
+
+### 4. Annotations and Legends
+*   **Value Labels:** Specific percentages are annotated directly above each bar to provide exact values:
+    *   Above the **Operation** bar: **8.7%**
+    *   Above the **Pre-Operation** bar: **0.6%**
+*   **Gridlines:** Horizontal dashed gridlines are present at 0.2, 0.4, 0.6, and 0.8 to aid in visual estimation, highlighting how far below the halfway mark these values are.
+*   **Color Coding:** The "Operation" bar is blue, and the "Pre-Operation" bar is orange.
+
+### 5. Statistical Insights
+*   **Extremely Low Compliance:** The most striking insight is that Impact Assessment Compliance is very low across the board. Even in the better-performing stage (Operation), compliance is less than 9%.
+*   **Stage Discrepancy:** There is a massive relative difference between the stages. Compliance during the **Operation** stage (8.7%) is roughly **14.5 times higher** than during the **Pre-Operation** stage (0.6%).
+*   **Pre-Operation Gap:** Compliance during the Pre-Operation phase is virtually non-existent, sitting at less than 1%. This suggests that impact assessments are almost entirely neglected before operations begin.
+==================================================

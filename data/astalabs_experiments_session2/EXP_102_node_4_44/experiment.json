@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed 1,710 records from the EO13960 dataset to evaluate the 'Vendor Opacity' hypothesis. The results **reject** the hypothesis that Commercial AI systems are less likely to report post-deployment monitoring than Custom/Federal systems.\n\n1.  **Statistical Significance**: The Chi-Square test yielded a p-value of 0.0083, indicating a statistically significant difference between the two groups.\n2.  **Directionality**: Contrary to the hypothesis, 'Commercial' systems showed a **higher** rate of reported monitoring (11.9%) compared to 'Custom/Federal' systems (7.4%).\n3.  **Governance Insight**: Rather than 'Vendor Opacity', the data suggests a 'Federal Maturity Gap', where custom government-developed systems are significantly less likely to have established or reported post-deployment monitoring protocols compared to their commercial counterparts.",
+  "child_ids": [
+    "node_5_49",
+    "node_5_63"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport numpy as np\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# --- Step 1: Clean '10_commercial_ai' (System Source) ---\n# Logic: 'None of the above.' implies the system is not one of the standard COTS tools listed, \n# hence categorized as 'Custom/Federal' for this comparison. \n# Specific string values imply 'Commercial' use cases.\n\ndef classify_source(val):\n    if pd.isna(val):\n        return np.nan\n    s_val = str(val).strip()\n    if s_val == 'None of the above.':\n        return 'Custom/Federal'\n    else:\n        return 'Commercial'\n\ndf_eo['system_source'] = df_eo['10_commercial_ai'].apply(classify_source)\n\n# Drop rows where source is unknown (NaN in 10_commercial_ai)\ndf_analysis = df_eo.dropna(subset=['system_source']).copy()\n\n# --- Step 2: Clean '56_monitor_postdeploy' (Monitoring Status) ---\n# Logic: Identify positive assertions of monitoring infrastructure.\n# NaNs are treated as 'No/Not Reported' in this context of survey compliance.\n\ndef classify_monitoring(val):\n    if pd.isna(val):\n        return 'No'\n    \n    s_val = str(val).lower()\n    \n    # Positive keywords based on unique values analysis\n    # \"Intermittent and Manually Updated...\"\n    # \"Automated and Regularly Scheduled...\"\n    # \"Established Process...\"\n    if any(keyword in s_val for keyword in ['intermittent', 'automated', 'established', 'manually updated']):\n        return 'Yes'\n    \n    # Negative keywords: \"No monitoring protocols\", \"not safety impacting\"\n    # \"under development\" is treated as No (not currently active)\n    return 'No'\n\ndf_analysis['has_monitoring'] = df_analysis['56_monitor_postdeploy'].apply(classify_monitoring)\n\n# --- Step 3: Analysis ---\nprint(f\"Records for analysis: {len(df_analysis)}\")\nprint(\"System Source Distribution:\\n\", df_analysis['system_source'].value_counts())\nprint(\"Monitoring Status Distribution:\\n\", df_analysis['has_monitoring'].value_counts())\n\n# Contingency Table\ncontingency_table = pd.crosstab(df_analysis['system_source'], df_analysis['has_monitoring'])\nprint(\"\\nContingency Table (Source vs Monitoring):\")\nprint(contingency_table)\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Calculate Odds Ratio\n# OR = (a*d) / (b*c)\n# Table structure usually: \n#              No   Yes\n# Commercial   a    b\n# Custom       c    d\n# But let's check the columns of crosstab first\n\nif 'Yes' in contingency_table.columns and 'No' in contingency_table.columns:\n    # Calculate percentage of 'Yes' for each group\n    monitoring_rates = pd.crosstab(df_analysis['system_source'], df_analysis['has_monitoring'], normalize='index') * 100\n    print(\"\\nMonitoring Rates (%):\")\n    print(monitoring_rates)\n    \n    # Plotting\n    plt.figure(figsize=(8, 6))\n    \n    # Ensure order is Commercial then Custom for comparison\n    sources = ['Commercial', 'Custom/Federal']\n    # Handle case if one source is missing\n    present_sources = [s for s in sources if s in monitoring_rates.index]\n    \n    yes_rates = monitoring_rates.loc[present_sources, 'Yes']\n    \n    bars = plt.bar(present_sources, yes_rates, color=['#ff7f0e', '#1f77b4'])\n    \n    plt.title('Post-Deployment Monitoring Rates: Commercial vs Custom AI')\n    plt.xlabel('System Source')\n    plt.ylabel('Reported Monitoring (%)')\n    plt.ylim(0, max(yes_rates.max() * 1.2, 10))\n    \n    for bar in bars:\n        height = bar.get_height()\n        plt.text(bar.get_x() + bar.get_width()/2., height + 0.5,\n                 f'{height:.1f}%',\n                 ha='center', va='bottom')\n    \n    plt.grid(axis='y', linestyle='--', alpha=0.5)\n    plt.tight_layout()\n    plt.show()\nelse:\n    print(\"Not enough data to generate 'Yes' column for monitoring.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Records for analysis: 1710\nSystem Source Distribution:\n system_source\nCustom/Federal    1357\nCommercial         353\nName: count, dtype: int64\nMonitoring Status Distribution:\n has_monitoring\nNo     1568\nYes     142\nName: count, dtype: int64\n\nContingency Table (Source vs Monitoring):\nhas_monitoring    No  Yes\nsystem_source            \nCommercial       311   42\nCustom/Federal  1257  100\n\nChi-Square Statistic: 6.9624\nP-value: 8.3239e-03\n\nMonitoring Rates (%):\nhas_monitoring         No        Yes\nsystem_source                       \nCommercial      88.101983  11.898017\nCustom/Federal  92.630803   7.369197\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot.\n*   **Purpose:** The plot compares the percentages of reported post-deployment monitoring for two distinct categories of AI system sources: \"Commercial\" and \"Custom/Federal.\"\n\n### 2. Axes\n*   **X-axis:**\n    *   **Title:** \"System Source\"\n    *   **Labels:** The axis represents categorical data with two groups: \"Commercial\" and \"Custom/Federal.\"\n*   **Y-axis:**\n    *   **Title:** \"Reported Monitoring (%)\"\n    *   **Units:** Percentage (%).\n    *   **Range:** The axis scale ranges from **0 to 14**, with major tick marks at intervals of 2.\n\n### 3. Data Trends\n*   **Tallest Bar:** The orange bar representing **Commercial** systems is the tallest, indicating a higher rate of reported monitoring.\n*   **Shortest Bar:** The blue bar representing **Custom/Federal** systems is the shortest.\n*   **Pattern:** There is a clear disparity between the two sources. AI systems sourced commercially are reported to be monitored post-deployment at a higher frequency than those developed via custom or federal channels.\n\n### 4. Annotations and Legends\n*   **Title:** \"Post-Deployment Monitoring Rates: Commercial vs Custom AI\" provides the main context for the visualization.\n*   **Value Labels:** Exact percentage values are annotated above each bar for precision:\n    *   Commercial: **11.9%**\n    *   Custom/Federal: **7.4%**\n*   **Gridlines:** Horizontal dashed gridlines are included to assist in visual estimation of bar heights relative to the Y-axis.\n*   **Colors:** The bars are color-coded (Orange for Commercial, Blue for Custom/Federal) to visually distinguish the categories.\n\n### 5. Statistical Insights\n*   **Absolute Difference:** There is a **4.5 percentage point gap** between the two categories ($11.9\\% - 7.4\\% = 4.5\\%$).\n*   **Relative Comparison:** Commercial AI systems have a reported monitoring rate approximately **1.6 times higher** than Custom/Federal systems.\n*   **Implication:** The data suggests that commercial vendors may have more established protocols or requirements for post-deployment monitoring compared to custom or federally developed solutions. Alternatively, this could indicate a gap in reporting standards where federal/custom projects are less likely to disclose monitoring activities even if they occur.\n==================================================",
+  "created_at": "2026-02-22T05:54:02.500065+00:00",
+  "creation_idx": 103,
+  "experiment_id": "node_4_44",
+  "experiment_plan": {
+    "deliverables": "Contingency table of Source vs Monitoring; Chi-Square test results; Bar chart comparing monitoring rates.",
+    "objective": "Compare post-deployment monitoring rates between Commercial and Custom AI systems in the federal inventory.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table == 'eo13960_scored'`. 2. Clean `10_commercial_ai` to categorize entries into 'Commercial' (COTS) vs 'Custom/Federal'. 3. Clean `56_monitor_postdeploy` into binary (Yes/No). 4. Create a contingency table. 5. Perform a Chi-Square test of independence."
+  },
+  "hypothesis": "Vendor Opacity: Federally deployed 'Commercial' AI systems are significantly less likely to have reported 'Post-Deployment Monitoring' compared to 'Custom-Developed' systems, indicating a governance gap in vendor-procured solutions.",
+  "id_in_run": 102,
+  "is_surprising": true,
+  "parent_id": "node_3_2",
+  "posterior": 0.2692307692307692,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2692307692307692,
+    "n": 60.0,
+    "prior_params": [
+      24.5,
+      6.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7903225806451613,
+  "prior_belief": {
+    "_empirical_mean": 0.8,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 6.0,
+    "maybe_false": 0.0,
+    "maybe_true": 24.0,
+    "mean": 0.7903225806451613,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully verified the 'Vendor Opacity' hypothesis using the EO13960 dataset. The implementation correctly adapted to the specific data values found during the debugging phase, categorizing 'None of the above' as 'Custom/Federal' and specific commercial use-cases as 'Commercial'. \n\n**Findings:**\n1.  **Hypothesis Rejection:** The results statistically **reject** the hypothesis that Commercial AI systems are less likely to report post-deployment monitoring than Custom/Federal systems. \n2.  **Inverse Relationship:** The data reveals a significant inverse trend (Chi-Square p=0.0083). Commercial systems reported a higher monitoring rate (11.9%) compared to Custom/Federal systems (7.4%).\n3.  **Implication:** Instead of 'Vendor Opacity', the findings point to a potential 'Federal Maturity Gap', where custom government-developed tools lack the standardized post-deployment monitoring protocols present in commercial off-the-shelf solutions.",
+  "rich_outputs": null,
+  "runtime_ms": 270850.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6253101736972705
+}

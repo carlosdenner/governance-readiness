@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Initial subset size: 1757
+Cleaned subset size (valid Public/Internal label): 961
+Group sizes:
+is_public
+False    766
+True     195
+Name: count, dtype: int64
+
+Contingency Table:
+                 No Appeal Process  Has Appeal Process
+Internal-Facing                703                  63
+Public-Facing                  187                   8
+
+Appeal Process Availability Rate - Public-Facing (n=195): 4.10%
+Appeal Process Availability Rate - Internal-Facing (n=766): 8.22%
+
+Chi-Square Statistic: 3.2807
+P-value: 7.0097e-02
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** This plot compares a quantitative variable ("Proportion with Appeal Process") across two distinct categorical groups ("Internal-Facing" and "Public-Facing" deployment types).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Categories:** Represents "Deployment Type". The specific categories labeled are **"Internal-Facing"** and **"Public-Facing"**.
+    *   **Range:** Categorical (nominal data), so there is no numerical range.
+*   **Y-Axis:**
+    *   **Title:** "Proportion with Appeal Process".
+    *   **Units:** The axis uses decimal proportions (0.00 to 0.10), representing fractions of a whole.
+    *   **Range:** The visible tick marks range from **0.00 to 0.10**, with intervals of 0.02. The axis extends slightly beyond 0.10 to accommodate the height of the data.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"Internal-Facing"** category (gray bar) is the tallest, indicating a higher availability of appeal processes.
+*   **Shortest Bar:** The **"Public-Facing"** category (blue bar) is the shortest.
+*   **Pattern:** There is a significant disparity between the two groups. The proportion for "Internal-Facing" deployments is exactly double that of "Public-Facing" deployments.
+
+### 4. Annotations and Legends
+*   **Data Labels:** Both bars have explicit data value annotations placed at the top in bold text, presented as percentages:
+    *   Internal-Facing: **8.2%**
+    *   Public-Facing: **4.1%**
+*   **Color Coding:** The bars are colored differently—gray for "Internal-Facing" and blue for "Public-Facing"—to visually distinguish the categories, though no separate legend is provided or necessary given the x-axis labels.
+
+### 5. Statistical Insights
+*   **Low Overall Availability:** The availability of an appeal process is generally low across both deployment types, with neither category exceeding 10%.
+*   **Comparative Ratio:** An "Internal-Facing" deployment is **twice as likely** (8.2% vs 4.1%) to have an appeal process compared to a "Public-Facing" deployment.
+*   **Implication:** This suggests that systems designed for internal use (likely involving employees or internal stakeholders) usually have more robust or formalized mechanisms for recourse than systems designed for the general public.
+==================================================

@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+Contingency Table (Impact Type vs. Disparity Mitigation):
+                 No  Yes
+impact_category         
+Rights-Impacted  59    0
+Safety-Impacted  18    0
+
+Mitigation Rates:
+impact_category
+Rights-Impacted    0.0
+Safety-Impacted    0.0
+Name: has_mitigation, dtype: float64
+
+Cannot perform Chi-Square test: No positive cases ('Yes') observed in either group.
+Both groups have 0% compliance rate.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot is designed to compare the percentage of systems that have implemented "Disparity Mitigation Controls" across two distinct categories of systems: "Rights-Impacted" and "Safety-Impacted."
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Percentage with Mitigation (%)"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Linear, with tick marks every 20 units (0, 20, 40, 60, 80, 100).
+*   **X-Axis:**
+    *   **Label:** The axis represents categorical system types.
+    *   **Categories:** Two distinct groups are labeled: "Rights-Impacted" and "Safety-Impacted."
+
+### 3. Data Trends
+*   **Bar Height/Pattern:** There are no visible bars extending upwards from the x-axis.
+*   **Values:** Both categories exhibit a value of exactly 0%.
+*   **Comparison:** There is no variation between the groups; both show a complete absence of the metric being measured (mitigation controls).
+
+### 4. Annotations and Legends
+*   **Annotations:**
+    *   **Above "Rights-Impacted":** The text reads **"0.0% (n=0/59)"**. This indicates that out of a sample size of 59 systems in this category, 0 had mitigation controls.
+    *   **Above "Safety-Impacted":** The text reads **"0.0% (n=0/18)"**. This indicates that out of a sample size of 18 systems in this category, 0 had mitigation controls.
+*   **Legend:** There is no legend provided or required, as the categories are explicitly labeled on the x-axis.
+
+### 5. Statistical Insights
+*   **Universal Lack of Mitigation:** The most significant insight is that **none** of the systems surveyed in this study have implemented disparity mitigation controls. This applies to both systems that impact human rights and systems that impact safety.
+*   **Sample Size Context:** The total sample size analyzed is 77 systems (59 Rights-Impacted + 18 Safety-Impacted). The fact that the percentage is 0.0% across a sample of this size suggests a systemic gap in the deployment or documentation of fairness/disparity controls within the specific dataset or domain being analyzed.
+*   **Risk Implication:** Given the high-stakes nature of the categories (Rights and Safety), the complete absence of disparity mitigation controls highlights a potential area of significant ethical or regulatory risk.
+==================================================

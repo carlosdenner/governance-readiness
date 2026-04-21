@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Legacy Governance' Gap hypothesis using the `eo13960_scored` dataset. Out of 1,757 records, 1,191 (67.8%) had parseable initiation dates. The analysis compared 'Legacy' systems (initiated < 2020, n=228) against 'Modern' systems (initiated 2020+, n=963). \n\nContrary to the hypothesis that legacy systems would lack retroactive governance, the results show that **Legacy systems are significantly more likely** to have a recorded Impact Assessment (10.53%) compared to Modern systems (3.74%). The Chi-square test yielded a p-value of 5.22e-05, confirming the difference is statistically significant. This finding refutes the initial hypothesis and suggests that while overall compliance is low (93-96% missing assessments), newer systems are entering the inventory with even lower documented governance readiness than the older, established systems.",
+  "child_ids": [
+    "node_4_5",
+    "node_4_32"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# Load the dataset\nfile_path = 'astalabs_discovery_all_data.csv'\n# Use low_memory=False to avoid DtypeWarning, or specify dtype if known. \n# Given the sparse nature, low_memory=False is safer for a quick script.\ndf = pd.read_csv(file_path, low_memory=False)\n\n# Filter for EO 13960 scored data\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\nprint(f\"Total EO 13960 records: {len(eo_df)}\")\n\n# --- Step 1: Parse Dates ---\n# Column: '18_date_initiated'\n# Attempt to convert to datetime. This handles various formats.\neo_df['date_parsed'] = pd.to_datetime(eo_df['18_date_initiated'], errors='coerce')\n\n# Extract year\neo_df['initiation_year'] = eo_df['date_parsed'].dt.year\n\n# Filter out rows where date could not be parsed\nvalid_date_df = eo_df.dropna(subset=['initiation_year']).copy()\nprint(f\"Records with valid dates: {len(valid_date_df)} ({(len(valid_date_df)/len(eo_df))*100:.1f}%)\")\n\n# Define Legacy vs Modern\n# Legacy: < 2020\n# Modern: >= 2020\nvalid_date_df['is_legacy'] = valid_date_df['initiation_year'] < 2020\nvalid_date_df['cohort'] = valid_date_df['is_legacy'].map({True: 'Legacy (<2020)', False: 'Modern (2020+)'})\n\n# --- Step 2: Analyze Impact Assessment ---\n# Column: '52_impact_assessment'\n# Check unique values to determine binary mapping\nprint(\"\\nUnique values in '52_impact_assessment':\")\nprint(valid_date_df['52_impact_assessment'].value_counts(dropna=False))\n\n# Binarize: 'Yes' vs Others\n# We define 'Has Assessment' as explicitly 'Yes'. \n# 'No', 'N/A', and specific reasons for No are treated as 'No Assessment'.\nvalid_date_df['has_assessment'] = valid_date_df['52_impact_assessment'].astype(str).str.strip().str.lower() == 'yes'\n\n# --- Step 3: Statistical Analysis ---\n\n# Group by Cohort\nsummary = valid_date_df.groupby('cohort')['has_assessment'].agg(['count', 'sum', 'mean'])\nsummary.columns = ['Total Systems', 'With Assessment', 'Assessment Rate']\nsummary['Assessment Rate %'] = (summary['Assessment Rate'] * 100).round(2)\n\nprint(\"\\n--- Governance Gap Analysis: Impact Assessments ---\")\nprint(summary[['Total Systems', 'With Assessment', 'Assessment Rate %']])\n\n# Contingency Table for Chi-Square\ncontingency_table = pd.crosstab(valid_date_df['cohort'], valid_date_df['has_assessment'])\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\nalpha = 0.05\nif p < alpha:\n    print(\"Result: Statistically Significant difference in governance rates.\")\nelse:\n    print(\"Result: No statistically significant difference found.\")\n\n# --- Step 4: Visualization ---\nplt.figure(figsize=(8, 6))\ncolors = ['#ff9999', '#66b3ff']\nax = summary['Assessment Rate %'].plot(kind='bar', color=colors, edgecolor='black')\nplt.title('Impact Assessment Rate: Legacy vs. Modern AI Systems')\nplt.ylabel('Percentage with Impact Assessment (%)')\nplt.xlabel('Initiation Cohort')\nplt.ylim(0, 100)\n\n# Add value labels\nfor i, v in enumerate(summary['Assessment Rate %']):\n    ax.text(i, v + 2, f\"{v}%\", ha='center', fontweight='bold')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total EO 13960 records: 1757\nRecords with valid dates: 1191 (67.8%)\n\nUnique values in '52_impact_assessment':\n52_impact_assessment\nNaN                        1053\nYes                          59\nNo                           49\nPlanned or in-progress.      29\nYES                           1\nName: count, dtype: int64\n\n--- Governance Gap Analysis: Impact Assessments ---\n                Total Systems  With Assessment  Assessment Rate %\ncohort                                                           \nLegacy (<2020)            228               24              10.53\nModern (2020+)            963               36               3.74\n\nChi-Square Statistic: 16.3653\nP-value: 5.2232e-05\nResult: Statistically Significant difference in governance rates.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Chart.\n*   **Purpose:** The plot compares the frequency (percentage) of impact assessments between two distinct categories of AI systems based on their initiation time period (\"Legacy\" vs. \"Modern\").\n\n### 2. Axes\n*   **X-axis (Horizontal):**\n    *   **Title:** \"Initiation Cohort\"\n    *   **Labels:** The axis features two categorical labels rotated 90 degrees for readability: \"Legacy (<2020)\" and \"Modern (2020+)\".\n*   **Y-axis (Vertical):**\n    *   **Title:** \"Percentage with Impact Assessment (%)\"\n    *   **Range:** The scale runs from 0 to 100.\n    *   **Increments:** Major tick marks are placed every 20 units (0, 20, 40, 60, 80, 100).\n\n### 3. Data Trends\n*   **Tallest Bar:** The \"Legacy (<2020)\" cohort represents the highest value.\n*   **Shortest Bar:** The \"Modern (2020+)\" cohort represents the lowest value.\n*   **Pattern:** There is a notable downward trend between the two groups. The rate of impact assessments has decreased significantly in the modern cohort compared to the legacy cohort. Both bars are relatively small compared to the full y-axis scale, indicating generally low rates across the board.\n\n### 4. Annotations and Legends\n*   **Data Labels:** Specific percentage values are annotated directly above each bar in bold text for precision:\n    *   Legacy (<2020): **10.53%**\n    *   Modern (2020+): **3.74%**\n*   **Color Coding:** The bars are distinct in color (Light Red/Pink for Legacy and Light Blue for Modern) to visually separate the two cohorts, though the x-axis labels provide the primary identification.\n\n### 5. Statistical Insights\n*   **Significant Decline:** Systems initiated after 2020 (\"Modern\") are significantly less likely to have an impact assessment than those initiated before 2020 (\"Legacy\"). The rate dropped by roughly 6.8 percentage points.\n*   **Relative Drop:** The transition from 10.53% to 3.74% represents a relative decrease of approximately **64.5%**. This suggests that as AI systems have become \"Modern,\" the practice of conducting impact assessments has become less than half as common as it was previously.\n*   **Low Overall Adoption:** Despite the difference between the two groups, the absolute values for both are low. Even in the higher-performing \"Legacy\" group, roughly 90% of systems did not have an impact assessment. In the \"Modern\" group, over 96% lack one. The vast empty space in the plot (from 10% up to 100%) visually emphasizes the scarcity of these assessments in the dataset.\n==================================================",
+  "created_at": "2026-02-22T01:43:30.473677+00:00",
+  "creation_idx": 16,
+  "experiment_id": "node_3_6",
+  "experiment_plan": {
+    "deliverables": "Impact Assessment rates for Pre-2020 vs Post-2020 systems; Statistical significance of the gap.",
+    "objective": "Quantify the governance gap between legacy and modern AI systems.",
+    "steps": "1. Filter 'eo13960_scored'. 2. Parse '18_date_initiated' to extract the year. Handle missing or malformed dates. 3. Create a binary variable 'Is_Legacy' (Year < 2020). 4. Compare the proportion of 'Yes' in '52_impact_assessment' between Legacy and Non-Legacy systems using a Chi-square test."
+  },
+  "hypothesis": "The 'Legacy Governance' Gap: Federal AI systems initiated before 2020 are significantly less likely to have a recorded 'Impact Assessment' than systems initiated post-2020, indicating a lack of retroactive governance application.",
+  "id_in_run": 15,
+  "is_surprising": true,
+  "parent_id": "node_2_6",
+  "posterior": 0.2857142857142857,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2857142857142857,
+    "n": 60.0,
+    "prior_params": [
+      26.0,
+      5.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8387096774193549,
+  "prior_belief": {
+    "_empirical_mean": 0.85,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 12.0,
+    "maybe_false": 0.0,
+    "maybe_true": 18.0,
+    "mean": 0.8387096774193549,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Legacy Governance' Gap hypothesis. The implementation correctly parsed initiation dates for 1,191 systems from the EO 13960 dataset and compared Impact Assessment rates between Legacy (<2020) and Modern (2020+) cohorts. \n\n**Hypothesis Status:** Refuted (Significant Reverse Trend).\n\n**Findings:** Contrary to the hypothesis that legacy systems would lack retroactive governance compared to newer systems, the data reveals that Legacy systems are significantly *more* likely to have a recorded Impact Assessment (10.53%) compared to Modern systems (3.74%). The Chi-square test (p < 0.001) confirms this difference is statistically significant.\n\n**Interpretation:** This unexpected finding suggests that 'modern' AI systems in the federal inventory—potentially comprising rapid pilots or experimental tools—are entering with lower documented governance rigor than older, established systems. However, the absolute rates indicate that the vast majority of systems in both cohorts (>89%) lack impact assessments.",
+  "rich_outputs": null,
+  "runtime_ms": 268550.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.663594470046083
+}

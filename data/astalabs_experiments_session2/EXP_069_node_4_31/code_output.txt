@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Data points after filtering: 137
+
+--- Contingency Table (Autonomy vs Appeal) ---
+has_appeal      Yes  No
+autonomy_level         
+High              2   3
+Low              74  58
+
+--- Statistical Results ---
+Fisher's Exact Test p-value: 0.6556
+Odds Ratio: 0.5225
+
+--- Appeal Process Rates ---
+autonomy_level
+High    40.000000
+Low     56.060606
+Name: Yes, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (Vertical Bar Chart).
+*   **Purpose:** The plot compares the prevalence (percentage) of a formal appeal process across two distinct categories of system autonomy ("High" and "Low").
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Categories:** Two discrete categories labeled "High" and "Low".
+*   **Y-Axis:**
+    *   **Title:** "Percentage with Formal Appeal Process (%)"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Linear scale with major tick marks every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Comparison:** The bar representing "Low" autonomy is taller than the bar representing "High" autonomy.
+*   **Tallest Bar:** The "Low" autonomy category shows that 56.1% of the systems have a formal appeal process.
+*   **Shortest Bar:** The "High" autonomy category shows that 40.0% of the systems have a formal appeal process.
+*   **Visual Pattern:** There is an apparent inverse relationship in this dataset where systems with lower autonomy levels are more likely to have a formal appeal process than those with high autonomy.
+
+### 4. Annotations and Legends
+*   **Text Annotations (Above Bars):**
+    *   **High Autonomy Bar:** "n=2/5 (40.0%)". This indicates that out of a total sample size of 5 systems classified as high autonomy, 2 possessed a formal appeal process.
+    *   **Low Autonomy Bar:** "n=74/132 (56.1%)". This indicates that out of a total sample size of 132 systems classified as low autonomy, 74 possessed a formal appeal process.
+*   **Color Coding:** The bars are distinct in color (Red/Pink for High, Blue for Low) to visually separate the categories, though no separate legend box is required as the x-axis labels serve this purpose.
+
+### 5. Statistical Insights
+*   **Prevalence of Appeals:** A formal appeal process is more common in low autonomy systems (56.1%) compared to high autonomy systems (40.0%).
+*   **Sample Size Disparity:** There is a massive disparity in sample sizes between the two groups. The "High" autonomy group has a very small sample size ($n=5$), whereas the "Low" autonomy group has a much more robust sample size ($n=132$).
+*   **Reliability:** Due to the extremely small sample size for the "High" category ($n=5$), the 40% figure is statistically fragile. A change in the status of just one system in that group would swing the percentage by 20%. Therefore, while the chart suggests High Autonomy systems are less likely to have appeal processes, this conclusion should be treated with caution until more data on high autonomy systems is collected.
+==================================================

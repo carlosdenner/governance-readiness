@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment aimed to test the 'Sector-Tech Specificity' hypothesis by correlating sector (Healthcare vs. Financial) with technology modality (Vision vs. Language). \n\n**Findings:**\n1. **Data Sparsity**: Despite having 1,366 incidents in the AIID dataset, filtering by the `Sector of Deployment` column yielded only **21** relevant incidents (15 Healthcare, 6 Financial). This suggests the sector metadata is highly sparse or unpopulated in this version of the dataset.\n2. **Classification Failure**: Further filtering these 21 incidents by `Known AI Technology` resulted in only **2** classifiable cases (both Healthcare/Computer Vision). \n3. **Test Viability**: The resulting sample size (N=2) was insufficient to generate a contingency table or perform the planned Chi-Square test.\n\n**Conclusion**: The experiment successfully executed the logic but failed to produce statistical results due to missing metadata. The hypothesis cannot be validated using the pre-coded columns (`Sector of Deployment`, `Known AI Technology`). Future attempts should utilize NLP techniques to extract sector and technology information from the unstructured `description` or `summary` fields.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom scipy.stats import chi2_contingency\n\n# Load the dataset\nfile_path = '../astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\nprint(f\"Total AIID incidents: {len(aiid_df)}\")\n\n# 1. Define Sector Filtering\n# We need to identify Healthcare vs Financial sectors\n# Let's clean the column first\naiid_df['Sector of Deployment'] = aiid_df['Sector of Deployment'].fillna('').astype(str)\n\ndef classify_sector(val):\n    val_lower = val.lower()\n    if 'health' in val_lower or 'medicine' in val_lower or 'medical' in val_lower:\n        return 'Healthcare'\n    elif 'financ' in val_lower or 'bank' in val_lower or 'trading' in val_lower:\n        return 'Financial'\n    else:\n        return 'Other'\n\naiid_df['target_sector'] = aiid_df['Sector of Deployment'].apply(classify_sector)\n\n# Filter only for the target sectors\nanalysis_df = aiid_df[aiid_df['target_sector'].isin(['Healthcare', 'Financial'])].copy()\nprint(f\"Incidents in target sectors (Healthcare/Financial): {len(analysis_df)}\")\nprint(analysis_df['target_sector'].value_counts())\n\n# 2. Define Technology Classification\n# Classify 'Known AI Technology' into 'Vision', 'Language', or 'Other'\nanalysis_df['Known AI Technology'] = analysis_df['Known AI Technology'].fillna('').astype(str)\n\ndef classify_tech(val):\n    val_lower = val.lower()\n    \n    # Vision keywords\n    vision_keywords = ['vision', 'image', 'video', 'facial', 'face', 'recognition', 'detection', 'surveillance', 'camera']\n    is_vision = any(k in val_lower for k in vision_keywords)\n    \n    # Language keywords\n    language_keywords = ['language', 'text', 'nlp', 'chat', 'llm', 'generative', 'translation', 'speech', 'voice', 'chatbot']\n    is_language = any(k in val_lower for k in language_keywords)\n    \n    if is_vision and not is_language:\n        return 'Computer Vision'\n    elif is_language and not is_vision:\n        return 'Language/Text'\n    elif is_vision and is_language:\n        return 'Multimodal/Both' # Or prioritize one based on hypothesis, but let's keep separate for clarity\n    else:\n        return 'Unspecified/Other'\n\nanalysis_df['tech_modality'] = analysis_df['Known AI Technology'].apply(classify_tech)\n\n# Filter out Unspecified/Other/Multimodal to test the specific hypothesis strictly between Vision and Language\n# Hypothesis: Healthcare -> Vision, Financial -> Language\nstrict_df = analysis_df[analysis_df['tech_modality'].isin(['Computer Vision', 'Language/Text'])].copy()\n\nprint(f\"Incidents with clear Vision/Language classification: {len(strict_df)}\")\nprint(strict_df.groupby(['target_sector', 'tech_modality']).size())\n\n# 3. Create Contingency Table\ncontingency_table = pd.crosstab(strict_df['target_sector'], strict_df['tech_modality'])\nprint(\"\\nContingency Table:\")\nprint(contingency_table)\n\n# 4. Chi-Square Test\nif not contingency_table.empty and contingency_table.shape == (2, 2):\n    chi2, p, dof, expected = chi2_contingency(contingency_table)\n    print(f\"\\nChi-Square Test Results:\")\n    print(f\"Chi2 Statistic: {chi2:.4f}\")\n    print(f\"P-Value: {p:.4e}\")\n    \n    # 5. Visualization\n    plt.figure(figsize=(8, 6))\n    sns.heatmap(contingency_table, annot=True, fmt='d', cmap='Blues')\n    plt.title('AI Incident Counts: Sector vs. Technology Modality')\n    plt.ylabel('Sector')\n    plt.xlabel('Technology Modality')\n    plt.show()\n    \n    # Calculate percentages for interpretation\n    row_sums = contingency_table.sum(axis=1)\n    props = contingency_table.div(row_sums, axis=0)\n    print(\"\\nProportions (Row-wise):\")\n    print(props)\nelse:\n    print(\"Insufficient data for Chi-Square test (need 2x2 table).\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total AIID incidents: 1362\nIncidents in target sectors (Healthcare/Financial): 21\ntarget_sector\nHealthcare    15\nFinancial      6\nName: count, dtype: int64\nIncidents with clear Vision/Language classification: 2\ntarget_sector  tech_modality  \nHealthcare     Computer Vision    2\ndtype: int64\n\nContingency Table:\ntech_modality  Computer Vision\ntarget_sector                 \nHealthcare                   2\nInsufficient data for Chi-Square test (need 2x2 table).\n",
+  "created_at": "2026-02-22T14:58:15.240036+00:00",
+  "creation_idx": 293,
+  "experiment_id": "node_7_19",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table of Sector vs. Tech Modality. 2. Chi-Square test results. 3. Heatmap of counts.",
+    "objective": "Analyze the technical modalities associated with failures in distinct sectors.",
+    "steps": "1. Filter `aiid_incidents` for rows where `Sector of Deployment` is 'Healthcare' or 'Financial'. 2. Text-mine `Known AI Technology` to classify into 'Vision' (keywords: image, cv, recognition, vision) vs 'Language' (keywords: nlp, text, language, chat, llm). 3. Create a contingency table of Sector vs. Technology Modality. 4. Run a Chi-Square test."
+  },
+  "hypothesis": "The 'Sector-Tech' Specificity: 'Healthcare' sector incidents are predominantly driven by 'Computer Vision' failures, whereas 'Financial' sector incidents are driven by 'Language/Text' processing failures.",
+  "id_in_run": 292,
+  "is_surprising": false,
+  "parent_id": "node_6_24",
+  "posterior": 0.7142857142857143,
+  "posterior_belief": {
+    "_empirical_mean": 0.5,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.7142857142857143,
+    "n": 4.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 4.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "Hypothesis: The 'Sector-Tech' Specificity hypothesis posited that 'Healthcare' incidents are driven by 'Computer Vision' failures, while 'Financial' incidents are driven by 'Language/Text' failures.\n\nExperiment Results:\n1. Data Sparsity: Despite processing 1,362 incidents, only 21 records contained values in the 'Sector of Deployment' column matching the target sectors (15 Healthcare, 6 Financial).\n2. Classification Failure: Further filtering these 21 records by 'Known AI Technology' yielded only 2 classifiable instances (both Healthcare / Computer Vision).\n3. Statistical Outcome: The sample size (N=2) was insufficient to generate a contingency table or perform the planned Chi-Square test.\n\nFindings: The hypothesis remains untested due to extreme sparsity in the structured metadata columns ('Sector of Deployment' and 'Known AI Technology'). The experiment demonstrates that these specific columns in the current dataset version are not populated sufficiently to support the proposed correlation analysis without supplementary NLP on unstructured text fields.",
+  "rich_outputs": null,
+  "runtime_ms": 204950.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.03317972350230414
+}

@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Analysis of Governance Scores by Implementation Era
+---------------------------------------------------
+Total records with valid dates: 612
+Legacy Cohort Size (<2021):   123
+Modern Cohort Size (>=2021):  489
+
+Mean Governance Readiness Score (0-100%):
+  Legacy: 12.30%
+  Modern: 9.92%
+
+Difference: -2.38%
+T-test results: Statistic=1.8147, p-value=7.1402e-02
+Result: No Statistically Significant Difference.
+
+STDERR:
+<ipython-input-1-4fc7af1c841d>:99: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker plot).
+*   **Purpose:** The plot compares the distribution of "Governance Readiness Scores" between two distinct groups: Legacy systems (deployed before 2021) and Modern systems (deployed in or after 2021). It visualizes the median, quartiles, variability, and outliers for each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Categories:** Two categorical groups: "Legacy (<2021)" and "Modern (>=2021)".
+    *   **Context:** Each label includes the sample size ($n$), indicating the number of data points in each category ($n=123$ for Legacy, $n=489$ for Modern).
+*   **Y-Axis:**
+    *   **Label:** "Governance Score (%)".
+    *   **Range:** The axis markings range from 0 to 50, with grid lines every 10 units. The data spans from a minimum of 0 to a maximum outlier of 50.
+
+### 3. Data Trends
+*   **Distribution Similarity:** The most striking trend is that the two box plots appear visually identical. Both groups exhibit the same interquartile range (IQR), median, whiskers, and outlier positions.
+*   **Low Scores Dominance:** The "boxes" (representing the middle 50% of the data) are situated low on the graph, spanning roughly from 0% to 12.5%. This indicates that the majority of deployments in both groups have low governance readiness scores.
+*   **Medians (Red Lines):** The red line (median) appears at the top of the blue box (approximately 12.5%) for both groups. This suggests a skew where the median and the 75th percentile (Q3) are very close or identical.
+*   **Outliers:** Both groups display identical outlier patterns. There are distinct data points (represented by circles) at approximately 37.5% and 50%.
+*   **Spread:** The whiskers extend from the top of the box to roughly 25%, indicating that the non-outlier maximum is fairly low. The minimum value for the IQR (bottom of the box) is 0%.
+
+### 4. Annotations and Legends
+*   **P-Value:** Located at the top center in red text: `p = 7.1407e-02`.
+    *   Converted from scientific notation, this is roughly **0.071**.
+*   **Sample Size ($n$):** Annotated under the x-axis labels.
+    *   Legacy: $n=123$
+    *   Modern: $n=489$
+    *   This highlights an unbalanced dataset, where the Modern group is nearly four times larger than the Legacy group.
+
+### 5. Statistical Insights
+*   **Lack of Statistical Significance:** The p-value is **0.071**, which is greater than the standard significance threshold of 0.05 (5%). This indicates that there is **no statistically significant difference** in Governance Readiness Scores between the Legacy (<2021) and Modern (>=2021) deployments.
+*   **Consistency Across Time:** Despite the difference in deployment eras and the significantly larger sample size for the Modern group, the governance readiness profile remains unchanged. The organization or system has not seen a measurable improvement (or decline) in these scores post-2021.
+*   **Low Maturity Overall:** The data suggests that regardless of deployment time, governance readiness is generally low, with the 75th percentile of systems scoring only around 12.5%, and only a few outlier systems achieving scores up to 50%.
+==================================================

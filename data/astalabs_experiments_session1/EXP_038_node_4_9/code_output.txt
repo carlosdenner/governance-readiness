@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_incident_coding.csv
+
+--- Statistical Analysis ---
+N = 52
+Technique Count: Mean=7.54, Std=2.93, Min=1, Max=16
+Gap Breadth:     Mean=4.81, Std=1.40, Min=1, Max=9
+
+Correlation Results:
+Pearson correlation:  r=0.8320, p=0.0000
+Spearman correlation: rho=0.7613, p=0.0000
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Scatter plot with an overlaid linear regression line.
+*   **Purpose:** The plot visualizes the relationship and correlation between two variables: "Attack Complexity" (independent variable) and "Competency Gap Breadth" (dependent variable).
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Technique Count (Complexity)"
+    *   **Unit/Context:** Represents a count of techniques used, serving as a proxy for complexity.
+    *   **Range:** The axis ticks range from 2 to 16. The data points span from approximately x=1 to x=16.
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Gap Breadth (Missing Sub-competencies)"
+    *   **Unit/Context:** Represents a count or score of missing sub-competencies.
+    *   **Range:** The axis ticks range from 1 to 9. The data points span from y=1 to roughly y=9.
+
+### 3. Data Trends
+*   **Direction:** There is a clear **positive trend**. As the technique count (complexity) increases, the gap breadth (missing sub-competencies) also increases.
+*   **Clustering:** The majority of the data points are clustered in the middle range, roughly between a technique count of 4 and 10, with gap breadths ranging between 3 and 6.
+*   **Distribution:** The data points are somewhat spread out vertically at specific x-values (e.g., at x=6 and x=9), indicating variance in the gap breadth for attacks of similar complexity.
+*   **Extremes:**
+    *   The lowest data point is at approximately (1, 1).
+    *   The highest data point is at approximately (16, 9).
+
+### 4. Annotations and Legends
+*   **Main Title:** "Attack Complexity vs. Competency Gap Breadth" positioned at the top center.
+*   **Legend (Top Left):**
+    *   **Blue Circle:** Labeled "Incident Data (Jittered)". "Jittered" implies that a small amount of random noise was added to the data points to prevent them from overlapping perfectly, allowing the viewer to see the density of data at discrete integer coordinates.
+    *   **Red Line:** Labeled "Regression (r=0.83)". This indicates the red line is a linear fit model for the data.
+*   **Grid:** A light gray, dashed grid is provided to help estimate values for individual data points.
+
+### 5. Statistical Insights
+*   **Strong Positive Correlation:** The correlation coefficient ($r$) is stated as **0.83**. In statistics, an $r$ value close to 1.0 indicates a strong positive linear relationship. This suggests that Attack Complexity is a strong predictor of Competency Gap Breadth.
+*   **Interpretation:** The data indicates that as an attack becomes more complex (utilizing a higher count of techniques), the "Competency Gap" (the number of missing sub-competencies required to defend or respond) widens significantly.
+*   **Linear Fit:** The red regression line passes centrally through the cloud of data points, suggesting that a linear model is a reasonably good fit for describing the relationship between these two variables.
+==================================================

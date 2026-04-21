@@ -1,0 +1,20 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded successfully.
+
+Total incidents: 52
+Filtered incidents (excluding 'both'): 6
+Counts by split in filtered data:
+trust_integration_split
+integration-dominant    4
+trust-dominant          2
+Name: count, dtype: int64
+
+Contingency Table (for Fisher's Exact Test):
+                      Prevention  Post-Prevention
+integration-dominant           4                0
+trust-dominant                 2                0
+
+Fisher's Exact Test Results:
+Odds Ratio: nan
+P-value: 1.0
+Result: No statistically significant association found (null hypothesis retained).

@@ -1,0 +1,54 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO13960 Scored subset shape: (1757, 196)
+Analyzable records after mapping: 145
+
+Contingency Table (Counts):
+monitoring_category  No  Yes
+autonomy_category           
+Human-in-the-Loop    36  103
+Autonomous            3    3
+
+--- Descriptive Statistics ---
+Human-in-the-Loop (n=139): 103 monitored (74.10%)
+Autonomous        (n=6): 3 monitored (50.00%)
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 0.6944
+p-value: 4.0466e-01
+
+Conclusion:
+Fail to Reject Null Hypothesis: No significant difference.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Bar Chart.
+*   **Purpose:** The plot compares the frequency (proportion) of post-deployment monitoring between two distinct categories of system autonomy: "Human-in-the-Loop" and "Autonomous".
+
+**2. Axes**
+*   **X-axis:**
+    *   **Labels:** Categorical labels representing the level of autonomy: "Human-in-the-Loop" and "Autonomous".
+*   **Y-axis:**
+    *   **Title:** "Proportion with Post-Deployment Monitoring".
+    *   **Value Range:** The axis ranges from 0.0 to roughly 1.05, with grid lines marking intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+**3. Data Trends**
+*   **Tallest Bar:** The "Human-in-the-Loop" category (blue bar) is the tallest, indicating a higher rate of monitoring.
+*   **Shortest Bar:** The "Autonomous" category (red bar) is shorter, indicating a lower rate of monitoring.
+*   **Pattern:** There is a visible downward trend in monitoring rates as the level of autonomy increases (from human-in-the-loop to fully autonomous).
+
+**4. Annotations and Legends**
+*   **Data Labels:**
+    *   Above the **Human-in-the-Loop** bar: Annotated with **"74.1% (n=103/139)"**. This indicates that 74.1% of the systems in this category are monitored, corresponding to 103 out of a total sample size of 139.
+    *   Above the **Autonomous** bar: Annotated with **"50.0% (n=3/6)"**. This indicates that 50% of the systems in this category are monitored, corresponding to 3 out of a total sample size of 6.
+*   **Grid:** Horizontal dashed grid lines are included to assist in estimating the bar heights against the Y-axis.
+*   **Title:** The chart is titled "The Automation Paradox: Monitoring Rates by Autonomy Level," suggesting the data is meant to illustrate a counter-intuitive finding regarding automation and supervision.
+
+**5. Statistical Insights**
+*   **The "Paradox":** The title and data suggest an "Automation Paradox" where fully autonomous systems—which arguably might require rigorous safety checks—are monitored *less* frequently (50.0%) than systems that already have a human in the loop (74.1%).
+*   **Sample Size Disparity:** A critical statistical insight is the vast difference in sample sizes ($n$). The "Human-in-the-Loop" group has a robust sample size of 139, whereas the "Autonomous" group has an extremely small sample size of only 6.
+*   **Statistical Significance Warning:** Due to the very small sample size for the Autonomous group ($n=6$), the 50% figure is highly volatile; a change in the status of just one system would shift the percentage significantly (e.g., to 33% or 66%). Therefore, while the trend looks stark, the comparison lacks statistical power and should be interpreted with caution. The data also implies that fully autonomous deployments (in this dataset) are much rarer than human-in-the-loop deployments.
+==================================================

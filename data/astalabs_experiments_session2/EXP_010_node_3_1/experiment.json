@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Vendor Transparency Gap' hypothesis using the EO 13960 dataset. By correctly parsing verbose survey responses, the analysis classified 1,404 systems as Custom/Other and 353 as Commercial. The results reveal a striking disparity in governance transparency: only 10.2% of Commercial systems (36/353) grant code access, compared to 40.3% of Custom systems (566/1,404). \n\nStatistical analysis confirms this difference is highly significant (Chi-Square = 112.25, p < 0.001). The Odds Ratio of 5.95 indicates that Custom systems are nearly six times more likely to provide code access than their Commercial counterparts. This strongly supports the hypothesis that commercial AI procurement in the federal government introduces a significant 'Black Box' barrier, where proprietary constraints severely limit the code-level visibility required for deep governance and independent auditing.",
+  "child_ids": [
+    "node_4_2",
+    "node_4_33"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\nfilename = 'astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(filename, low_memory=False)\n    print(f\"Successfully loaded {filename}\")\nexcept FileNotFoundError:\n    # Fallback if file is in parent directory\n    df = pd.read_csv(f'../{filename}', low_memory=False)\n    print(f\"Successfully loaded ../{filename}\")\n\n# Filter for EO 13960 scored data\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 Scored Data Shape: {eo_data.shape}\")\n\n# --- 1. Define Commercial vs Custom ---\n# Logic: 0 (Custom) if '10_commercial_ai' is 'None of the above.' or null.\n#        1 (Commercial) otherwise.\n\ndef classify_commercial(val):\n    s = str(val).strip()\n    if pd.isna(val) or s.lower() == 'nan' or s == '':\n        return 0\n    if 'none of the above' in s.lower():\n        return 0\n    return 1\n\neo_data['is_commercial'] = eo_data['10_commercial_ai'].apply(classify_commercial)\n\nprint(\"\\n--- Commercial Classification ---\")\nprint(eo_data['is_commercial'].value_counts())\n# Print a check to ensure we caught the specific commercial cases\nprint(\"Sample of Commercial descriptions:\")\nprint(eo_data[eo_data['is_commercial'] == 1]['10_commercial_ai'].head(3).tolist())\n\n# --- 2. Define Code Access (Target) ---\n# Logic: 1 (Yes) if '38_code_access' starts with 'yes' (case insensitive).\n#        0 (No) otherwise.\n\ndef classify_code_access(val):\n    s = str(val).strip().lower()\n    if s.startswith('yes'):\n        return 1\n    return 0\n\neo_data['has_code_access'] = eo_data['38_code_access'].apply(classify_code_access)\n\nprint(\"\\n--- Code Access Classification ---\")\nprint(eo_data['has_code_access'].value_counts())\n\n# --- 3. Statistical Analysis ---\n# Create contingency table\n#              No Access (0)   Has Access (1)\n# Custom (0)      n00             n01\n# Commercial (1)  n10             n11\ncontingency_table = pd.crosstab(eo_data['is_commercial'], eo_data['has_code_access'])\ncontingency_table.index = ['Custom', 'Commercial']\ncontingency_table.columns = ['No Access', 'Has Access']\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Chi-square test\nchi2, p, dof, expected = chi2_contingency(contingency_table)\n\nprint(f\"\\nChi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Odds Ratio Calculation\n# OR = (Odds of Access for Custom) / (Odds of Access for Commercial)\n#    = (n01 / n00) / (n11 / n10)\n\ntry:\n    n00 = contingency_table.loc['Custom', 'No Access']\n    n01 = contingency_table.loc['Custom', 'Has Access']\n    n10 = contingency_table.loc['Commercial', 'No Access']\n    n11 = contingency_table.loc['Commercial', 'Has Access']\n    \n    odds_custom = n01 / n00 if n00 != 0 else np.inf\n    odds_commercial = n11 / n10 if n10 != 0 else np.inf\n    \n    print(f\"\\nOdds of Access (Custom): {odds_custom:.4f}\")\n    print(f\"Odds of Access (Commercial): {odds_commercial:.4f}\")\n\n    if odds_commercial == 0:\n        print(\"Odds Ratio undefined (Commercial odds is 0).\")\n    else:\n        or_val = odds_custom / odds_commercial\n        print(f\"Odds Ratio (Custom vs Commercial): {or_val:.4f}\")\n        \n        if p < 0.05:\n            print(\"\\nResult is statistically significant.\")\n            if or_val > 1:\n                print(f\"Custom systems are {or_val:.2f} times more likely to grant code access than Commercial systems.\")\n            else:\n                print(f\"Commercial systems are {1/or_val:.2f} times more likely to grant code access than Custom systems.\")\n        else:\n            print(\"\\nResult is not statistically significant.\")\n\nexcept Exception as e:\n    print(f\"Error calculating stats: {e}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Successfully loaded astalabs_discovery_all_data.csv\nEO 13960 Scored Data Shape: (1757, 196)\n\n--- Commercial Classification ---\nis_commercial\n0    1404\n1     353\nName: count, dtype: int64\nSample of Commercial descriptions:\n['Improving the quality of written communications using AI tools.', 'Creating visually appealing presentations using AI-driven design suggestions.', 'Improving the quality of written communications using AI tools.']\n\n--- Code Access Classification ---\nhas_code_access\n0    1155\n1     602\nName: count, dtype: int64\n\n--- Contingency Table ---\n            No Access  Has Access\nCustom            838         566\nCommercial        317          36\n\nChi-square Statistic: 112.2473\nP-value: 3.1541e-26\n\nOdds of Access (Custom): 0.6754\nOdds of Access (Commercial): 0.1136\nOdds Ratio (Custom vs Commercial): 5.9474\n\nResult is statistically significant.\nCustom systems are 5.95 times more likely to grant code access than Commercial systems.\n",
+  "created_at": "2026-02-22T01:24:23.552287+00:00",
+  "creation_idx": 11,
+  "experiment_id": "node_3_1",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table showing counts of Code Access (Yes/No) for Commercial vs Custom systems.\n2. Chi-square test statistic and p-value.\n3. Odds Ratio (OR) with an interpretation of the transparency gap.",
+    "objective": "Compare the rate of source code accessibility between Commercial and Custom AI systems by correctly parsing verbose survey responses.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for the subset where 'source_table' is 'eo13960_scored'.\n2. Create a derived variable 'is_commercial': Mark rows as 0 (Custom) if the column '10_commercial_ai' contains the string 'None of the above' (or is null); mark as 1 (Commercial) if it contains any other specific text description.\n3. Create a derived variable 'has_code_access': Parse column '38_code_access'. Convert text to lowercase and mark as 1 if the string starts with 'yes' (capturing verbose responses like 'Yes – agency has access...'), otherwise 0.\n4. Generate a contingency table comparing 'is_commercial' (rows) vs 'has_code_access' (columns).\n5. Perform a Chi-square test of independence on the contingency table.\n6. Calculate the Odds Ratio to quantify the likelihood of code access for Custom vs Commercial systems."
+  },
+  "hypothesis": "Vendor Transparency Gap: AI systems identified as specific 'Commercial' applications in the EO 13960 inventory are significantly less likely to grant 'Code Access' for governance review compared to systems classified as 'None of the above' (proxy for Custom/In-House), creating a 'Black Box' governance barrier.",
+  "id_in_run": 10,
+  "is_surprising": false,
+  "parent_id": "node_2_2",
+  "posterior": 0.9258241758241759,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9258241758241759,
+    "n": 60.0,
+    "prior_params": [
+      24.25,
+      6.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.782258064516129,
+  "prior_belief": {
+    "_empirical_mean": 0.7916666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 5.0,
+    "maybe_false": 0.0,
+    "maybe_true": 25.0,
+    "mean": 0.782258064516129,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed. The code correctly loaded the EO 13960 dataset, implemented the logic to parse verbose survey responses for both 'Commercial' status and 'Code Access', and generated the required contingency table and statistics. The results are statistically significant and directly address the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 325180.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.17227933356965622
+}

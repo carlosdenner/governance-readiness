@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_crosswalk_matrix.csv
+
+Data filtered for analysis (n=27):
+function_category
+Operational    16
+Strategic      11
+Name: count, dtype: int64
+
+Contingency Table (Observed):
+bundle             Integration Readiness  Trust Readiness
+function_category                                        
+Operational                           10                6
+Strategic                              1               10
+
+=== Chi-Square Test Results ===
+Chi-square Statistic: 5.6485
+P-value: 0.0175
+Degrees of Freedom: 1
+Expected Frequencies:
+[[6.51851852 9.48148148]
+ [4.48148148 6.51851852]]
+
+Result: Statistically Significant. The variables are dependent.
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% Stacked Bar Chart).
+*   **Purpose:** The plot visualizes the relative composition of "Readiness Bundles" within two distinct "Function Categories." It allows for a direct comparison of the proportion of each bundle type across the different categories.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "Function Category"
+    *   **Values:** Two categorical variables: "Operational" and "Strategic".
+*   **Y-axis:**
+    *   **Label:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Units:** The values represent a fractional share of the whole (dimensionless ratio).
+
+### 3. Data Trends
+*   **Operational Category:**
+    *   This category is dominated by the blue segment (**Integration Readiness**), which makes up approximately **62%** (0.62) of the bar.
+    *   The green segment (**Trust Readiness**) comprises the remaining portion, approximately **38%**.
+*   **Strategic Category:**
+    *   This category shows a striking inversion compared to the Operational category. It is overwhelmingly dominated by the green segment (**Trust Readiness**).
+    *   The green segment appears to take up over **90%** of the bar.
+    *   The blue segment (**Integration Readiness**) is very minor, representing less than **10%** (approx. 0.09) of the total.
+
+### 4. Annotations and Legends
+*   **Title:** "Proportion of Readiness Bundles by Framework Function Category" appears at the top, clearly defining the chart's subject.
+*   **Legend:** Located to the right of the plot, titled "**Competency Bundle**."
+    *   **Blue Box:** Represents "Integration Readiness."
+    *   **Green Box:** Represents "Trust Readiness."
+
+### 5. Statistical Insights
+*   **Inverse Relationship:** There is a clear inverse relationship between the function category and the type of readiness required.
+*   **Operational Focus:** Operational functions rely heavily on **Integration Readiness**. This suggests that day-to-day operations are more dependent on the technical ability to connect and integrate systems or processes.
+*   **Strategic Focus:** Strategic functions are almost entirely composed of **Trust Readiness**. This implies that high-level strategy and long-term planning are fundamentally driven by trust-based competencies rather than technical integration capabilities.
+==================================================

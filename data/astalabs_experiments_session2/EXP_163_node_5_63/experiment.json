@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully analyzed 478 records from the EO13960 dataset to evaluate the 'High-Stakes Compliance Variance' hypothesis. The results **contradict** the specific hypothesis that 'Health' systems are the most likely to report disparity mitigation. \n\n1. **Statistical Significance**: The Chi-Square test yielded a p-value of 6.22e-05, confirming a highly statistically significant difference in reporting rates between the sectors.\n2. **Directionality Reversal**: Contrary to the expectation that Health would lead, **'Law Enforcement'** systems demonstrated the highest rate of disparity mitigation reporting (14.0%). This is more than triple the rate of 'Health' systems (4.3%) and ten times that of 'Government Services' (1.3%).\n3. **Governance Insight**: While overall reporting is low across all sectors, the data suggests that scrutiny regarding bias and fairness is currently more operationalized in federal Law Enforcement AI deployments than in Health or general administrative services.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport numpy as np\n\n# Load the dataset\nfile_path = '../astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO13960 subset\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Map Topics to Experiment Categories\n# Based on previous output, we map the actual dataset values to the target labels\ntopic_mapping = {\n    'Health & Medical': 'Health',\n    'Law & Justice': 'Law Enforcement',\n    'Government Services (includes Benefits and Service Delivery)': 'Government Services'\n}\n\neo_df['topic_mapped'] = eo_df['8_topic_area'].map(topic_mapping)\n\n# Filter for only the mapped topics\nsubset = eo_df.dropna(subset=['topic_mapped']).copy()\n\nprint(f\"Filtered subset size: {len(subset)}\")\nprint(\"Counts per topic in subset:\")\nprint(subset['topic_mapped'].value_counts())\n\n# Clean Mitigation Column (62_disparity_mitigation)\ndef clean_mitigation(val):\n    if pd.isna(val):\n        return 0\n    \n    val_str = str(val).lower().strip()\n    \n    # explicit negative indicators\n    negative_starts = ['n/a', 'no ', 'none', 'not ', '0', 'false']\n    if any(val_str.startswith(x) for x in negative_starts):\n        return 0\n    \n    # specific negative phrases found in previous inspection\n    if 'does not take into account' in val_str:\n        return 0\n    if 'not safety or rights-impacting' in val_str:\n        return 0\n        \n    # If it contains content that isn't negative, assume it describes a mitigation\n    return 1\n\nsubset['has_mitigation'] = subset['62_disparity_mitigation'].apply(clean_mitigation)\n\n# Verify cleaning\nprint(\"\\nMitigation distribution (Binary) by Topic:\")\nprint(subset.groupby('topic_mapped')['has_mitigation'].value_counts().unstack())\n\n# Contingency Table\ncontingency = pd.crosstab(subset['topic_mapped'], subset['has_mitigation'])\nprint(\"\\nContingency Table:\")\nprint(contingency)\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency)\nprint(f\"\\nChi-Square Test Results:\\nChi2 Statistic: {chi2:.4f}, p-value: {p:.4e}\")\n\n# Calculate Rates\nrates = subset.groupby('topic_mapped')['has_mitigation'].mean()\nprint(\"\\nMitigation Rates by Sector:\")\nprint(rates)\n\n# Visualization\nplt.figure(figsize=(10, 6))\nax = rates.plot(kind='bar', color=['#1f77b4', '#ff7f0e', '#2ca02c'])\nplt.title('Disparity Mitigation Reporting Rates by Topic Area')\nplt.ylabel('Proportion Reporting Mitigation')\nplt.xlabel('Topic Area')\nplt.ylim(0, 1.0)\nplt.axhline(y=rates.mean(), color='r', linestyle='--', label=f'Mean Rate ({rates.mean():.2f})')\n\n# Add value labels\nfor i, v in enumerate(rates):\n    ax.text(i, v + 0.02, f\"{v:.1%}\", ha='center')\n\nplt.legend()\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Filtered subset size: 478\nCounts per topic in subset:\ntopic_mapped\nHealth                 233\nGovernment Services    159\nLaw Enforcement         86\nName: count, dtype: int64\n\nMitigation distribution (Binary) by Topic:\nhas_mitigation         0   1\ntopic_mapped                \nGovernment Services  157   2\nHealth               223  10\nLaw Enforcement       74  12\n\nContingency Table:\nhas_mitigation         0   1\ntopic_mapped                \nGovernment Services  157   2\nHealth               223  10\nLaw Enforcement       74  12\n\nChi-Square Test Results:\nChi2 Statistic: 19.3704, p-value: 6.2198e-05\n\nMitigation Rates by Sector:\ntopic_mapped\nGovernment Services    0.012579\nHealth                 0.042918\nLaw Enforcement        0.139535\nName: has_mitigation, dtype: float64\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is a detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Chart.\n*   **Purpose:** The chart is designed to compare categorical data, specifically the proportion of \"Disparity Mitigation Reporting\" across three different topic areas.\n\n### 2. Axes\n*   **X-axis:**\n    *   **Title:** \"Topic Area\"\n    *   **Labels:** The axis displays three distinct categories: \"Government Services\", \"Health\", and \"Law Enforcement\".\n*   **Y-axis:**\n    *   **Title:** \"Proportion Reporting Mitigation\"\n    *   **Range:** The scale ranges from **0.0 to 1.0**, representing a probability or proportion (0% to 100%).\n    *   **Tick Marks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n\n### 3. Data Trends\n*   **Tallest Bar:** \"Law Enforcement\" exhibits the highest reporting rate among the three categories.\n*   **Shortest Bar:** \"Government Services\" shows the lowest reporting rate.\n*   **Pattern:** There is a visible disparity between the categories. While Government Services and Health have relatively minimal reporting rates (visually small bars), Law Enforcement has a noticeably higher rate, exceeding the other two combined.\n\n### 4. Annotations and Legends\n*   **Legend:** Located in the top right corner.\n    *   **Red dashed line:** Represented as \"Mean Rate (0.07)\", indicating the average reporting rate across all data points is 0.07 (or 7%).\n    *   **Blue bar icon:** Labeled \"has_mitigation\", indicating the bars represent the presence of mitigation reporting.\n*   **Bar Annotations:** Specific percentage values are placed directly above each bar for precision:\n    *   Government Services: **1.3%**\n    *   Health: **4.3%**\n    *   Law Enforcement: **14.0%**\n*   **Reference Line:** A horizontal red dashed line spans the width of the graph at the y-position corresponding to the mean rate of 0.07.\n\n### 5. Statistical Insights\n*   **Law Enforcement is an Outlier:** The Law Enforcement category (14.0%) is the only topic area performing above the overall mean rate of 7%. In fact, its rate is exactly double the mean.\n*   **Below Average Performance:** Both Government Services (1.3%) and Health (4.3%) fall significantly below the mean rate. Government Services reports mitigation efforts at a rate more than 5 times lower than the average.\n*   **Overall Low Reporting:** Despite the Y-axis extending to 1.0 (100%), the highest value on the chart is only 0.14 (14%). This suggests that disparity mitigation reporting is generally a low-frequency event across all observed topic areas.\n==================================================",
+  "created_at": "2026-02-22T08:44:12.393157+00:00",
+  "creation_idx": 164,
+  "experiment_id": "node_5_63",
+  "experiment_plan": {
+    "deliverables": "Bar chart of Mitigation Rates by Sector; Statistical test results.",
+    "objective": "Compare Disparity Mitigation rates across key Topic Areas.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' (EO13960 subset).\n2. Filter for top topic areas: 'Health', 'Law Enforcement', 'Government Services'.\n3. Clean '62_disparity_mitigation' into Binary (Yes/No).\n4. Perform a Chi-Square Test (or ANOVA if comparing multiple groups via rates).\n5. Use post-hoc analysis to identify which sector differs most."
+  },
+  "hypothesis": "The 'High-Stakes' Compliance Variance: In the EO13960 inventory, systems in the 'Health' topic area are significantly more likely to report having 'Disparity Mitigation' measures than systems in 'Government Services' or 'Law Enforcement', reflecting domain-specific regulatory pressure.",
+  "id_in_run": 163,
+  "is_surprising": true,
+  "parent_id": "node_4_44",
+  "posterior": 0.13736263736263737,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.13736263736263737,
+    "n": 60.0,
+    "prior_params": [
+      12.5,
+      18.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.4032258064516129,
+  "prior_belief": {
+    "_empirical_mean": 0.4,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 21.0,
+    "maybe_true": 9.0,
+    "mean": 0.4032258064516129,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully analyzed 478 records from the EO13960 dataset to evaluate the 'High-Stakes Compliance Variance' hypothesis. The results **reject** the hypothesis that 'Health' systems are the most likely to report disparity mitigation measures.\n\n**Key Findings:**\n1.  **Hypothesis Rejection:** Contrary to the expectation that Health systems would lead in fairness controls, **'Law Enforcement'** systems demonstrated the highest rate of disparity mitigation reporting (14.0%).\n2.  **Statistical Significance:** The difference is highly significant (Chi-Square p < 0.0001). Law Enforcement reporting rates are more than triple that of 'Health' (4.3%) and ten times higher than 'Government Services' (1.3%).\n3.  **Governance Insight:** The data indicates that regulatory pressure or internal controls regarding bias are currently more operationalized in federal Law Enforcement AI deployments—likely due to their coercive nature—than in Health or general administrative services, where reporting rates are minimal (<5%).",
+  "rich_outputs": null,
+  "runtime_ms": 288750.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.3190358029067706
+}

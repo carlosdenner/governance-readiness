@@ -1,0 +1,108 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID incidents loaded: 1362
+
+--- Top 20 Raw Failure Types ---
+Known AI Technical Failure
+NaN                                                            1084
+Generalization Failure                                           24
+Misinformation Generation Hazard, Unsafe Exposure or Access      17
+Distributional Bias                                              13
+Context Misidentification                                         5
+Lack of Transparency                                              5
+Generalization Failure, Context Misidentification                 5
+Harmful Application                                               4
+Unsafe Exposure or Access                                         4
+Unsafe Exposure or Access, Misinformation Generation Hazard       4
+Misinformation Generation Hazard                                  4
+Latency Issues                                                    3
+Algorithmic Bias                                                  3
+Context Misidentification, Generalization Failure                 3
+Human Error                                                       2
+Hardware Failure                                                  2
+Generalization Failure, Lack of Safety Protocols                  2
+Distributional Bias, Limited Dataset                              2
+Algorithmic Bias, Problematic Features                            2
+Unauthorized Data                                                 2
+Name: count, dtype: int64
+
+--- Top 20 Raw Sectors ---
+Sector of Deployment
+NaN                                                                  1161
+information and communication                                          44
+transportation and storage                                             21
+Arts, entertainment and recreation, information and communication      14
+wholesale and retail trade                                             11
+human health and social work activities                                10
+Arts, entertainment and recreation                                      9
+law enforcement                                                         9
+information and communication, Arts, entertainment and recreation       9
+Education                                                               7
+administrative and support service activities                           5
+financial and insurance activities                                      4
+public administration                                                   4
+professional, scientific and technical activities                       3
+accommodation and food service activities                               3
+law enforcement, public administration                                  3
+manufacturing                                                           3
+wholesale and retail trade, information and communication               3
+wholesale and retail trade, transportation and storage                  3
+transportation and storage, information and communication               2
+Name: count, dtype: int64
+
+Data points remaining for analysis (Specification vs Robustness): 9
+
+--- Contingency Table (Sector vs Failure Type) ---
+Failure_Class    Robustness  Specification
+Sector_Class                              
+Other                     2              4
+Social/Media/Ad           2              0
+Transportation            1              0
+
+Chi-Square Test Results:
+Chi2 Statistic: 3.6000
+P-value: 1.6530e-01
+Degrees of Freedom: 2
+
+--- Standardized Residuals (Values > 1.96 or < -1.96 differ significantly) ---
+Failure_Class    Robustness  Specification
+Sector_Class                              
+Other             -0.730297       0.816497
+Social/Media/Ad    0.843274      -0.942809
+Transportation     0.596285      -0.666667
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Horizontal Stacked Bar Chart (specifically a 100% stacked bar chart).
+*   **Purpose:** To visualize the relative proportions of different "Failure Types" within specific "Sector Groups," allowing for easy comparison of the composition of failures across sectors.
+
+### 2. Axes
+*   **Y-axis (Vertical):**
+    *   **Label:** "Sector Group"
+    *   **Categories:** The axis lists three distinct categorical groups: "Transportation", "Social/Media/Ad", and "Other".
+*   **X-axis (Horizontal):**
+    *   **Label:** "Proportion"
+    *   **Range:** The axis ranges from **0.0 to 1.0**, representing a probability or percentage (0% to 100%).
+    *   **Scale:** Linear scale marked at intervals of 0.2.
+
+### 3. Data Trends
+*   **Transportation Sector:** The bar for this sector is entirely colored dark purple. This indicates that **100%** of the failures recorded in this sector are attributed to "Robustness." There is no visible yellow segment.
+*   **Social/Media/Ad Sector:** Similar to Transportation, this bar is entirely dark purple, indicating that **100%** of the failures are "Robustness" types.
+*   **Other Sector:** This is the only category showing variation.
+    *   The bar is split between two colors.
+    *   Approximately **33-35%** (from 0.0 to roughly 0.33) constitutes "Robustness" failures (dark purple).
+    *   The remaining **65-67%** constitutes "Specification" failures (yellow). This is the only sector where "Specification" failures appear in this dataset.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Proportion of Failure Types by Sector" located at the top center.
+*   **Legend:** A box located on the top right, titled "Failure Type," decodes the color scheme:
+    *   **Dark Purple:** Represents "Robustness".
+    *   **Yellow:** Represents "Specification".
+
+### 5. Statistical Insights
+*   **dominance of Robustness Failures:** "Robustness" is the most prevalent failure type overall. It is the exclusive cause of failure in the "Transportation" and "Social/Media/Ad" sectors.
+*   **Uniqueness of "Other" Category:** The "Other" category is statistically distinct from the specific named sectors. It is the only group affected by "Specification" failures, which actually make up the majority (roughly two-thirds) of its failures.
+*   **Sector Specificity:** The data suggests a strong correlation between the specific named sectors (Transportation, Social Media) and robustness issues, whereas the "Other" category likely contains a mix of sectors where specification compliance is a more significant challenge than robustness.
+==================================================

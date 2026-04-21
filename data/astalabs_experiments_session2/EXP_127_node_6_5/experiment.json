@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was successfully executed and yielded statistically significant results that directly **contradict the hypothesis**. \n\n1.  **Data Processing**: The script successfully parsed dates for 1,191 use cases, categorizing them into 304 Legacy (<2021) and 887 Modern (2021+) systems.\n2.  **Statistical Findings**: The Chi-Square test resulted in a statistic of 21.29 with a p-value of 3.95e-06, indicating a highly significant relationship between system age and governance compliance.\n3.  **Hypothesis Evaluation (Falsified)**: The hypothesis predicted that Legacy systems would have *lower* compliance due to 'technical debt'. The data shows the exact opposite: **Legacy systems exhibited a 10.2% compliance rate, which is more than triple the 3.3% compliance rate of Modern systems.**\n\n**Implications**: While compliance is critically low across the board, the 'Legacy Debt' theory is rejected. Instead, the data suggests a 'New Entrant' problem, where systems initiated *after* the issuance of EO 13960 are failing to implement impact assessments at significantly higher rates than older, pre-existing systems.",
+  "child_ids": [
+    "node_7_0"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.stats import chi2_contingency\nimport os\n\n# Define file path logic based on instruction\nfilename = 'astalabs_discovery_all_data.csv'\nfilepath = f'../{filename}' if os.path.exists(f'../{filename}') else filename\n\nprint(f\"Loading dataset from: {filepath}\")\n\ntry:\n    df = pd.read_csv(filepath, low_memory=False)\nexcept FileNotFoundError:\n    print(f\"Error: {filename} not found in current or parent directory.\")\n    exit(1)\n\n# Filter for EO 13960 Scored subset\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 Scored subset shape: {df_eo.shape}\")\n\n# Columns of interest\ndate_col = '18_date_initiated'\nimpact_col = '52_impact_assessment'\n\n# Check if columns exist\nif date_col not in df_eo.columns or impact_col not in df_eo.columns:\n    print(f\"Error: Missing columns. Available columns: {list(df_eo.columns)}\")\n    exit(1)\n\n# Preview raw date data for debugging potential parsing issues\nprint(\"\\nRaw date sample (first 5 non-null):\")\nprint(df_eo[date_col].dropna().head(5).values)\n\n# 1. Parse Dates\n# Coerce errors to NaT (Not a Time) to handle malformed strings\ndf_eo['parsed_date'] = pd.to_datetime(df_eo[date_col], errors='coerce')\n\n# Drop rows with missing or unparseable dates\ndf_clean = df_eo.dropna(subset=['parsed_date']).copy()\nprint(f\"\\nRows with valid dates: {len(df_clean)} (dropped {len(df_eo) - len(df_clean)} rows)\")\n\n# 2. Create Era Variable\n# Extract year\ndf_clean['year'] = df_clean['parsed_date'].dt.year\n\n# Define Era: Legacy (< 2021) vs Modern (>= 2021)\ndf_clean['Era'] = df_clean['year'].apply(lambda y: 'Legacy (<2021)' if y < 2021 else 'Modern (2021+)')\n\nprint(\"\\nDistribution by Era:\")\nprint(df_clean['Era'].value_counts())\n\n# 3. Process Impact Assessment (Target)\n# Normalize text: 'Yes' -> 1, Anything else -> 0\n# Inspect unique values first\nprint(f\"\\nUnique values in '{impact_col}': {df_clean[impact_col].unique()}\")\n\ndf_clean['Compliance'] = df_clean[impact_col].apply(lambda x: 1 if str(x).strip().lower() == 'yes' else 0)\n\n# 4. Statistical Analysis\n# Contingency Table\ncontingency = pd.crosstab(df_clean['Era'], df_clean['Compliance'])\ncontingency.columns = ['Non-Compliant', 'Compliant']\nprint(\"\\nContingency Table (Era vs. Compliance):\")\nprint(contingency)\n\n# Chi-Square Test\nchi2, p, dof, expected = chi2_contingency(contingency)\nprint(f\"\\nChi-Square Test Results:\")\nprint(f\"Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Calculate Compliance Rates\nrates = df_clean.groupby('Era')['Compliance'].mean()\nprint(\"\\nCompliance Rates (Proportion 'Yes'):\")\nprint(rates)\n\n# 5. Visualization\nplt.figure(figsize=(8, 6))\nax = rates.plot(kind='bar', color=['#d95f02', '#1b9e77'], alpha=0.8, edgecolor='black')\nplt.title('Impact Assessment Compliance: Legacy vs. Modern Systems')\nplt.ylabel('Compliance Rate')\nplt.xlabel('System Era')\nplt.ylim(0, 1.0)\nplt.grid(axis='y', linestyle='--', alpha=0.3)\nplt.xticks(rotation=0)\n\n# Add value labels\nfor i, v in enumerate(rates):\n    ax.text(i, v + 0.02, f\"{v:.1%}\", ha='center', fontweight='bold')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: astalabs_discovery_all_data.csv\nEO 13960 Scored subset shape: (1757, 196)\n\nRaw date sample (first 5 non-null):\n<StringArray>\n['7/1/2023', '8/29/2023', '8/29/2023', '9/15/2023', '1/1/2022']\nLength: 5, dtype: str\n\nRows with valid dates: 1191 (dropped 566 rows)\n\nDistribution by Era:\nEra\nModern (2021+)    887\nLegacy (<2021)    304\nName: count, dtype: int64\n\nUnique values in '52_impact_assessment': <StringArray>\n[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']\nLength: 5, dtype: str\n\nContingency Table (Era vs. Compliance):\n                Non-Compliant  Compliant\nEra                                     \nLegacy (<2021)            273         31\nModern (2021+)            858         29\n\nChi-Square Test Results:\nStatistic: 21.2893\nP-value: 3.9493e-06\n\nCompliance Rates (Proportion 'Yes'):\nEra\nLegacy (<2021)    0.101974\nModern (2021+)    0.032694\nName: Compliance, dtype: float64\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Bar Chart (Vertical).\n*   **Purpose:** The plot is designed to compare the \"Compliance Rate\" of Impact Assessments between two distinct categories of systems classified by their era: \"Legacy\" (older than 2021) and \"Modern\" (2021 and newer).\n\n**2. Axes**\n*   **X-axis (Horizontal):**\n    *   **Title:** \"System Era\".\n    *   **Categories:** Two categorical groups: \"Legacy (<2021)\" and \"Modern (2021+)\".\n*   **Y-axis (Vertical):**\n    *   **Title:** \"Compliance Rate\".\n    *   **Value Range:** The axis ranges from **0.0 to 1.0**, representing a probability or proportion (where 1.0 equals 100%).\n    *   **Increments:** Ticks are placed at intervals of 0.2.\n\n**3. Data Trends**\n*   **Legacy Systems (<2021):** Represented by an orange bar. This group shows a significantly higher compliance rate compared to the modern systems.\n*   **Modern Systems (2021+):** Represented by a teal/green bar. This group shows a very low compliance rate.\n*   **Trend:** There is a sharp decline in compliance rates when moving from Legacy systems to Modern systems. The compliance rate for Modern systems is less than a third of that for Legacy systems.\n\n**4. Annotations and Legends**\n*   **Bar Labels:** Specific percentage values are annotated directly above each bar for clarity:\n    *   Legacy: **10.2%**\n    *   Modern: **3.3%**\n*   **Title:** The chart is titled \"Impact Assessment Compliance: Legacy vs. Modern Systems\".\n*   **Grid Lines:** Horizontal dashed grid lines are included at 0.2 intervals to assist in visual estimation of the bar heights against the Y-axis.\n\n**5. Statistical Insights**\n*   **Significant Disparity:** There is a substantial gap in performance between the two eras. Legacy systems are approximately **3.1 times more compliant** than Modern systems (10.2% vs 3.3%).\n*   **Overall Low Compliance:** Despite the relative difference, both groups exhibit objectively low compliance rates. Even the better-performing Legacy group only achieves a ~10% compliance rate, leaving nearly 90% of systems non-compliant. The Modern group is failing to comply in over 96% of cases.\n*   **Regression in Modern Systems:** The data suggests that newer systems (implemented in or after 2021) are struggling significantly more with Impact Assessment protocols than their predecessors. This could indicate stricter recent regulations, increased system complexity, or a lack of maturity in compliance processes for newer technologies.\n==================================================",
+  "created_at": "2026-02-22T07:03:45.283800+00:00",
+  "creation_idx": 128,
+  "experiment_id": "node_6_5",
+  "experiment_plan": {
+    "deliverables": "Contingency table; Chi-Square statistics (statistic, p-value); Bar chart comparing compliance rates by Era.",
+    "objective": "Determine if system age predicts governance compliance.",
+    "steps": "1. Load the 'eo13960_scored' subset from the dataset.\n2. Parse the '18_date_initiated' column to extract the 4-digit Year. Handle date parsing errors by coercing to NaT and dropping invalid rows.\n3. Create a binary variable 'Era': 'Legacy' (Year < 2021) vs. 'Modern' (Year >= 2021).\n4. Create a binary target variable from '52_impact_assessment' (Map 'Yes' to 1, others to 0).\n5. Perform a Chi-Square test of independence between 'Era' and 'Impact Assessment Compliance'.\n6. Calculate and compare the compliance proportions for both groups."
+  },
+  "hypothesis": "The 'Legacy Debt' of Governance: AI Systems initiated prior to the issuance of EO 13960 (Year < 2021) exhibit significantly lower compliance with critical safeguards (e.g., Impact Assessments) compared to post-2021 systems, indicating a systemic failure to retrofit legacy infrastructure with modern governance controls.",
+  "id_in_run": 127,
+  "is_surprising": true,
+  "parent_id": "node_5_14",
+  "posterior": 0.25824175824175827,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25824175824175827,
+    "n": 60.0,
+    "prior_params": [
+      23.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7580645161290323,
+  "prior_belief": {
+    "_empirical_mean": 0.7666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 2.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7580645161290323,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and robustly tested the 'Legacy Debt' hypothesis. The code correctly parsed 1,191 valid dates, split them into 'Legacy' (n=304) and 'Modern' (n=887) cohorts, and applied a rigorous Chi-Square test. \n\n**Findings:**\n1.  **Hypothesis Rejection:** The results statistically significantly **contradict** the hypothesis that legacy systems suffer from lower compliance. The Chi-Square test yielded a statistic of 21.29 (p < 0.001), confirming a strong relationship between system age and compliance, but in the opposite direction predicted.\n2.  **Inverse Relationship:** 'Legacy' systems (pre-2021) demonstrated a compliance rate of **10.2%**, which is more than **triple** the rate of 'Modern' systems (post-2021), which sits at a dismal **3.3%**.\n3.  **Implication:** Rather than a 'Legacy Debt' where old systems fail to modernize, the data suggests a 'New Entrant Failure,' where the surge of new AI systems initiated after the Executive Order are failing to implement basic impact assessments at significantly higher rates than older, established systems.",
+  "rich_outputs": null,
+  "runtime_ms": 172320.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5997873094647288
+}

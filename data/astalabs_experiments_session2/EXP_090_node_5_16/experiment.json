@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis linking AI autonomy levels to harm types using the AIID dataset (N=154). The analysis mapped 'Autonomy Level' to High vs. Low/Medium and classified harms into 'Physical/Tangible' vs. 'Intangible'. \n\n**Findings:**\nThe hypothesis was **rejected**. The Chi-square test yielded a p-value of **0.6587** (Statistic=0.1951), indicating **no statistically significant association** between the level of autonomy and the type of harm. \n\n**Key Observations:**\n1.  **Uniform Distribution:** Physical/Tangible harm was the dominant category for *both* groups. It accounted for **63.6%** of incidents in High Autonomy systems and **58.2%** in Low/Medium Autonomy systems.\n2.  **Negligible Effect:** The Cramer's V score of **0.0356** confirms an extremely weak, negligible relationship.\n\nThe data suggests that, within this specific subset of incidents, the nature of the harm (physical vs. intangible) is independent of the system's autonomy level.",
+  "child_ids": [
+    "node_6_11",
+    "node_6_76"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom scipy.stats import chi2_contingency\n\n# 1. Load Data\nprint(\"Loading dataset...\")\ndf = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# 2. Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"AIID Incidents loaded: {len(aiid_df)}\")\n\n# 3. Define Mapping Functions\n\ndef map_autonomy(val):\n    if pd.isna(val):\n        return np.nan\n    val_str = str(val).lower()\n    if 'autonomy3' in val_str:\n        return 'High Autonomy'\n    elif 'autonomy1' in val_str or 'autonomy2' in val_str:\n        return 'Low/Medium Autonomy'\n    return np.nan\n\ndef map_harm_composite(row):\n    # Extract values\n    tangible = str(row['Tangible Harm']).lower()\n    intangible = str(row['Special Interest Intangible Harm']).lower()\n    \n    # Check for Physical/Tangible Harm indicators\n    # We include definitive occurrences and imminent risks (near misses) as 'Physical/Tangible'\n    is_tangible = False\n    if 'tangible harm definitively occurred' in tangible:\n        is_tangible = True\n    elif 'imminent risk' in tangible:\n        is_tangible = True\n        \n    # Check for Intangible Harm\n    is_intangible = False\n    if 'yes' in intangible:\n        is_intangible = True\n        \n    # Classification Logic\n    if is_tangible:\n        return 'Physical/Tangible Harm'\n    elif is_intangible:\n        return 'Intangible Harm'\n    else:\n        return np.nan\n\n# 4. Apply Mappings\naiid_df['Autonomy_Clean'] = aiid_df['Autonomy Level'].apply(map_autonomy)\naiid_df['Harm_Clean'] = aiid_df.apply(map_harm_composite, axis=1)\n\n# 5. Filter for Analysis\nanalysis_df = aiid_df.dropna(subset=['Autonomy_Clean', 'Harm_Clean'])\n\nprint(f\"\\nRecords ready for analysis: {len(analysis_df)}\")\nprint(\"Distribution by Autonomy:\\n\", analysis_df['Autonomy_Clean'].value_counts())\nprint(\"Distribution by Harm:\\n\", analysis_df['Harm_Clean'].value_counts())\n\nif len(analysis_df) < 5:\n    print(\"Insufficient data for statistical testing.\")\nelse:\n    # 6. Statistical Analysis\n    contingency_table = pd.crosstab(analysis_df['Autonomy_Clean'], analysis_df['Harm_Clean'])\n    print(\"\\nContingency Table:\")\n    print(contingency_table)\n\n    # Chi-square\n    chi2, p, dof, expected = chi2_contingency(contingency_table)\n    print(f\"\\nChi-square Statistic: {chi2:.4f}\")\n    print(f\"p-value: {p:.4e}\")\n\n    # Cramer's V\n    n = contingency_table.sum().sum()\n    min_dim = min(contingency_table.shape) - 1\n    cramers_v = np.sqrt(chi2 / (n * min_dim))\n    print(f\"Cramer's V: {cramers_v:.4f}\")\n\n    # 7. Visualization\n    plt.figure(figsize=(8, 6))\n    sns.heatmap(contingency_table, annot=True, fmt='d', cmap='Oranges')\n    plt.title('Autonomy Level vs. Harm Type')\n    plt.ylabel('Autonomy Level')\n    plt.xlabel('Harm Type')\n    plt.tight_layout()\n    plt.show()\n\n    # Row Percentages\n    row_props = pd.crosstab(analysis_df['Autonomy_Clean'], analysis_df['Harm_Clean'], normalize='index') * 100\n    print(\"\\nRow Proportions (%):\")\n    print(row_props)\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset...\nAIID Incidents loaded: 1362\n\nRecords ready for analysis: 154\nDistribution by Autonomy:\n Autonomy_Clean\nLow/Medium Autonomy    110\nHigh Autonomy           44\nName: count, dtype: int64\nDistribution by Harm:\n Harm_Clean\nPhysical/Tangible Harm    92\nIntangible Harm           62\nName: count, dtype: int64\n\nContingency Table:\nHarm_Clean           Intangible Harm  Physical/Tangible Harm\nAutonomy_Clean                                              \nHigh Autonomy                     16                      28\nLow/Medium Autonomy               46                      64\n\nChi-square Statistic: 0.1951\np-value: 6.5873e-01\nCramer's V: 0.0356\n\nRow Proportions (%):\nHarm_Clean           Intangible Harm  Physical/Tangible Harm\nAutonomy_Clean                                              \nHigh Autonomy              36.363636               63.636364\nLow/Medium Autonomy        41.818182               58.181818\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Heatmap (specifically a 2x2 contingency table visualization).\n*   **Purpose:** To visualize the frequency distribution or relationship between two categorical variables: \"Autonomy Level\" and \"Harm Type.\" The color intensity represents the magnitude of the count in each intersection.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** Harm Type\n    *   **Labels:** \"Intangible Harm\" and \"Physical/Tangible Harm\".\n*   **Y-Axis:**\n    *   **Title:** Autonomy Level\n    *   **Labels:** \"High Autonomy\" and \"Low/Medium Autonomy\".\n*   **Color Bar (Z-Axis equivalent):**\n    *   **Range:** The scale on the right indicates values ranging roughly from just below 20 to just above 60.\n    *   **Gradient:** Light beige indicates lower values, while dark burnt orange indicates higher values.\n\n### 3. Data Trends\n*   **Highest Value:** The intersection of **Low/Medium Autonomy** and **Physical/Tangible Harm** (bottom-right quadrant) contains the highest count at **64**. This is represented by the darkest brown color.\n*   **Lowest Value:** The intersection of **High Autonomy** and **Intangible Harm** (top-left quadrant) contains the lowest count at **16**, represented by the lightest beige color.\n*   **Row Comparison:** The \"Low/Medium Autonomy\" row generally contains significantly higher values (46 and 64) compared to the \"High Autonomy\" row (16 and 28).\n*   **Column Comparison:** The \"Physical/Tangible Harm\" column generally contains higher values (28 and 64) compared to the \"Intangible Harm\" column (16 and 46).\n\n### 4. Annotations and Legends\n*   **Title:** \"Autonomy Level vs. Harm Type\" is centered at the top.\n*   **Cell Values:** Each of the four quadrants is annotated with the exact count:\n    *   Top-Left: 16\n    *   Top-Right: 28\n    *   Bottom-Left: 46\n    *   Bottom-Right: 64\n*   **Color Scale Legend:** A vertical bar on the right side provides a reference for the color coding, with tick marks at 20, 30, 40, 50, and 60.\n\n### 5. Statistical Insights\n*   **Total Sample Size:** The total count represented in the plot is **154** ($16 + 28 + 46 + 64$).\n*   **Prevalence of Physical Harm:** Physical/Tangible harm ($28 + 64 = 92$) is more prevalent in this dataset than Intangible harm ($16 + 46 = 62$), regardless of the autonomy level.\n*   **Prevalence of Lower Autonomy:** Incidents involving Low/Medium Autonomy systems ($46 + 64 = 110$) are much more frequent than those involving High Autonomy systems ($16 + 28 = 44$). This suggests that the dataset may be skewed toward lower autonomy systems or that lower autonomy systems are more prone to recorded incidents.\n*   **Dominant Scenario:** The most common scenario is a Low/Medium Autonomy system causing Physical/Tangible Harm (approx. 41.5% of the total).\n*   **Rarest Scenario:** The least common scenario is a High Autonomy system causing Intangible Harm (approx. 10.4% of the total).\n==================================================",
+  "created_at": "2026-02-22T05:18:52.210420+00:00",
+  "creation_idx": 91,
+  "experiment_id": "node_5_16",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square results, Cramer's V, and a Heatmap of Autonomy vs. Harm Type.",
+    "objective": "Map the relationship between the degree of AI autonomy and the nature of the resulting harm.",
+    "steps": "1. Filter for `aiid_incidents`.\n2. Clean `Autonomy Level`: Bin into 'High' (Autonomous, High) vs. 'Low/Medium' (Assisted, Low).\n3. Clean `Tangible Harm`: Group into 'Physical' vs. 'Intangible' (Financial, Reputational, Civil Rights, etc.).\n4. Create a contingency table and run a Chi-square test.\n5. Calculate Cramer's V to determine effect size."
+  },
+  "hypothesis": "The 'Physicality' of Autonomy: Higher levels of system autonomy are strongly associated with 'Physical' harms, whereas lower autonomy systems are dominated by 'Intangible' harms (e.g., economic, bias).",
+  "id_in_run": 90,
+  "is_surprising": true,
+  "parent_id": "node_4_8",
+  "posterior": 0.19505494505494506,
+  "posterior_belief": {
+    "_empirical_mean": 0.06666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 44.0,
+    "definitely_true": 0.0,
+    "maybe_false": 16.0,
+    "maybe_true": 0.0,
+    "mean": 0.19505494505494506,
+    "n": 60.0,
+    "prior_params": [
+      13.75,
+      17.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.4435483870967742,
+  "prior_belief": {
+    "_empirical_mean": 0.44166666666666665,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 18.0,
+    "maybe_true": 11.0,
+    "mean": 0.4435483870967742,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment was successfully executed after initial data mapping challenges were resolved. The programmer correctly identified the necessary columns ('Autonomy Level', 'Tangible Harm', 'Special Interest Intangible Harm') and applied appropriate cleaning logic to categorize incidents into 'High' vs. 'Low/Medium' autonomy and 'Physical' vs. 'Intangible' harm.\n\n**Hypothesis Evaluation:**\nThe hypothesis that higher autonomy is strongly associated with physical harms was **rejected**. The statistical analysis (Chi-square test) yielded a p-value of **0.6587** and a Cramer's V of **0.0356**, indicating no statistically significant relationship between the level of autonomy and the nature of the harm in the analyzed sample (N=154). \n\n**Findings:**\n1.  **Uniformity:** Physical/Tangible harm was the predominant outcome for both High Autonomy (63.6%) and Low/Medium Autonomy (58.2%) systems.\n2.  **Independence:** The nature of the harm appears independent of the system's autonomy level in this dataset, contradicting the expectation that lower autonomy systems would disproportionately cause intangible harms.",
+  "rich_outputs": null,
+  "runtime_ms": 395560.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.29819213045019494
+}

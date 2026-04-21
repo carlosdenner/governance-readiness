@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis that the source of a governance requirement dictates its competency bundle. Processing the 'step2_crosswalk_matrix.csv' dataset (n=42), requirements were classified as 'Normative' (NIST AI RMF, NIST GenAI, EU AI Act; n=32) or 'Technical' (OWASP Top 10 LLM; n=10). The analysis revealed a statistically significant association between source type and bundle classification (Fisher's Exact p=0.0128; Chi-square p=0.0277). Specifically, 'Technical' sources overwhelmingly mapped to 'Integration Readiness' (90%, 9/10), whereas 'Normative' sources were more balanced but leaned toward 'Trust Readiness' (56%, 18/32). With a moderate effect size (Cramer's V = 0.34), the hypothesis is supported: technical guidelines drive engineering controls, while normative frameworks drive governance and policy controls.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport os\n\n# [debug] Check if file exists in current or parent directory\nfile_name = 'step2_crosswalk_matrix.csv'\nfile_path = file_name\nif not os.path.exists(file_path):\n    if os.path.exists(f'../{file_name}'):\n        file_path = f'../{file_name}'\n    else:\n        print(f\"Error: {file_name} not found.\")\n\nprint(f\"Loading dataset from: {file_path}\")\n\ntry:\n    df = pd.read_csv(file_path)\nexcept Exception as e:\n    print(f\"Failed to load CSV: {e}\")\n    exit(1)\n\n# Map sources to types\n# Technical: OWASP Top 10 LLM\n# Normative: NIST AI RMF 1.0, NIST GenAI Profile, EU AI Act\n\ndef map_source(source_name):\n    if 'OWASP' in str(source_name):\n        return 'Technical'\n    else:\n        return 'Normative'\n\ndf['source_type'] = df['source'].apply(map_source)\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(df['source_type'], df['bundle'])\n\nprint(\"\\n=== Contingency Table (Source Type vs Bundle) ===\")\nprint(contingency_table)\n\n# Calculate percentages for better context\ncontingency_pct = pd.crosstab(df['source_type'], df['bundle'], normalize='index') * 100\nprint(\"\\n=== Contingency Table (Percentages) ===\")\nprint(contingency_pct.round(1))\n\n# Statistical Testing\n# Using Fisher's Exact Test if 2x2, otherwise Chi-Square\nchi2, p_val, dof, expected = stats.chi2_contingency(contingency_table)\n\nprint(\"\\n=== Chi-Square Test of Independence ===\")\nprint(f\"Chi2 Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\n\n# Calculate Cramer's V (Effect Size)\nn = contingency_table.sum().sum()\nmin_dim = min(contingency_table.shape) - 1\ncramers_v = np.sqrt(chi2 / (n * min_dim))\n\nprint(f\"Cramer's V: {cramers_v:.4f}\")\n\n# Fisher's Exact Test (specifically for 2x2 small samples, which this likely is)\nif contingency_table.shape == (2, 2):\n    # Note: scipy returns odds ratio and p-value\n    odds_ratio, fisher_p = stats.fisher_exact(contingency_table)\n    print(\"\\n=== Fisher's Exact Test (2x2) ===\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\n    print(f\"P-value: {fisher_p:.4f}\")\n\n# Interpretation\nalpha = 0.05\nprint(\"\\n=== Interpretation ===\")\nif p_val < alpha:\n    print(\"Result: Statistically Significant Association.\")\n    print(\"There is a significant relationship between the source type (Normative vs Technical) and the competency bundle.\")\nelse:\n    print(\"Result: No Statistically Significant Association.\")\n    print(\"The source type does not appear to dictate the competency bundle significantly in this dataset.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_crosswalk_matrix.csv\n\n=== Contingency Table (Source Type vs Bundle) ===\nbundle       Integration Readiness  Trust Readiness\nsource_type                                        \nNormative                       14               18\nTechnical                        9                1\n\n=== Contingency Table (Percentages) ===\nbundle       Integration Readiness  Trust Readiness\nsource_type                                        \nNormative                     43.8             56.2\nTechnical                     90.0             10.0\n\n=== Chi-Square Test of Independence ===\nChi2 Statistic: 4.8442\nP-value: 0.0277\nCramer's V: 0.3396\n\n=== Fisher's Exact Test (2x2) ===\nOdds Ratio: 0.0864\nP-value: 0.0128\n\n=== Interpretation ===\nResult: Statistically Significant Association.\nThere is a significant relationship between the source type (Normative vs Technical) and the competency bundle.\n",
+  "created_at": "2026-02-21T00:26:41.312673+00:00",
+  "creation_idx": 91,
+  "experiment_id": "node_5_22",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistic, p-value, Cramer's V.",
+    "objective": "Determine if there is a statistically significant association between the source of the requirement (Governance vs. Technical) and the resulting competency bundle.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Create a 'source_type' variable: classify 'OWASP Top 10 LLM' as 'Technical' and all others (NIST AI RMF, NIST GenAI, EU AI Act) as 'Normative'.\n3. Create a contingency table of 'source_type' vs. 'bundle'.\n4. Perform a Chi-square test of independence (or Fisher's Exact Test if counts are low).\n5. Calculate Cramer's V to estimate effect size."
+  },
+  "hypothesis": "Normative governance frameworks (e.g., NIST, EU AI Act) are significantly more likely to map to 'Trust Readiness' competencies, whereas technical guidelines (e.g., OWASP) are significantly more likely to map to 'Integration Readiness' competencies.",
+  "id_in_run": 90,
+  "is_surprising": false,
+  "parent_id": "node_4_17",
+  "posterior": 0.9834710743801653,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 90.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9834710743801653,
+    "n": 90.0,
+    "prior_params": [
+      29.0,
+      2.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9354838709677419,
+  "prior_belief": {
+    "_empirical_mean": 0.95,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 24.0,
+    "maybe_false": 0.0,
+    "maybe_true": 6.0,
+    "mean": 0.9354838709677419,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis that the source of a governance requirement dictates its competency bundle. Processing the 'step2_crosswalk_matrix.csv' dataset (n=42), requirements were classified as 'Normative' (NIST AI RMF, NIST GenAI, EU AI Act; n=32) or 'Technical' (OWASP Top 10 LLM; n=10). The analysis revealed a statistically significant association between source type and bundle classification (Fisher's Exact p=0.0128; Chi-square p=0.0277). Specifically, 'Technical' sources overwhelmingly mapped to 'Integration Readiness' (90%, 9/10), whereas 'Normative' sources were more balanced but leaned toward 'Trust Readiness' (56%, 18/32). With a moderate effect size (Cramer's V = 0.34), the hypothesis is supported: technical guidelines drive engineering controls, while normative frameworks drive governance and policy controls.",
+  "rich_outputs": null,
+  "runtime_ms": 140780.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.05569374782568592
+}

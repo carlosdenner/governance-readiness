@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully loaded the 'step3_tactic_frequency.csv' dataset and compared the tactical breadth of the two competency bundles. The analysis included 9 sub-competencies (5 Trust, 4 Integration). The results show nearly identical means for unique adversarial tactics: Trust Readiness (Mean=1.80, SD=0.84) and Integration Readiness (Mean=1.75, SD=1.50). The independent samples T-test yielded a p-value of 0.955, indicating no statistically significant difference between the groups. Therefore, the hypothesis that Integration Readiness competencies map to a significantly broader attack surface is rejected. However, the standard deviations and the generated Violin Plot reveal that Integration Readiness exhibits higher variance, containing both the sub-competency with the highest tactic count (IR-2, n=4) and several with the lowest (n=1), whereas Trust Readiness is more consistent.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom scipy import stats\nimport os\n\n# Function to load dataset\ndef load_dataset(filename):\n    paths = [filename, os.path.join('..', filename)]\n    for path in paths:\n        if os.path.exists(path):\n            return pd.read_csv(path)\n    raise FileNotFoundError(f\"Could not find {filename} in {paths}\")\n\n# 1. Load Data\ndf = load_dataset('step3_tactic_frequency.csv')\n\n# 2. Data Processing\n# Group by sub_competency_id and bundle, then count unique tactic_ids\ntactic_counts = df.groupby(['sub_competency_id', 'bundle'])['tactic_id'].nunique().reset_index()\ntactic_counts.rename(columns={'tactic_id': 'unique_tactic_count'}, inplace=True)\n\nprint(\"Summary of Tactic Counts per Sub-Competency:\")\nprint(tactic_counts)\n\n# 3. Statistical Test\ntrust_group = tactic_counts[tactic_counts['bundle'] == 'Trust Readiness']['unique_tactic_count']\nintegration_group = tactic_counts[tactic_counts['bundle'] == 'Integration Readiness']['unique_tactic_count']\n\nprint(f\"\\nTrust Readiness (n={len(trust_group)}): Mean = {trust_group.mean():.2f}, Std = {trust_group.std():.2f}\")\nprint(f\"Integration Readiness (n={len(integration_group)}): Mean = {integration_group.mean():.2f}, Std = {integration_group.std():.2f}\")\n\n# T-test (independent samples)\n# Using Welch's t-test (equal_var=False) due to small sample sizes and potential variance differences\nt_stat, p_val = stats.ttest_ind(trust_group, integration_group, equal_var=False)\nprint(f\"\\nT-test results: Statistic = {t_stat:.4f}, p-value = {p_val:.4f}\")\n\n# 4. Visualization\nplt.figure(figsize=(10, 6))\n# Fix for seaborn warning: assign x to hue and set legend=False\nsns.violinplot(x='bundle', y='unique_tactic_count', hue='bundle', data=tactic_counts, inner='stick', palette='muted', legend=False)\nplt.title('Distribution of Unique Adversarial Tactics per Competency Bundle')\nplt.ylabel('Count of Unique Tactics')\nplt.xlabel('Competency Bundle')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Summary of Tactic Counts per Sub-Competency:\n  sub_competency_id                 bundle  unique_tactic_count\n0              IR-1  Integration Readiness                    1\n1              IR-2  Integration Readiness                    4\n2              IR-6  Integration Readiness                    1\n3              IR-8  Integration Readiness                    1\n4              TR-1        Trust Readiness                    1\n5              TR-2        Trust Readiness                    2\n6              TR-3        Trust Readiness                    2\n7              TR-4        Trust Readiness                    3\n8              TR-6        Trust Readiness                    1\n\nTrust Readiness (n=5): Mean = 1.80, Std = 0.84\nIntegration Readiness (n=4): Mean = 1.75, Std = 1.50\n\nT-test results: Statistic = 0.0597, p-value = 0.9550\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis of the plot:\n\n### 1. Plot Type\n*   **Type:** Violin Plot.\n*   **Purpose:** This plot visualizes the distribution of numeric data (\"Count of Unique Tactics\") across two different categories (\"Competency Bundles\"). It combines a box plot with a kernel density plot, showing not just summary statistics (like medians and ranges) but also the probability density of the data at different values. The width of the violin at any given y-value represents the frequency or density of data points at that value.\n\n### 2. Axes\n*   **X-axis:**\n    *   **Title:** \"Competency Bundle\"\n    *   **Labels:** Two categories are displayed: \"Integration Readiness\" and \"Trust Readiness\".\n*   **Y-axis:**\n    *   **Title:** \"Count of Unique Tactics\"\n    *   **Units:** Integer counts (number of tactics).\n    *   **Value Range:** The axis markings range from -1 to 6. Note: While the plot extends into negative numbers due to the smoothing function of the visualization (Kernel Density Estimation), the actual data likely starts at 0, as a count of tactics cannot be negative.\n\n### 3. Data Trends\n*   **Integration Readiness (Blue Violin):**\n    *   **Shape:** This distribution is multi-modal or skewed. It has a very wide base around a count of 1, indicating a high concentration of data points with a low tactic count. However, there is a significant secondary bulge (expansion in width) around the 3 to 5 range.\n    *   **Range:** It has a wider spread than the Trust Readiness group, extending from 0 up to roughly 6 unique tactics. This suggests higher variability in this category.\n*   **Trust Readiness (Orange Violin):**\n    *   **Shape:** This distribution is more compact and diamond-shaped. The widest point is centered around the count of 2.\n    *   **Range:** The range is narrower, roughly falling between 0 and 4. The distribution tapers off symmetrically, suggesting that cases with high numbers of unique tactics (above 4) are rare or non-existent in this group.\n\n### 4. Annotations and Legends\n*   **Gridlines:** Horizontal dashed gridlines are placed at every integer interval (0, 1, 2, etc.) to aid in reading the specific counts.\n*   **Inner Lines (Quartiles):** Inside each violin, there are three thin horizontal lines representing the quartiles:\n    *   **Integration Readiness:** The median (middle line) appears to be around 1. The upper quartile (top line) is at 4, and the lower quartile (bottom line) is near 0 or 1.\n    *   **Trust Readiness:** The median is clearly at 2. The upper quartile is at 3, and the lower quartile is at 1.\n*   **Colors:** Blue is used for \"Integration Readiness\" and Orange for \"Trust Readiness\".\n\n### 5. Statistical Insights\n*   **Variability vs. Consistency:** \"Trust Readiness\" is a more consistent bundle; you can reliably expect between 1 and 3 unique adversarial tactics. \"Integration Readiness\" is highly variable; while the most common outcome is a single tactic (count of 1), there is a significant risk of encountering a much higher complexity (4 to 6 tactics).\n*   **Central Tendency:** The median count for \"Trust Readiness\" (2) is higher than the median for \"Integration Readiness\" (1). However, \"Integration Readiness\" has a much higher maximum capacity for unique tactics.\n*   **High-Risk Identification:** If the \"Count of Unique Tactics\" serves as a proxy for difficulty or vulnerability, the \"Integration Readiness\" bundle presents the \"worst-case\" scenarios, containing the outliers with the highest number of unique tactics (the peak reaching up to 6).\n==================================================",
+  "created_at": "2026-02-21T00:43:15.806745+00:00",
+  "creation_idx": 98,
+  "experiment_id": "node_5_25",
+  "experiment_plan": {
+    "deliverables": "T-test results and Violin Plot.",
+    "objective": "Compare the tactical breadth of Trust vs Integration competencies.",
+    "steps": "1. Load 'step3_tactic_frequency.csv'.\n2. Group the data by 'sub_competency_id' and 'bundle'.\n3. Count the number of unique 'tactic_name' entries for each sub-competency.\n4. Perform a T-test comparing the mean unique tactic counts of Trust Readiness sub-competencies against Integration Readiness sub-competencies.\n5. Generate a Violin Plot comparing the distributions."
+  },
+  "hypothesis": "Sub-competencies within the 'Integration Readiness' bundle map to a significantly higher mean number of unique adversarial tactics than those in the 'Trust Readiness' bundle, indicating a broader technical attack surface.",
+  "id_in_run": 97,
+  "is_surprising": true,
+  "parent_id": "node_4_21",
+  "posterior": 0.19008264462809918,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.19008264462809918,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully loaded the 'step3_tactic_frequency.csv' dataset and tested the hypothesis regarding tactical breadth. The analysis, covering 9 sub-competencies (5 Trust, 4 Integration), revealed that the mean number of unique adversarial tactics is nearly identical between the two bundles (Trust: 1.80, Integration: 1.75). The independent samples T-test yielded a p-value of 0.955, indicating no statistically significant difference, which leads to the rejection of the hypothesis that Integration Readiness competencies map to a significantly broader attack surface. However, the Violin Plot and standard deviation metrics (Trust: 0.84 vs. Integration: 1.50) uncover a nuanced finding: Integration Readiness exhibits significantly higher variance, encompassing sub-competencies with both the highest complexity (4 tactics) and the lowest (1 tactic), whereas Trust Readiness is operationally more consistent.",
+  "rich_outputs": null,
+  "runtime_ms": 232570.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6404780999953865
+}

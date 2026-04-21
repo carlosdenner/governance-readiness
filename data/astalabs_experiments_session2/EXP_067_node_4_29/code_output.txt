@@ -1,0 +1,82 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 Subset Shape: (1757, 196)
+Analysis Subset Shape: (967, 197)
+group
+Custom (Gov)         722
+Commercial (COTS)    245
+Name: count, dtype: int64
+
+--- Chi-Square Test Results ---
+
+Control: Transparency: Code Access
+clean_38_code_access    0   1
+group                        
+Commercial (COTS)     243   2
+Custom (Gov)          676  46
+  Commercial (COTS) Compliance: 0.8%
+  Custom (Gov) Compliance:      6.4%
+  p-value: 1.0059e-03
+  -> Statistically Significant
+
+Control: Transparency: Data Docs
+clean_34_data_docs    0   1
+group                      
+Commercial (COTS)   245   0
+Custom (Gov)        706  16
+  Commercial (COTS) Compliance: 0.0%
+  Custom (Gov) Compliance:      2.2%
+  p-value: 3.9416e-02
+  -> Statistically Significant
+
+Control: Security: ATO
+clean_40_has_ato     0    1
+group                      
+Commercial (COTS)  142  103
+Custom (Gov)       290  432
+  Commercial (COTS) Compliance: 42.0%
+  Custom (Gov) Compliance:      59.8%
+  p-value: 1.8774e-06
+  -> Statistically Significant
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+This is a **grouped bar chart**. Its purpose is to compare the "Compliance Rate" between two distinct groups of AI systems ("Commercial" vs. "Custom") across three different performance or regulatory categories.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Compliance Rate (%)"
+    *   **Range:** 0 to 100, with increments of 20 marked by dashed grid lines.
+*   **X-Axis:**
+    *   **Labels:** The axis represents three distinct categories:
+        1.  "Transparency: Code Access"
+        2.  "Transparency: Data Docs"
+        3.  "Security: ATO" (Authority to Operate)
+    *   **Format:** The labels are slightly rotated to accommodate length and improve readability.
+
+### 3. Data Trends
+*   **Overall Pattern:** Across all three categories, **Custom (Gov)** systems (represented by the blue bars) demonstrate higher compliance rates compared to **Commercial (COTS)** systems (represented by the orange bars).
+*   **Tallest Bars:** The "Security: ATO" category shows the highest compliance rates for both groups.
+    *   Custom (Gov) reaches exactly **60%**.
+    *   Commercial (COTS) is slightly above **40%**.
+*   **Shortest Bars:** The Transparency categories show extremely low compliance rates overall.
+    *   "Transparency: Data Docs" is the lowest, with Commercial systems showing near **0%** and Custom systems showing a very minimal rate (likely **<5%**).
+    *   "Transparency: Code Access" is similarly low, with Commercial systems near **1-2%** and Custom systems roughly around **6-7%**.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner:
+    *   **Orange:** Commercial (COTS) - Commercial Off-The-Shelf
+    *   **Blue:** Custom (Gov) - Custom Government developed
+*   **Statistical Annotations:** p-values are placed above each group of bars to indicate statistical significance:
+    *   Above "Transparency: Code Access": **p=0.001**
+    *   Above "Transparency: Data Docs": **p=0.039**
+    *   Above "Security: ATO": **p<0.001**
+*   **Title:** "Transparency vs Security: Commercial vs Custom AI (EO 13960)" indicates the data is related to Executive Order 13960 compliance.
+
+### 5. Statistical Insights
+*   **Significance:** All three comparisons show statistically significant differences between Commercial and Custom systems (assuming a standard significance threshold of $\alpha = 0.05$), as all p-values are below 0.05.
+*   **Security Disparity:** The difference in Security (ATO) compliance is the most statistically significant (**p<0.001**), suggesting a very strong confidence that Custom (Gov) systems perform better in this metric than Commercial systems.
+*   **Transparency Struggle:** While there is a statistically significant difference favoring Custom systems in the Transparency metrics (Code Access and Data Docs), the **practical significance** is that both Commercial and Custom systems are failing almost entirely in these areas, with compliance rates remaining in the single digits.
+==================================================

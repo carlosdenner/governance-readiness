@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully validated the 'Shadow AI' Monitoring Gap hypothesis. Analyzing 1,757 records from the EO 13960 dataset, the study found a strong statistical link between formal authorization (ATO) and post-deployment monitoring. Systems with an Authority to Operate (n=638) had a monitoring rate of 14.4%, whereas unauthorized or pending systems (n=1,119) had a significantly lower rate of 4.8%. A Chi-Square test yielded a p-value of 4.62e-12, confirming the difference is highly significant. While the hypothesis is supported—authorized systems are ~3 times more likely to be monitored—the data reveals a broader governance failure, as over 85% of even the authorized systems lack reported monitoring mechanisms.",
+  "child_ids": [
+    "node_5_33"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport numpy as np\n\n# Load the dataset\nfile_path = '../astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 data\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# --- Cleaning Functions ---\n\ndef clean_ato(val):\n    s = str(val).strip().lower()\n    if s == 'yes':\n        return 'Has ATO'\n    if 'approved enclave' in s:\n        return 'Has ATO'\n    return 'No ATO'\n\ndef clean_monitoring(val):\n    s = str(val).strip().lower()\n    # Positive indicators\n    if 'automated' in s or 'established' in s or 'intermittent' in s:\n        return 'Monitored'\n    # Negative indicators (explicit 'no', 'under development', or irrelevant justification)\n    # 'nan' will fall through to here as it doesn't contain positive keywords\n    return 'Not Monitored'\n\n# Apply cleaning\neo_data['ato_status'] = eo_data['40_has_ato'].apply(clean_ato)\neo_data['monitoring_status'] = eo_data['56_monitor_postdeploy'].apply(clean_monitoring)\n\n# Debug: Check distribution\nprint(\"ATO Status Distribution:\")\nprint(eo_data['ato_status'].value_counts())\nprint(\"\\nMonitoring Status Distribution:\")\nprint(eo_data['monitoring_status'].value_counts())\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(eo_data['ato_status'], eo_data['monitoring_status'])\nprint(\"\\nContingency Table:\")\nprint(contingency_table)\n\n# Calculate percentages for visualization\n# We want P(Monitored | ATO Status)\nato_summary = pd.crosstab(eo_data['ato_status'], eo_data['monitoring_status'], normalize='index') * 100\nprint(\"\\nMonitoring Percentages by ATO Status:\")\nprint(ato_summary)\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\nprint(f\"\\nChi-Square Test Results:\")\nprint(f\"Chi2 Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Visualization\nif 'Monitored' in ato_summary.columns:\n    plt.figure(figsize=(10, 6))\n    # Plotting the 'Monitored' percentage\n    # Reorder index if needed to have Has ATO vs No ATO\n    desired_order = ['Has ATO', 'No ATO']\n    # Filter to only existing indices\n    existing_order = [x for x in desired_order if x in ato_summary.index]\n    \n    plot_data = ato_summary.loc[existing_order, 'Monitored']\n    \n    bars = plt.bar(plot_data.index, plot_data.values, color=['#4CAF50', '#F44336'])\n    \n    plt.title('Impact of ATO Authorization on Post-Deployment Monitoring')\n    plt.xlabel('Authorization Status')\n    plt.ylabel('Percentage of Systems with Monitoring (%)')\n    plt.ylim(0, 100)\n    \n    # Add labels\n    for bar in bars:\n        height = bar.get_height()\n        plt.text(bar.get_x() + bar.get_width()/2., height + 1,\n                 f'{height:.1f}%',\n                 ha='center', va='bottom')\n    \n    plt.grid(axis='y', linestyle='--', alpha=0.7)\n    plt.tight_layout()\n    plt.show()\nelse:\n    print(\"No 'Monitored' category found to plot.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: ATO Status Distribution:\nato_status\nNo ATO     1119\nHas ATO     638\nName: count, dtype: int64\n\nMonitoring Status Distribution:\nmonitoring_status\nNot Monitored    1611\nMonitored         146\nName: count, dtype: int64\n\nContingency Table:\nmonitoring_status  Monitored  Not Monitored\nato_status                                 \nHas ATO                   92            546\nNo ATO                    54           1065\n\nMonitoring Percentages by ATO Status:\nmonitoring_status  Monitored  Not Monitored\nato_status                                 \nHas ATO            14.420063      85.579937\nNo ATO              4.825737      95.174263\n\nChi-Square Test Results:\nChi2 Statistic: 47.8400\nP-value: 4.6247e-12\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Chart (or Column Chart).\n*   **Purpose:** The plot is designed to compare a specific metric (\"Percentage of Systems with Monitoring\") across two distinct categorical groups based on their authorization status (\"Has ATO\" vs. \"No ATO\").\n\n### 2. Axes\n*   **X-Axis (Horizontal):**\n    *   **Label:** \"Authorization Status\"\n    *   **Categories:** Two discrete categories: \"Has ATO\" and \"No ATO\".\n*   **Y-Axis (Vertical):**\n    *   **Label:** \"Percentage of Systems with Monitoring (%)\"\n    *   **Units:** Percentage points.\n    *   **Range:** The axis scale runs from **0 to 100**, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).\n\n### 3. Data Trends\n*   **Tallest Bar:** The \"Has ATO\" group is the tallest, represented by a green bar reaching a value of **14.4%**.\n*   **Shortest Bar:** The \"No ATO\" group is the shortest, represented by a red bar reaching a value of **4.8%**.\n*   **Pattern:** There is a positive correlation between having an ATO (Authority to Operate) and the presence of post-deployment monitoring. The bar representing authorized systems is noticeably larger than the unauthorized group.\n\n### 4. Annotations and Legends\n*   **Chart Title:** \"Impact of ATO Authorization on Post-Deployment Monitoring\" appears at the top, defining the context of the analysis.\n*   **Data Labels:** Specific percentage values are annotated directly above each bar (\"14.4%\" and \"4.8%\"), eliminating the need to estimate values based on the grid lines.\n*   **Grid Lines:** Horizontal dashed grey lines are provided at every 20% increment to assist with visual scaling.\n*   **Color Coding:** The bars use distinct colors to reinforce the categories:\n    *   **Green:** Used for \"Has ATO\" (generally associated with positive/compliant status).\n    *   **Red:** Used for \"No ATO\" (generally associated with negative/non-compliant status).\n\n### 5. Statistical Insights\n*   **Relative Impact:** Systems with an ATO are **3 times more likely** (14.4% vs 4.8%) to have post-deployment monitoring compared to systems without an ATO. This suggests that the authorization process effectively encourages or enforces monitoring standards.\n*   **Low Overall Compliance:** Despite the \"Has ATO\" group performing better, the absolute values are quite low. Even among authorized systems, only **14.4%** have monitoring, leaving **85.6%** of authorized systems without it (based on this metric). This indicates that while ATO improves the odds of monitoring, it does not guarantee it.\n*   **Conclusion:** The authorization process (ATO) acts as a significant differentiator for system visibility, but there is substantial room for improvement in monitoring coverage across all systems, regardless of authorization status.\n==================================================",
+  "created_at": "2026-02-22T04:39:15.282693+00:00",
+  "creation_idx": 79,
+  "experiment_id": "node_4_37",
+  "experiment_plan": {
+    "deliverables": "Contingency table of ATO Status vs. Post-Deployment Monitoring; Bar chart showing monitoring gaps; Statistical significance metrics.",
+    "objective": "Investigate if systems without formal authorization (ATO) lack critical post-deployment monitoring controls.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'eo13960_scored'.\n2. Group data by '40_has_ato' (Yes vs No/Pending/Unknown).\n3. Analyze '56_monitor_postdeploy' to create a binary compliance flag.\n4. Compare monitoring rates across ATO status groups.\n5. Perform a Chi-Square test of independence."
+  },
+  "hypothesis": "The 'Shadow AI' Monitoring Gap: Federal AI systems that lack a formal Authority to Operate (ATO) are significantly less likely to have Post-Deployment Monitoring mechanisms in place compared to authorized systems, identifying a risk management void in experimental deployments.",
+  "id_in_run": 78,
+  "is_surprising": false,
+  "parent_id": "node_3_17",
+  "posterior": 0.989010989010989,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.989010989010989,
+    "n": 60.0,
+    "prior_params": [
+      30.0,
+      1.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.967741935483871,
+  "prior_belief": {
+    "_empirical_mean": 0.9833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 28.0,
+    "maybe_false": 0.0,
+    "maybe_true": 2.0,
+    "mean": 0.967741935483871,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment faithfully implemented the plan and successfully validated the 'Shadow AI' Monitoring Gap hypothesis. The code appropriately handled the unstructured text in the '56_monitor_postdeploy' column by implementing keyword-based categorization after an initial failure with strict equality checks. The analysis of 1,757 records from the EO 13960 dataset revealed a statistically significant disparity (Chi-Square p=4.62e-12): systems with formal Authority to Operate (ATO) are nearly three times as likely to have post-deployment monitoring (14.4%) compared to unauthorized or pending systems (4.8%). While the hypothesis is confirmed, the results also highlight a critical systemic issue where over 85% of even the authorized federal AI systems lack reported monitoring mechanisms.",
+  "rich_outputs": null,
+  "runtime_ms": 194750.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.025522864232541662
+}

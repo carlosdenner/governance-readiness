@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1362 AIID incidents.
+
+Autonomy Distribution:
+autonomy_category
+NaN     1177
+Low      132
+High      53
+Name: count, dtype: int64
+
+Using text column for harm analysis: description
+
+Harm Distribution:
+harm_category
+Non-Physical    1181
+Physical         181
+Name: count, dtype: int64
+
+Final analysis set size: 185
+
+--- Contingency Table (Autonomy vs Harm Type) ---
+harm_category      Non-Physical  Physical
+autonomy_category                        
+High                         45         8
+Low                         111        21
+
+Chi-Square Statistic: 0.0000
+P-value: 1.0000e+00
+
+Odds Ratio (High Autonomy -> Physical Harm): 0.9397
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** This chart compares the total count of incidents across two different categories ("High" vs. "Low" Autonomy Levels) while simultaneously breaking down the composition of those incidents into two sub-groups ("Non-Physical" vs. "Physical" Harm).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Autonomy Level"
+    *   **Categories:** "High" and "Low" (Note: The category labels are rotated 90 degrees vertically).
+*   **Y-Axis:**
+    *   **Label:** "Count" (indicating the frequency or number of occurrences).
+    *   **Range:** The scale starts at 0 and extends to roughly 135, with major tick marks every 20 units (0, 20, 40, ..., 120).
+
+### 3. Data Trends
+*   **Overall Volume:** The "Low" autonomy category has a significantly higher total count compared to the "High" autonomy category. The "Low" bar reaches a total height of approximately 130-132, whereas the "High" bar reaches approximately 50-55.
+*   **Dominant Category:** In both autonomy levels, "Non-Physical" harm (represented by the blue section) constitutes the vast majority of the count.
+*   **Comparison of Segments:**
+    *   **High Autonomy:** The Non-Physical count is approximately 45, while the Physical count is small, roughly 8-10.
+    *   **Low Autonomy:** The Non-Physical count is approximately 110-112, while the Physical count appears to be around 20.
+
+### 4. Annotations and Legends
+*   **Title:** "Harm Type by Autonomy Level" appears at the top center.
+*   **Legend:** Located in the top-left corner, titled "Harm Type". It distinguishes the data segments by color:
+    *   **Sky Blue:** Non-Physical
+    *   **Salmon/Pink:** Physical
+
+### 5. Statistical Insights
+*   **Frequency Disparity:** There is a stark contrast in the number of recorded harms based on autonomy level. Incidents associated with **Low Autonomy** are more than double the frequency of those associated with **High Autonomy**.
+*   **Nature of Harm:** Regardless of the autonomy level, the nature of the harm is predominantly **Non-Physical**. Physical harm represents a consistent minority share of the data in both scenarios (appearing to be roughly 15-20% of the total in both bars).
+*   **Conclusion:** The data suggests that lower autonomy systems are associated with a higher quantity of reported harms in this dataset, but the *type* of harm profile (mostly non-physical) remains relatively stable regardless of whether autonomy is high or low.
+==================================================

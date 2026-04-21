@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 subset shape: (1757, 196)
+
+Binary counts for Impact Assessment (1=Yes):
+impact_binary
+0    1696
+1      61
+Name: count, dtype: int64
+Binary counts for AI Notice (1=Provided):
+notice_binary
+0    1686
+1      71
+Name: count, dtype: int64
+
+--- Contingency Table ---
+                       No AI Notice  Has AI Notice
+No Impact Assessment           1653             43
+Has Impact Assessment            33             28
+
+Chi-square Statistic: 274.4979
+P-value: 1.1875e-61
+Phi Coefficient: 0.3953
+
+--- Conclusion ---
+Result: Statistically Significant Dependency.
+There is a Moderate positive association (Phi=0.40) between the controls.
+Hypothesis Supported: Agencies that perform Impact Assessments are significantly more likely to provide AI Notice.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Heatmap representing a Co-occurrence Matrix** (also known as a Contingency Table or Confusion Matrix).
+*   **Purpose:** It visualizes the frequency distribution and relationship between two categorical variables: "Impact Assessment" and "AI Notice." The intensity of the color corresponds to the count (frequency) in each intersection.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Impact Assessment (Control 52)"
+    *   **Categories:** Two discrete categories: "No Impact Assessment" (top row) and "Has Impact Assessment" (bottom row).
+*   **X-Axis:**
+    *   **Label:** "AI Notice (Control 59)"
+    *   **Categories:** Two discrete categories: "No AI Notice" (left column) and "Has AI Notice" (right column).
+*   **Value Ranges:** The axes represent binary categories (No/Has), not numerical ranges. The values within the matrix range from a minimum of **28** to a maximum of **1653**.
+
+### 3. Data Trends
+*   **Dominant Group (High Value):** The vast majority of the data points fall into the top-left quadrant (No Impact Assessment / No AI Notice). This cell has a count of **1653** and is colored deep blue, indicating it is the most frequent occurrence by a significant margin.
+*   **Minority Groups (Low Values):** The other three quadrants represent a very small fraction of the total data. They are colored very pale blue/white, indicating low frequency:
+    *   No Impact Assessment / Has AI Notice: **43**
+    *   Has Impact Assessment / No AI Notice: **33**
+    *   Has Impact Assessment / Has AI Notice: **28**
+
+### 4. Annotations and Legends
+*   **Title:** "Co-occurrence: Impact Assessment vs. AI Notice" clearly defines the scope of the comparison.
+*   **Cell Annotations:** Each cell contains the exact integer count of instances falling into that specific intersection (1653, 43, 33, 28).
+*   **Color Coding:** While there is no explicit legend bar, the visual encoding uses a single-hue sequential color scale (likely Blues), where darker blue represents higher counts and white represents lower counts.
+
+### 5. Statistical Insights
+*   **Rarity of Controls:** Both "Impact Assessment" and "AI Notice" are rare attributes in this dataset. The "default" state for the vast majority of cases (approx. 94%) is the absence of both controls.
+*   **Association:** Despite the rarity, there appears to be a conditional relationship between the two controls.
+    *   If a case **Has Impact Assessment** (Total = $33 + 28 = 61$), there is a roughly **46%** chance ($28/61$) it also has an AI Notice.
+    *   In contrast, if a case has **No Impact Assessment**, there is only a **2.5%** chance ($43/1696$) it has an AI Notice.
+*   **Conclusion:** The presence of an "Impact Assessment" is strongly associated with a higher likelihood of having an "AI Notice," suggesting that these compliance or governance controls likely occur together within organizational processes.
+==================================================

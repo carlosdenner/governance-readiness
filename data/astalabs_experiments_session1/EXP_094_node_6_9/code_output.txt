@@ -1,0 +1,48 @@
+exitcode: 0 (execution succeeded)
+Code output: === Descriptive Statistics ===
+Tool-Use Incidents (n=18): Mean=7.67, Median=8.00, Std=2.79
+Non-Tool-Use Incidents (n=34): Mean=7.47, Median=7.00, Std=3.05
+
+=== Statistical Analysis ===
+Normality Check (Shapiro-Wilk): Tool-Use p=0.0433, Non-Tool p=0.0558 -> Using Mann-Whitney U
+Mann-Whitney U Test: U=341.5, p-value=0.4975
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **combined Histogram and Density Plot (Kernel Density Estimate - KDE)**.
+*   **Purpose:** It visualizes and compares the frequency distribution and probability density of a continuous or discrete variable (number of techniques used) across two distinct categories (Tool Use vs. Non-Tool Use). The bars represent the actual frequency counts (normalized to density), while the smooth lines estimate the underlying probability distribution.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Number of Techniques Used"
+    *   **Range:** The axis spans from roughly **1 to 16**.
+    *   **Meaning:** This represents the attack complexity, measured by the count of distinct techniques employed in an incident.
+*   **Y-Axis:**
+    *   **Label:** "Density"
+    *   **Range:** The axis spans from **0.00 to 0.30**.
+    *   **Meaning:** This represents the probability density function. The area under the curve (or the sum of bar areas times widths) integrates to 1. Higher values indicate a higher likelihood of that specific technique count occurring.
+
+### 3. Data Trends
+*   **Green Distribution (Non-Tool Use):**
+    *   **Pattern:** This distribution is **highly concentrated (peaked)**. It shows a distinct "leptokurtic" shape, meaning it clusters tightly around the mean with smaller tails.
+    *   **Peak:** The tallest bar and the peak of the curve are centered roughly between **7 and 9 techniques**. The peak density is approximately **0.30**, which is significantly higher than the other group.
+    *   **Interpretation:** "Non-Tool Use" incidents tend to have a very consistent level of complexity, frequently utilizing around 8 techniques.
+*   **Blue/Grey Distribution (Tool Use):**
+    *   **Pattern:** This distribution is much **flatter and wider (dispersed)**. It shows a "platykurtic" shape, indicating high variance.
+    *   **Peak:** The distribution does not have a single sharp peak but rather a broad plateau ranging from approximately **4 to 9 techniques**. The maximum density is much lower, peaking around **0.13 to 0.14**.
+    *   **Outliers/Range:** This group covers a wider range of complexity, with visible density stretching from as low as 1 technique to as high as 16 techniques.
+
+### 4. Annotations and Legends
+*   **Title:** "Density of Attack Complexity (Technique Count) Tool-Use vs Non-Tool-Use Incidents".
+*   **Legend:** Located in the top right, titled **"Is Tool Use?"**.
+    *   **Non-Tool Use:** Represented by the **Light Green** filled bars and Green curve.
+    *   **Tool Use:** Represented by the **Blue/Grey** filled bars and Blue curve. *(Note: The legend marker for "Tool Use" appears to display a green line in the image, likely a plotting artifact, but by process of elimination and standard color cycling, the Blue distribution corresponds to "Tool Use".)*
+
+### 5. Statistical Insights
+*   **Consistency vs. Variability:** The most significant insight is the difference in variance. Incidents classified as **"Non-Tool Use"** are highly predictable in their complexity, clustering tightly around 8 techniques. Conversely, **"Tool Use"** incidents are highly variable; they can be very simple (few techniques) or highly complex (14+ techniques).
+*   **Average Complexity:** Visually, the mode (most frequent value) for "Non-Tool Use" (approx. 8) appears slightly higher than the central tendency of "Tool Use" (which centers closer to 6 or 7).
+*   **Implication:** This suggests that when attackers do *not* use specific tools (perhaps relying on manual execution or "living off the land"), the attack chain requires a specific, consistent number of steps. When tools *are* used, the attack profile varies wildly—likely depending on the specific tool's capability or the automation level.
+==================================================

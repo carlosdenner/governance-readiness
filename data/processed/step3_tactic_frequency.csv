@@ -1,0 +1,17 @@
+tactic_id,tactic_name,incident_count,competency_domain
+AML.TA0003,Resource Development,77,Integration Readiness -- Resource & Supply Chain Controls
+AML.TA0011,Impact,47,Trust Readiness -- Impact Containment & Recovery
+AML.TA0004,Initial Access,41,Integration Readiness -- Access Boundary & Initial Access Controls
+AML.TA0005,Execution,37,Integration Readiness -- Execution Controls & Sandboxing
+AML.TA0007,Defense Evasion,34,Trust Readiness -- Defense Evasion Detection
+AML.TA0001,AI Attack Staging,33,Integration Readiness -- AI Attack Staging Defense
+AML.TA0000,AI Model Access,24,Trust Readiness -- Model Access Governance
+AML.TA0002,Reconnaissance,22,Trust Readiness -- Threat Intelligence & Reconnaissance Defense
+AML.TA0008,Discovery,17,Trust Readiness -- Discovery & Enumeration Controls
+AML.TA0006,Persistence,15,Trust Readiness -- Persistence Detection & Monitoring
+AML.TA0010,Exfiltration,15,Trust Readiness -- Data Exfiltration Controls
+AML.TA0013,Credential Access,12,Trust Readiness -- Credential & Secret Management
+AML.TA0009,Collection,11,Trust Readiness -- Data Collection & Exfiltration Prevention
+AML.TA0012,Privilege Escalation,10,Integration Readiness -- Privilege & Identity Management
+AML.TA0014,Command and Control,4,Integration Readiness -- C2 Detection & Network Controls
+AML.TA0015,Lateral Movement,2,Integration Readiness -- Lateral Movement Prevention

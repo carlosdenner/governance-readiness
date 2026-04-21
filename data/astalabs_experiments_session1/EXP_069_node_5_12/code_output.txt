@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_enrichments.json
+=== Data Filtering Summary ===
+Total records matching criteria: 40
+Harm Category Counts:
+Harm_Category
+Security              36
+Safety_Reliability     4
+Name: count, dtype: int64
+
+=== Missing Human Control Distribution (Counts) ===
+Missing_Human_Control  False  True 
+Harm_Category                      
+Safety_Reliability         4      0
+Security                  33      3
+
+=== Contingency Table ===
+Missing_Human_Control  False  True 
+Harm_Category                      
+Safety_Reliability         4      0
+Security                  33      3
+
+=== 2x2 Matrix for Fisher's Test ===
+                   True  False
+Safety_Reliability     0     4
+Security               3    33
+
+=== Fisher's Exact Test Results ===
+Odds Ratio: 0.0000
+P-value: 1.0000
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap representing a **Contingency Table** (or Cross-tabulation).
+*   **Purpose:** To visualize the frequency distribution of data across two categorical variables: "Harm Category" and whether "Missing Human Control" was identified. The color intensity corresponds to the count in each category intersection.
+
+### 2. Axes
+*   **Vertical (Y-axis):**
+    *   **Title:** "Harm Category"
+    *   **Labels:** The axis contains two categorical variables:
+        1.  `Safety_Reliability`
+        2.  `Security`
+*   **Horizontal (X-axis):**
+    *   **Title:** "Missing Human Control Identified?"
+    *   **Labels:** The axis contains two boolean categorical variables:
+        1.  `True`
+        2.  `False`
+*   **Value Ranges:** The axes represent categories rather than numerical ranges. The numerical values are contained within the matrix cells, ranging from a minimum of **0** to a maximum of **33**.
+
+### 3. Data Trends
+*   **High Values:** The area of highest density is the bottom-right quadrant, corresponding to the intersection of **Harm Category: Security** and **Missing Human Control Identified?: False**. This cell has a count of **33**, indicated by the dark blue color.
+*   **Low Values:**
+    *   The lowest value is found in the top-left quadrant (**Safety_Reliability** / **True**) with a count of **0**.
+    *   Low values are also present in the **Safety_Reliability / False** cell (count: 4) and the **Security / True** cell (count: 3).
+*   **Pattern:** There is a heavy skew toward the "Security" category where human control issues were *not* identified.
+
+### 4. Annotations and Legends
+*   **Title:** The chart is titled "Missing 'Human-in-the-Loop' Controls by Harm Type."
+*   **Cell Annotations:** Each cell contains a number representing the exact count of observations for that specific intersection of categories.
+*   **Color Mapping:** Although no separate legend key is provided, the plot uses a sequential color palette (shades of blue). Lighter shades (white/light blue) represent lower counts, while darker shades (deep blue) represent higher counts.
+
+### 5. Statistical Insights
+*   **Dominance of Security Issues:** The dataset is dominated by "Security" related harms. Out of the total observations shown (Sum = 40), **36** (90%) are related to Security, while only **4** (10%) are related to Safety_Reliability.
+*   **Rarity of Identified Missing Controls:** It appears rare for "Missing Human Control" to be identified as a factor. Only **3** cases (7.5% of total) were flagged as `True`, and all of these were within the Security category.
+*   **Safety_Reliability Outcomes:** There are zero instances where a "Safety_Reliability" harm was associated with a confirmed missing human control (`True`). All 4 cases in this category were marked `False`.
+*   **Prevalence of False Negatives/Absence:** The majority of the data (37 out of 40 cases, or 92.5%) falls under the `False` column, suggesting that for most harms recorded here, missing human-in-the-loop controls were not identified as the issue.
+==================================================

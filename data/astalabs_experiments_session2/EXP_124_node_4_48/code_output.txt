@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1362 AIID incidents.
+Found Technology columns: ['Known AI Technology', 'Potential AI Technology']
+Found Text columns: ['description', 'summary']
+
+Contingency Table (Rows: Tech Type, Cols: Has Adversarial Keywords):
+has_adversarial_keywords  False  True 
+tech_type                             
+Discriminative             1059    226
+Generative                   61     16
+
+Summary Statistics:
+                Total Incidents  Adversarial Matches  Proportion
+tech_type                                                       
+Discriminative             1285                  226    0.175875
+Generative                   77                   16    0.207792
+
+Chi-Square Test Results:
+Chi2 Statistic: 0.3116
+P-value: 5.7670e-01
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares categorical data, specifically looking at the proportion of incidents containing adversarial keywords across two different types of AI technologies: Discriminative and Generative.
+
+**2. Axes**
+*   **X-axis:**
+    *   **Title:** "AI Technology Type"
+    *   **Labels:** The axis represents two distinct categories: "Discriminative" and "Generative".
+*   **Y-axis:**
+    *   **Title:** "Proportion (0-1)"
+    *   **Range:** The axis starts at **0.00** and extends to approximately **0.25** (though the highest marked tick is not explicitly labeled above 0.20, the space suggests the next interval).
+    *   **Units:** The axis uses decimal notation (0.00, 0.05, 0.10, 0.15, 0.20) to represent proportions.
+
+**3. Data Trends**
+*   **Tallest Bar:** The **Generative** AI category has the tallest bar, indicating a higher proportion of incidents.
+*   **Shortest Bar:** The **Discriminative** AI category has the shorter bar.
+*   **Comparison:** There is a visible difference between the two categories, with Generative AI showing a higher prevalence of adversarial keywords in incidents compared to Discriminative AI.
+
+**4. Annotations and Legends**
+*   **Title:** The chart is titled "**Proportion of Incidents with Adversarial Keywords by AI Type**".
+*   **Bar Annotations:** Specific percentage values are annotated in bold directly above each bar to provide precise data points:
+    *   Discriminative: **17.6%**
+    *   Generative: **20.8%**
+*   **Color Coding:** The bars are distinct colors (blue for Discriminative, orange for Generative) to visually separate the categories, although no separate legend box is provided or necessary given the clear x-axis labels.
+
+**5. Statistical Insights**
+*   **Higher Incidence in Generative AI:** The data indicates that incidents involving Generative AI are more likely to contain adversarial keywords (20.8%) compared to Discriminative AI incidents (17.6%).
+*   **Magnitude of Difference:** The difference between the two AI types is **3.2 percentage points**.
+*   **Overall Prevalence:** For both AI types, roughly one-fifth of the recorded incidents involve adversarial keywords, suggesting that this is a significant issue for both technologies, though slightly more pronounced in Generative models.
+==================================================

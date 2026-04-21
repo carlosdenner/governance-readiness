@@ -1,0 +1,12 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_crosswalk_evidence.json
+
+--- Descriptive Statistics ---
+Trust Readiness:       n=19, Mean=1.6842, Std Dev=0.7493
+Integration Readiness: n=23, Mean=2.0000, Std Dev=0.5222
+
+--- Welch's t-test Results ---
+T-statistic: -1.5519
+P-value: 0.1308
+
+Result: No statistically significant difference detected (Hypothesis Rejected).

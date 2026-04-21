@@ -1,0 +1,68 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Experiment: Sectoral Bias Blindspots (Improved Text Analysis)...
+Dataset loaded from: astalabs_discovery_all_data.csv
+EO13960 scored records: 1757
+
+--- Data Segmentation ---
+analysis_sector
+Health             233
+Law Enforcement     86
+Name: count, dtype: int64
+
+--- Classification Validation ---
+Sample Positive (1):
+['The threshold for the biometric matching was tested extensively with a variety of face types for several months to establish a match threshold for the identification.', 'The threshold for the biometric matching was tested extensively with a variety of face types for several months to establish a match threshold for the identification.', 'The threshold for the biometric matching was tested extensively with a variety of face types for several months to establish a match threshold for the identification.']
+
+Sample Negative (0):
+[nan, nan, nan]
+
+--- Summary Statistics ---
+                 Total  Mitigated      Rate
+analysis_sector                            
+Health             233          8  0.034335
+Law Enforcement     86         13  0.151163
+
+--- Contingency Table ---
+mitigation_flag    0   1
+analysis_sector         
+Health           225   8
+Law Enforcement   73  13
+
+Chi-Square Statistic: 12.1063
+P-value: 0.0005
+Result: Statistically significant difference detected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot (or Bar Chart).
+*   **Purpose:** The plot is designed to compare the rates of "Affirmative Mitigation Evidence" between two distinct sectors: Health and Law Enforcement.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Label:** "Sector"
+    *   **Categories:** The axis displays two categorical variables: "Health" and "Law Enforcement".
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Affirmative Mitigation Evidence"
+    *   **Units:** The axis is scaled in decimals representing proportions (0.00 to 0.25), which corresponds to percentages (0% to 25%).
+    *   **Range:** The visible range is from 0.00 to 0.25, with horizontal grid lines marked at intervals of 0.05.
+
+**3. Data Trends**
+*   **Tallest Bar:** The "Law Enforcement" sector is represented by the tallest bar (colored red).
+*   **Shortest Bar:** The "Health" sector is represented by the shortest bar (colored blue).
+*   **Comparison:** There is a significant disparity in values between the two sectors. The proportion of affirmative mitigation evidence in the Law Enforcement sector is noticeably higher than that in the Health sector.
+
+**4. Annotations and Legends**
+*   **Title:** The main title is "Disparity Mitigation Rates: Health vs. Law Enforcement," with a subtitle indicating the data source method is a "(Broad Keyword Search)."
+*   **Value Labels:** Specific percentage values are annotated directly above each bar in bold text:
+    *   Health: **3.4%**
+    *   Law Enforcement: **15.1%**
+*   **Gridlines:** Horizontal dashed grey lines serve as visual guides to estimate the height of the bars against the Y-axis.
+
+**5. Statistical Insights**
+*   **Magnitude of Difference:** The Law Enforcement sector (15.1%) has a mitigation rate that is approximately **4.4 times higher** than the Health sector (3.4%).
+*   **Absolute Difference:** There is an **11.7 percentage point gap** between the two sectors.
+*   **Conclusion:** Based on the broad keyword search methodology mentioned in the title, the data suggests that evidence of efforts to mitigate disparities is significantly more prevalent or more easily detectable in the Law Enforcement sector compared to the Health sector. The Health sector shows a very low proportion of evidence (less than 1 in 20 instances), whereas Law Enforcement shows a moderate proportion (roughly 1 in 7 instances).
+==================================================

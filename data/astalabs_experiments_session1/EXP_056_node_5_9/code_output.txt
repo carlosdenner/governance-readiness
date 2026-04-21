@@ -1,0 +1,52 @@
+exitcode: 0 (execution succeeded)
+Code output: === Descriptive Statistics by Source ===
+        count      mean       std       sem
+source                                     
+EU          9  2.888889  0.333333  0.111111
+NIST       23  2.782609  0.421741  0.087939
+OWASP      10  3.000000  0.000000  0.000000
+
+
+=== One-Way ANOVA Results ===
+F-statistic: 1.3844
+P-value: 0.2625
+Result: Not Statistically Significant (p >= 0.05)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot (with error bars).
+*   **Purpose:** The plot compares the mean confidence scores of competency statements across three different source frameworks. It is designed to visualize both the average performance (height of the bar) and the variability or uncertainty (error bars) associated with each source.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** Framework Source
+    *   **Labels:** Categorical variables representing three organizations: **EU**, **NIST**, and **OWASP**.
+*   **Y-axis:**
+    *   **Title:** Mean Confidence Score (1=Low, 3=High)
+    *   **Range:** The visual axis ranges from **0.0 to 3.5**.
+    *   **Intervals:** Tick marks are placed at every 0.5 unit.
+
+### 3. Data Trends
+*   **Tallest Bar:** **OWASP** has the highest mean score.
+*   **Shortest Bar:** **NIST** has the lowest mean score among the three.
+*   **General Pattern:** The scores are relatively close to one another, all falling within the upper end of the scale (between 2.78 and 3.00). This indicates a generally high level of confidence across all three frameworks.
+
+### 4. Annotations and Legends
+*   **Value Labels:** The exact mean values are annotated above each bar:
+    *   EU: **2.89**
+    *   NIST: **2.78**
+    *   OWASP: **3.00**
+*   **Error Bars:** Black "I" shaped bars are present on top of the colored bars. These represent the variability (likely Standard Error or Confidence Interval) of the data.
+    *   The error bars for **EU** and **NIST** show visible variability above and below the mean.
+    *   The error bar for **OWASP** is flat/compressed against the top value, suggesting extremely low or zero variance (a ceiling effect).
+
+### 5. Statistical Insights
+*   **High Confidence Overall:** Given the scale is 1 to 3, all three frameworks exhibit very high confidence scores (all > 2.7). This suggests that competency statements derived from these sources are generally viewed as highly reliable or clear by the evaluators.
+*   **OWASP Perfection:** The OWASP framework achieved a perfect mean score of **3.00**. The lack of vertical extension in the error bar suggests there was no variation in the data; essentially, every data point for OWASP was likely a maximum score of 3.
+*   **Comparison of Variability:**
+    *   **NIST** (2.78) and **EU** (2.89) show some disagreement or variation among the scores, as indicated by the length of their error bars.
+    *   **EU** performs slightly better than NIST on average, but the overlap in range suggests the distinction between them is less severe than the distinction between them and OWASP.
+==================================================

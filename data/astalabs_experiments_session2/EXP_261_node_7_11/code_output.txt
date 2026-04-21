@@ -1,0 +1,11 @@
+exitcode: 0 (execution succeeded)
+Code output: Contingency Table (Rows: Real World Testing, Cols: Independent Eval):
+has_eval        0   1
+has_testing          
+0            1608   1
+1              96  52
+
+Chi-Square Statistic: 557.9624
+P-value: 2.3328e-123
+Phi Coefficient: 0.5635
+Conditional Probability P(Independent Eval | Real World Testing): 35.14%

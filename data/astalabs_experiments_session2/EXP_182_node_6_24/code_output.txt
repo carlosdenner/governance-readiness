@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 rows: 1757
+Rows with valid initiation year: 1219
+
+Mitigation Score Distribution:
+mitigation_score
+0    1158
+1      61
+Name: count, dtype: int64
+
+Examples of '1' (Mitigation Present):
+['The threshold for the biometric matching was tested extensively with a variety of face types for several months to establish a match threshold for the identification.', 'The threshold for the biometric matching was tested extensively with a variety of face types for several months to establish a match threshold for the identification.', 'The threshold for the biometric matching was tested extensively with a variety of face types for several months to establish a match threshold for the identification.']
+
+Examples of '0' (No Mitigation/NA):
+[nan, nan, nan]
+
+Group Pre-2020 (<= 2020): N=332
+Group Post-2020 (>= 2021): N=887
+Mean Compliance Pre-2020: 0.0663
+Mean Compliance Post-2020: 0.0440
+
+T-test results (Post > Pre):
+T-statistic: -1.4564
+P-value: 0.9271
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Bar Plot (with error bars).
+*   **Purpose:** The plot compares the proportion of federal AI-related documents or actions that include a description of disparity mitigation across two distinct time periods: before and after the year 2020.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Labels:** Categorical time periods: "Pre-2020 (<=2020)" and "Post-2020 (>=2021)".
+*   **Y-Axis:**
+    *   **Title:** "Proportion with Disparity Mitigation Description".
+    *   **Value Range:** The axis ranges from 0.0 to 1.0 (representing 0% to 100%).
+    *   **Formatting:** Major tick marks are placed at 0.2 intervals (0.0, 0.2, 0.4, 0.6, 0.8, 1.0) with horizontal grid lines for readability.
+
+**3. Data Trends**
+*   **Comparison:** There are two bars showing a comparison between the two time periods.
+*   **Pre-2020 (<=2020):** This is the taller bar (colored grey), representing a proportion of roughly **0.066**.
+*   **Post-2020 (>=2021):** This is the shorter bar (colored green), representing a proportion of roughly **0.044**.
+*   **Trend:** The data indicates a **decrease** in the proportion of disparity mitigation descriptions in the period after 2020 compared to the period before 2020.
+
+**4. Annotations and Legends**
+*   **Title:** "The 'Awakening' Lag: Federal AI Bias Mitigation (Pre vs Post 2020)". This title frames the data, suggesting that despite a presumed increase in awareness ("Awakening") regarding AI bias, the actual mitigation efforts have "lagged" or decreased.
+*   **Data Labels:** Bold text explicitly labels the value of each bar: **6.6%** for the Pre-2020 group and **4.4%** for the Post-2020 group.
+*   **Error Bars:** Both bars feature error bars (likely representing standard error or 95% confidence intervals), indicating the variability or uncertainty of the estimates.
+
+**5. Statistical Insights**
+*   **Counter-Intuitive Decline:** The most significant insight is that the inclusion of disparity mitigation descriptions in federal AI contexts has dropped by **2.2 percentage points** (from 6.6% to 4.4%) after 2020. This is a relative decrease of approximately 33%.
+*   **Low Overall Adoption:** Regardless of the time period, the absolute proportions are very low. In both periods, fewer than 7% of the analyzed instances included descriptions of disparity mitigation, indicating that this is not yet a standard or widespread practice in the dataset analyzed.
+*   **The "Lag" Phenomenon:** The title implies an expectation that attention to AI bias would have increased after 2020 (perhaps due to social movements or increased academic focus). However, the statistical evidence presented here contradicts that expectation, showing a regression rather than progress in documenting mitigation strategies.
+==================================================

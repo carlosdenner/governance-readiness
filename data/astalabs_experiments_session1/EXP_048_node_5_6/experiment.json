@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis that incidents involving multi-domain failures ('Both' Trust and Integration gaps) exhibit higher attack sophistication than single-domain failures. Using 'technique_count' as a proxy for sophistication, the analysis compared the 'Both' group (n=46) against the 'Distinct' group (n=6). \n\nContrary to the hypothesis, there was no statistically significant difference between the groups (Welch's t-test: t=0.252, p=0.807). The mean technique count was nearly identical (Both: 7.57 vs. Distinct: 7.33), and both groups shared a median of 7 techniques. While the 'Both' group displayed a wider range (min=1, max=16) and contained outliers, likely due to the larger sample size, the central tendency suggests that the complexity of an adversarial attack is independent of whether the resulting failure manifests across one or both competency domains.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport os\n\n# Define file path based on instruction\nfile_path = '../step3_incident_coding.csv'\n\n# Check if file exists there, otherwise try current directory as fallback\nif not os.path.exists(file_path):\n    file_path = 'step3_incident_coding.csv'\n\nprint(f\"Loading dataset from: {file_path}\")\n\ntry:\n    df = pd.read_csv(file_path)\nexcept FileNotFoundError:\n    print(f\"Error: File not found at {file_path}\")\n    exit(1)\n\n# Normalize the split column to handle case sensitivity and whitespace\ndf['split_clean'] = df['trust_integration_split'].astype(str).str.lower().str.strip()\n\n# Create the binary grouping: 'Both' vs 'Distinct'\ndf['group'] = df['split_clean'].apply(lambda x: 'Both' if x == 'both' else 'Distinct')\n\n# Extract technique counts for each group\nboth_counts = df[df['group'] == 'Both']['technique_count']\ndistinct_counts = df[df['group'] == 'Distinct']['technique_count']\n\n# Print group sizes\nprint(\"\\nGroup Sample Sizes:\")\nprint(f\"Both: {len(both_counts)}\")\nprint(f\"Distinct: {len(distinct_counts)}\")\n\n# Descriptive Statistics\nprint(\"\\nDescriptive Statistics for Technique Count:\")\nprint(df.groupby('group')['technique_count'].describe())\n\n# T-test (Using Welch's t-test due to likely unequal sample sizes and variance)\nt_stat, p_val = stats.ttest_ind(both_counts, distinct_counts, equal_var=False)\n\nprint(\"\\nIndependent Samples T-Test (Welch's):\")\nprint(f\"t-statistic: {t_stat:.4f}\")\nprint(f\"p-value: {p_val:.4f}\")\n\n# Interpretation\nalpha = 0.05\nif p_val < alpha:\n    print(\"\\nResult: Statistically significant difference found.\")\nelse:\n    print(\"\\nResult: No statistically significant difference found.\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\nplt.boxplot([both_counts, distinct_counts], labels=['Both', 'Distinct'])\nplt.title('Attack Sophistication (Technique Count) by Competency Gap Type')\nplt.ylabel('Number of Techniques Used')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step3_incident_coding.csv\n\nGroup Sample Sizes:\nBoth: 46\nDistinct: 6\n\nDescriptive Statistics for Technique Count:\n          count      mean       std  min  25%  50%   75%   max\ngroup                                                         \nBoth       46.0  7.565217  3.052519  1.0  6.0  7.0  9.00  16.0\nDistinct    6.0  7.333333  1.966384  5.0  6.0  7.0  8.75  10.0\n\nIndependent Samples T-Test (Welch's):\nt-statistic: 0.2520\np-value: 0.8070\n\nResult: No statistically significant difference found.\n\nSTDERR:\n<ipython-input-1-a65908e9540a>:59: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot([both_counts, distinct_counts], labels=['Both', 'Distinct'])\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (or Box-and-Whisker Plot).\n*   **Purpose:** This plot is used to visualize and compare the distribution of a quantitative variable (\"Number of Techniques Used\") across two different categorical groups (\"Both\" and \"Distinct\"). It displays the central tendency (median), dispersion (interquartile range), and outliers for each group.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label/Categories:** Represents the \"Competency Gap Type\" with two distinct categories: **\"Both\"** and **\"Distinct\"**.\n*   **Y-Axis:**\n    *   **Label:** \"Number of Techniques Used\".\n    *   **Units:** Count (integer values representing the number of techniques).\n    *   **Range:** The axis spans from **0 to roughly 17**, with tick marks labeled every 2 units (2, 4, 6, ..., 16).\n\n### 3. Data Trends\n*   **Category: \"Both\"**\n    *   **Spread:** This category exhibits a wide spread of data. The main body of data (the box) ranges from a lower quartile (Q1) of 6 to an upper quartile (Q3) of 9.\n    *   **Whiskers:** The range of non-outlier data extends from a minimum of 3 to a maximum of 12.\n    *   **Outliers:** There are significant outliers present. Specifically, there are high-value outliers at approximately 14, 15, and 16, and a low-value outlier at 1.\n    *   **Median:** The median line (orange) is positioned at 7.\n\n*   **Category: \"Distinct\"**\n    *   **Spread:** This distribution is much tighter and more consistent than the \"Both\" category. The box ranges from a lower quartile (Q1) of 6 to an upper quartile (Q3) of roughly 8.5 or 9.\n    *   **Whiskers:** The whiskers indicate a total range of 5 to 10.\n    *   **Outliers:** There are no visible outliers in this category.\n    *   **Median:** The median line is also positioned at 7.\n\n### 4. Annotations and Legends\n*   **Title:** \"Attack Sophistication (Technique Count) by Competency Gap Type\".\n*   **Grid:** Horizontal dashed grid lines are included to assist in reading the Y-axis values.\n*   **Colors:** The box plot uses standard formatting with black outlines for the boxes and whiskers, and an orange horizontal line to denote the median.\n\n### 5. Statistical Insights\n*   **Central Tendency Similarity:** Interestingly, both the \"Both\" and \"Distinct\" competency gap types share the same median value (7 techniques). This indicates that the \"typical\" or central level of attack sophistication is identical between the two groups.\n*   **Variability Difference:** The key difference lies in consistency. The \"Distinct\" group represents a very predictable range of sophistication (most attacks use between 5 and 10 techniques). In contrast, the \"Both\" group is highly volatile; while the middle 50% is similar to the \"Distinct\" group, the \"Both\" group includes both the simplest attacks (1 technique) and the most sophisticated attacks (up to 16 techniques).\n*   **Risk Profile:** From a security perspective, the \"Both\" category presents a more complex risk profile due to the presence of extreme outliers (high sophistication), whereas the \"Distinct\" category represents a bounded, moderate threat level.\n==================================================",
+  "created_at": "2026-02-20T23:02:58.375397+00:00",
+  "creation_idx": 49,
+  "experiment_id": "node_5_6",
+  "experiment_plan": {
+    "deliverables": "Mean technique count for Both vs. Distinct groups and t-test results.",
+    "objective": "Investigate if multi-domain failures correlate with more complex attacks.",
+    "steps": "1. Load 'step3_incident_coding.csv'.\n2. Group the data by 'trust_integration_split' into two categories: 'Both' vs. 'Distinct' (grouping Trust-dominant and Integration-dominant together due to low N).\n3. Compare the mean 'technique_count' between these two groups using an independent samples t-test.\n4. Visualize the distributions with a boxplot."
+  },
+  "hypothesis": "Incidents involving 'Both' Trust and Integration failures exhibit higher attack sophistication (measured by technique count) than those involving single-domain failures.",
+  "id_in_run": 48,
+  "is_surprising": true,
+  "parent_id": "node_4_12",
+  "posterior": 0.20867768595041322,
+  "posterior_belief": {
+    "_empirical_mean": 0.025,
+    "_type": "boolean_cat",
+    "definitely_false": 81.0,
+    "definitely_true": 0.0,
+    "maybe_false": 9.0,
+    "maybe_true": 0.0,
+    "mean": 0.20867768595041322,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the hypothesis was tested methodically. The code correctly loaded the incident dataset, grouped the 52 incidents into 'Both' (n=46) and 'Distinct' (n=6) categories based on competency gaps, and performed a Welch's t-test to compare attack sophistication (technique count). \n\n**Findings:**\n1.  **Descriptive Stats:** The mean technique count was remarkably similar between the two groups (Both: 7.57 vs. Distinct: 7.33), with identical medians (7.0).\n2.  **Statistical Test:** The t-test yielded a p-value of 0.8070, indicating no statistically significant difference in attack sophistication between multi-domain and single-domain failures.\n3.  **Conclusion:** The hypothesis is rejected. The data suggests that the complexity of an adversarial attack (number of techniques used) is not correlated with whether the resulting failure manifests across one or both competency domains. The 'Both' group showed higher variance (range 1-16) compared to the 'Distinct' group (range 5-10), but this is likely attributable to the significant difference in sample size.",
+  "rich_outputs": null,
+  "runtime_ms": 158100.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6188967727129333
+}

@@ -1,0 +1,49 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 Scored subset shape: (1757, 196)
+
+Contingency Table (Counts):
+               No Mitigation  Has Mitigation
+Non-Biometric           1545              22
+Biometric                170              20
+
+Biometric Systems Mitigation Rate: 10.53% (N=190)
+Non-Biometric Systems Mitigation Rate: 1.40% (N=1567)
+
+Chi-Square Statistic: 56.5895
+P-Value: 0.0000
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** This plot compares the prevalence of disparity mitigation measures between two distinct categories of Artificial Intelligence systems: "Biometric" and "Non-Biometric" (General AI). It is designed to visualize a significant gap in implementation rates between these two groups.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Represents the categories of AI systems.
+    *   **Values:** Two categorical variables: "Biometric" and "Non-Biometric".
+*   **Y-Axis:**
+    *   **Label:** "Proportion with Mitigation Measures".
+    *   **Units:** The axis is measured in decimal proportion (ranging from 0 to 1), representing percentages.
+    *   **Range:** The axis is scaled from 0.00 to approximately 0.125, with major grid lines marked at intervals of 0.02 (0.00, 0.02, 0.04, ... 0.12).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Biometric" category (red bar) is the tallest, reaching a value slightly above 0.10.
+*   **Shortest Bar:** The "Non-Biometric" category (blue bar) is significantly shorter, reaching a value just above 0.01.
+*   **Comparison:** There is a stark contrast in height between the two bars. Visually, the Biometric bar is approximately 7 to 8 times taller than the Non-Biometric bar, indicating a much higher rate of mitigation implementation in biometric systems.
+
+### 4. Annotations and Legends
+*   **Bar Annotations:**
+    *   **Biometric:** Annotated with **"10.5% (n=20/190)"**. This indicates that 10.5% of the systems in this category utilized mitigation measures. The sample size shows that 20 out of a total of 190 biometric systems were identified as having these measures.
+    *   **Non-Biometric:** Annotated with **"1.4% (n=22/1567)"**. This indicates a much lower rate of 1.4%. However, the sample size is significantly larger, with 22 systems employing measures out of a massive total of 1,567.
+*   **Grid Lines:** Horizontal dashed grid lines are included to assist in estimating the y-axis values for the bars.
+*   **Title:** The chart is titled "Disparity Mitigation Rates: Biometric vs. General AI Systems."
+
+### 5. Statistical Insights
+*   **Disproportionate Implementation:** The data reveals a significant disparity in how mitigation measures are applied. Biometric systems are substantially more likely (10.5%) to include disparity mitigation measures compared to general AI systems (1.4%).
+*   **Sample Size Context:** While the percentage for Non-Biometric systems is very low, the raw number of systems with mitigation (n=22) is actually slightly higher than the raw number for Biometric systems (n=20). This highlights that the low percentage in the general category is driven by the vast denominator (1,567 total systems) rather than a lack of absolute examples.
+*   **Research Implication:** This suggests that the field of Biometrics may be under higher scrutiny regarding bias and disparity, leading to a higher frequency of reported mitigation efforts relative to the total number of systems developed. Conversely, general AI systems appear to lack widespread adoption of these specific mitigation measures.
+==================================================

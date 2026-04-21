@@ -1,0 +1,20 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID Incidents: 1362
+Incidents with Sector/Harm data (inferred from text): 8
+
+Contingency Table (Sector vs Harm):
+Harm_Group    Physical/Safety  Rights/Liberties
+Sector_Group                                   
+Government                  0                 4
+Healthcare                  1                 3
+
+Chi-square Statistic: 0.0000
+P-value: 1.0000e+00
+
+Row Percentages:
+Harm_Group    Physical/Safety  Rights/Liberties
+Sector_Group                                   
+Government                0.0             100.0
+Healthcare               25.0              75.0
+
+RESULT: No statistically significant association found.

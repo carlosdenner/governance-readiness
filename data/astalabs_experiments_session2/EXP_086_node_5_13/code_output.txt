@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Lifecycle Documentation Debt (Attempt 2)...
+EO 13960 Scored rows: 1757
+Using Dev Stage Column: '16_dev_stage'
+Using Documentation Column: '34_data_docs'
+
+Total rows for analysis (valid stage & doc status): 1079
+
+--- Contingency Table ---
+                 Incomplete Docs  Complete Docs
+lifecycle_group                                
+Development                  319            262
+Operation                    209            289
+
+Chi-Square Statistic: 17.4474
+P-value: 0.0000
+Odds Ratio (Complete Docs given Operation): 1.6836
+
+Documentation Completion Rate (Operation): 58.03%
+Documentation Completion Rate (Development): 45.09%
+
+--- Conclusion ---
+Result: Statistically Significant.
+Hypothesis REJECTED: Operational systems are significantly MORE likely to have complete documentation.

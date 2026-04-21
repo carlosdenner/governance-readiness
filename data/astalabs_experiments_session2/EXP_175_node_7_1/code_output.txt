@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from ../astalabs_discovery_all_data.csv...
+EO 13960 Scored subset shape: (1757, 196)
+Valid data points after cleaning: 43
+
+Contingency Table (Impact Assessment vs Disparity Mitigation):
+mitigation_clean  No  Yes
+assessment_clean         
+No                14    1
+Yes               26    2
+
+Mitigation Rate when Assessment='Yes': 7.14% (2/28)
+Mitigation Rate when Assessment='No': 6.67% (1/15)
+
+Assessment-Action Gap Analysis:
+Number of systems with Impact Assessment but NO Disparity Mitigation: 26
+Percentage of Assessed systems that are Unmitigated ('Paper Tigers'): 92.86%
+
+Chi-Square Statistic: 0.0000
+P-Value: 1.0000e+00
+
+Result: No statistically significant relationship found.
+Interpretation: Conducting an Impact Assessment does not statistically guarantee Disparity Mitigation plans (supports the 'Assessment-Action Gap').
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Heatmap** representing a $2 \times 2$ contingency table (or cross-tabulation).
+*   **Purpose:** It visualizes the frequency distribution between two categorical variables: whether an impact assessment was conducted and whether disparity mitigation is planned. The color intensity corresponds to the count (frequency) in each intersection.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Disparity Mitigation Planned?"
+    *   **Categories:** Binary categories: "No" (left) and "Yes" (right).
+*   **Y-Axis:**
+    *   **Label:** "Impact Assessment Conducted?"
+    *   **Categories:** Binary categories: "No" (top) and "Yes" (bottom).
+*   **Units:** The axes represent categorical responses. The values inside the cells represent the **count** of occurrences.
+
+### 3. Data Trends
+*   **Highest Value (Hotspot):** The area with the highest concentration is the intersection of **Impact Assessment Conducted: "Yes"** and **Disparity Mitigation Planned: "No"**, with a count of **26**. This cell is colored the darkest blue.
+*   **Second Highest Value:** The intersection of answering "No" to both questions, with a count of **14**.
+*   **Lowest Values:** The "Yes" column for Disparity Mitigation contains very low counts. Only **1** instance had no impact assessment but planned mitigation, and only **2** instances had both an assessment and planned mitigation.
+*   **Overall Pattern:** The data is heavily skewed toward the "No" column for Disparity Mitigation. The color gradient clearly shifts from dark blue on the left ("No" mitigation) to very light blue/white on the right ("Yes" mitigation).
+
+### 4. Annotations and Legends
+*   **Title:** "Impact Assessment vs. Disparity Mitigation" is clearly displayed at the top.
+*   **Cell Annotations:** Each of the four quadrants is annotated with the exact count of observations (14, 1, 26, 2).
+*   **Color Key:** While there is no explicit legend bar, the visualization uses a sequential blue color palette where darker blue indicates a higher frequency count and lighter/white indicates a lower frequency count.
+
+### 5. Statistical Insights
+*   **Total Sample Size:** The plot represents a total of 43 entries ($14 + 1 + 26 + 2$).
+*   **Assessment vs. Action Gap:**
+    *   A majority of the sample ($28/43$ or $\approx 65\%$) **did** conduct an impact assessment.
+    *   However, an overwhelming majority ($40/43$ or $\approx 93\%$) have **no** disparity mitigation planned.
+*   **Key Insight:** There is a significant disconnect between assessing impact and acting on it. Specifically, the largest group (26 entities) conducted the impact assessment but still have no plans for disparity mitigation. This suggests that while organizations are performing the necessary checks (assessments), these checks are not translating into planned mitigation strategies.
+*   **Rare Occurrence:** Planning for disparity mitigation is an outlier behavior in this dataset, occurring in only 3 out of 43 cases ($7\%$).
+==================================================

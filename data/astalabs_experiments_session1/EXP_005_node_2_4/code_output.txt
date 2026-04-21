@@ -1,0 +1,22 @@
+exitcode: 0 (execution succeeded)
+Code output: === Unique Sources in Dataset ===
+<StringArray>
+[      'NIST AI RMF 1.0',    'NIST GenAI Profile', 'EU AI Act (2024/1689)',
+      'OWASP Top 10 LLM']
+Length: 4, dtype: str
+
+=== Contingency Table (Source Category vs Competency Bundle) ===
+bundle           Integration Readiness  Trust Readiness
+source_category                                        
+Policy                              12               16
+Technical                           11                3
+
+=== Chi-Square Test Results ===
+Chi-Square Statistic: 3.4720
+Degrees of Freedom: 1
+P-value: 0.0624
+
+=== Effect Size ===
+Cramer's V: 0.2875
+Conclusion: No statistically significant association detected.
+Strength: Small

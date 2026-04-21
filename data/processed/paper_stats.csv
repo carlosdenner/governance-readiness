@@ -1,0 +1,15 @@
+safeguard,column,count_is_yes,pct_is_yes,count_non_missing,pct_non_missing,n_total,tier,note
+Authorization to Operate (ATO),40_has_ato,654,37.2,1102,62.7,1757,tier1,"non-missing includes 448 explicit 'No'; is_yes is correct"
+Internal review / approval,50_internal_review,1067,60.7,1067,60.7,1757,tier1,"all responses are substantive text (no explicit 'No'); is_yes = non_missing"
+Impact assessment,52_impact_assessment,92,5.2,157,8.9,1757,tier2,"non-missing includes 65 explicit 'No'; is_yes includes 31 'planned or in-progress'"
+Post-deployment monitoring,56_monitor_postdeploy,149,8.5,149,8.5,1757,tier2,"is_yes = non_missing"
+Real-world testing,53_real_world_testing,149,8.5,149,8.5,1757,tier2,"is_yes = non_missing; includes 34 'no testing' responses counted by is_yes"
+Appeal process,65_appeal_process,143,8.1,143,8.1,1757,tier2,"is_yes = non_missing; includes 65 'no –...' responses that is_yes does not filter"
+AI use notice to public,59_ai_notice,140,8.0,140,8.0,1757,tier2,"is_yes = non_missing; includes 42 'n/a' and 24 'none of above'"
+Independent evaluation,55_independent_eval,119,6.8,119,6.8,1757,tier2,"is_yes = non_missing; includes 62 'planned or in-progress'"
+Disparity / bias mitigation,62_disparity_mitigation,104,5.9,104,5.9,1757,tier2,"is_yes = non_missing; includes 21 'n/a - no demographic info'"
+Stakeholder consultation,63_stakeholder_consult,145,8.3,145,8.3,1757,tier2,"not in Table 2; includes 58 'none of the above'"
+Rights-or-safety-impacting subset,17_impact_type (both+rights+safety),227,12.9,,,1757,subset,"150 both + 59 rights + 18 safety"
+Vendor systems (procurement proxy),22_dev_method (contracting only),481,27.4,,,1757,group,
+In-house systems (procurement proxy),22_dev_method (in-house only),439,25.0,,,1757,group,
+Mixed development,22_dev_method (both),187,10.6,,,1757,group,

@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_coverage_map.csv
+
+=== Descriptive Statistics: Distinct Harm Count by Bundle ===
+Trust Readiness (n=8): Mean=1.50, Std=1.20
+Integration Readiness (n=8): Mean=1.88, Std=1.36
+
+=== Welch's T-Test Results ===
+T-statistic: -0.5867
+P-value: 0.5669
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Categorical Scatter Plot (also known as a Strip Plot or Jitter Plot) with overlaying mean lines.
+*   **Purpose:** The plot compares the distribution of a count variable ("Distinct Harm Types") across two different categories ("Trust Readiness" and "Integration Readiness"). The jittering (horizontal displacement of dots) prevents data points with the same value from overlapping completely, allowing the viewer to estimate the density of data at each value.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title/Labels:** Categorical labels representing two groups: **"Trust Readiness"** and **"Integration Readiness"**.
+    *   **Range:** Two discrete categories.
+*   **Y-Axis:**
+    *   **Title:** **"Count of Distinct Harm Types"**.
+    *   **Units:** Integer counts (distinct types of harm).
+    *   **Range:** The axis is marked from **0.0 to 3.0**, with grid lines at 0.5 intervals. The data points fall strictly on integer values (0, 1, 2, 3).
+
+### 3. Data Trends
+*   **Trust Readiness (Blue Circles):**
+    *   **Distribution:** The data points appear very evenly distributed across the entire range. There are pairs of data points visible at each integer level: 0, 1, 2, and 3.
+    *   **Pattern:** This suggests a uniform distribution where low, medium, and high counts of distinct harms are equally likely within this sample.
+*   **Integration Readiness (Salmon Circles):**
+    *   **Distribution:** The data appears less uniform than the Trust group. There is a cluster of points at the maximum value (3) and a cluster at the minimum value (0), with fewer points in the middle (values 1 and 2).
+    *   **Pattern:** This suggests a somewhat bimodal distribution where "Integration Readiness" scenarios tend to result in either a high number of distinct harms or none at all, rather than a moderate amount.
+
+### 4. Annotations and Legends
+*   **Plot Title:** "Risk Scope: Distinct Harms per Sub-Competency".
+*   **Legend:** Located on the right side, defining four elements:
+    *   **Light Blue Circle:** Represents individual data points for "Trust Readiness".
+    *   **Salmon Circle:** Represents individual data points for "Integration Readiness".
+    *   **Blue Dashed Line:** Represents the "Mean Trust" score.
+    *   **Red Dashed Line:** Represents the "Mean Integration" score.
+*   **Grid:** Horizontal dotted lines aid in reading the specific Y-values of the points.
+
+### 5. Statistical Insights
+*   **Comparison of Means:**
+    *   The **Mean Trust** (blue dashed line) sits exactly at **1.5**. This is consistent with the visual observation of an evenly distributed dataset across 0, 1, 2, and 3.
+    *   The **Mean Integration** (red dashed line) is higher, sitting just below **2.0** (approximately 1.9).
+*   **Risk Assessment:**
+    *   **Higher Average Risk:** "Integration Readiness" has a higher average count of distinct harm types compared to "Trust Readiness," indicating it may be a riskier area on average regarding the scope of harms.
+    *   **Consistency vs. Volatility:** "Trust Readiness" shows consistent variability (uniform spread). "Integration Readiness" shows a tendency toward extremes—mostly clustering at the highest harm count (3), despite having several zero-harm instances pulling the average down.
+==================================================

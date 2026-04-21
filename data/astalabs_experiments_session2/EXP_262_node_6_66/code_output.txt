@@ -1,0 +1,39 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID incidents: 1362
+Using technology column: known_ai_technology
+Using sector column: sector_of_deployment
+
+Top 10 Sectors found:
+sector_of_deployment
+                                                                     1161
+information and communication                                          44
+transportation and storage                                             21
+Arts, entertainment and recreation, information and communication      14
+wholesale and retail trade                                             11
+human health and social work activities                                10
+Arts, entertainment and recreation                                      9
+law enforcement                                                         9
+information and communication, Arts, entertainment and recreation       9
+Education                                                               7
+Name: count, dtype: int64
+
+Analysis set size (filtered for relevant sectors): 122
+
+Contingency Table (Count):
+sector_group  Safety-Critical  Tech/Info
+is_genai                                
+False                      28         79
+True                        0         15
+
+Contingency Table (Proportions):
+sector_group  Safety-Critical  Tech/Info
+is_genai                                
+False                     1.0   0.840426
+True                      0.0   0.159574
+
+Chi-Square Statistic: 3.7221
+p-value: 5.3697e-02
+
+GenAI Incidence Rate in Tech/Info: 15.96%
+GenAI Incidence Rate in Safety-Critical: 0.00%
+Result: No Statistically Significant Difference found.

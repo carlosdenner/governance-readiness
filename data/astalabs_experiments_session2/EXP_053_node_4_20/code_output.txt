@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 Scored rows loaded: 1757
+Rows retained for analysis: 1753
+
+Contingency Table:
+                 No Notice  Has Notice
+stage_group                           
+Operational           1005          48
+Pre-Operational        677          23
+
+Chi-Square Test Results:
+Chi2 Statistic: 1.4404
+P-value: 2.3008e-01
+
+Compliance Rates (Proportion with AI Notice):
+stage_group
+Operational        0.045584
+Pre-Operational    0.032857
+Name: notice_binary, dtype: float64
+Odds Ratio (Operational vs Pre-Operational): 1.4058
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot is designed to compare a quantitative variable ("Compliance Rate") across two distinct categorical groups ("Development Stage").
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Development Stage"
+    *   **Categories:** The axis displays two categories: "Operational" and "Pre-Operational".
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Compliance Rate"
+    *   **Range:** The scale ranges from 0.00 to 0.05.
+    *   **Units:** The axis uses decimal notation (e.g., 0.04 corresponds to 4%), with tick marks at 0.01 intervals.
+
+### 3. Data Trends
+*   **Tallest Bar:** The green bar representing the **"Operational"** stage is the tallest, indicating the highest value in the dataset.
+*   **Shortest Bar:** The yellow/gold bar representing the **"Pre-Operational"** stage is the shortest.
+*   **Pattern:** There is a visible disparity between the two stages, with systems in the operational phase demonstrating higher compliance than those in the pre-operational phase.
+
+### 4. Annotations and Legends
+*   **Data Labels:** The specific values are annotated directly on top of each bar for clarity:
+    *   **Operational:** 4.6%
+    *   **Pre-Operational:** 3.3%
+*   **Color Coding:** The bars are color-coded (Green for Operational, Yellow for Pre-Operational) to visually distinguish the categories, though no separate legend box is provided or necessary given the clear x-axis labels.
+
+### 5. Statistical Insights
+*   **Compliance Gap:** There is a **1.3 percentage point difference** between the two stages. Operational AI systems have a compliance rate of 4.6%, whereas pre-operational systems sit at 3.3%. This suggests that compliance efforts are likely prioritized or enforced more strictly once a system moves from development into active operation.
+*   **Low Overall Compliance:** Despite the operational stage performing better relative to the pre-operational stage, the absolute compliance rates for both are extremely low (below 5%). This indicates that the vast majority of AI systems analyzed, regardless of their development stage, are failing to meet the "AI Notice Compliance" standards referenced in the study.
+*   **Relative Comparison:** The compliance rate for Operational systems is approximately **39% higher** relative to the Pre-Operational baseline ($1.3 / 3.3 \approx 0.39$), which is a statistically meaningful difference despite the low base rates.
+==================================================

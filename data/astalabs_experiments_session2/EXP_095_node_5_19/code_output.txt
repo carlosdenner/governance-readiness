@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 Scored Dataset Shape: (1757, 196)
+
+Unique values in 38_code_access:
+ 38_code_access
+NaN                                                              765
+Yes – agency has access to source code, but it is not public.    506
+No – agency does not have access to source code.                 359
+Yes – source code is publicly available.                          48
+Yes                                                               47
+                                                                  31
+YES                                                                1
+Name: count, dtype: int64
+
+--- Contingency Table ---
+             No Access  Access Provided
+Agency_Type                            
+Civilian           831              541
+Security           324               61
+
+Chi-Square Statistic: 73.2183
+P-value: 1.1607e-17
+
+Odds of Access (Security): 0.1883
+Odds of Access (Civilian): 0.6510
+Odds Ratio (Security/Civilian): 0.2892
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart is used to compare the relative percentage distribution of two categories ("No Access" vs. "Access Provided") across distinct groups ("Civilian" vs. "Security"). It allows for an easy comparison of part-to-whole relationships between the different agency types.
+
+**2. Axes**
+*   **X-axis:**
+    *   **Title:** "Agency Type"
+    *   **Categories:** Two distinct categories are displayed: "Civilian" and "Security".
+*   **Y-axis:**
+    *   **Title:** "Percentage of Use Cases"
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Units:** Percentage (%).
+
+**3. Data Trends**
+*   **Civilian Agencies:**
+    *   The majority of use cases (**60.6%**) fall under "No Access".
+    *   A significant minority (**39.4%**) fall under "Access Provided".
+*   **Security Agencies:**
+    *   An overwhelming majority of use cases (**84.2%**) fall under "No Access".
+    *   A small minority (**15.8%**) fall under "Access Provided".
+*   **Comparison:** The "No Access" portion is significantly taller for Security agencies compared to Civilian agencies. Conversely, Civilian agencies demonstrate a much higher rate of providing access (more than double the percentage) compared to Security agencies.
+
+**4. Annotations and Legends**
+*   **Chart Title:** "Code Access Transparency by Agency Mission Type" appearing at the top center.
+*   **Legend:** Located in the top-right corner titled "Code Access". It distinguishes the data series by color:
+    *   **Red/Salmon:** Represents "No Access".
+    *   **Green:** Represents "Access Provided".
+*   **Data Labels:** White text annotations are placed directly inside the bar segments, displaying the exact percentage values (e.g., "60.6%", "39.4%") for precise reading.
+
+**5. Statistical Insights**
+*   **Transparency Gap:** There is a notable disparity in transparency between agency types. Civilian agencies are approximately **2.5 times more likely** to provide code access (39.4%) than Security agencies (15.8%).
+*   **Prevailing Opacity:** Regardless of mission type, the dominant trend is a lack of transparency. In both Civilian and Security sectors, the majority of use cases do not provide code access (over 60% and 84% respectively).
+*   **Security Constraints:** The data suggests that agencies with a "Security" mission type operate under much stricter restrictions regarding code transparency, likely due to the sensitive nature of their work.
+==================================================

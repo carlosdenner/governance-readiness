@@ -1,0 +1,1151 @@
+{
+  "runid": "7395e5a2-b982-4623-af37-4020234c917d",
+  "has_job_completed": true,
+  "nodes": {
+    "node_2_0": {
+      "id_in_run": 1,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_3",
+        "node_3_6",
+        "node_3_18"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4316265456490649,
+      "prior": 0.5,
+      "posterior": 0.128099173553719,
+      "hypothesis": "Security-related harm types are exclusively associated with 'Integration Readiness' competency gaps, whereas non-security harms (Privacy, Bias, Safety"
+    },
+    "node_2_1": {
+      "id_in_run": 2,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_1",
+        "node_3_5",
+        "node_3_17"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.654401536951808,
+      "prior": 0.7580645161290323,
+      "posterior": 0.19421487603305784,
+      "hypothesis": "Competencies classified as 'Integration Readiness' have significantly higher empirical 'Confidence' scores in the literature than 'Trust Readiness' co"
+    },
+    "node_2_2": {
+      "id_in_run": 3,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_2",
+        "node_3_8",
+        "node_3_13"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "The 'Uncovered' sub-competencies (those with zero mapped incidents) are disproportionately concentrated in the 'Trust Readiness' bundle, indicating th"
+    },
+    "node_2_3": {
+      "id_in_run": 4,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_9",
+        "node_3_11",
+        "node_3_20"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.1450744778431579,
+      "prior": 0.5416666666666666,
+      "posterior": 0.6666666666666666,
+      "hypothesis": "There has been a significant temporal shift in AI incident characteristics, where the proportion of 'Integration Readiness' gaps has increased relativ"
+    },
+    "node_2_4": {
+      "id_in_run": 5,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_14",
+        "node_3_15"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.006961718478210659,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7479338842975206,
+      "hypothesis": "Regulatory frameworks (e.g., EU AI Act, NIST AI RMF) map disproportionately to 'Trust Readiness' competencies, whereas technical frameworks (e.g., OWA"
+    },
+    "node_2_5": {
+      "id_in_run": 6,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_0",
+        "node_3_4"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6455814264020527,
+      "prior": 0.7416666666666667,
+      "posterior": 0.18541666666666667,
+      "hypothesis": "Competency statements classified as 'Trust Readiness' require a significantly higher number of distinct architecture controls to satisfy than 'Integra"
+    },
+    "node_2_6": {
+      "id_in_run": 7,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_12",
+        "node_3_19"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.059638721630005186,
+      "prior": 0.6774193548387096,
+      "posterior": 0.6260330578512396,
+      "hypothesis": "Incidents characterized by 'Integration Readiness' failures exhibit significantly higher attack complexity (measured by technique count) than 'Trust R"
+    },
+    "node_2_7": {
+      "id_in_run": 8,
+      "parent_id": "node_1_0",
+      "child_ids": [
+        "node_3_7",
+        "node_3_10",
+        "node_3_16"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.26640176043286373,
+      "prior": 0.7419354838709677,
+      "posterior": 0.512396694214876,
+      "hypothesis": "Architecture controls that function as 'Hubs' (mapping to >5 governance requirements) are significantly more likely to be missing in reported incident"
+    },
+    "node_3_0": {
+      "id_in_run": 9,
+      "parent_id": "node_2_5",
+      "child_ids": [
+        "node_4_0",
+        "node_4_7",
+        "node_4_10"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6299286537926594,
+      "prior": 0.6875,
+      "posterior": 0.14473684210526316,
+      "hypothesis": "Competency statements with 'High' evidence confidence map to a significantly higher number of architecture controls than those with 'Medium' or 'Low' "
+    },
+    "node_3_1": {
+      "id_in_run": 10,
+      "parent_id": "node_2_1",
+      "child_ids": [
+        "node_4_1"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.42466482717085413,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3760330578512397,
+      "hypothesis": "'Prevention Failures' are predominantly associated with governance (Trust) gaps, whereas 'Detection' and 'Response' failures are significantly more as"
+    },
+    "node_3_2": {
+      "id_in_run": 11,
+      "parent_id": "node_2_2",
+      "child_ids": [
+        "node_4_4"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.24366014673737538,
+      "prior": 0.28225806451612906,
+      "posterior": 0.07231404958677685,
+      "hypothesis": "Mitigation gaps related to 'Data' categories appear in significantly more incidents on average than mitigation gaps related to 'Model' or 'System' cat"
+    },
+    "node_3_3": {
+      "id_in_run": 12,
+      "parent_id": "node_2_0",
+      "child_ids": [
+        "node_4_2",
+        "node_4_14"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6126312260825437,
+      "prior": 0.9596774193548387,
+      "posterior": 0.4318181818181818,
+      "hypothesis": "The presence of 'Prompt Injection' techniques in an incident is a significant predictor that the primary failure mode is a 'Prevention Failure' rather"
+    },
+    "node_3_4": {
+      "id_in_run": 13,
+      "parent_id": "node_2_5",
+      "child_ids": [
+        "node_4_3",
+        "node_4_6"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.710095284777494,
+      "prior": 0.8225806451612904,
+      "posterior": 0.21074380165289255,
+      "hypothesis": "The 'Human-in-the-Loop Approval Gates' architecture control is significantly more prevalent in 'Trust Readiness' governance requirements than in 'Inte"
+    },
+    "node_4_0": {
+      "id_in_run": 14,
+      "parent_id": "node_3_0",
+      "child_ids": [
+        "node_5_2",
+        "node_5_20"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5070629306376477,
+      "prior": 0.5652173913043478,
+      "posterior": 0.12831858407079647,
+      "hypothesis": "The specific adversarial tactics associated with 'Integration Readiness' gaps occur with significantly higher frequency across the incident corpus tha"
+    },
+    "node_3_5": {
+      "id_in_run": 15,
+      "parent_id": "node_2_1",
+      "child_ids": [
+        "node_4_11",
+        "node_4_17",
+        "node_4_24"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.40377967173622203,
+      "prior": 0.717741935483871,
+      "posterior": 0.36983471074380164,
+      "hypothesis": "Incidents that expose 'Integration Readiness' gaps involve a significantly higher number of adversarial techniques (higher complexity) than those expo"
+    },
+    "node_4_1": {
+      "id_in_run": 16,
+      "parent_id": "node_3_1",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.04177031086926434,
+      "prior": 0.29838709677419356,
+      "posterior": 0.26239669421487605,
+      "hypothesis": "Adversarial tactics associated with the 'Integration' domain have a significantly higher frequency of occurrence in incidents than tactics associated "
+    },
+    "node_4_2": {
+      "id_in_run": 17,
+      "parent_id": "node_3_3",
+      "child_ids": [
+        "node_5_24"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": 0.24366014673737527,
+      "prior": 0.717741935483871,
+      "posterior": 0.9276859504132231,
+      "hypothesis": "There is a statistically significant positive temporal trend in AI incident complexity, with later incidents involving a higher number of distinct att"
+    },
+    "node_3_6": {
+      "id_in_run": 18,
+      "parent_id": "node_2_0",
+      "child_ids": [
+        "node_4_26",
+        "node_4_29"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.13056703005884218,
+      "prior": 0.4,
+      "posterior": 0.2875,
+      "hypothesis": "Integration Readiness competencies necessitate a significantly more complex architectural footprint (measured by the count of applicable controls) com"
+    },
+    "node_4_3": {
+      "id_in_run": 19,
+      "parent_id": "node_3_4",
+      "child_ids": [
+        "node_5_0",
+        "node_5_11"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.45367198749673215,
+      "prior": 0.7338709677419355,
+      "posterior": 0.34297520661157027,
+      "hypothesis": "Incidents attributed to 'Trust Readiness' competency gaps are significantly more likely to result in 'Privacy' harms compared to 'Integration Readines"
+    },
+    "node_3_7": {
+      "id_in_run": 20,
+      "parent_id": "node_2_7",
+      "child_ids": [
+        "node_4_9",
+        "node_4_20"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4859279497791085,
+      "prior": 0.6129032258064516,
+      "posterior": 0.19421487603305784,
+      "hypothesis": "The 'Exfiltration' tactic is uniquely associated with 'Integration Readiness' gaps (lack of egress filtering), whereas 'Reconnaissance' is independent"
+    },
+    "node_4_4": {
+      "id_in_run": 21,
+      "parent_id": "node_3_2",
+      "child_ids": [
+        "node_5_5"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6683249739082294,
+      "prior": 0.7741935483870968,
+      "posterior": 0.19834710743801653,
+      "hypothesis": "The 'Audit Logging & Telemetry' architecture control is mapped to a significantly higher number of governance requirements than the average of all oth"
+    },
+    "node_3_8": {
+      "id_in_run": 22,
+      "parent_id": "node_2_2",
+      "child_ids": [
+        "node_4_19",
+        "node_4_27"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.2466266123333684,
+      "prior": 0.5333333333333333,
+      "posterior": 0.32083333333333336,
+      "hypothesis": "Competencies classified as 'Integration Readiness' require a significantly higher number of distinct architecture controls to implement than those cla"
+    },
+    "node_3_9": {
+      "id_in_run": 23,
+      "parent_id": "node_2_3",
+      "child_ids": [
+        "node_4_5",
+        "node_4_28"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.628557981081106,
+      "prior": 0.7327586206896551,
+      "posterior": 0.19117647058823528,
+      "hypothesis": "Trust Readiness competency statements map to a significantly higher number of unique architecture controls per statement than Integration Readiness st"
+    },
+    "node_3_10": {
+      "id_in_run": 24,
+      "parent_id": "node_2_7",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.21328039227182166,
+      "prior": 0.7741935483870968,
+      "posterior": 0.5904255319148937,
+      "hypothesis": "Incidents classified as 'Detection Failures' or 'Response Failures' are significantly more likely to be mapped to 'Integration Readiness' gaps (lack o"
+    },
+    "node_4_5": {
+      "id_in_run": 25,
+      "parent_id": "node_3_9",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.07657890326031802,
+      "prior": 0.8387096774193549,
+      "posterior": 0.7727272727272727,
+      "hypothesis": "Theoretical propositions with 'High' confidence assessments are supported by a significantly higher quantity of empirical 'Atlas Evidence' than those "
+    },
+    "node_3_11": {
+      "id_in_run": 26,
+      "parent_id": "node_2_3",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.1576249092108212,
+      "prior": 0.7096774193548387,
+      "posterior": 0.5738636363636364,
+      "hypothesis": "There is a positive correlation between the operational complexity of a sub-competency (measured by the number of its defined observable practices) an"
+    },
+    "node_4_6": {
+      "id_in_run": 27,
+      "parent_id": "node_3_4",
+      "child_ids": [
+        "node_5_1",
+        "node_5_7"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5569374782568579,
+      "prior": 0.6451612903225806,
+      "posterior": 0.1652892561983471,
+      "hypothesis": "There is a significant positive correlation between the number of architecture controls a requirement maps to (control density) and the evidence confi"
+    },
+    "node_5_0": {
+      "id_in_run": 28,
+      "parent_id": "node_4_3",
+      "child_ids": [
+        "node_6_0",
+        "node_6_4"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "The mapping of governance requirements to architecture controls follows a Pareto distribution, where the top 20% of architecture controls address at l"
+    },
+    "node_4_7": {
+      "id_in_run": 29,
+      "parent_id": "node_3_0",
+      "child_ids": [
+        "node_5_3",
+        "node_5_26"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.43185860293167194,
+      "prior": 0.7419354838709677,
+      "posterior": 0.36983471074380164,
+      "hypothesis": "Incidents linked to 'Trust Readiness' deficiencies are significantly more likely to manifest as 'Prevention Failures', whereas 'Integration Readiness'"
+    },
+    "node_3_12": {
+      "id_in_run": 30,
+      "parent_id": "node_2_6",
+      "child_ids": [
+        "node_4_25"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.03480859239105362,
+      "prior": 0.2903225806451613,
+      "posterior": 0.2603305785123967,
+      "hypothesis": "Governance requirements derived from the 'NIST AI RMF' family map to a significantly higher number of architecture controls per requirement than those"
+    },
+    "node_3_13": {
+      "id_in_run": 31,
+      "parent_id": "node_2_2",
+      "child_ids": [
+        "node_4_12",
+        "node_4_13"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.2951768634761347,
+      "prior": 0.7419354838709677,
+      "posterior": 0.48760330578512395,
+      "hypothesis": "Incidents with distinct 'Trust' or 'Integration' dominance show different failure mode distributions (Prevention vs. Detection/Response), indicating a"
+    },
+    "node_3_14": {
+      "id_in_run": 32,
+      "parent_id": "node_2_4",
+      "child_ids": [
+        "node_4_8"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6480930063453423,
+      "prior": 0.7321428571428571,
+      "posterior": 0.17372881355932204,
+      "hypothesis": "The 'Integration Readiness' bundle exhibits significantly higher internal cohesion (similarity between control mappings) than the 'Trust Readiness' bu"
+    },
+    "node_3_15": {
+      "id_in_run": 33,
+      "parent_id": "node_2_4",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.024775527525397002,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7205882352941176,
+      "hypothesis": "Attacks that successfully trigger a 'Response Failure' are significantly more complex (higher technique count) than those resulting in 'Prevention Fai"
+    },
+    "node_4_8": {
+      "id_in_run": 34,
+      "parent_id": "node_3_14",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.09746405869495013,
+      "prior": 0.8870967741935484,
+      "posterior": 0.9710743801652892,
+      "hypothesis": "The mapping of governance requirements to architecture controls follows a Pareto-like distribution, where a small minority of 'Keystone' controls acco"
+    },
+    "node_5_1": {
+      "id_in_run": 35,
+      "parent_id": "node_4_6",
+      "child_ids": [
+        "node_6_1"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6126312260825437,
+      "prior": 0.7096774193548387,
+      "posterior": 0.18181818181818182,
+      "hypothesis": "Sub-competencies classified under 'Integration Readiness' have significantly higher empirical validation (incident counts) than 'Trust Readiness' sub-"
+    },
+    "node_6_0": {
+      "id_in_run": 36,
+      "parent_id": "node_5_0",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4385882641272756,
+      "prior": 0.7580645161290323,
+      "posterior": 0.38016528925619836,
+      "hypothesis": "The distribution of failure modes (Prevention vs. Detection/Response) differs significantly between Trust-dominant and Integration-dominant incidents."
+    },
+    "node_3_16": {
+      "id_in_run": 37,
+      "parent_id": "node_2_7",
+      "child_ids": [
+        "node_4_21",
+        "node_4_30"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.42466482717085413,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3760330578512397,
+      "hypothesis": "Sub-competencies defined with greater semantic breadth (higher word count in definition) have significantly higher empirical incident coverage, sugges"
+    },
+    "node_4_9": {
+      "id_in_run": 38,
+      "parent_id": "node_3_7",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.3411242054323254,
+      "prior": 0.6048387096774194,
+      "posterior": 0.8987603305785123,
+      "hypothesis": "The complexity of an AI attack, measured by the number of adversarial techniques employed, is positively correlated with the breadth of the organizati"
+    },
+    "node_5_2": {
+      "id_in_run": 39,
+      "parent_id": "node_4_0",
+      "child_ids": [
+        "node_6_7"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6335163815171759,
+      "prior": 0.7338709677419355,
+      "posterior": 0.18801652892561985,
+      "hypothesis": "Competency statements classified as 'Integration Readiness' are supported by a significantly higher density of literature evidence (citations) than 'T"
+    },
+    "node_4_10": {
+      "id_in_run": 40,
+      "parent_id": "node_3_0",
+      "child_ids": [
+        "node_5_4",
+        "node_5_10"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "Incidents classified as involving 'Both' Trust and Integration failures (multi-domain) exhibit a significantly higher 'technique_count' than incidents"
+    },
+    "node_4_11": {
+      "id_in_run": 41,
+      "parent_id": "node_3_5",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.32720076847590407,
+      "prior": 0.6209677419354839,
+      "posterior": 0.9028925619834711,
+      "hypothesis": "There is a statistically significant positive correlation between the incident date and the attack complexity (technique count), reflecting the increa"
+    },
+    "node_3_17": {
+      "id_in_run": 42,
+      "parent_id": "node_2_1",
+      "child_ids": [
+        "node_4_18",
+        "node_4_22",
+        "node_4_23"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "Governance requirements classified as 'Trust Readiness' map to a significantly higher number of architecture controls than 'Integration Readiness' req"
+    },
+    "node_5_3": {
+      "id_in_run": 43,
+      "parent_id": "node_4_7",
+      "child_ids": [
+        "node_6_10"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6332843242345688,
+      "prior": 0.7419354838709677,
+      "posterior": 0.1962809917355372,
+      "hypothesis": "Incidents causing 'Security' harms are significantly more likely to involve simultaneous 'Both' (Trust & Integration) gaps compared to 'Reliability' i"
+    },
+    "node_5_4": {
+      "id_in_run": 44,
+      "parent_id": "node_4_10",
+      "child_ids": [
+        "node_6_2"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6289680587780783,
+      "prior": 0.7419354838709677,
+      "posterior": 0.2,
+      "hypothesis": "Incidents characterized by 'Security' harm types are significantly more likely to be classified as 'Prevention Failures' compared to Non-Security harm"
+    },
+    "node_4_12": {
+      "id_in_run": 45,
+      "parent_id": "node_3_13",
+      "child_ids": [
+        "node_5_6"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6332843242345688,
+      "prior": 0.7419354838709677,
+      "posterior": 0.1962809917355372,
+      "hypothesis": "The diagnostic complexity of AI incidents, measured by the length of the LLM's reasoning trace, is significantly higher for incidents involving both T"
+    },
+    "node_5_5": {
+      "id_in_run": 46,
+      "parent_id": "node_4_4",
+      "child_ids": [
+        "node_6_5"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6822484108646509,
+      "prior": 0.7903225806451613,
+      "posterior": 0.2024793388429752,
+      "hypothesis": "The 'Human-in-the-Loop Approval Gates' architecture control is mapped significantly more frequently to 'Trust Readiness' requirements than to 'Integra"
+    },
+    "node_4_13": {
+      "id_in_run": 47,
+      "parent_id": "node_3_13",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.16011952499884657,
+      "prior": 0.9354838709677419,
+      "posterior": 0.7975206611570248,
+      "hypothesis": "There is a significant structural alignment between source frameworks and competency bundles: regulatory frameworks (e.g., EU AI Act) disproportionate"
+    },
+    "node_5_6": {
+      "id_in_run": 48,
+      "parent_id": "node_4_12",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6188967727129333,
+      "prior": 0.7419354838709677,
+      "posterior": 0.20867768595041322,
+      "hypothesis": "Incidents involving 'Both' Trust and Integration failures exhibit higher attack sophistication (measured by technique count) than those involving sing"
+    },
+    "node_5_7": {
+      "id_in_run": 49,
+      "parent_id": "node_4_6",
+      "child_ids": [
+        "node_6_3"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6892101293428615,
+      "prior": 0.7983870967741935,
+      "posterior": 0.20454545454545456,
+      "hypothesis": "The 'Audit Logging & Telemetry' architecture control is significantly more prevalent in 'Trust Readiness' requirements than in 'Integration Readiness'"
+    },
+    "node_6_1": {
+      "id_in_run": 50,
+      "parent_id": "node_5_1",
+      "child_ids": [
+        "node_7_0"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6335163815171759,
+      "prior": 0.7338709677419355,
+      "posterior": 0.18801652892561985,
+      "hypothesis": "Competency statements classified as 'Trust Readiness' are linguistically more complex (higher word count) than 'Integration Readiness' statements, ref"
+    },
+    "node_4_14": {
+      "id_in_run": 51,
+      "parent_id": "node_3_3",
+      "child_ids": [
+        "node_5_8",
+        "node_5_13"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "Competency statements rated with 'High' confidence are supported by a significantly larger volume of bibliographic evidence (citations) than those rat"
+    },
+    "node_3_18": {
+      "id_in_run": 52,
+      "parent_id": "node_2_0",
+      "child_ids": [
+        "node_4_15",
+        "node_4_16"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "The EU AI Act acts as a stronger driver for 'Trust Readiness' requirements, whereas NIST frameworks (AI RMF, GenAI Profile) are biased towards generat"
+    },
+    "node_5_8": {
+      "id_in_run": 53,
+      "parent_id": "node_4_14",
+      "child_ids": [
+        "node_6_6",
+        "node_6_8"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.758827314124969,
+      "prior": 0.8790322580645161,
+      "posterior": 0.22520661157024793,
+      "hypothesis": "The 'Human-in-the-Loop Approval Gates' control is significantly more likely to be associated with 'Trust Readiness' requirements than 'Integration Rea"
+    },
+    "node_4_15": {
+      "id_in_run": 54,
+      "parent_id": "node_3_18",
+      "child_ids": [
+        "node_5_9",
+        "node_5_16"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.605437450321726,
+      "prior": 0.7096774193548387,
+      "posterior": 0.18801652892561985,
+      "hypothesis": "Incidents categorized as 'Security' harms involve a significantly higher number of distinct adversarial techniques (complexity) compared to 'Non-Secur"
+    },
+    "node_4_16": {
+      "id_in_run": 55,
+      "parent_id": "node_3_18",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.2158132728245325,
+      "prior": 0.75,
+      "posterior": 0.9359504132231405,
+      "hypothesis": "Trust and Integration sub-competencies do not form distinct, isolated clusters in real-world failures, but instead form mixed clusters indicating deep"
+    },
+    "node_5_9": {
+      "id_in_run": 56,
+      "parent_id": "node_4_15",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4385882641272756,
+      "prior": 0.7580645161290323,
+      "posterior": 0.38016528925619836,
+      "hypothesis": "Competency statements derived from 'OWASP' requirements have significantly higher 'Confidence' scores than those derived from 'NIST' or 'EU' requireme"
+    },
+    "node_5_10": {
+      "id_in_run": 57,
+      "parent_id": "node_4_10",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6332843242345688,
+      "prior": 0.7419354838709677,
+      "posterior": 0.1962809917355372,
+      "hypothesis": "Requirements derived from the 'EU AI Act' mandate a significantly higher number of architecture controls per requirement than those derived from 'NIST"
+    },
+    "node_6_2": {
+      "id_in_run": 58,
+      "parent_id": "node_5_4",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.42466482717085413,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3760330578512397,
+      "hypothesis": "The 'Human-in-the-Loop Approval Gates' architecture control is significantly more likely to be required by 'Trust Readiness' competencies, whereas 'No"
+    },
+    "node_4_17": {
+      "id_in_run": 59,
+      "parent_id": "node_3_5",
+      "child_ids": [
+        "node_5_15",
+        "node_5_22"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6332843242345688,
+      "prior": 0.7419354838709677,
+      "posterior": 0.1962809917355372,
+      "hypothesis": "Governance requirements classified as 'Trust Readiness' map to a significantly higher number of architecture controls per requirement than 'Integratio"
+    },
+    "node_4_18": {
+      "id_in_run": 60,
+      "parent_id": "node_3_17",
+      "child_ids": [
+        "node_5_12"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.36993991850005264,
+      "prior": 0.6583333333333333,
+      "posterior": 0.33958333333333335,
+      "hypothesis": "Adversarial tactics mapped to the 'Integration Readiness' bundle appear with significantly higher frequency in real-world incidents than those mapped "
+    },
+    "node_7_0": {
+      "id_in_run": 61,
+      "parent_id": "node_6_1",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5010116731485651,
+      "prior": 0.5887096774193549,
+      "posterior": 0.15702479338842976,
+      "hypothesis": "AI incidents resulting in 'Security' harms involve a significantly higher number of adversarial techniques (technique_count) than incidents resulting "
+    },
+    "node_6_3": {
+      "id_in_run": 62,
+      "parent_id": "node_5_7",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6889780720602545,
+      "prior": 0.8064516129032258,
+      "posterior": 0.2128099173553719,
+      "hypothesis": "The architecture controls 'GenAIOps / MLOps Lifecycle Governance' and 'Evaluation & Monitoring Infrastructure' co-occur in governance requirements sig"
+    },
+    "node_5_11": {
+      "id_in_run": 63,
+      "parent_id": "node_4_3",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.13923436956421448,
+      "prior": 0.16129032258064516,
+      "posterior": 0.04132231404958678,
+      "hypothesis": "The 'RAG Architecture & Data Grounding' control is significantly more likely to be required by 'Integration Readiness' competencies than 'Trust Readin"
+    },
+    "node_6_4": {
+      "id_in_run": 64,
+      "parent_id": "node_5_0",
+      "child_ids": [],
+      "status": "FAILED",
+      "surprise": null,
+      "prior": null,
+      "posterior": null,
+      "hypothesis": "Sub-competencies with 'High' theoretical evidence strength (from Step 1) exhibit significantly higher real-world incident prevalence (from Step 3) tha"
+    },
+    "node_6_5": {
+      "id_in_run": 65,
+      "parent_id": "node_5_5",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.006961718478210659,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7479338842975206,
+      "hypothesis": "Governance requirements sourced from the 'OWASP Top 10 LLM' are significantly more likely to be classified as 'Integration Readiness' compared to requ"
+    },
+    "node_4_19": {
+      "id_in_run": 66,
+      "parent_id": "node_3_8",
+      "child_ids": [
+        "node_5_17"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.8354062173852869,
+      "prior": 0.967741935483871,
+      "posterior": 0.24793388429752067,
+      "hypothesis": "The architecture controls 'Audit Logging & Telemetry' and 'Incident Response & Recovery Playbooks' exhibit a strong positive correlation in their co-o"
+    },
+    "node_4_20": {
+      "id_in_run": 67,
+      "parent_id": "node_3_7",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.006961718478210659,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7479338842975206,
+      "hypothesis": "Regulatory frameworks (e.g., EU AI Act) are significantly more likely to map to 'Trust Readiness' competencies, whereas technical frameworks (e.g., OW"
+    },
+    "node_4_21": {
+      "id_in_run": 68,
+      "parent_id": "node_3_16",
+      "child_ids": [
+        "node_5_25"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6335163815171759,
+      "prior": 0.7338709677419355,
+      "posterior": 0.18801652892561985,
+      "hypothesis": "Incidents resulting in 'Security' harms are significantly more likely to be characterized as 'Prevention Failures', whereas non-security harms (Reliab"
+    },
+    "node_5_12": {
+      "id_in_run": 69,
+      "parent_id": "node_4_18",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.43185860293167194,
+      "prior": 0.7419354838709677,
+      "posterior": 0.36983471074380164,
+      "hypothesis": "Incidents where 'Human-in-the-Loop' mechanisms are identified as a missing control are significantly more likely to result in 'Reliability' or 'Safety"
+    },
+    "node_4_22": {
+      "id_in_run": 70,
+      "parent_id": "node_3_17",
+      "child_ids": [
+        "node_5_14",
+        "node_5_18"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6613632554300187,
+      "prior": 0.7661290322580645,
+      "posterior": 0.1962809917355372,
+      "hypothesis": "'Trust Readiness' sub-competencies have a significantly higher mean incident coverage than 'Integration Readiness' sub-competencies, challenging the a"
+    },
+    "node_5_13": {
+      "id_in_run": 71,
+      "parent_id": "node_4_14",
+      "child_ids": [
+        "node_6_9"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5205044848875551,
+      "prior": 0.6612903225806451,
+      "posterior": 0.2128099173553719,
+      "hypothesis": "Incidents categorized as 'Security' harms involve a significantly higher level of attack complexity, measured by the number of 'Techniques Used', comp"
+    },
+    "node_6_6": {
+      "id_in_run": 72,
+      "parent_id": "node_5_8",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.41770310869264343,
+      "prior": 0.4838709677419355,
+      "posterior": 0.12396694214876033,
+      "hypothesis": "'Integration Readiness' competency statements require more verbose definitions (higher word count) to capture technical nuance compared to 'Trust Read"
+    },
+    "node_5_14": {
+      "id_in_run": 73,
+      "parent_id": "node_4_22",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5708609152132793,
+      "prior": 0.6612903225806451,
+      "posterior": 0.16942148760330578,
+      "hypothesis": "Competencies supported by 'High' confidence literature evidence map to a significantly higher number of architecture controls than those with 'Medium'"
+    },
+    "node_4_23": {
+      "id_in_run": 74,
+      "parent_id": "node_3_17",
+      "child_ids": [
+        "node_5_19"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.576662347278455,
+      "prior": 0.7096774193548387,
+      "posterior": 0.2128099173553719,
+      "hypothesis": "Incidents categorized as 'Security' harms implicate a significantly higher number of missing sub-competencies per case than 'Non-Security' (e.g., Priv"
+    },
+    "node_5_15": {
+      "id_in_run": 75,
+      "parent_id": "node_4_17",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.48732029347475075,
+      "prior": 0.5645161290322581,
+      "posterior": 0.1446280991735537,
+      "hypothesis": "AI incidents classified as 'Security' harms are significantly more likely to manifest as 'Prevention Failures', whereas non-security incidents (Reliab"
+    },
+    "node_4_24": {
+      "id_in_run": 76,
+      "parent_id": "node_3_5",
+      "child_ids": [
+        "node_5_21"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.5757341181480269,
+      "prior": 0.7419354838709677,
+      "posterior": 0.24586776859504134,
+      "hypothesis": "Incidents resulting in 'Security' harms are significantly more strongly associated with 'Integration Readiness' gaps compared to incidents resulting i"
+    },
+    "node_4_25": {
+      "id_in_run": 77,
+      "parent_id": "node_3_12",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.19469606010729326,
+      "prior": 0.7338709677419355,
+      "posterior": 0.5661157024793388,
+      "hypothesis": "The number of backing literature citations for a competency statement is positively correlated with the number of applicable architecture controls, su"
+    },
+    "node_3_19": {
+      "id_in_run": 78,
+      "parent_id": "node_2_6",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.49439854949181455,
+      "prior": 0.7395833333333334,
+      "posterior": 0.31359649122807015,
+      "hypothesis": "Sub-competencies in the 'Trust Readiness' bundle exhibit higher 'Harm Entropy' (diversity of resulting harm types) than 'Integration Readiness' sub-co"
+    },
+    "node_4_26": {
+      "id_in_run": 79,
+      "parent_id": "node_3_6",
+      "child_ids": [
+        "node_5_23"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.4803585749965399,
+      "prior": 0.5564516129032258,
+      "posterior": 0.14256198347107438,
+      "hypothesis": "Competency statements classified as 'Trust Readiness' are supported by significantly higher evidence confidence levels in the literature compared to '"
+    },
+    "node_5_16": {
+      "id_in_run": 80,
+      "parent_id": "node_4_15",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.42466482717085413,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3760330578512397,
+      "hypothesis": "The distribution of governance requirements across architecture controls follows a Pareto principle (80/20 rule), where a small minority of controls a"
+    },
+    "node_5_17": {
+      "id_in_run": 81,
+      "parent_id": "node_4_19",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4457820398880934,
+      "prior": 0.7580645161290323,
+      "posterior": 0.3739669421487603,
+      "hypothesis": "Incidents classified as 'Security' harm types are significantly more likely to manifest as 'Prevention Failures' compared to 'Reliability' incidents, "
+    },
+    "node_4_27": {
+      "id_in_run": 82,
+      "parent_id": "node_3_8",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.1819156287024362,
+      "prior": 0.7338709677419355,
+      "posterior": 0.5771276595744681,
+      "hypothesis": "'Prevention Failures' are disproportionately represented in 'Integration-dominant' incidents, while 'Detection' and 'Response' failures are disproport"
+    },
+    "node_4_28": {
+      "id_in_run": 83,
+      "parent_id": "node_3_9",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.06660044010821584,
+      "prior": 0.6854838709677419,
+      "posterior": 0.628099173553719,
+      "hypothesis": "Incidents dominated by 'Integration Readiness' gaps involve a significantly higher number of distinct attack techniques than incidents dominated by 'T"
+    },
+    "node_3_20": {
+      "id_in_run": 84,
+      "parent_id": "node_2_3",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.4664351380401185,
+      "prior": 0.7903225806451613,
+      "posterior": 0.3884297520661157,
+      "hypothesis": "GenAI-specific architecture controls (e.g., RAG, Prompt Management) are significantly under-represented in the governance crosswalk compared to Tradit"
+    },
+    "node_5_18": {
+      "id_in_run": 85,
+      "parent_id": "node_4_22",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.732699383046252,
+      "prior": 0.6944444444444444,
+      "posterior": 0.06313131313131314,
+      "hypothesis": "Integration Readiness sub-competencies exhibit significantly higher variance in incident coverage than Trust Readiness sub-competencies, indicating th"
+    },
+    "node_5_19": {
+      "id_in_run": 86,
+      "parent_id": "node_4_23",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.35110266858442746,
+      "prior": 0.5483870967741935,
+      "posterior": 0.24586776859504134,
+      "hypothesis": "Incidents categorized as 'Supply Chain' harms are associated with a significantly higher number of missing sub-competencies than 'Reliability' harms, "
+    },
+    "node_6_7": {
+      "id_in_run": 87,
+      "parent_id": "node_5_2",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.006961718478210659,
+      "prior": 0.7580645161290323,
+      "posterior": 0.7520661157024794,
+      "hypothesis": "Requirements originating from 'Normative' frameworks (e.g., EU AI Act, NIST AI RMF) are significantly more likely to be classified as 'Trust Readiness"
+    },
+    "node_5_20": {
+      "id_in_run": 88,
+      "parent_id": "node_4_0",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5943507097961854,
+      "prior": 0.7407407407407407,
+      "posterior": 0.22863247863247863,
+      "hypothesis": "Sub-competencies within the 'Trust Readiness' bundle cover a significantly broader range of distinct harm types per competency than 'Integration Readi"
+    },
+    "node_5_21": {
+      "id_in_run": 89,
+      "parent_id": "node_4_24",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.22277499130274314,
+      "prior": 0.7419354838709677,
+      "posterior": 0.9338842975206612,
+      "hypothesis": "Requirements sourced from the 'OWASP Top 10 LLM' are significantly more likely to map to 'Integration Readiness' competencies, whereas 'NIST AI RMF' r"
+    },
+    "node_5_22": {
+      "id_in_run": 90,
+      "parent_id": "node_4_17",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.05569374782568592,
+      "prior": 0.9354838709677419,
+      "posterior": 0.9834710743801653,
+      "hypothesis": "Normative governance frameworks (e.g., NIST, EU AI Act) are significantly more likely to map to 'Trust Readiness' competencies, whereas technical guid"
+    },
+    "node_4_29": {
+      "id_in_run": 91,
+      "parent_id": "node_3_6",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.5987077891261223,
+      "prior": 0.9435483870967742,
+      "posterior": 0.42768595041322316,
+      "hypothesis": "Regulatory frameworks (e.g., EU AI Act) generate a significantly higher proportion of 'Trust Readiness' requirements compared to technical frameworks "
+    },
+    "node_5_23": {
+      "id_in_run": 92,
+      "parent_id": "node_4_26",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.42466482717085413,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3760330578512397,
+      "hypothesis": "Incidents precipitated by external threat actors are significantly more likely to exploit 'Integration Readiness' gaps, whereas insider or accidental "
+    },
+    "node_6_8": {
+      "id_in_run": 93,
+      "parent_id": "node_5_8",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6316601784045139,
+      "prior": 0.6470588235294118,
+      "posterior": 0.102803738317757,
+      "hypothesis": "Sub-competencies within the 'Integration Readiness' bundle exhibit a significantly higher frequency of observed real-world incidents than those in the"
+    },
+    "node_6_9": {
+      "id_in_run": 94,
+      "parent_id": "node_5_13",
+      "child_ids": [
+        "node_7_1"
+      ],
+      "status": "SUCCEEDED",
+      "surprise": -0.6474398184735973,
+      "prior": 0.75,
+      "posterior": 0.1921487603305785,
+      "hypothesis": "Incidents that involve 'Tool Use' or 'Plugin' execution techniques exhibit a significantly higher 'Technique Count' than non-tool-use incidents, refle"
+    },
+    "node_5_24": {
+      "id_in_run": 95,
+      "parent_id": "node_4_2",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.42466482717085413,
+      "prior": 0.7419354838709677,
+      "posterior": 0.3760330578512397,
+      "hypothesis": "The proportion of 'Societal' harms (Bias, Privacy) has significantly increased in the post-2023 era (Generative AI boom) compared to the pre-2023 era,"
+    },
+    "node_7_1": {
+      "id_in_run": 96,
+      "parent_id": "node_6_9",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6474398184735973,
+      "prior": 0.75,
+      "posterior": 0.1921487603305785,
+      "hypothesis": "There is a significant positive correlation between the number of 'Trust' deficiencies and 'Integration' deficiencies in single incidents, supporting "
+    },
+    "node_5_25": {
+      "id_in_run": 97,
+      "parent_id": "node_4_21",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "Sub-competencies within the 'Integration Readiness' bundle map to a significantly higher mean number of unique adversarial tactics than those in the '"
+    },
+    "node_4_30": {
+      "id_in_run": 98,
+      "parent_id": "node_3_16",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.0002320572826070005,
+      "prior": 0.7419354838709677,
+      "posterior": 0.7417355371900827,
+      "hypothesis": "The cognitive effort required to analyze an incident (proxy: length of LLM 'chain_of_thought') correlates positively with the incident's severity (pro"
+    },
+    "node_5_26": {
+      "id_in_run": 99,
+      "parent_id": "node_4_7",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": 0.19492811738990026,
+      "prior": 0.7741935483870968,
+      "posterior": 0.9421487603305785,
+      "hypothesis": "The 'GOVERN' function requirements are significantly more likely to map to 'Trust Readiness' competencies, while 'MAP', 'MEASURE', and 'MANAGE' functi"
+    },
+    "node_6_10": {
+      "id_in_run": 100,
+      "parent_id": "node_5_3",
+      "child_ids": [],
+      "status": "SUCCEEDED",
+      "surprise": -0.6404780999953865,
+      "prior": 0.7419354838709677,
+      "posterior": 0.19008264462809918,
+      "hypothesis": "Incidents resulting in 'Security' harms exhibit a significantly higher mean 'Technique Count' compared to incidents resulting in non-security harms (e"
+    }
+  }
+}

@@ -1,0 +1,68 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Mapping Validation (Sample) ---
+                                                                                            34_data_docs Has_Docs
+0    Documentation is missing or not available: No documentation exists regarding maintenance, compos...       No
+43   Documentation has been partially completed: Some documentation exists (detailing the composition...      Yes
+44   Documentation is complete: Documentation exists regarding the maintenance, composition, quality,...      Yes
+120  Documentation is widely available: Documentation is not only complete, but is widely accessible ...      Yes
+196  Documentation is complete: Documentation exists regarding the maintenance, composition, quality,...      Yes
+240  Documentation has been partially completed: Some documentation exists (detailing the composition...      Yes
+325          Data not reported by submitter and will be updated once additional information is collected       No
+501                                                                            Documentation is complete      Yes
+506                                                            Documentation is missing or not available       No
+512                                                                    Documentation is widely available      Yes
+
+
+--- Contingency Table (Developer vs Documentation) ---
+Has_Docs         No  Yes
+Developer_Type          
+Contractor      182  299
+In-house         76  363
+
+--- Documentation Rates (%) ---
+Has_Docs               No        Yes
+Developer_Type                      
+Contractor      37.837838  62.162162
+In-house        17.312073  82.687927
+
+--- Chi-square Test Results ---
+Chi-square Statistic: 46.9084
+P-value: 7.4383e-12
+Result: Statistically Significant. The null hypothesis is rejected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart is used to compare the relative proportions of a binary categorical variable (whether documentation exists: "Yes" or "No") across two distinct groups ("Contractor" and "In-house"). By normalizing the height of the bars to 100%, it facilitates a direct comparison of percentages rather than raw quantities.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Developer Type"
+    *   **Labels:** Two categorical groups: "Contractor" and "In-house".
+*   **Y-axis:**
+    *   **Title:** "Percentage"
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Intervals:** Marked in increments of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Contractor:**
+    *   **"Yes" (Blue):** The blue segment reaches slightly above the 60 mark, indicating approximately **62%** of contractor projects have documentation.
+    *   **"No" (Red):** The red segment occupies the remaining space, representing approximately **38%** of projects lacking documentation.
+*   **In-house:**
+    *   **"Yes" (Blue):** The blue segment is significantly taller, reaching just above the 80 mark, indicating approximately **82-83%** of in-house projects have documentation.
+    *   **"No" (Red):** The red segment is much smaller, representing approximately **17-18%** of projects lacking documentation.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Data Documentation Availability by Developer Type (Refined)".
+*   **Legend:** Located on the right side of the chart, titled "Has Documentation".
+    *   **Blue Square:** Represents "Yes" (documentation is available).
+    *   **Light Red/Pink Square:** Represents "No" (documentation is unavailable).
+
+### 5. Statistical Insights
+*   **Prevalence of Documentation:** "In-house" developers demonstrate a significantly higher rate of data documentation availability compared to "Contractors."
+*   **The Gap:** There is an approximate **20 percentage point gap** in documentation compliance between the two groups (~82% for In-house vs. ~62% for Contractors).
+*   **Risk Assessment:** Nearly **40%** of the data associated with Contractors lacks documentation, whereas less than **20%** of In-house data is undocumented. This suggests that relying on external contractors may carry a higher risk of "knowledge loss" or undocumented code/data unless specific documentation requirements are enforced.
+==================================================

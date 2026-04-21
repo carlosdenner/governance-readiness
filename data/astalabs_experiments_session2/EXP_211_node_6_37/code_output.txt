@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Financial Malice Hypothesis Experiment...
+
+Loading dataset from: astalabs_discovery_all_data.csv
+AIID Incidents subset shape: (1362, 196)
+Finance/Insurance incidents found: 7
+Healthcare incidents found: 15
+
+--- Results ---
+Finance: 2/7 (28.57%) intentional
+Healthcare: 0/15 (0.00%) intentional
+
+Z-score: 2.1712
+P-value: 2.9913e-02
+Conclusion: Statistically Significant Difference.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a Normalized or 100% Stacked Bar Chart).
+*   **Purpose:** This chart is designed to compare the relative proportions (composition) of incident types ("Intentional Harm" vs. "Accidental/Other") across two distinct industry sectors ("Finance & Insurance" and "Healthcare"). By normalizing the height to 1.0 (100%), it focuses on the ratio of incidents rather than the total volume of incidents.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Title:** Categories representing industry sectors.
+    *   **Values:** "Finance & Insurance" and "Healthcare".
+*   **Y-Axis:**
+    *   **Label/Title:** "Proportion of Incidents".
+    *   **Units:** The axis uses decimal proportions representing percentages.
+    *   **Range:** 0.0 to 1.0 (equivalent to 0% to 100%). Intervals are marked every 0.2 units.
+
+### 3. Data Trends
+*   **Finance & Insurance:**
+    *   The column is divided into two distinct segments.
+    *   The bottom segment (Red) indicates that a significant portion of incidents are classified as **Intentional Harm**.
+    *   The top segment (Blue) indicates the majority of incidents are **Accidental/Other**.
+*   **Healthcare:**
+    *   The column represents a single, uniform block of color (Blue).
+    *   There is no visible red segment, indicating that **Intentional Harm** is absent or statistically negligible in this specific dataset for the Healthcare sector.
+    *   All recorded incidents fall under the **Accidental/Other** category.
+
+### 4. Annotations and Legends
+*   **Legend:** Located at the bottom right of the chart.
+    *   **Red Square:** Represents "Intentional Harm".
+    *   **Blue Square:** Represents "Accidental/Other".
+*   **Annotations (Data Labels):** White text overlaid on the bars provides precise percentages.
+    *   **Finance & Insurance:**
+        *   **28.6%** for Intentional Harm (Red section).
+        *   **71.4%** for Accidental/Other (Blue section).
+    *   **Healthcare:**
+        *   **100.0%** for Accidental/Other (Blue section).
+
+### 5. Statistical Insights
+*   **Disparity in Intent:** There is a stark contrast in the nature of incidents between the two sectors. While the Healthcare sector (in this dataset) deals exclusively with accidental or non-malicious issues, the Finance & Insurance sector faces a substantial threat from intentional actors.
+*   **Risk Profile:** Nearly 3 out of every 10 incidents (28.6%) in Finance & Insurance are intentional. This suggests that security protocols in Finance need to be heavily weighted toward preventing fraud, insider threats, or cyberattacks, whereas Healthcare risk mitigation (based on this chart) should focus on error reduction, process safety, and accident prevention.
+*   **Absence of Malice in Healthcare Data:** The 100.0% "Accidental/Other" rate in Healthcare is notable. It implies that in the context of this specific study or data collection period, malicious intent was not a contributing factor to any recorded operational incidents.
+==================================================

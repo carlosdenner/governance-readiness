@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Contractor Transparency Friction' hypothesis using the EO 13960 dataset. After filtering for records with definitive 'In-house' vs. 'Contracted' development methods and valid 'AI Notice' entries, the study analyzed a subset of 50 systems (25 In-house, 25 Contracted). The results revealed a universal lack of transparency: 100% of systems in both groups failed to provide public AI Notice (0% compliance). A Chi-Square test yielded a p-value of 1.0, confirming no statistical difference between the groups. Consequently, the hypothesis that contracting resources specifically hinder transparency is not supported; instead, the data suggests a systemic failure to provide AI Notice across the board for this subset of federal AI systems.",
+  "child_ids": [
+    "node_7_14"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport os\n\n# Dynamic file path resolution\nfilename = 'astalabs_discovery_all_data.csv'\nfilepath = filename\nif not os.path.exists(filepath):\n    if os.path.exists('../' + filename):\n        filepath = '../' + filename\n    else:\n        print(f\"Warning: {filename} not found in current or parent directory. Attempting current directory default.\")\n\nprint(f\"Loading dataset from {filepath}...\")\ntry:\n    df = pd.read_csv(filepath, low_memory=False)\nexcept Exception as e:\n    print(f\"Failed to load dataset: {e}\")\n    exit(1)\n\n# Filter for EO 13960 scored data\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 records loaded: {len(eo_df)}\")\n\n# Target Columns\ncol_dev = '22_dev_method'\ncol_notice = '59_ai_notice'\n\n# Normalize and clean '22_dev_method'\n# We want to distinguish 'In-house' vs 'Contracted'\ndef clean_dev_method(val):\n    if pd.isna(val):\n        return np.nan\n    s = str(val).lower()\n    # Check for both/hybrid first if necessary, but hypothesis compares the two distinct groups.\n    # Common logic: if it mentions contract, it involves contractors.\n    # If it mentions in-house ONLY, it's in-house.\n    if 'contract' in s:\n        # specific check for hybrid could go here, but let's classify as 'Contracted' for now or 'Hybrid'\n        if 'in-house' in s or 'government' in s:\n             return 'Hybrid/Both'\n        return 'Contracted'\n    if 'in-house' in s or 'government' in s:\n        return 'In-house'\n    return 'Other'\n\neo_df['dev_category'] = eo_df[col_dev].apply(clean_dev_method)\n\n# Normalize and clean '59_ai_notice'\ndef clean_notice(val):\n    if pd.isna(val):\n        return np.nan\n    s = str(val).lower()\n    if 'yes' in s:\n        return 'Yes'\n    if 'no' in s:\n        return 'No'\n    return np.nan\n\neo_df['notice_flag'] = eo_df[col_notice].apply(clean_notice)\n\n# Filter data for the hypothesis test (In-house vs Contracted)\n# Excluding Hybrid/Other to test the specific friction between purely in-house vs contracted.\nanalysis_df = eo_df[eo_df['dev_category'].isin(['In-house', 'Contracted'])].copy()\nanalysis_df = analysis_df.dropna(subset=['notice_flag'])\n\nprint(f\"\\nRecords for analysis (In-house vs Contracted, valid notice): {len(analysis_df)}\")\nprint(\"Distribution by Development Method:\")\nprint(analysis_df['dev_category'].value_counts())\n\n# Contingency Table\ncontingency = pd.crosstab(analysis_df['dev_category'], analysis_df['notice_flag'])\nprint(\"\\nContingency Table (Dev Method vs AI Notice):\")\nprint(contingency)\n\n# Calculate percentages\nprops = pd.crosstab(analysis_df['dev_category'], analysis_df['notice_flag'], normalize='index') * 100\nprint(\"\\nProportions (%):\")\nprint(props)\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency)\nprint(f\"\\nChi-Square Test Results:\")\nprint(f\"Chi2: {chi2:.4f}, p-value: {p:.4e}\")\n\n# Visualization\nif not props.empty:\n    # Sorting to ensure consistent order if needed, or just relying on index\n    ax = props.plot(kind='bar', stacked=True, figsize=(8, 6), color=['#d62728', '#2ca02c'], alpha=0.8)\n    plt.title('AI Notice Compliance: In-house vs Contracted')\n    plt.xlabel('Development Method')\n    plt.ylabel('Percentage')\n    plt.legend(title='Notice Provided', loc='upper right', bbox_to_anchor=(1.15, 1))\n    plt.xticks(rotation=0)\n    \n    # Annotate\n    for c in ax.containers:\n        ax.bar_label(c, fmt='%.1f%%', label_type='center', color='white', weight='bold')\n    \n    plt.tight_layout()\n    plt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nEO 13960 records loaded: 1757\n\nRecords for analysis (In-house vs Contracted, valid notice): 50\nDistribution by Development Method:\ndev_category\nIn-house      25\nContracted    25\nName: count, dtype: int64\n\nContingency Table (Dev Method vs AI Notice):\nnotice_flag   No\ndev_category    \nContracted    25\nIn-house      25\n\nProportions (%):\nnotice_flag      No\ndev_category       \nContracted    100.0\nIn-house      100.0\n\nChi-Square Test Results:\nChi2: 0.0000, p-value: 1.0000e+00\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot (or Column Chart).\n*   **Purpose:** This plot compares a categorical variable (Development Method) against a quantitative variable (Percentage) to illustrate the distribution of AI notice compliance status between two distinct groups.\n\n### 2. Axes\n*   **X-Axis (Horizontal):**\n    *   **Title:** \"Development Method\"\n    *   **Labels:** Two distinct categories: \"Contracted\" and \"In-house\".\n*   **Y-Axis (Vertical):**\n    *   **Title:** \"Percentage\"\n    *   **Range:** 0 to 100 (scale ticks appear at intervals of 20: 0, 20, 40, 60, 80, 100).\n    *   **Units:** Percentage (%).\n\n### 3. Data Trends\n*   **Pattern:** The data shows perfect uniformity. There is no variation between the two categories.\n*   **Values:**\n    *   The **Contracted** bar reaches exactly 100%.\n    *   The **In-house** bar reaches exactly 100%.\n*   **Highlight:** Both bars represent the maximum possible value on the scale shown for the specific category being plotted (\"No\").\n\n### 4. Annotations and Legends\n*   **Chart Title:** \"AI Notice Compliance: In-house vs Contracted\".\n*   **Legend:** Located in the top right corner with the title \"Notice Provided\". It displays a single category:\n    *   **Color:** Red (Salmon/light red).\n    *   **Label:** \"No\".\n*   **Bar Annotations:** Each bar contains white text centered within the bar reading \"100.0%\", explicitly stating the exact value of the data point.\n\n### 5. Statistical Insights\n*   **Total Non-Compliance/Absence:** The plot indicates that for the metric \"Notice Provided,\" the answer was \"No\" for 100% of the cases in this dataset.\n*   **No Correlation with Development Method:** There is no statistical difference between AI tools developed via \"Contracted\" methods versus \"In-house\" methods regarding this metric. Both methods resulted in a 0% rate of providing notice (or a 100% rate of *not* providing notice).\n*   **Conclusion:** Based on this figure, neither development strategy has successfully implemented AI Notice provision in the sampled data; notice is consistently absent regardless of whether the development was outsourced or done internally.\n==================================================",
+  "created_at": "2026-02-22T07:30:00.083569+00:00",
+  "creation_idx": 138,
+  "experiment_id": "node_6_9",
+  "experiment_plan": {
+    "deliverables": "Contingency table of Development Method vs. AI Notice; Bar chart; Statistical test results.",
+    "objective": "Determine if development method (In-house vs Contracted) affects the likelihood of providing AI Notice.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'eo13960_scored'.\n2. Clean '22_dev_method' to categorize into 'In-house' vs 'Contracted'.\n3. Clean '59_ai_notice' into a binary 'Yes'/'No' flag.\n4. Calculate the proportion of systems providing notice in each group.\n5. Perform a Chi-Square test of independence."
+  },
+  "hypothesis": "The Contractor Transparency Friction: AI systems developed via 'Contracting Resources' are significantly less likely to provide public 'AI Notice' compared to systems developed 'In-house', suggesting that outsourcing hinders transparency.",
+  "id_in_run": 137,
+  "is_surprising": true,
+  "parent_id": "node_5_33",
+  "posterior": 0.2443820224719101,
+  "posterior_belief": {
+    "_empirical_mean": 0.03333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 52.0,
+    "definitely_true": 0.0,
+    "maybe_false": 8.0,
+    "maybe_true": 0.0,
+    "mean": 0.2443820224719101,
+    "n": 60.0,
+    "prior_params": [
+      19.75,
+      9.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6810344827586207,
+  "prior_belief": {
+    "_empirical_mean": 0.6875,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 1.0,
+    "maybe_true": 22.0,
+    "mean": 0.6810344827586207,
+    "n": 28.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 5.0
+  },
+  "review": "The experiment successfully tested the hypothesis using the available data, though the sample size (n=50) was significantly reduced due to missing values in the '22_dev_method' and '59_ai_notice' columns. The analysis correctly identified that among the records where development method and notice status were both populated, there was zero compliance with AI Notice requirements regardless of the development method.",
+  "rich_outputs": null,
+  "runtime_ms": 215480.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5239829523440527
+}

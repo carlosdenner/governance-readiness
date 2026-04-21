@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded successfully.
+Filtered for 'atlas_cases': 52 rows
+Rows after dropping nulls in tactics/techniques: 52
+
+Cases involving 'Evasion': 23
+Cases involving 'Discovery': 12
+Overlap (cases in both): 6
+
+--- Descriptive Statistics (Technique Counts) ---
+Evasion - Mean: 1.00, Median: 1.00, Std: 0.00
+Discovery - Mean: 1.00, Median: 1.00, Std: 0.00
+
+--- Hypothesis Test Results (Mann-Whitney U) ---
+U-statistic: 138.0
+P-value: 1.0000
+Result: No statistically significant difference in technique counts.
+
+STDERR:
+<ipython-input-1-3c28885b0956>:100: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([evasion_counts, discovery_counts], labels=['Evasion', 'Discovery'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot** (specifically, a degenerate or "collapsed" box plot).
+*   **Purpose:** The intended purpose is to visualize the distribution and statistical summary (median, quartiles, outliers) of "Technique Counts" for two different categories of "Adversarial Tactic."
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** Represents the categories of **Adversarial Tactics**.
+    *   **Categories:** The specific tactics displayed are **"Evasion"** and **"Discovery"**.
+*   **Y-axis:**
+    *   **Label:** **"Number of Techniques"**.
+    *   **Range:** The visible ticks range from **0.96 to 1.04**. The axis is automatically scaled very tightly around the value 1.00.
+
+### 3. Data Trends
+*   **Visual Observation:** For both categories ("Evasion" and "Discovery"), the plot displays a single, flat orange line located exactly at the **1.00** mark on the Y-axis.
+*   **Interpretation:**
+    *   In a standard box plot, the orange line typically represents the **median**.
+    *   The absence of a "box" (Interquartile Range) and "whiskers" indicates that there is **zero variance** in the data.
+    *   **Trend:** Every single data point for both "Evasion" and "Discovery" has a value of exactly 1. There are no clusters, variations, or outliers visible because all data is identical.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Technique Counts by Adversarial Tactic" appears at the top, defining the context of the data.
+*   **Grid Lines:** Horizontal dashed grid lines are present to assist in reading the Y-axis values, though they highlight the emptiness of the plot due to the lack of data variation.
+*   **Color:** The orange color of the horizontal bar is standard formatting for the median line in Python plotting libraries (like Matplotlib/Seaborn).
+
+### 5. Statistical Insights
+*   **Uniformity:** The most significant insight is that the "Number of Techniques" is **constant** at 1 for both tactics in this dataset. This suggests a one-to-one relationship in the source data (e.g., each event or log entry is associated with exactly one technique per tactic).
+*   **Lack of Variability:** The standard deviation for both groups is 0. There is no distribution to speak of, effectively making this a plot of two constants.
+*   **Scale Artifact:** The odd Y-axis range (0.96 to 1.04) is an artifact of the plotting software. When data has no range (min = max = 1), the software creates an artificial window around that single value to render the plot.
+==================================================

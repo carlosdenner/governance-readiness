@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Sector-Specific Opacity' hypothesis using the EO 13960 dataset. After classifying 475 federal AI systems into 'Civil/Scientific' (n=389) and 'Coercive' (n=86) sectors, the analysis compared their transparency rates (defined as having either Code Access or Data Documentation).\n\nThe results showed relatively high transparency rates for both groups:\n- Civil/Scientific: 72.5% transparent.\n- Coercive (Law Enforcement/Defense): 68.6% transparent.\n\nA Chi-square test yielded a p-value of 0.5533, which is well above the 0.05 threshold. Consequently, the hypothesis is **rejected**. There is no statistically significant evidence in this dataset that high-stakes coercive sectors are more opaque than scientific or civil sectors regarding code and data availability; both appear to adhere to similar disclosure standards.",
+  "child_ids": [
+    "node_6_42",
+    "node_6_58"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport sys\nimport numpy as np\n\n# Load dataset\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        sys.exit(1)\n\n# Filter for EO 13960 source table\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Identify columns dynamically\ncols = df_eo.columns\ntopic_col = next((c for c in cols if 'topic_area' in c.lower()), None)\ncode_col = next((c for c in cols if 'code_access' in c.lower()), None)\ndata_col = next((c for c in cols if 'data_docs' in c.lower()), None)\n\nif not all([topic_col, code_col, data_col]):\n    print(f\"Error: Critical columns missing. Found: Topic={topic_col}, Code={code_col}, Data={data_col}\")\n    sys.exit(1)\n\nprint(f\"Processing with columns: '{topic_col}', '{code_col}', '{data_col}'\")\n\n# --- Step 1: Sector Categorization ---\n# Ensure the column is string and handle NaNs\ndf_eo['topic_clean'] = df_eo[topic_col].fillna('').astype(str).str.lower()\n\n# Define keywords\ncoercive_kw = ['law enforcement', 'defense', 'security', 'justice', 'border', 'police', 'military']\ncivil_kw = ['health', 'science', 'environment', 'education']\n\ndef classify_sector(val):\n    if not isinstance(val, str):\n        return 'Other'\n    if any(k in val for k in coercive_kw):\n        return 'Coercive'\n    elif any(k in val for k in civil_kw):\n        return 'Civil/Scientific'\n    else:\n        return 'Other'\n\ndf_eo['sector_group'] = df_eo['topic_clean'].apply(classify_sector)\n\n# Filter dataset for analysis\ndf_analysis = df_eo[df_eo['sector_group'].isin(['Coercive', 'Civil/Scientific'])].copy()\nprint(f\"Filtered for analysis: {len(df_analysis)} rows (Coercive + Civil/Scientific)\")\n\n# --- Step 2: Define Transparency ---\nnegative_values = ['no', 'none', 'not applicable', 'n/a', 'nan', 'false', '0', 'closed', 'restricted', '']\n\ndef is_transparent_feature(val):\n    s = str(val).lower().strip()\n    if s in negative_values or s == 'nan':\n        return 0\n    return 1\n\ndf_analysis['code_open'] = df_analysis[code_col].apply(is_transparent_feature)\ndf_analysis['data_open'] = df_analysis[data_col].apply(is_transparent_feature)\n\n# Composite Variable: Transparent if EITHER code OR data docs are available\ndf_analysis['is_transparent'] = ((df_analysis['code_open'] == 1) | (df_analysis['data_open'] == 1)).astype(int)\n\n# --- Step 3: Statistical Test ---\ncontingency = pd.crosstab(df_analysis['sector_group'], df_analysis['is_transparent'])\n\n# Ensure both 0 and 1 columns exist\nif 0 not in contingency.columns:\n    contingency[0] = 0\nif 1 not in contingency.columns:\n    contingency[1] = 0\ncontingency = contingency[[0, 1]]\ncontingency.columns = ['Opaque (0)', 'Transparent (1)']\n\nprint(\"\\n--- Contingency Table (Sector vs Transparency) ---\")\nprint(contingency)\n\n# Calculate Transparency Rates\nrates = df_analysis.groupby('sector_group')['is_transparent'].mean() * 100\nprint(\"\\n--- Transparency Rates (% with Code or Data Access) ---\")\nprint(rates)\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency)\nprint(\"\\n--- Chi-Square Test Results ---\")\nprint(f\"Chi-square statistic: {chi2:.4f}\")\nprint(f\"p-value: {p:.6f}\")\n\nif p < 0.05:\n    print(\"Result: Statistically significant difference found.\")\nelse:\n    print(\"Result: No statistically significant difference found.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Processing with columns: '8_topic_area', '38_code_access', '34_data_docs'\nFiltered for analysis: 475 rows (Coercive + Civil/Scientific)\n\n--- Contingency Table (Sector vs Transparency) ---\n                  Opaque (0)  Transparent (1)\nsector_group                                 \nCivil/Scientific         107              282\nCoercive                  27               59\n\n--- Transparency Rates (% with Code or Data Access) ---\nsector_group\nCivil/Scientific    72.493573\nCoercive            68.604651\nName: is_transparent, dtype: float64\n\n--- Chi-Square Test Results ---\nChi-square statistic: 0.3514\np-value: 0.553294\nResult: No statistically significant difference found.\n",
+  "created_at": "2026-02-22T08:29:03.638557+00:00",
+  "creation_idx": 158,
+  "experiment_id": "node_5_60",
+  "experiment_plan": {
+    "deliverables": "Contingency table, transparency rates per sector group, and Chi-square test statistics.",
+    "objective": "Assess transparency availability (Code/Data access) across different government sectors.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `eo13960_scored`.\n2. Categorize `8_topic_area` into 'Coercive' (Law Enforcement, Defense, Security, Justice) and 'Civil/Scientific' (Science, Health, Environment, Education).\n3. Create a composite binary variable `is_transparent`: 1 if `38_code_access` != 'No' OR `27_data_docs` != 'No' (adjust based on actual negative values like 'None', 'Not Applicable'), else 0.\n4. Perform a Chi-square test comparing `is_transparent` rates between 'Coercive' and 'Civil/Scientific' sectors.\n5. Compute the transparency percentage for each group."
+  },
+  "hypothesis": "Sector-Specific Opacity: AI systems deployed in 'Law Enforcement' and 'Defense' topic areas are significantly less likely to provide 'Code Access' or 'Data Documentation' compared to systems in 'Science' or 'Health', indicating a transparency gap in high-stakes coercive domains.",
+  "id_in_run": 157,
+  "is_surprising": true,
+  "parent_id": "node_4_21",
+  "posterior": 0.3324175824175824,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.3324175824175824,
+    "n": 60.0,
+    "prior_params": [
+      30.25,
+      0.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9758064516129032,
+  "prior_belief": {
+    "_empirical_mean": 0.9916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 29.0,
+    "maybe_false": 0.0,
+    "maybe_true": 1.0,
+    "mean": 0.9758064516129032,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully implemented the analysis plan. After correcting for data type issues in the first attempt (handling mixed types/NaNs in the 'topic_area' column), the analysis successfully categorized 475 federal AI systems into 'Civil/Scientific' (n=389) and 'Coercive' (n=86) sectors.\n\nHypothesis: Sector-Specific Opacity (Coercive sectors are less transparent than Civil/Scientific sectors).\n\nFindings:\n1. Transparency Rates (defined as having accessible Code OR Data Documentation):\n   - Civil/Scientific: 72.49% (282/389)\n   - Coercive (Law Enforcement/Defense): 68.60% (59/86)\n\n2. Statistical Test:\n   - Chi-Square Statistic: 0.3514\n   - p-value: 0.5533\n\nConclusion:\nThe p-value (> 0.05) indicates no statistically significant difference in transparency rates between the two sector groups. The hypothesis is **rejected**. The data suggests that federal AI systems in high-stakes coercive domains (Defense, Law Enforcement) adhere to transparency standards (regarding code and data availability) at rates comparable to scientific and civil sectors.",
+  "rich_outputs": null,
+  "runtime_ms": 217400.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.772066643034385
+}

@@ -1,0 +1,23 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting 'Paper Tiger' Assessment Experiment (Attempt 2)...
+File not found in parent directory. Trying current directory.
+EO 13960 Scored subset shape: (1757, 196)
+Using columns:
+  Assessment: 52_impact_assessment
+  Adverse: 61_adverse_impact
+  Mitigation: 62_disparity_mitigation
+Rows with Impact Assessment found: 61
+
+Contingency Table:
+                          No Mitigation (0)  Mitigation Taken (1)
+No Adverse Impact (0)                    59                     0
+Adverse Impact Found (1)                  2                     0
+
+Phi Coefficient (Correlation): nan
+Statistical test failed: The internally computed table of expected frequencies has a zero element at (np.int64(0), np.int64(1)).
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/numpy/lib/_function_base_impl.py:3023: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[:, None]
+/usr/local/lib/python3.13/site-packages/numpy/lib/_function_base_impl.py:3024: RuntimeWarning: invalid value encountered in divide
+  c /= stddev[None, :]

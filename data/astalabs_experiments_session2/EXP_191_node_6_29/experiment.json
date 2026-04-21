@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Pilot' Sustainability Gap hypothesis using the EO 13960 dataset. \n\n**Hypothesis Status:** Refuted.\n\n**Findings:**\n1. **Data Processing:** A total of 1,131 systems were analyzed, grouped into 'Operation/Use' (n=760) and 'Pilot/Planned' (n=371).\n2. **Resource Confirmation Rates:**\n   - **Pilot/Planned Stage:** 57.95% (215/371) have confirmed timely resources.\n   - **Operation/Use Stage:** 43.29% (329/760) have confirmed timely resources.\n3. **Statistical Significance:** The Chi-square test yielded a p-value of **4.88e-06** (Statistic=20.89), indicating a highly significant difference.\n\n**Interpretation:**\nThe results directly contradict the hypothesis. Instead of pilots being resource-starved, they are significantly *more* likely (approx. 1.34x) to have confirmed 'Timely Resources' than systems in the operational phase. This suggests a \"Sustainability Cliff\": agencies are successful at securing resources for the initial development and pilot phases (likely via innovation funds), but struggle to confirm long-term maintenance and operational resources for deployed systems. The hypothesis that pilots fail due to lack of resources is incorrect; rather, the resource gap appears to open up *after* deployment.",
+  "child_ids": [
+    "node_7_5"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport sys\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        sys.exit(1)\n\n# Filter for EO 13960 data\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Clean and Group Lifecycle Stage (16_dev_stage)\ndef map_stage(stage):\n    if pd.isna(stage):\n        return None\n    stage_lower = str(stage).lower()\n    if any(x in stage_lower for x in ['use', 'operation', 'maintenance', 'retired']):\n        return 'Operation/Use'\n    elif any(x in stage_lower for x in ['plan', 'develop', 'pilot', 'acquisition']):\n        return 'Pilot/Planned'\n    else:\n        return 'Other/Unknown'\n\neo_data['Stage_Group'] = eo_data['16_dev_stage'].apply(map_stage)\n\n# Filter out Unknown/None stages for the analysis\nanalysis_df = eo_data[eo_data['Stage_Group'].isin(['Operation/Use', 'Pilot/Planned'])].copy()\n\n# Clean and Binarize 'Timely Resources' (47_timely_resources)\ndef map_resources(val):\n    if pd.isna(val):\n        return 0\n    val_lower = str(val).lower()\n    if 'yes' in val_lower:\n        return 1\n    return 0\n\nanalysis_df['Has_Resources'] = analysis_df['47_timely_resources'].apply(map_resources)\n\n# Generate Contingency Table\ncontingency_table = pd.crosstab(analysis_df['Stage_Group'], analysis_df['Has_Resources'])\ncontingency_table.columns = ['No/Unknown', 'Yes (Confirmed)']\nprint(\"\\nContingency Table (Stage vs Timely Resources):\")\nprint(contingency_table)\n\n# Calculate Rates\nrates = analysis_df.groupby('Stage_Group')['Has_Resources'].mean()\ncounts = analysis_df.groupby('Stage_Group')['Has_Resources'].count()\nsuccess_counts = analysis_df.groupby('Stage_Group')['Has_Resources'].sum()\n\nprint(\"\\nResource Confirmation Rates:\")\nprint(rates)\n\n# Perform Chi-square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\nprint(f\"\\nChi-square Test Results:\")\nprint(f\"Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\nbar_colors = ['#ff9999', '#66b3ff']\nax = rates.plot(kind='bar', color=bar_colors, alpha=0.8, edgecolor='black')\n\nplt.title(\"Proportion of AI Systems with Confirmed 'Timely Resources' by Stage\")\nplt.ylabel('Proportion (Yes / Total)')\nplt.xlabel('Lifecycle Stage Group')\nplt.ylim(0, 1.1)\n\n# Add value labels using .iloc for positional indexing\nfor i, v in enumerate(rates):\n    # Fix: use .iloc to access values by integer position since the Series index is string-based\n    n_success = success_counts.iloc[i]\n    n_total = counts.iloc[i]\n    ax.text(i, v + 0.02, f\"{v:.1%} (n={n_success}/{n_total})\", \n            ha='center', va='bottom', fontweight='bold')\n\nplt.grid(axis='y', linestyle='--', alpha=0.5)\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: \nContingency Table (Stage vs Timely Resources):\n               No/Unknown  Yes (Confirmed)\nStage_Group                               \nOperation/Use         431              329\nPilot/Planned         156              215\n\nResource Confirmation Rates:\nStage_Group\nOperation/Use    0.432895\nPilot/Planned    0.579515\nName: Has_Resources, dtype: float64\n\nChi-square Test Results:\nStatistic: 20.8851\nP-value: 4.8767e-06\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot (Bar Chart).\n*   **Purpose:** The plot compares the proportion of AI systems that have confirmed \"Timely Resources\" across two distinct groups based on their lifecycle stage. It allows for a direct visual comparison of resource availability between systems in operation and those in planning/pilot phases.\n\n### 2. Axes\n*   **X-Axis (Horizontal):**\n    *   **Title:** \"Lifecycle Stage Group\".\n    *   **Labels:** The axis features categorical labels representing two groups: \"Operation/Use\" and \"Pilot/Planned\". The text is rotated vertically for readability.\n*   **Y-Axis (Vertical):**\n    *   **Title:** \"Proportion (Yes / Total)\".\n    *   **Units:** The values represent a ratio or probability, ranging from 0 to 1 (equivalent to 0% to 100%).\n    *   **Range:** The axis ticks range from 0.0 to 1.0, with an extended upper bound around 1.1 to accommodate labels. Major grid lines appear every 0.2 units.\n\n### 3. Data Trends\n*   **Comparison of Groups:** There is a notable disparity between the two lifecycle stages.\n    *   **Tallest Bar:** The **\"Pilot/Planned\"** group (represented in light blue) shows a higher proportion, reaching approximately **0.58**.\n    *   **Shortest Bar:** The **\"Operation/Use\"** group (represented in light red/pink) shows a lower proportion, reaching approximately **0.43**.\n*   **Pattern:** AI systems that are still in the preliminary stages (Pilot or Planned) are reported to have \"Timely Resources\" at a significantly higher rate than systems that are already in the \"Operation/Use\" stage.\n\n### 4. Annotations and Legends\n*   **Plot Title:** \"Proportion of AI Systems with Confirmed 'Timely Resources' by Stage\" – clearly defines the metric and grouping variable.\n*   **Bar Annotations:** Each bar is topped with precise statistical labels containing two key pieces of information:\n    *   **Percentage:** The proportion expressed as a percentage (e.g., **43.3%** and **58.0%**).\n    *   **Sample Size (n):** The raw counts formatted as `(n = successes / total sample)`.\n        *   For \"Operation/Use\": **(n=329/760)**.\n        *   For \"Pilot/Planned\": **(n=215/371)**.\n*   **Grid Lines:** Horizontal dashed grey lines serve as a visual aid to estimate bar height against the Y-axis.\n\n### 5. Statistical Insights\n*   **Resource Gap:** There is a **14.7 percentage point gap** between the two groups. Systems in the \"Pilot/Planned\" stage are 1.34 times more likely to report having timely resources confirmed compared to those in \"Operation/Use\".\n*   **Sample Size Context:** While the \"Operation/Use\" group has a lower success rate (43.3%), it represents a much larger sample size (760 total systems) compared to the \"Pilot/Planned\" group (371 total systems). This suggests the data for operational systems is more robust, though the trend of lower resource confirmation is significant.\n*   **Operational Reality vs. Planning Optimism:** The data suggests a potential \"optimism bias\" or resource bottleneck. It appears easier to confirm or allocate timely resources during the planning and pilot phases. However, once systems scale to full operation (\"Operation/Use\"), maintaining or confirming those timely resources becomes more difficult, dropping from nearly 6 in 10 systems to roughly 4 in 10.\n==================================================",
+  "created_at": "2026-02-22T10:03:57.942113+00:00",
+  "creation_idx": 192,
+  "experiment_id": "node_6_29",
+  "experiment_plan": {
+    "deliverables": "1. Resource confirmation rates by Stage.\n2. Statistical test results.\n3. Bar chart.",
+    "objective": "Assess resource planning maturity across lifecycle stages.",
+    "steps": "1. Filter 'eo13960_scored'.\n2. Group '16_dev_stage' into 'Pilot/Planned' vs 'Operation/Use'.\n3. Binarize '47_timely_resources' (Yes vs No/Unknown).\n4. Compare the proportion of resourced systems between stages using a Chi-square test."
+  },
+  "hypothesis": "The 'Pilot' Sustainability Gap: AI systems in the 'Pilot' stage are significantly less likely to have confirmed 'Timely Resources' for maintenance than systems in 'Operation', predicting a failure to scale.",
+  "id_in_run": 191,
+  "is_surprising": true,
+  "parent_id": "node_5_7",
+  "posterior": 0.25824175824175827,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25824175824175827,
+    "n": 60.0,
+    "prior_params": [
+      23.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7580645161290323,
+  "prior_belief": {
+    "_empirical_mean": 0.7666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 2.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7580645161290323,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented. The code correctly filtered the EO 13960 dataset, grouped the lifecycle stages, and binarized the resource confirmation field. The Chi-square test and visualization were successfully generated after correcting the indexing error. The results provide strong evidence to evaluate the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 236410.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5997873094647288
+}

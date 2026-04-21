@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_coverage_map.csv
+
+=== Harm Entropy Statistics ===
+Trust Readiness (n=8):
+  Mean Entropy: 0.3084
+  Std Dev:      0.3523
+Integration Readiness (n=8):
+  Mean Entropy: 0.4835
+  Std Dev:      0.4140
+
+=== Hypothesis Test ===
+Independent t-test results: t=-0.9114, p=0.3779
+Conclusion: No significant difference in Harm Entropy between bundles.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares the "Harm Diversity" (measured by Shannon Entropy) across various distinct categories labeled as "Sub-Competencies." It distinguishes between two overarching groups: "Trust Readiness" and "Integration Readiness."
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Sub-Competency"
+    *   **Labels:** Categorical text labels representing specific technical or governance areas (e.g., "Risk Policy & Accountability," "Monitoring & Detection," "Orchestration & Execution Controls"). The labels are rotated 45 degrees to accommodate the text length.
+*   **Y-Axis:**
+    *   **Title:** "Shannon Entropy (nats)"
+    *   **Range:** The scale runs from 0.0 to roughly 0.9 (the highest tick mark is 0.8, but several bars exceed this line).
+    *   **Units:** Nats (natural units of information).
+
+### 3. Data Trends
+*   **Trust Readiness (Blue Bars):**
+    *   **Highest Value:** "Monitoring & Detection" is the distinct outlier in this group, showing the highest entropy (approx. 0.9 nats).
+    *   **Moderate Values:** "Risk Policy & Accountability," "Incident Response & Recovery," and "Supply Chain & Third-Party Risk" all hover around the 0.5 to 0.55 range.
+    *   **Zero/Missing Values:** Several categories, such as "Threat Mapping & Reconnaissance Defense" and "Data Governance & Exfiltration Prevention," have no visible bars, indicating a Shannon Entropy of zero.
+*   **Integration Readiness (Red/Salmon Bars):**
+    *   **Highest Values:** "Orchestration & Execution Controls" and "Tool-Use Boundaries & Access Control" are tied for the highest values on the entire chart (approx. 0.9 nats).
+    *   **High/Moderate Values:** "Modular Architecture & Resource Controls" (~0.8) and "RAG Architecture & Data Grounding" (~0.7) are also relatively high compared to the average. "Nondeterminism Management" sits lower at roughly 0.6.
+    *   **Zero/Missing Values:** Categories like "GenAIOps / MLOps Lifecycle" and "HITL Architecture Patterns" show no visible data.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner, identifying the color coding:
+    *   **Light Blue:** Trust Readiness.
+    *   **Salmon/Red:** Integration Readiness.
+*   **Title:** "Harm Diversity (Shannon Entropy) by Sub-Competency" sits at the top center.
+
+### 5. Statistical Insights
+*   **Distribution of Harm Diversity:** "Integration Readiness" sub-competencies generally exhibit higher harm diversity than "Trust Readiness" categories. Four out of the five visible red bars exceed 0.6 nats, whereas only one blue bar exceeds that threshold.
+*   **Concentration of Risk/Variance:** High Shannon entropy indicates a high diversity of harm types. This suggests that the areas of **Monitoring & Detection**, **Orchestration & Execution Controls**, and **Tool-Use Boundaries** are susceptible to a wider variety of distinct harm types compared to areas like "Risk Policy," which likely face fewer or more uniform types of harm.
+*   **Sparse Data:** A significant portion of the sub-competencies (nearly half) show zero entropy. This implies either a lack of data for these specific competencies or that the harms identified in these areas are completely uniform (zero diversity).
+==================================================

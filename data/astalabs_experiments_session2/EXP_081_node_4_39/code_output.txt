@@ -1,0 +1,79 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Inferred Harm Domain Analysis ---
+Total incidents analyzed: 1362
+Incidents with inferred harms: 853
+
+Contingency Table (Epoch vs Inferred Harm):
+inferred_harms  Economic  Physical  Psychological  Societal
+epoch                                                      
+Post-2020            288       232            163       235
+Pre-2020              33        50             16        73
+
+Proportional Distribution by Epoch:
+inferred_harms  Economic  Physical  Psychological  Societal
+epoch                                                      
+Post-2020       0.313725  0.252723       0.177560  0.255991
+Pre-2020        0.191860  0.290698       0.093023  0.424419
+
+Chi-square Test Results:
+Chi2 Statistic: 28.9591
+P-value: 2.2842e-06
+Result: Statistically significant shift in Harm Domain distribution detected.
+
+Pre-2020 Physical + Economic share: 48.26%
+Post-2020 Societal + Psychological share: 43.36%
+
+Shift Analysis:
+Physical/Economic: 48.26% (Pre) -> 56.64% (Post)
+Societal/Psychological: 51.74% (Pre) -> 43.36% (Post)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Plot (or Clustered Bar Chart).
+*   **Purpose:** The plot is designed to compare the relative proportions of four different categories ("Harm Domains") across two distinct time periods ("Epochs"). This visualization allows for easy comparison of how the focus or distribution of these domains has shifted over time.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Epoch"
+    *   **Categories:** The axis is divided into two distinct time periods: "Post-2020" and "Pre-2020".
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Proportion of Mentions within Epoch"
+    *   **Value Range:** The scale runs from 0.00 to approximately 0.44 (the grid lines are spaced at intervals of 0.05).
+    *   **Units:** The values represent proportions (ranging from 0 to 1), effectively representing percentages if multiplied by 100 (e.g., 0.20 = 20%).
+
+### 3. Data Trends
+**Pre-2020 Trends (Right Group):**
+*   **Tallest Bar:** **Societal** (Red) is the dominant domain, reaching a proportion slightly above **0.42**.
+*   **Shortest Bar:** **Psychological** (Green) is the least mentioned, sitting below **0.10**.
+*   **Pattern:** There is a clear hierarchy: Societal > Physical > Economic > Psychological.
+
+**Post-2020 Trends (Left Group):**
+*   **Tallest Bar:** **Economic** (Blue) is the dominant domain, reaching approximately **0.31**.
+*   **Shortest Bar:** **Psychological** (Green) remains the lowest but has risen to approximately **0.18**.
+*   **Pattern:** The hierarchy has shifted significantly: Economic > Societal ≈ Physical > Psychological.
+
+**Comparison (The Shift):**
+*   **Economic:** Shows a significant increase, jumping from ~0.19 (Pre-2020) to ~0.31 (Post-2020).
+*   **Societal:** Shows a massive decrease, dropping from ~0.42 (Pre-2020) to ~0.25 (Post-2020).
+*   **Physical:** Shows a slight decrease from ~0.29 (Pre-2020) to ~0.25 (Post-2020).
+*   **Psychological:** Shows an increase, roughly doubling from ~0.09 (Pre-2020) to ~0.18 (Post-2020).
+
+### 4. Annotations and Legends
+*   **Title:** "Shift in Inferred AI Harm Domains: Pre-2020 vs Post-2020" clearly indicates the subject matter.
+*   **Legend:** Located in the top right, titled **"Harm Domain"**. It keys the colors to the categories:
+    *   **Blue:** Economic
+    *   **Orange:** Physical
+    *   **Green:** Psychological
+    *   **Red:** Societal
+*   **Grid Lines:** Horizontal dashed grey lines are provided at 0.05 intervals to assist in estimating the bar heights.
+
+### 5. Statistical Insights
+The plot reveals a fundamental restructuring of the discourse surrounding AI harms before and after the year 2020:
+
+1.  **Shift in Primary Concern:** The most notable insight is the reversal of the primary concern. Prior to 2020, **Societal** harms were the overwhelming focus (accounting for over 40% of mentions). Post-2020, **Economic** harms became the most cited concern (over 30%). This suggests a change in narrative focus, perhaps moving from general societal impact to specific economic anxieties like job displacement or financial volatility.
+2.  **Rise in Psychological Awareness:** Although **Psychological** harm remains the smallest category in both epochs, its proportion nearly doubled in the Post-2020 era. This indicates a growing recognition of mental health or psychological impacts related to AI.
+3.  **Normalization of Physical Harms:** The proportion of mentions regarding **Physical** harms remained relatively stable, decreasing only slightly, suggesting that concerns about physical safety (e.g., robotics, autonomous vehicles) have remained a consistent but not dominant part of the conversation.
+==================================================

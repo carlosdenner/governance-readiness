@@ -1,0 +1,73 @@
+exitcode: 0 (execution succeeded)
+Code output: AIID incidents loaded: 1362
+
+Derived Data Subset Size: 187
+Counts by Sector:
+ Derived_Sector
+Financial     160
+Healthcare     27
+Name: count, dtype: int64
+Counts by Harm:
+ Derived_Harm
+Economic/Reputational    139
+Physical/Safety           48
+Name: count, dtype: int64
+
+Contingency Table:
+Derived_Harm    Economic/Reputational  Physical/Safety
+Derived_Sector                                        
+Financial                         131               29
+Healthcare                          8               19
+
+Chi-square Statistic: 30.3680
+p-value: 3.5738e-08
+
+Row Percentages:
+Derived_Harm    Economic/Reputational  Physical/Safety
+Derived_Sector                                        
+Financial                    0.818750         0.181250
+Healthcare                   0.296296         0.703704
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (Confusion Matrix style).
+*   **Purpose:** This plot visualizes the frequency distribution between two categorical variables: the **Sector** (Financial vs. Healthcare) and the **Inferred Harm Type** (Economic/Reputational vs. Physical/Safety). The intensity of the color represents the magnitude of the count in each category intersection.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Harm Type"
+    *   **Labels:** "Economic/Reputational", "Physical/Safety"
+    *   **Units:** Categorical categories.
+*   **Y-Axis:**
+    *   **Title:** "Sector"
+    *   **Labels:** "Financial", "Healthcare"
+    *   **Units:** Categorical categories.
+*   **Value Ranges:**
+    *   The axes do not have numerical ranges as they represent discrete categories.
+    *   The **Color Scale (Right Sidebar)** represents the count values, ranging visually from a light blue (low count) to a dark blue (high count). The numerical ticks on the color bar range from **20 to 120**, though the actual data values span from **8 to 131**.
+
+### 3. Data Trends
+*   **High Values (Hotspots):** The highest concentration of data is found in the intersection of the **Financial** sector and **Economic/Reputational** harm, with a count of **131**. This cell is colored the darkest blue, indicating it is the dominant category in this dataset.
+*   **Low Values:** The lowest count is observed in the intersection of the **Healthcare** sector and **Economic/Reputational** harm, with a value of **8**, indicated by the lightest blue color.
+*   **Secondary Trends:**
+    *   The **Financial** sector has a moderate association with **Physical/Safety** harm (count: 29).
+    *   The **Healthcare** sector shows a higher count for **Physical/Safety** harm (count: 19) compared to Economic/Reputational harm (count: 8).
+
+### 4. Annotations and Legends
+*   **Cell Annotations:** Each of the four cells contains a numerical value representing the exact count of observations for that specific combination of Sector and Harm Type (131, 29, 8, 19).
+*   **Color Bar:** Located on the right side of the plot, this legend maps the shade of blue to the numerical count, providing a visual reference for density.
+*   **Title:** The chart is titled "**Heatmap: Sector vs. Inferred Harm Type**", clearly defining the variables under comparison.
+
+### 5. Statistical Insights
+*   **Sector Skew:** The dataset is heavily skewed toward the Financial sector.
+    *   Total Financial observations: 160 ($131 + 29$)
+    *   Total Healthcare observations: 27 ($8 + 19$)
+    *   This suggests the dataset primarily consists of financial incidents or data points.
+*   **Correlation of Harm Type by Sector:**
+    *   **Financial Sector:** There is a strong correlation between the Financial sector and Economic/Reputational harm. Approximately **82%** ($131/160$) of financial incidents fall into this category.
+    *   **Healthcare Sector:** Conversely, the Healthcare sector shows a preference for Physical/Safety harm. Approximately **70%** ($19/27$) of healthcare incidents are categorized as Physical/Safety.
+*   **Conclusion:** The plot demonstrates a logical alignment between sector function and harm type. Financial entities are prone to monetary and reputation loss, while healthcare entities are more prone to safety and physical risks. The visualization effectively highlights that while the Financial sector dominates the raw volume of this dataset, the nature of the harm is distinct for each sector.
+==================================================

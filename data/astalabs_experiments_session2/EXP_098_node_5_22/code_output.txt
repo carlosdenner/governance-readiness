@@ -1,0 +1,35 @@
+exitcode: 0 (execution succeeded)
+Code output: Subset size: 1757
+Analysis set size: 1620
+Stage distribution:
+ stage_category
+Pre-Operational    975
+Operational        645
+Name: count, dtype: int64
+Mitigation distribution:
+ mitigation_binary
+0    1558
+1      62
+Name: count, dtype: int64
+
+Contingency Table (Count):
+mitigation_binary    0   1
+stage_category            
+Operational        606  39
+Pre-Operational    952  23
+
+Contingency Table (Percentages):
+                 No Mitigation  Has Mitigation
+stage_category                                
+Operational          93.953488        6.046512
+Pre-Operational      97.641026        2.358974
+
+Chi-square Statistic: 13.3571
+P-value: 2.5745e-04
+
+Odds (Operational): 0.0644
+Odds (Pre-Operational): 0.0242
+Odds Ratio (Operational / Pre-Operational): 2.6638
+
+Conclusion: Statistically significant difference.
+Direction: Operational systems are MORE likely to report mitigation (Refuting Hypothesis).

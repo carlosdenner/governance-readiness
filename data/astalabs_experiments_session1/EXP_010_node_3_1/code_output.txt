@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_enrichments.json
+Successfully loaded 52 records.
+
+--- Descriptive Statistics ---
+Total Incidents with Mapped Competencies: 52
+
+Group 1: Prevention Failure (n=51)
+Mean Integration Ratio: 0.4617
+Std Dev: 0.1434
+
+Group 2: Post-Prevention (Detection/Response) (n=1)
+Mean Integration Ratio: 1.0000
+Std Dev: nan
+
+--- Statistical Test Results ---
+Insufficient sample size in one or both groups to perform Mann-Whitney U test.
+Note: Previous exploration indicated a severe skew (51/52 prevention failures).
+
+STDERR:
+<ipython-input-1-e430d38043e6>:102: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([group_prevention['integration_ratio'], group_post_prevention['integration_ratio']],
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a box-and-whisker plot).
+*   **Purpose:** To display the distribution of numerical data (Integration Competency Ratio) across different categorical groups (Failure Modes), highlighting the median, quartiles, and variability of the data.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** The axis categorizes the data into two groups: **"Prevention"** and **"Post-Prevention (Detect/Respond)"**.
+    *   **Value Range:** N/A (Categorical).
+*   **Y-Axis:**
+    *   **Title/Label:** "Integration Ratio (0=All Trust, 1=All Integration)". This indicates a normalized scale where lower values imply reliance on trust and higher values imply reliance on integration.
+    *   **Value Range:** The axis scale runs from **0.2 to 1.0**, with grid lines marked every 0.1 units.
+
+### 3. Data Trends
+*   **Prevention Group:**
+    *   **High Variability:** This group shows a significant spread in data. The box (representing the Interquartile Range or IQR) spans from approximately **0.33 to 0.60**.
+    *   **Median:** The median value (indicated by the orange line inside the box) is centered at **0.5**.
+    *   **Range:** The whiskers (representing the minimum and maximum non-outlier values) extend from **0.2 to 0.8**.
+    *   **Pattern:** This indicates that for "Prevention" scenarios, there is a diverse mix of strategies ranging from high trust to high integration.
+
+*   **Post-Prevention (Detect/Respond) Group:**
+    *   **Zero Variability:** The plot for this category is compressed into a single flat line at the top of the chart.
+    *   **Value:** The median, quartiles, and whiskers all seemingly converge at **1.0**.
+    *   **Pattern:** This suggests that nearly every data point in the "Post-Prevention" category has an Integration Ratio of 1.0 (All Integration).
+
+### 4. Annotations and Legends
+*   **Title:** "Integration Competency Ratio by Failure Mode" appears at the top, summarizing the chart's content.
+*   **Grid Lines:** Horizontal and vertical dashed grid lines are present to assist in reading specific values.
+*   **Color Coding:** Standard box plot coloring is used—black outlines for the box and whiskers, and an orange line to denote the median.
+
+### 5. Statistical Insights
+*   **Distinct Operational Modes:** There is a stark contrast between how the system handles "Prevention" versus "Post-Prevention."
+    *   **Prevention** is nuanced: It employs a balanced approach, with a median split evenly between trust and integration (0.5), but varies widely depending on the specific case (ranging from 0.2 to 0.8).
+    *   **Post-Prevention** is absolute: Once a failure reaches the "Detect/Respond" stage, the system shifts entirely to "All Integration" (Ratio = 1.0). There is no reliance on "Trust" (value 0) in this phase.
+*   **Consistency:** The "Post-Prevention" phase is highly consistent/deterministic compared to the "Prevention" phase, which is highly variable/probabilistic.
+==================================================

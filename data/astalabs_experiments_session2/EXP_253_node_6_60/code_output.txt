@@ -1,0 +1,22 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Contingency Table (Counts) ---
+                 No Impact Assessment  Has Impact Assessment
+lifecycle_group                                             
+Development                       349                      2
+Operation                         571                     56
+
+--- Contingency Table (Percentages) ---
+                 No IA (%)  Has IA (%)
+lifecycle_group                       
+Development      99.430199    0.569801
+Operation        91.068581    8.931419
+
+Chi-square statistic: 26.7230
+P-value: 2.3481e-07
+
+Odds (Development): 0.0057
+Odds (Operation): 0.0981
+Odds Ratio (Operation / Development): 17.1138
+
+Interpretation:
+Significant Result: Systems in Operation are 17.11 times MORE likely to have an Impact Assessment than those in Development.

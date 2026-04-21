@@ -1,0 +1,26 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+Rows for analysis (External vs Internal): 920
+Group Counts:
+source_group
+External/Commercial    481
+Internal/Government    439
+Name: count, dtype: int64
+
+Contingency Table:
+                     No Assessment  Has Assessment
+source_group                                      
+External/Commercial            460              21
+Internal/Government            410              29
+
+Compliance Rates (%):
+has_impact_assessment          0         1
+source_group                              
+External/Commercial    95.634096  4.365904
+Internal/Government    93.394077  6.605923
+
+--- Statistical Test Results ---
+Chi2: 1.8262, p-value: 0.17658
+
+Compare: External (4.37%) vs Internal (6.61%)
+Result: No Significant Difference (Null Hypothesis retained).

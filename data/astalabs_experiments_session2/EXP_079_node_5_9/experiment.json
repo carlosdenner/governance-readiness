@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Production Gap' hypothesis using the EO 13960 dataset. \n\n1. **Data Processing**: The code successfully mapped 1,012 systems into 'Operational' (e.g., Use, Maintenance, Production) and 'Pre-Operational' (e.g., Development, Acquisition, Planned) categories using keyword matching. \n\n2. **Statistical Results**: The Chi-square test yielded a statistic of 27.73 with a p-value of < 0.0001, indicating a highly statistically significant difference between the two groups.\n\n3. **Hypothesis Evaluation**: The null hypothesis (that development stage does not affect assessment completion) was **rejected**. Operational systems are significantly more likely to have completed an AI Impact Assessment (8.7%) compared to systems in development (0.5%).\n\n4. **Key Insight**: The data reveals a 'late-stage' governance model. Impact assessments are almost non-existent during the design/development phase (2 out of 371 cases), suggesting they function as final compliance gates rather than tools for 'security by design.' Furthermore, the overall completion rate is alarmingly low (<10%) even for deployed systems.",
+  "child_ids": [
+    "node_6_4"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 Scored data\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\n\nprint(\"--- Unique Values Analysis ---\")\nprint(\"16_dev_stage:\", eo_data['16_dev_stage'].unique())\nprint(\"52_impact_assessment:\", eo_data['52_impact_assessment'].unique())\n\n# Mapping Logic\n# Operational: Use, Maintenance\n# Pre-Operational: Development, Acquisition, Pilot\n# Note: Adjusting based on actual values found in standard EO13960 datasets\n\ndef map_stage(stage):\n    if pd.isna(stage):\n        return np.nan\n    stage = str(stage).lower()\n    if 'use' in stage or 'maintain' in stage or 'maintenance' in stage or 'production' in stage:\n        return 'Operational'\n    elif 'dev' in stage or 'acq' in stage or 'pilot' in stage or 'plan' in stage:\n        return 'Pre-Operational'\n    else:\n        return 'Other'\n\ndef map_assessment(val):\n    if pd.isna(val):\n        return 0\n    val = str(val).lower()\n    # Assuming 'yes' indicates completion. strict mapping.\n    if val.strip() == 'yes':\n        return 1\n    return 0\n\n# Apply mappings\neo_data['Status'] = eo_data['16_dev_stage'].apply(map_stage)\neo_data['Has_Assessment'] = eo_data['52_impact_assessment'].apply(map_assessment)\n\n# Filter out 'Other' status if necessary, or just focus on Op vs Pre-Op\nanalysis_df = eo_data[eo_data['Status'].isin(['Operational', 'Pre-Operational'])].copy()\n\n# Contingency Table\ncontingency_table = pd.crosstab(analysis_df['Status'], analysis_df['Has_Assessment'])\ncontingency_table.columns = ['No Assessment', 'Has Assessment']\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Calculate percentages\nrates = contingency_table.div(contingency_table.sum(axis=1), axis=0) * 100\nprint(\"\\n--- Assessment Rates (% of Stage) ---\")\nprint(rates)\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-Value: {p:.4f}\")\n\n# Interpretation\nalpha = 0.05\nif p < alpha:\n    print(\"Result: Statistically Significant Difference (Reject Null Hypothesis)\")\nelse:\n    print(\"Result: No Statistically Significant Difference (Fail to Reject Null Hypothesis)\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\nrates['Has Assessment'].plot(kind='bar', color=['skyblue', 'orange'])\nplt.title('AI Impact Assessment Completion Rate by Development Stage')\nplt.ylabel('Completion Rate (%)')\nplt.xlabel('Development Stage')\nplt.ylim(0, 100)\nplt.xticks(rotation=0)\nfor i, v in enumerate(rates['Has Assessment']):\n    plt.text(i, v + 1, f\"{v:.1f}%\", ha='center')\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- Unique Values Analysis ---\n16_dev_stage: <StringArray>\n[ 'Implementation and Assessment', 'Acquisition and/or Development',\n                      'Initiated',                        'Retired',\n      'Operation and Maintenance',                  'In production',\n                     'In mission',                        'Planned',\n                              nan]\nLength: 9, dtype: str\n52_impact_assessment: <StringArray>\n[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']\nLength: 5, dtype: str\n\n--- Contingency Table ---\n                 No Assessment  Has Assessment\nStatus                                        \nOperational                585              56\nPre-Operational            369               2\n\n--- Assessment Rates (% of Stage) ---\n                 No Assessment  Has Assessment\nStatus                                        \nOperational          91.263651        8.736349\nPre-Operational      99.460916        0.539084\n\nChi-Square Statistic: 27.7288\nP-Value: 0.0000\nResult: Statistically Significant Difference (Reject Null Hypothesis)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the analysis of the provided plot, here are the detailed observations:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot.\n*   **Purpose:** The plot is designed to compare the \"AI Impact Assessment Completion Rate\" across two distinct categories of development stages: \"Operational\" and \"Pre-Operational.\"\n\n### 2. Axes\n*   **X-Axis (Horizontal):**\n    *   **Title:** \"Development Stage\"\n    *   **Categories:** The axis displays two categorical variables: \"Operational\" and \"Pre-Operational.\"\n*   **Y-Axis (Vertical):**\n    *   **Title:** \"Completion Rate (%)\"\n    *   **Range:** The scale ranges from 0 to 100, representing percentage points.\n    *   **Ticks:** The axis is marked in intervals of 20 (0, 20, 40, 60, 80, 100).\n\n### 3. Data Trends\n*   **Tallest Bar:** The \"Operational\" category (represented by the light blue bar) has the highest value at 8.7%.\n*   **Shortest Bar:** The \"Pre-Operational\" category (represented by the orange bar) has the lowest value at 0.5%.\n*   **Pattern:** There is a significant disparity between the two stages. The completion rate for AI systems that are already operational is substantially higher than for those in the pre-operational phase, though both values are relatively low on the 0-100% scale.\n\n### 4. Annotations and Legends\n*   **Value Labels:** Specific data values are annotated directly above each bar for clarity:\n    *   \"8.7%\" is placed above the Operational bar.\n    *   \"0.5%\" is placed above the Pre-Operational bar.\n*   **Color Coding:** While there is no separate legend box, the bars are distinct colors—light blue for Operational and orange for Pre-Operational—to differentiate the categories visually.\n\n### 5. Statistical Insights\n*   **Low Overall Adherence:** The most striking insight is that the completion rates for AI Impact Assessments are extremely low across the board. Even the highest category (Operational) has not even reached a 10% completion rate.\n*   **Stage Discrepancy:** There is a massive relative difference between the stages. Operational projects are roughly **17.4 times** more likely to have a completed impact assessment than Pre-Operational projects ($8.7 / 0.5 = 17.4$).\n*   **Implication:** This suggests that impact assessments are possibly being treated as a final \"gatekeeping\" step prior to deployment or a compliance requirement for active systems, rather than an integral part of the early development (pre-operational) lifecycle. Alternatively, it highlights a potential compliance gap where the vast majority of AI projects, regardless of stage, lack these assessments.\n==================================================",
+  "created_at": "2026-02-22T04:42:48.257366+00:00",
+  "creation_idx": 80,
+  "experiment_id": "node_5_9",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistic, p-value, and bar chart of assessment rates by development stage.",
+    "objective": "Assess if operational status drives the completion of impact assessments.",
+    "steps": "1. Filter dataset for 'eo13960_scored'.\n2. Group '16_dev_stage' into 'Operational' (e.g., Use, Maintenance) and 'Pre-Operational' (e.g., Development, Acquisition).\n3. Convert '52_impact_assessment' into a binary 'Yes/No' variable.\n4. Create a contingency table (Stage vs. Assessment).\n5. Run a Chi-square test of independence."
+  },
+  "hypothesis": "The 'Production Gap': There is no statistically significant difference in the completion rate of AI Impact Assessments between systems in 'Use' versus those in 'Development', suggesting a failure to gate deployment based on risk evaluation.",
+  "id_in_run": 79,
+  "is_surprising": true,
+  "parent_id": "node_4_14",
+  "posterior": 0.21428571428571427,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.21428571428571427,
+    "n": 60.0,
+    "prior_params": [
+      19.5,
+      11.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6290322580645161,
+  "prior_belief": {
+    "_empirical_mean": 0.6333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 2.0,
+    "definitely_true": 0.0,
+    "maybe_false": 4.0,
+    "maybe_true": 24.0,
+    "mean": 0.6290322580645161,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Production Gap' hypothesis using the EO 13960 dataset. \n\n1. **Data Processing**: The code successfully mapped 1,012 systems into 'Operational' (e.g., Use, Maintenance, Production) and 'Pre-Operational' (e.g., Development, Acquisition, Planned) categories using keyword matching. \n\n2. **Statistical Results**: The Chi-square test yielded a statistic of 27.73 with a p-value of < 0.0001, indicating a highly statistically significant difference between the two groups.\n\n3. **Hypothesis Evaluation**: The null hypothesis (that development stage does not affect assessment completion) was **rejected**. Operational systems are significantly more likely to have completed an AI Impact Assessment (8.7%) compared to systems in development (0.5%).\n\n4. **Key Insight**: The data reveals a 'late-stage' governance model. Impact assessments are almost non-existent during the design/development phase (2 out of 371 cases), suggesting they function as final compliance gates rather than tools for 'security by design.' Furthermore, the overall completion rate is alarmingly low (<10%) even for deployed systems.",
+  "rich_outputs": null,
+  "runtime_ms": 182660.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.49769585253456217
+}

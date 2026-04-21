@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Data Preparation Complete.
+Total EO 13960 Rows: 1757
+Rows with Valid Opt-Out Status: 120
+
+Distribution of Audience in Analysis Set:
+audience_clean
+Internal         88
+Public-Facing    32
+Name: count, dtype: int64
+
+Contingency Table (Count):
+opt_out_clean   No  Yes
+audience_clean         
+Internal        15   73
+Public-Facing   23    9
+
+Opt-Out Availability Rates (%):
+opt_out_clean          No        Yes
+audience_clean                      
+Internal        17.045455  82.954545
+Public-Facing   71.875000  28.125000
+
+Chi-Square Test Results:
+Statistic: 30.1175
+P-Value: 4.0664e-08
+Result: Statistically Significant Association.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot (or Bar Chart).
+*   **Purpose:** The plot compares the percentage of use cases that offer an "Opt-Out" mechanism across two distinct categories of target audiences ("Internal" vs. "Public-Facing").
+
+**2. Axes**
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Target Audience"
+    *   **Labels:** The axis categorizes the data into "Internal" and "Public-Facing."
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Use Cases with Opt-Out (%)"
+    *   **Range:** 0 to 100.
+    *   **Units:** Percentage (%). The axis is marked with intervals of 20 (0, 20, 40, 60, 80, 100).
+
+**3. Data Trends**
+*   **Tallest Bar:** The "Internal" audience bar (colored green) is the tallest.
+*   **Shortest Bar:** The "Public-Facing" audience bar (colored blue) is significantly shorter.
+*   **Pattern:** There is a drastic disparity between the two categories. Use cases targeted at internal audiences are nearly three times as likely to have opt-out availability compared to those targeted at the public.
+
+**4. Annotations and Legends**
+*   **Main Title:** "The 'Forced Participation' Paradox: Opt-Out Availability by Audience". This title frames the data as counter-intuitive (a "paradox"), implying that one might expect different results (perhaps expecting the public to have more choice).
+*   **Data Labels:**
+    *   **Internal:** Annotated with **"83.0%"** at the top of the green bar.
+    *   **Public-Facing:** Annotated with **"28.1%"** at the top of the blue bar.
+*   **Gridlines:** Horizontal dashed gridlines appear at 20% intervals to aid in visual estimation.
+
+**5. Statistical Insights**
+*   **Significant Discrepancy:** There is a massive 54.9 percentage point gap between the two groups. While the vast majority of internal use cases (83.0%) allow users to opt out, less than a third (28.1%) of public-facing use cases offer the same choice.
+*   **The "Paradox":** The chart suggests that internal stakeholders (likely employees or organizational members) are afforded significantly more agency and consent regarding participation than the general public. This is often described as a paradox because public-facing technologies are usually subject to higher scrutiny and broader regulatory privacy requirements, yet here they show much lower voluntary participation rates.
+==================================================

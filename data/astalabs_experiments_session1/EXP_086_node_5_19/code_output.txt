@@ -1,0 +1,57 @@
+exitcode: 0 (execution succeeded)
+Code output: Current working directory: /data
+Files in current directory: ['.placeholder', 'step1_construct_definitions.md', 'step1_evidence.json', 'step1_sub_competencies.csv', 'step2_competency_statements.csv', 'step2_crosswalk_evidence.json', 'step2_crosswalk_matrix.csv', 'step3_coverage_map.csv', 'step3_coverage_map.md', 'step3_enrichments.json', 'step3_incident_coding.csv', 'step3_mitigation_gaps.csv', 'step3_tactic_frequency.csv', 'step4_propositions.csv', 'step4_propositions.json', 'step4_propositions.md', 'step5_validation.json', 'step5_validation_issues.csv', 'step5_validation_report.md']
+
+=== Descriptive Statistics (N=8) ===
+Supply Chain (n=4): Mean=4.25, Std=1.50
+Reliability (n=4): Mean=4.50, Std=1.00
+
+=== Mann-Whitney U Test Results ===
+U-statistic: 7.5
+P-value: 1.0000
+
+STDERR:
+<ipython-input-1-bd95367f1bf3>:67: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([supply_chain_group, reliability_group], labels=['Supply Chain', 'Reliability'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+**Type:** This is a **Box Plot (Box-and-Whisker Plot)** overlaid with a **Strip Plot (Jittered Scatter Plot)**.
+**Purpose:** The plot compares the distribution of "Missing Sub-Competencies" between two distinct groups: "Supply Chain" and "Reliability."
+*   The **box plot** component summarizes the distribution statistically (showing the median, quartiles, and potential statistical outliers).
+*   The **strip plot** component (the colored dots) displays the individual data points, allowing the viewer to see the exact sample size and density, which helps visualize overlapping data that a box plot alone might hide.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Title:** Represents the categories. The labels are **"Supply Chain"** and **"Reliability"**.
+*   **Y-Axis:**
+    *   **Title:** "Number of Missing Sub-Competencies".
+    *   **Range:** The visual axis ranges from **2.0 to 5.0** (likely representing integer counts). Grid lines appear at intervals of 0.5.
+
+### 3. Data Trends
+*   **Supply Chain Group (Left):**
+    *   **Concentration:** There is a heavy concentration of data points at the value of **5**.
+    *   **Distribution:** The box indicates that the upper quartile (75th percentile) and likely the median are capped at 5. The lower quartile (25th percentile) appears to be around 4.25.
+    *   **Outliers:** There is a notable outlier visible at the value of **2**.
+*   **Reliability Group (Right):**
+    *   **Concentration:** Similar to Supply Chain, the vast majority of data points are clustered at the value of **5**.
+    *   **Distribution:** The box is tighter than the Supply Chain group. The top of the box and median are at 5, while the bottom of the box (25th percentile) is at 4.5.
+    *   **Outliers:** There is a single outlier visible at the value of **3**.
+
+### 4. Annotations and Legends
+*   **Title:** "Competency Gap Breadth: Supply Chain vs Reliability".
+*   **Legend:** Located in the bottom right corner:
+    *   **Blue Dots:** Represent "Supply Chain Cases".
+    *   **Orange Dots:** Represent "Reliability Cases".
+*   **Grid Lines:** Horizontal dashed grey lines facilitate reading the Y-axis values.
+*   **Box Plot Markings:** The black open circles (distinct from the colored dots) denote statistical outliers identified by the box plot calculation (typically 1.5 * IQR).
+
+### 5. Statistical Insights
+*   **Ceiling Effect:** Both groups exhibit a strong "ceiling effect," where the median value is the maximum possible value shown (5). This suggests that for the majority of cases in both Supply Chain and Reliability, the "Competency Gap Breadth" is quite high (5 missing sub-competencies).
+*   **Variance:** The "Supply Chain" group shows slightly more variance (spread) than the "Reliability" group. While both are centered at 5, Supply Chain cases drop as low as 2, whereas Reliability cases only drop to 3.
+*   **Comparative Consistency:** The Reliability group is more consistently clustered at the high end. The box for Reliability is shorter (ranging from 4.5 to 5) compared to Supply Chain (ranging from ~4.25 to 5), indicating that the middle 50% of the Reliability data is more condensed.
+*   **Conclusion:** In the context of this data, both domains suffer from significant competency gaps, but the gaps are slightly more uniform and severe in the Reliability domain, whereas the Supply Chain domain has a few exceptional cases with fewer gaps.
+==================================================

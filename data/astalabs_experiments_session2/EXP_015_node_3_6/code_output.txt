@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: Total EO 13960 records: 1757
+Records with valid dates: 1191 (67.8%)
+
+Unique values in '52_impact_assessment':
+52_impact_assessment
+NaN                        1053
+Yes                          59
+No                           49
+Planned or in-progress.      29
+YES                           1
+Name: count, dtype: int64
+
+--- Governance Gap Analysis: Impact Assessments ---
+                Total Systems  With Assessment  Assessment Rate %
+cohort                                                           
+Legacy (<2020)            228               24              10.53
+Modern (2020+)            963               36               3.74
+
+Chi-Square Statistic: 16.3653
+P-value: 5.2232e-05
+Result: Statistically Significant difference in governance rates.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares the frequency (percentage) of impact assessments between two distinct categories of AI systems based on their initiation time period ("Legacy" vs. "Modern").
+
+### 2. Axes
+*   **X-axis (Horizontal):**
+    *   **Title:** "Initiation Cohort"
+    *   **Labels:** The axis features two categorical labels rotated 90 degrees for readability: "Legacy (<2020)" and "Modern (2020+)".
+*   **Y-axis (Vertical):**
+    *   **Title:** "Percentage with Impact Assessment (%)"
+    *   **Range:** The scale runs from 0 to 100.
+    *   **Increments:** Major tick marks are placed every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Legacy (<2020)" cohort represents the highest value.
+*   **Shortest Bar:** The "Modern (2020+)" cohort represents the lowest value.
+*   **Pattern:** There is a notable downward trend between the two groups. The rate of impact assessments has decreased significantly in the modern cohort compared to the legacy cohort. Both bars are relatively small compared to the full y-axis scale, indicating generally low rates across the board.
+
+### 4. Annotations and Legends
+*   **Data Labels:** Specific percentage values are annotated directly above each bar in bold text for precision:
+    *   Legacy (<2020): **10.53%**
+    *   Modern (2020+): **3.74%**
+*   **Color Coding:** The bars are distinct in color (Light Red/Pink for Legacy and Light Blue for Modern) to visually separate the two cohorts, though the x-axis labels provide the primary identification.
+
+### 5. Statistical Insights
+*   **Significant Decline:** Systems initiated after 2020 ("Modern") are significantly less likely to have an impact assessment than those initiated before 2020 ("Legacy"). The rate dropped by roughly 6.8 percentage points.
+*   **Relative Drop:** The transition from 10.53% to 3.74% represents a relative decrease of approximately **64.5%**. This suggests that as AI systems have become "Modern," the practice of conducting impact assessments has become less than half as common as it was previously.
+*   **Low Overall Adoption:** Despite the difference between the two groups, the absolute values for both are low. Even in the higher-performing "Legacy" group, roughly 90% of systems did not have an impact assessment. In the "Modern" group, over 96% lack one. The vast empty space in the plot (from 10% up to 100%) visually emphasizes the scarcity of these assessments in the dataset.
+==================================================

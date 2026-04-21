@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: Current working directory: /data
+Files in current directory: ['.placeholder', 'astalabs_discovery_all_data.csv', 'context_construct_definitions.md', 'context_crosswalk_evidence.json', 'context_propositions.json', 'context_propositions.md', 'context_step1_evidence.json', 'context_validation_report.md']
+Files in parent directory: ['tmp', 'usr', 'media', 'boot', 'lib', 'root', 'dev', 'run', 'proc', 'etc', 'srv', 'bin', 'sys', 'home', '.uv', 'sbin', '__modal', 'var', 'opt', 'lib64', 'mnt', 'data']
+Successfully loaded astalabs_discovery_all_data.csv
+AIID Incidents loaded: 1362
+
+Unique Autonomy Levels (raw): <StringArray>
+['Autonomy1', 'Autonomy2', 'Autonomy3', 'unclear', nan]
+Length: 5, dtype: str
+
+Unique Technical Failures (raw top 20): ['Generalization Failure', 'Misinformation Generation Hazard, Unsafe Exposure or Access', 'Distributional Bias', 'Context Misidentification', 'Lack of Transparency', 'Generalization Failure, Context Misidentification', 'Harmful Application', 'Unsafe Exposure or Access', 'Unsafe Exposure or Access, Misinformation Generation Hazard', 'Misinformation Generation Hazard', 'Latency Issues', 'Algorithmic Bias', 'Context Misidentification, Generalization Failure', 'Human Error', 'Hardware Failure', 'Generalization Failure, Lack of Safety Protocols', 'Distributional Bias, Limited Dataset', 'Algorithmic Bias, Problematic Features', 'Unauthorized Data', 'Gaming Vulnerability']
+
+Data for Analysis:
+Failure_Category
+Robustness      32
+Operator/HMI    13
+Name: count, dtype: int64
+                  count      mean       std  min  25%  50%   75%  max
+Failure_Category                                                     
+Operator/HMI       13.0  2.230769  0.832050  1.0  2.0  2.0  3.00  3.0
+Robustness         32.0  1.562500  0.877588  1.0  1.0  1.0  2.25  3.0
+
+Mann-Whitney U Test:
+U-statistic: 123.0
+P-value: 0.017736642601064015
+
+STDERR:
+<ipython-input-1-40714259be72>:102: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.violinplot(data=analysis_df, x='Failure_Category', y='Autonomy_Ordinal', inner='stick', palette='muted')
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Violin Plot**.
+*   **Purpose:** A violin plot is used to visualize the distribution of numerical data across different categorical variables. It is similar to a box plot, but it also includes a Kernel Density Estimation (KDE) on each side, showing the probability density of the data at different values. This allows for a deeper understanding of the data's distribution shape (e.g., peaks, skewness) beyond just summary statistics.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Failure Category"
+    *   **Labels:** The axis contains two categorical variables: "Robustness" and "Operator/HMI".
+*   **Y-Axis:**
+    *   **Title:** "Autonomy Level (Ordinal)"
+    *   **Units/Range:** The axis represents ordinal values ranging from **0.0 to 4.0**. The grid lines are spaced at intervals of 0.5. The term "Ordinal" suggests the data points likely correspond to specific integer levels (e.g., Level 1, 2, 3, 4) of autonomy.
+
+### 3. Data Trends
+*   **Robustness (Left, Blue Violin):**
+    *   **Distribution Shape:** The distribution is heavily bottom-heavy. The widest part of the violin (indicating the highest frequency of data points) is centered around **Autonomy Level 1**.
+    *   **Secondary Feature:** There is a significant narrowing (neck) around Level 2, followed by a smaller, secondary bulge around Level 3.
+    *   **Summary:** Failures categorized as "Robustness" occur most frequently at lower levels of autonomy.
+*   **Operator/HMI (Right, Orange Violin):**
+    *   **Distribution Shape:** The distribution is top-heavy. The violin is widest around **Autonomy Level 3**, with substantial width extending down to Level 2.
+    *   **Taper:** The shape tapers off significantly towards the bottom, indicating very few Operator/HMI failures at Level 1 or 0.
+    *   **Summary:** Failures categorized as "Operator/HMI" (Human-Machine Interface) are most prevalent at higher levels of autonomy.
+
+### 4. Annotations and Legends
+*   **Internal Lines:** Inside each violin shape, there are horizontal lines located at integer values (y=1, y=2, y=3). In the context of violin plots, these lines typically represent the **quartiles** (25th percentile, median, and 75th percentile) or mark the specific **ordinal integer levels** where the discrete data points lie. Given the "Ordinal" label, these lines help identify that the data is clustered at levels 1, 2, and 3.
+*   **Color Coding:** The plot uses distinct colors to differentiate the categories: Blue for "Robustness" and Orange/Brown for "Operator/HMI".
+
+### 5. Statistical Insights
+*   **Inverse Relationship:** There is a clear inverse relationship between the failure categories and autonomy levels.
+    *   **Low Autonomy Risks:** As the autonomy level decreases (moving towards Level 1), the system is more prone to **Robustness** failures. This implies that simpler or manual-assist systems struggle more with basic mechanical or software robustness issues rather than interaction issues.
+    *   **High Autonomy Risks:** As the autonomy level increases (moving towards Level 3), the prevalence of **Operator/HMI** failures rises sharply. This suggests that as systems become more autonomous, the complexity of the interaction between the human operator and the machine increases, leading to a higher likelihood of interface-related errors or confusion.
+*   **Bimodality:** The "Robustness" category shows some signs of bimodality (peaks at 1 and roughly 3), whereas the "Operator/HMI" category is more unimodal, centering broadly on the higher end of the scale.
+==================================================

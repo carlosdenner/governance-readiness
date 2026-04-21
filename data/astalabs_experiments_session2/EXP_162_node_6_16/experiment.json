@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully verified the 'Stage-Gate Monitoring Hypothesis' using the EO 13960 dataset. The code correctly mapped 992 AI systems into 'Operational' (n=641) and 'Pre-Operational' (n=351) phases and evaluated their post-deployment monitoring status.\n\nKey Findings:\n1. **Statistical Significance**: The Chi-square test (p=0.0158) indicates a statistically significant difference between the groups, supporting the hypothesis that operational systems are more likely to be monitored than those in development.\n2. **Compliance Rates**: Operational systems showed a 10.5% monitoring rate, compared to 5.7% for pre-operational systems.\n3. **Critical Governance Gap**: Despite the relative difference, the absolute numbers reveal a severe lack of oversight. A staggering **89.5% of operational AI systems** (574 out of 641) lack reported post-deployment monitoring. The code correctly flagged this as a 'Major Governance Gap'.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport os\n\ndef run_experiment():\n    # Attempt to locate the dataset in current or parent directory\n    filename = 'astalabs_discovery_all_data.csv'\n    paths = [filename, f'../{filename}']\n    df = None\n    for p in paths:\n        if os.path.exists(p):\n            print(f\"Dataset found at: {p}\")\n            df = pd.read_csv(p, low_memory=False)\n            break\n            \n    if df is None:\n        print(\"Error: Dataset not found.\")\n        return\n\n    # Filter for EO 13960 source\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"Total EO 13960 records: {len(df_eo)}\")\n\n    # Map '16_dev_stage' to Lifecycle Phases\n    def map_stage(val):\n        s = str(val).lower()\n        # Operational keywords\n        if any(x in s for x in ['operation', 'maintenance', 'use', 'production', 'sustainment']):\n            return 'Operational'\n        # Pre-Operational keywords\n        if any(x in s for x in ['development', 'acquisition', 'planning', 'design', 'pilot', 'test']):\n            return 'Pre-Operational'\n        return None\n\n    df_eo['Phase'] = df_eo['16_dev_stage'].apply(map_stage)\n    df_analysis = df_eo.dropna(subset=['Phase']).copy()\n    print(f\"Records with valid phase: {len(df_analysis)}\")\n\n    # Map '56_monitor_postdeploy' to Binary Compliance (Yes/No)\n    def map_monitoring(val):\n        s = str(val).lower()\n        # Strict negative filter first\n        if any(x in s for x in ['no', 'none', 'not ', 'never', 'n/a', 'false', '0']):\n            return 'No'\n        # Positive keywords\n        if any(x in s for x in ['yes', 'monitor', 'review', 'audit', 'check', 'ongoing', 'continuous', 'annual']):\n            return 'Yes'\n        # Default fallback (conservative)\n        return 'No'\n\n    df_analysis['Monitored'] = df_analysis['56_monitor_postdeploy'].apply(map_monitoring)\n\n    # Generate Contingency Table\n    ct = pd.crosstab(df_analysis['Phase'], df_analysis['Monitored'])\n    print(\"\\nContingency Table:\")\n    print(ct)\n\n    # Calculate Rates\n    rates = pd.crosstab(df_analysis['Phase'], df_analysis['Monitored'], normalize='index') * 100\n    print(\"\\nMonitoring Compliance Rates (%):\")\n    print(rates)\n\n    # Statistical Test\n    chi2, p, dof, ex = stats.chi2_contingency(ct)\n    print(f\"\\nChi-Square Test Result:\")\n    print(f\"Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n\n    # Deliverables & Insights\n    try:\n        op_rate = rates.loc['Operational', 'Yes']\n        pre_rate = rates.loc['Pre-Operational', 'Yes']\n        print(f\"\\nInsight: {op_rate:.1f}% of Operational systems have monitoring vs {pre_rate:.1f}% of Pre-Operational systems.\")\n        \n        if p < 0.05:\n            print(\"Conclusion: Significant difference detected between stages.\")\n        else:\n            print(\"Conclusion: No significant difference detected.\")\n            \n        # Check for Governance Gap\n        if op_rate < 50:\n            print(\"ALERT: Major Governance Gap. Less than 50% of operational systems are monitored.\")\n    except KeyError:\n        print(\"Insufficient data to calculate specific rates.\")\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Dataset found at: astalabs_discovery_all_data.csv\nTotal EO 13960 records: 1757\nRecords with valid phase: 992\n\nContingency Table:\nMonitored         No  Yes\nPhase                    \nOperational      574   67\nPre-Operational  331   20\n\nMonitoring Compliance Rates (%):\nMonitored               No        Yes\nPhase                                \nOperational      89.547582  10.452418\nPre-Operational  94.301994   5.698006\n\nChi-Square Test Result:\nStatistic: 5.8273\nP-value: 1.5780e-02\n\nInsight: 10.5% of Operational systems have monitoring vs 5.7% of Pre-Operational systems.\nConclusion: Significant difference detected between stages.\nALERT: Major Governance Gap. Less than 50% of operational systems are monitored.\n",
+  "created_at": "2026-02-22T08:40:18.365099+00:00",
+  "creation_idx": 163,
+  "experiment_id": "node_6_16",
+  "experiment_plan": {
+    "deliverables": "Monitoring compliance rate for operational systems; Chi-square test comparing stages.",
+    "objective": "Verify if monitoring controls are correctly phased, or if operational systems lack required oversight (Governance Gap).",
+    "steps": "1. Load 'eo13960_scored'.\n2. Map '16_dev_stage' to 'Operational' (Use, Maintenance) vs 'Pre-Operational' (Development, Acquisition, Planning).\n3. Map '56_monitor_postdeploy' to Binary (Yes/No).\n4. Perform a Chi-square test.\n5. Specifically analyze the 'Operational' group: what % lacks monitoring? This is a key insight."
+  },
+  "hypothesis": "The 'Stage-Gate' Monitoring Hypothesis: AI systems in the 'Operation/Maintenance' phase are significantly more likely to have 'Post-Deployment Monitoring' in place compared to systems in the 'Development/Acquisition' phase.",
+  "id_in_run": 162,
+  "is_surprising": false,
+  "parent_id": "node_5_26",
+  "posterior": 0.9945054945054945,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9945054945054945,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Stage-Gate Monitoring Hypothesis' on the EO 13960 dataset. The implementation correctly categorized 992 AI systems into lifecycle stages ('Operational' vs. 'Pre-Operational') and parsed the 'Post-Deployment Monitoring' text field into binary values.\n\n**Key Findings:**\n1.  **Statistical Support**: The Chi-square test (p = 0.016) confirms a statistically significant difference. Operational systems are indeed more likely to have monitoring protocols in place compared to pre-operational ones.\n2.  **Magnitude of Difference**: Operational systems showed a 10.5% monitoring rate versus 5.7% for pre-operational systems.\n3.  **Critical Governance Gap**: The most significant insight is the absolute lack of oversight. A staggering **89.5%** (574/641) of AI systems currently in the 'Operation/Maintenance' phase lack reported post-deployment monitoring. This highlights a severe gap between the theoretical requirement for lifecycle governance and actual agency practice.",
+  "rich_outputs": null,
+  "runtime_ms": 231190.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.012761432116270831
+}

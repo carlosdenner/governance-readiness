@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: === Starting Experiment: Audit Logging & Telemetry Centrality ===
+Loading dataset from: step2_crosswalk_matrix.csv
+Number of control columns identified: 18
+
+--- Control Frequency Analysis ---
+Target Control: 'Audit Logging & Telemetry'
+Target Count: 1
+Mean of Other Controls: 4.4706
+Std Dev of Other Controls: 3.8910
+Z-Score: -0.8920
+Interpretation: The control is NOT a statistical outlier.
+
+Top 5 Controls:
+AI Risk Policy & Accountability Structures     13
+Evaluation & Monitoring Infrastructure         13
+GenAIOps / MLOps Lifecycle Governance          10
+Nondeterminism Controls & Output Validation     6
+Data Governance & Access Controls               5
+dtype: int64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot compares the frequency of "Mapped Requirements" across various categories of "Architecture Control." It is designed to show which controls are most heavily utilized or regulated versus those that are least involved, ranking them from highest frequency to lowest.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Architecture Control"
+    *   **Content:** Categorical labels representing specific technical and governance controls (e.g., "AI Risk Policy & Accountability Structures," "GenAIOps / MLOps Lifecycle Governance").
+*   **Y-Axis:**
+    *   **Label:** "Number of Mapped Requirements"
+    *   **Value Range:** 0 to approximately 13 (based on the height of the tallest bars).
+    *   **Units:** Integer count (frequency).
+
+### 3. Data Trends
+*   **Highest Values:** The top two controls are tied for the highest frequency with **13** mapped requirements each:
+    *   "AI Risk Policy & Accountability Structures"
+    *   "Evaluation & Monitoring Infrastructure"
+*   **Lowest Values:** The bottom four controls are tied with only **1** mapped requirement each:
+    *   "Multi-Agent Orchestration Pattern"
+    *   "Single-Agent Orchestration Pattern"
+    *   "Scalable Modular Architecture (Archetypes)"
+    *   "Audit Logging & Telemetry" (highlighted in red)
+*   **Overall Pattern:** The data follows a descending distribution (Pareto-like). There is a steep drop-off after the top three categories, followed by a gradual decline, eventually plateauing at the lowest value of 1 for the final four categories.
+
+### 4. Annotations and Legends
+*   **Green Dashed Line:** Indicates the "Mean (Others): 4.5". This horizontal line represents the average number of mapped requirements for the group (likely excluding the specific item of interest or representing the population mean).
+*   **Red Bar Highlight:** The bar for **"Audit Logging & Telemetry"** is colored red, drawing specific attention to it as the subject of analysis for this specific view.
+*   **Title Annotation (Z=-0.89):** The title includes a Z-score. A Z-score of -0.89 indicates that the red highlighted bar ("Audit Logging & Telemetry") is approximately 0.89 standard deviations below the mean of the dataset.
+
+### 5. Statistical Insights
+*   **Below Average Performance:** The highlighted control, "Audit Logging & Telemetry," is significantly below the average (1 vs. the mean of 4.5). Being in the lowest tier suggests this area is under-represented in the current requirements mapping compared to other architectural controls.
+*   **Focus on Governance:** The chart indicates a heavy skew toward high-level governance and monitoring. The top three categories (Risk Policy, Evaluation Infrastructure, and Lifecycle Governance) occupy the vast majority of the requirements, suggesting the project or system is currently prioritizing policy and oversight over specific technical implementation patterns.
+*   **The "Long Tail":** There is a long tail of 12 categories that fall below the mean line of 4.5. This suggests that while a few controls are critical, the majority of architecture controls have relatively few specific requirements mapped to them.
+==================================================

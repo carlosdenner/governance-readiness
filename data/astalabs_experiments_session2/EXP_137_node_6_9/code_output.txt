@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 records loaded: 1757
+
+Records for analysis (In-house vs Contracted, valid notice): 50
+Distribution by Development Method:
+dev_category
+In-house      25
+Contracted    25
+Name: count, dtype: int64
+
+Contingency Table (Dev Method vs AI Notice):
+notice_flag   No
+dev_category    
+Contracted    25
+In-house      25
+
+Proportions (%):
+notice_flag      No
+dev_category       
+Contracted    100.0
+In-house      100.0
+
+Chi-Square Test Results:
+Chi2: 0.0000, p-value: 1.0000e+00
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot (or Column Chart).
+*   **Purpose:** This plot compares a categorical variable (Development Method) against a quantitative variable (Percentage) to illustrate the distribution of AI notice compliance status between two distinct groups.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Development Method"
+    *   **Labels:** Two distinct categories: "Contracted" and "In-house".
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Percentage"
+    *   **Range:** 0 to 100 (scale ticks appear at intervals of 20: 0, 20, 40, 60, 80, 100).
+    *   **Units:** Percentage (%).
+
+### 3. Data Trends
+*   **Pattern:** The data shows perfect uniformity. There is no variation between the two categories.
+*   **Values:**
+    *   The **Contracted** bar reaches exactly 100%.
+    *   The **In-house** bar reaches exactly 100%.
+*   **Highlight:** Both bars represent the maximum possible value on the scale shown for the specific category being plotted ("No").
+
+### 4. Annotations and Legends
+*   **Chart Title:** "AI Notice Compliance: In-house vs Contracted".
+*   **Legend:** Located in the top right corner with the title "Notice Provided". It displays a single category:
+    *   **Color:** Red (Salmon/light red).
+    *   **Label:** "No".
+*   **Bar Annotations:** Each bar contains white text centered within the bar reading "100.0%", explicitly stating the exact value of the data point.
+
+### 5. Statistical Insights
+*   **Total Non-Compliance/Absence:** The plot indicates that for the metric "Notice Provided," the answer was "No" for 100% of the cases in this dataset.
+*   **No Correlation with Development Method:** There is no statistical difference between AI tools developed via "Contracted" methods versus "In-house" methods regarding this metric. Both methods resulted in a 0% rate of providing notice (or a 100% rate of *not* providing notice).
+*   **Conclusion:** Based on this figure, neither development strategy has successfully implemented AI Notice provision in the sampled data; notice is consistently absent regardless of whether the development was outsourced or done internally.
+==================================================

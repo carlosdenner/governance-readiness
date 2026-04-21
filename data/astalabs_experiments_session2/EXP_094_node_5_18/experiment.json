@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between sector and harm type using a text-mining approach on the 'description' and 'title' columns. While the sample size remained small (n=11), the classification logic worked correctly to identify relevant cases. The analysis revealed a strong directional trend consistent with the hypothesis: 100% of Financial sector incidents involved Economic harm, and 75% of Healthcare sector incidents involved Physical harm. However, the Fisher's Exact Test yielded a p-value of 0.0606, which is marginally above the standard significance threshold of 0.05. Thus, while the data strongly suggests the hypothesized pattern, the relationship is not statistically significant at the 95% confidence level due to the limited sample size.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import fisher_exact\nimport os\nimport sys\n\n# Robust file loading\nfilename = 'astalabs_discovery_all_data.csv'\nfile_path = None\nif os.path.exists(filename):\n    file_path = filename\nelif os.path.exists(os.path.join('..', filename)):\n    file_path = os.path.join('..', filename)\n\nif file_path is None:\n    print(f\"Error: {filename} not found.\")\n    sys.exit(1)\n\ndf = pd.read_csv(file_path, low_memory=False)\naiid = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"AIID Incidents loaded: {len(aiid)}\")\n\n# --- CLASSIFICATION LOGIC ---\n\n# 1. Sector Classification\nsector_col = next((c for c in aiid.columns if 'Sector of Deployment' in str(c)), 'Sector of Deployment')\n\ndef classify_sector(row):\n    val = str(row.get(sector_col, '')).lower()\n    # Based on previous debug output 'human health and social work activities'\n    if 'health' in val or 'medic' in val or 'hosp' in val or 'patient' in val:\n        return 'Healthcare'\n    if 'financ' in val or 'bank' in val or 'insurance' in val or 'trading' in val:\n        return 'Financial'\n    return None\n\n# 2. Harm Classification\n# Correctly using 'description' and 'title' based on previous debug findings\ndef classify_harm(row):\n    # Combine relevant text columns. 'title' might exist, 'description' definitely does.\n    text_content = []\n    for col in ['title', 'description', 'Alleged harmed or nearly harmed parties']:\n        if col in row.index and pd.notna(row[col]):\n            text_content.append(str(row[col]))\n            \n    full_text = \" \".join(text_content).lower()\n    \n    # Keywords\n    phys_keys = ['death', 'dead', 'kill', 'injury', 'injured', 'hurt', 'bodily', 'safety', \n                 'accident', 'crash', 'physical harm', 'violence', 'assault', 'patient', 'medical condition']\n                 \n    econ_keys = ['financial', 'economic', 'money', 'dollar', 'loss', 'fraud', 'scam', 'theft', \n                 'bank', 'credit', 'market', 'price', 'trading', 'loan', 'funds']\n    \n    has_phys = any(k in full_text for k in phys_keys)\n    has_econ = any(k in full_text for k in econ_keys)\n    \n    if has_phys and not has_econ:\n        return 'Physical'\n    if has_econ and not has_phys:\n        return 'Economic'\n    if has_phys and has_econ:\n        # If both, we treat as ambiguous for this specific A/B test to ensure clean signals.\n        return 'Both'\n    return 'Other'\n\n# Apply\naiid['target_sector'] = aiid.apply(classify_sector, axis=1)\naiid['target_harm'] = aiid.apply(classify_harm, axis=1)\n\n# Filter\nsubset = aiid[\n    (aiid['target_sector'].isin(['Healthcare', 'Financial'])) & \n    (aiid['target_harm'].isin(['Physical', 'Economic']))\n].copy()\n\nprint(f\"\\nClassified Subset (Exclusive Categories): {len(subset)}\")\nprint(subset.groupby(['target_sector', 'target_harm']).size())\n\n# --- STATISTICAL TEST ---\ncontingency = pd.crosstab(subset['target_sector'], subset['target_harm'])\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency)\n\nif contingency.size == 4:\n    odds, p = fisher_exact(contingency)\n    print(f\"\\nFisher's Exact Test p-value: {p:.4e}\")\n    print(f\"Odds Ratio: {odds:.4f}\")\n    \n    # Percentages\n    pcts = contingency.div(contingency.sum(axis=1), axis=0) * 100\n    print(\"\\n--- Row Percentages ---\")\n    print(pcts)\n    \n    if p < 0.05:\n        print(\"\\nResult: Statistically significant dependence found.\")\n        h_p = pcts.loc['Healthcare', 'Physical']\n        f_e = pcts.loc['Financial', 'Economic']\n        print(f\"Healthcare -> Physical: {h_p:.1f}%\")\n        print(f\"Financial -> Economic: {f_e:.1f}%\")\n        if h_p > 50 and f_e > 50:\n             print(\"Hypothesis Supported.\")\n    else:\n        print(\"\\nResult: No statistically significant dependence found.\")\nelse:\n    print(\"\\nInsufficient data for test.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: AIID Incidents loaded: 1362\n\nClassified Subset (Exclusive Categories): 11\ntarget_sector  target_harm\nFinancial      Economic       3\nHealthcare     Economic       2\n               Physical       6\ndtype: int64\n\n--- Contingency Table ---\ntarget_harm    Economic  Physical\ntarget_sector                    \nFinancial             3         0\nHealthcare            2         6\n\nFisher's Exact Test p-value: 6.0606e-02\nOdds Ratio: inf\n\n--- Row Percentages ---\ntarget_harm    Economic  Physical\ntarget_sector                    \nFinancial         100.0       0.0\nHealthcare         25.0      75.0\n\nResult: No statistically significant dependence found.\n",
+  "created_at": "2026-02-22T05:31:36.228968+00:00",
+  "creation_idx": 95,
+  "experiment_id": "node_5_18",
+  "experiment_plan": {
+    "deliverables": "Unique value lists (for debugging), Contingency table, Fisher's Exact Test p-value, and interpretation of the association.",
+    "objective": "Validate whether AI harm domains are statistically dependent on the sector of deployment by correcting the data mapping logic.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'aiid_incidents'.\n2. Print unique values of 'Sector of Deployment', 'Harm Domain', and 'Tangible Harm' columns to identify correct keywords.\n3. Create a 'Target Sector' column: Map values containing 'health', 'medic', 'hosp' to 'Healthcare'; map 'financ', 'bank', 'trading', 'insurance' to 'Financial'.\n4. Create a 'Harm Class' column: Inspect both 'Harm Domain' and 'Tangible Harm'. Map values containing 'physical', 'safety', 'death', 'injury' to 'Physical'; map 'economic', 'financial', 'monetary', 'property' to 'Economic'. Label others as 'Other'.\n5. Filter the dataset to include only rows where Target Sector is 'Healthcare' or 'Financial' AND Harm Class is 'Physical' or 'Economic' (exclude 'Other' to test the specific tradeoff, or keep if testing general distribution—for this hypothesis, testing the specific 'Physical vs Economic' split is most direct).\n6. Generate a contingency table.\n7. Perform a Fisher's Exact Test (or Chi-Square if N>50) on the 2x2 matrix (Healthcare/Financial vs Physical/Economic).\n8. Report the p-value and row-wise percentages."
+  },
+  "hypothesis": "Sector-Specific Harm Fingerprints: The 'Healthcare' sector is significantly more prone to 'Physical' harm incidents compared to the 'Financial' sector, which clusters disproportionately around 'Economic' harm.",
+  "id_in_run": 94,
+  "is_surprising": true,
+  "parent_id": "node_4_6",
+  "posterior": 0.8296703296703297,
+  "posterior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 60.0,
+    "mean": 0.8296703296703297,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented and successfully executed. After correcting for previous data mapping errors (specifically targeting the 'description' and 'title' columns for text mining rather than the ID-based 'reports' column), the analysis correctly classified 11 relevant incidents. While the sample size remained small due to the sparse nature of the dataset's text fields, the procedure was methodologically sound for a preliminary analysis.",
+  "rich_outputs": null,
+  "runtime_ms": 476960.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.18504076568592692
+}

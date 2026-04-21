@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed the 'control density' of governance requirements by processing `step2_crosswalk_matrix.csv`. The results contradict the initial hypothesis that 'Trust Readiness' competencies require a higher number of architecture controls. \n\nDescriptive statistics reveal that 'Integration Readiness' competencies actually map to a higher average number of controls (Mean = 2.00, n=23) compared to 'Trust Readiness' competencies (Mean = 1.63, n=19). The visualization highlights distinct structural patterns: Integration requirements strongly cluster around 2 controls (mode=2), whereas Trust requirements most frequently map to a single control (mode=1).\n\nStatistical testing (Welch's t-test) yielded a t-statistic of -1.7907 and a p-value of 0.0831. While this indicates a trend where Integration is more architecturally dense than Trust, the result is not statistically significant at the standard alpha level of 0.05. Therefore, the hypothesis is rejected on two counts: the direction of the difference is opposite to the prediction, and the difference itself is marginally non-significant.",
+  "child_ids": [
+    "node_3_0",
+    "node_3_4"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Load dataset\n# Loading from one level above as per instructions\ntry:\n    df = pd.read_csv('../step2_crosswalk_matrix.csv')\nexcept FileNotFoundError:\n    df = pd.read_csv('step2_crosswalk_matrix.csv')\n\n# Identify control columns (excluding metadata)\n# Metadata columns are the first 6 columns\nmetadata_cols = ['req_id', 'source', 'function', 'requirement', 'bundle', 'competency_statement']\ncontrol_cols = [c for c in df.columns if c not in metadata_cols]\n\n# Calculate control count per row (robust against case/whitespace)\n# We count cells containing 'X'\ndef count_controls(row):\n    count = 0\n    for val in row:\n        if isinstance(val, str) and val.strip().upper() == 'X':\n            count += 1\n    return count\n\ndf['control_count'] = df[control_cols].apply(count_controls, axis=1)\n\n# Group by bundle\ntrust_scores = df[df['bundle'] == 'Trust Readiness']['control_count']\nintegration_scores = df[df['bundle'] == 'Integration Readiness']['control_count']\n\n# Statistics\nprint(\"=== Descriptive Statistics: Control Density by Bundle ===\")\ndesc = df.groupby('bundle')['control_count'].describe()\nprint(desc)\n\n# T-Test (Welch's for unequal variances)\nt_stat, p_val = stats.ttest_ind(trust_scores, integration_scores, equal_var=False)\n\nprint(\"\\n=== T-Test Results ===\")\nprint(f\"Trust Readiness Mean: {trust_scores.mean():.2f} (n={len(trust_scores)})\")\nprint(f\"Integration Readiness Mean: {integration_scores.mean():.2f} (n={len(integration_scores)})\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\n\nif p_val < 0.05:\n    print(\"Result: Significant difference detected (p < 0.05).\")\nelse:\n    print(\"Result: No significant difference detected (p >= 0.05).\")\n\n# Histogram\nplt.figure(figsize=(10, 6))\n# Calculate common bins for clean alignment\nmin_val = df['control_count'].min()\nmax_val = df['control_count'].max()\nbins = np.arange(min_val - 0.5, max_val + 1.5, 1)\n\nplt.hist(trust_scores, bins=bins, alpha=0.6, label='Trust Readiness', density=True, color='skyblue', edgecolor='black')\nplt.hist(integration_scores, bins=bins, alpha=0.6, label='Integration Readiness', density=True, color='orange', edgecolor='black')\n\nplt.title('Distribution of Architecture Control Density by Readiness Bundle')\nplt.xlabel('Number of Controls Mapped')\nplt.ylabel('Density')\nplt.legend()\nplt.xticks(np.arange(min_val, max_val + 1, 1))\nplt.grid(axis='y', alpha=0.3)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: === Descriptive Statistics: Control Density by Bundle ===\n                       count      mean       std  min  25%  50%  75%  max\nbundle                                                                   \nIntegration Readiness   23.0  2.000000  0.522233  1.0  2.0  2.0  2.0  3.0\nTrust Readiness         19.0  1.631579  0.760886  1.0  1.0  1.0  2.0  3.0\n\n=== T-Test Results ===\nTrust Readiness Mean: 1.63 (n=19)\nIntegration Readiness Mean: 2.00 (n=23)\nT-statistic: -1.7907\nP-value: 0.0831\nResult: No significant difference detected (p >= 0.05).\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Overlaid Density Histogram (or Bar Chart visualizing density distributions).\n*   **Purpose:** The plot compares the probability distribution of the \"Number of Controls Mapped\" for two different categories: \"Trust Readiness\" and \"Integration Readiness.\" It shows the relative frequency (density) of items having 1, 2, or 3 controls mapped within each bundle.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Number of Controls Mapped\"\n    *   **Range:** The axis displays discrete integer values representing counts: **1, 2, and 3**.\n*   **Y-Axis:**\n    *   **Label:** \"Density\"\n    *   **Range:** The values range from **0.0 to roughly 0.75**.\n    *   **Description:** This axis represents the proportion or relative frequency of the data falling into each bin. Since it is a density plot, the sum of the bar heights for each category likely sums to 1.0 (100%).\n\n### 3. Data Trends\nThe plot reveals distinct distribution patterns for the two readiness bundles:\n\n*   **Trust Readiness (Light Blue Bars):**\n    *   **Trend:** This distribution is right-skewed or decreasing.\n    *   **Dominant Value:** The highest density is at **1 Control Mapped** (approximately 0.53 or 53%).\n    *   **Pattern:** As the number of controls increases, the density decreases. There is a moderate amount at 2 controls (~0.31) and the lowest amount at 3 controls (~0.16).\n    *   **Interpretation:** Items in the \"Trust Readiness\" bundle are most likely to map to a single control.\n\n*   **Integration Readiness (Orange Bars):**\n    *   **Trend:** This distribution is centered and peaked (bell-shaped).\n    *   **Dominant Value:** There is a very strong peak at **2 Controls Mapped** (approximately 0.74 or 74%).\n    *   **Pattern:** The densities for 1 control and 3 controls are nearly symmetrical and low (both appear to be around 0.13).\n    *   **Interpretation:** Items in the \"Integration Readiness\" bundle predominantly map to exactly two controls.\n\n### 4. Annotations and Legends\n*   **Title:** \"Distribution of Architecture Control Density by Readiness Bundle\" located at the top center.\n*   **Legend:** Located in the top-right corner.\n    *   **Light Blue Square:** Represents the \"Trust Readiness\" dataset.\n    *   **Orange Square:** Represents the \"Integration Readiness\" dataset.\n*   **Grid:** Horizontal grid lines appear at 0.1 intervals to assist in reading density values.\n\n### 5. Statistical Insights\n*   **Divergent Behavior:** The two bundles exhibit contrasting structural complexity. \"Trust Readiness\" tends to be simpler, often involving a single control mapping, whereas \"Integration Readiness\" is more complex but highly standardized, converging strongly on pairs of controls (2 mappings).\n*   **Predictability:** \"Integration Readiness\" is more predictable regarding control density, as nearly three-quarters of its data falls into a single category (2 controls). \"Trust Readiness\" has more variance, spreading its density more significantly across 1 and 2 controls.\n*   **Mode Comparison:** The mode for Trust Readiness is 1, while the mode for Integration Readiness is 2.\n==================================================",
+  "created_at": "2026-02-20T21:38:01.381337+00:00",
+  "creation_idx": 7,
+  "experiment_id": "node_2_5",
+  "experiment_plan": {
+    "deliverables": "Descriptive statistics of control counts by bundle, t-test results, and a histogram overlay of control counts.",
+    "objective": "Analyze the 'control density' of governance requirements vs. engineering requirements.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Identify the 18 architecture control columns (columns 7 to 24).\n3. Calculate a new variable 'control_count' for each row by summing the binary values ('X' converted to 1) in the control columns.\n4. Group the data by the 'bundle' column.\n5. Perform a t-test to compare the mean 'control_count' between 'Trust Readiness' and 'Integration Readiness' requirements."
+  },
+  "hypothesis": "Competency statements classified as 'Trust Readiness' require a significantly higher number of distinct architecture controls to satisfy than 'Integration Readiness' competencies, reflecting the diffuse and multi-faceted nature of governance implementation.",
+  "id_in_run": 6,
+  "is_surprising": true,
+  "parent_id": "node_1_0",
+  "posterior": 0.18541666666666667,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.18541666666666667,
+    "n": 90.0,
+    "prior_params": [
+      22.25,
+      7.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7416666666666667,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.7416666666666667,
+    "n": 29.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented according to the plan. The code correctly loaded the `step2_crosswalk_matrix.csv` dataset, calculated the 'control density' (number of architecture controls per requirement), and performed the required statistical comparison (Welch's t-test) and visualization.\n\n**Hypothesis status:** Rejected.\n\n**Key Findings:**\n1.  **Directionality:** The results contradicted the hypothesis. Integration Readiness competencies had a higher mean control count (2.00) compared to Trust Readiness competencies (1.63), whereas the hypothesis predicted Trust would be higher.\n2.  **Significance:** The difference was not statistically significant (p = 0.0831 > 0.05).\n3.  **Distribution:** The visualization revealed distinct structural patterns: 'Integration' requirements are highly standardized (mostly mapping to exactly 2 controls), while 'Trust' requirements are often satisfied by a single control (mode=1). This suggests that governance requirements are often more specific or siloed in their architectural implementation compared to integration requirements.",
+  "rich_outputs": null,
+  "runtime_ms": 181200.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6455814264020527
+}

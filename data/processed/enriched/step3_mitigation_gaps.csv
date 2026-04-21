@@ -1,0 +1,36 @@
+mitigation_id,mitigation_name,category,incident_count,competency_gap
+AML.M0024,AI Telemetry Logging,Technical - Cyber,33,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0006,Use Ensemble Methods,Technical - ML,31,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0015,Adversarial Input Detection,Technical - ML,25,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0003,Model Hardening,Technical - ML,23,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0010,Input Restoration,Technical - ML,23,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0005,Control Access to AI Models and Data at Rest,Policy,20,Trust Readiness — AI Governance & Policy
+AML.M0033,Input and Output Validation for AI Agent Components,Technical - ML,20,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0034,Deepfake Detection,Technical - ML,19,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0009,Use Multi-Modal Sensors,Technical - Cyber,17,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0019,Control Access to AI Models and Data in Production,Policy,17,Trust Readiness — AI Governance & Policy
+AML.M0004,Restrict Number of AI Model Queries,Technical - Cyber,16,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0020,Generative AI Guardrails,Technical - ML,15,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0000,Limit Public Release of Information,Policy,14,Trust Readiness — AI Governance & Policy
+AML.M0021,Generative AI Guidelines,Technical - ML,14,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0022,Generative AI Model Alignment,Technical - ML,14,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0026,Privileged AI Agent Permissions Configuration,Technical - Cyber,14,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0027,Single-User AI Agent Permissions Configuration,Technical - Cyber,14,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0001,Limit Model Artifact Release,Policy,13,Trust Readiness — AI Governance & Policy
+AML.M0002,Passive AI Output Obfuscation,Technical - ML,13,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0028,AI Agent Tools Permissions Configuration,Technical - Cyber,13,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0029,Human In-the-Loop for AI Agent Actions,Technical - ML,13,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0030,Restrict AI Agent Tool Invocation on Untrusted Data,Technical - ML,13,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0013,Code Signing,Technical - Cyber,12,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0032,Segmentation of AI Agent Components,Technical - Cyber,12,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0014,Verify AI Artifacts,Technical - Cyber,11,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0017,AI Model Distribution Methods,Policy,11,Trust Readiness — AI Governance & Policy
+AML.M0023,AI Bill of Materials,Policy,10,Trust Readiness — AI Governance & Policy
+AML.M0008,Validate AI Model,Technical - ML,9,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0012,Encrypt Sensitive Information,Technical - Cyber,8,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0018,User Training,Policy,8,Trust Readiness — AI Governance & Policy
+AML.M0007,Sanitize Training Data,Technical - ML,6,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0025,Maintain AI Dataset Provenance,Technical - ML,6,Integration Readiness — ML Lifecycle & Model Controls
+AML.M0011,Restrict Library Loading,Technical - Cyber,6,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0016,Vulnerability Scanning,Technical - Cyber,6,Trust Readiness — Cybersecurity & Technical Controls
+AML.M0031,Memory Hardening,Technical - ML,2,Integration Readiness — ML Lifecycle & Model Controls

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully analyzed 1,757 AI use cases from the EO 13960 inventory. \n\n1. **Classification**: \n   - **Biometric Systems**: 184 systems (10.5%) were identified as biometric based on keywords (e.g., 'face', 'recognition').\n   - **Mitigation Controls**: 44 systems (2.5%) were identified as having documented disparity mitigation measures based on positive action keywords (e.g., 'test', 'monitor', 'audit') in the 'disparity_mitigation' field. Note that this field is often sparse or populated with 'N/A' in the raw data.\n\n2. **Findings**:\n   - **Biometric Systems**: 10.87% (20/184) showed evidence of disparity mitigation.\n   - **Non-Biometric Systems**: Only 1.53% (24/1,573) showed evidence of disparity mitigation.\n\n3. **Statistical Significance**: The Chi-square test yielded a statistic of 55.14 and a p-value of 1.12e-13 (p < 0.05). \n\n**Conclusion**: The null hypothesis is rejected. There is a strong, statistically significant association where government AI systems involving biometrics are far more likely (approx. 7x) to report specific disparity mitigation efforts compared to the baseline of other AI applications.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport sys\nimport os\n\n# Define dataset path\nfile_path = '../astalabs_discovery_all_data.csv'\nif not os.path.exists(file_path):\n    file_path = 'astalabs_discovery_all_data.csv'\n\nprint(f\"Loading dataset from {file_path}...\")\n\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    print(\"Error: Dataset not found.\")\n    sys.exit(1)\n\n# Filter for EO 13960 Scored dataset\nsubset = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 Scored subset shape: {subset.shape}\")\n\n# Identify columns dynamically\nuse_case_col = next((c for c in subset.columns if 'use_case_name' in c), None)\npurpose_col = next((c for c in subset.columns if 'purpose_benefits' in c), None)\nmitigation_col = next((c for c in subset.columns if 'disparity_mitigation' in c), None)\n\nprint(f\"Columns identified: Use Case='{use_case_col}', Purpose='{purpose_col}', Mitigation='{mitigation_col}'\")\n\nif not (use_case_col and purpose_col and mitigation_col):\n    print(\"Critical columns missing. Aborting.\")\n    sys.exit(1)\n\n# --- 1. Define Biometric Systems ---\n# Keywords for biometrics\nbio_keywords = ['face', 'facial', 'biometric', 'recognition', 'surveillance', 'gait', 'iris']\n\n# Combine text for searching\nsubset['text_search'] = subset[use_case_col].fillna('').astype(str).str.lower() + \" \" + subset[purpose_col].fillna('').astype(str).str.lower()\n\n# Apply boolean mask\nsubset['Is_Biometric'] = subset['text_search'].apply(lambda x: any(k in x for k in bio_keywords))\n\nprint(f\"Biometric systems found: {subset['Is_Biometric'].sum()} out of {len(subset)}\")\n\n# --- 2. Define Mitigation Presence ---\n# Positive keywords indicating some form of check/control exists\nmitigation_keywords = ['test', 'eval', 'monitor', 'assess', 'audit', 'mitigat', 'review', 'human', 'valid', 'bias', 'fair', 'check', 'control', 'feedback']\n\n# Function to check mitigation text\ndef check_mitigation(text):\n    if pd.isna(text):\n        return False\n    text = str(text).lower()\n    # Check for positive keywords\n    has_positive = any(k in text for k in mitigation_keywords)\n    return has_positive\n\nsubset['Has_Mitigation'] = subset[mitigation_col].apply(check_mitigation)\n\nprint(f\"Systems with Mitigation found: {subset['Has_Mitigation'].sum()} out of {len(subset)}\")\n\n# --- 3. Statistical Analysis ---\ncontingency = pd.crosstab(subset['Is_Biometric'], subset['Has_Mitigation'])\nprint(\"\\nContingency Table (Rows=Is_Biometric, Cols=Has_Mitigation):\")\nprint(contingency)\n\n# Calculate rates safely\ntry:\n    # Biometric stats\n    bio_total = contingency.loc[True].sum() if True in contingency.index else 0\n    bio_mitigated = contingency.loc[True, True] if (True in contingency.index and True in contingency.columns) else 0\n    bio_rate = bio_mitigated / bio_total if bio_total > 0 else 0.0\n\n    # Non-Biometric stats\n    non_bio_total = contingency.loc[False].sum() if False in contingency.index else 0\n    non_bio_mitigated = contingency.loc[False, True] if (False in contingency.index and True in contingency.columns) else 0\n    non_bio_rate = non_bio_mitigated / non_bio_total if non_bio_total > 0 else 0.0\n\n    print(f\"\\nBiometric Mitigation Rate: {bio_rate:.2%}\")\n    print(f\"Non-Biometric Mitigation Rate: {non_bio_rate:.2%}\")\n\nexcept Exception as e:\n    print(f\"Error calculating rates: {e}\")\n\n# Perform Chi-Square Test\nif contingency.size >= 4:\n    chi2, p, dof, ex = stats.chi2_contingency(contingency)\n    print(f\"\\nChi-Square Test Result:\")\n    print(f\"Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n    \n    if p < 0.05:\n        print(\"Result: Statistically Significant (Reject Null Hypothesis)\")\n    else:\n        print(\"Result: Not Statistically Significant (Fail to Reject Null Hypothesis)\")\nelse:\n    print(\"\\nContingency table is too small for Chi-Square test (needs 2x2).\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nEO 13960 Scored subset shape: (1757, 196)\nColumns identified: Use Case='2_use_case_name', Purpose='11_purpose_benefits', Mitigation='62_disparity_mitigation'\nBiometric systems found: 184 out of 1757\nSystems with Mitigation found: 44 out of 1757\n\nContingency Table (Rows=Is_Biometric, Cols=Has_Mitigation):\nHas_Mitigation  False  True \nIs_Biometric                \nFalse            1549     24\nTrue              164     20\n\nBiometric Mitigation Rate: 10.87%\nNon-Biometric Mitigation Rate: 1.53%\n\nChi-Square Test Result:\nStatistic: 55.1408\nP-value: 1.1220e-13\nResult: Statistically Significant (Reject Null Hypothesis)\n",
+  "created_at": "2026-02-22T14:53:33.344007+00:00",
+  "creation_idx": 290,
+  "experiment_id": "node_6_81",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table of Biometric status vs. Mitigation status.\n2. Calculated mitigation rates for both groups.\n3. Chi-square test statistic and p-value.",
+    "objective": "Assess whether biometric AI systems have a higher rate of documented disparity mitigation compared to non-biometric systems by parsing free-text governance responses.",
+    "steps": "1. Load the 'astalabs_discovery_all_data.csv' dataset and filter for rows where 'source_table' is 'eo13960_scored'.\n2. Identify the 'Disparity Mitigation' column (look for 'disparity_mitigation' in column names, likely index 62 or similar).\n3. Create a boolean column 'Is_Biometric' by checking if '2_use_case_name' or '11_purpose_benefits' contains any of the keywords: ['face', 'facial', 'biometric', 'recognition', 'surveillance', 'gait', 'iris'] (case-insensitive).\n4. Create a boolean column 'Has_Mitigation' by parsing the mitigation column. Convert text to lowercase. Set to True if the text contains action-oriented keywords: ['test', 'eval', 'monitor', 'assess', 'audit', 'mitigat', 'review', 'human', 'valid', 'bias', 'fair', 'check']. Set to False if the text is missing, 'nan', or fails to match these keywords. (Note: The column contains free text descriptions, not just Yes/No).\n5. Generate a Contingency Table (crosstab) of 'Is_Biometric' vs 'Has_Mitigation'.\n6. Calculate the percentage of 'Has_Mitigation' for both the Biometric and Non-Biometric groups.\n7. Perform a Chi-square test of independence to determine if the association is statistically significant.\n8. Print the contingency table, the calculated percentages, and the Chi-square test results (statistic and p-value)."
+  },
+  "hypothesis": "Government AI systems involving 'Biometric' or 'Facial Recognition' technologies are significantly more likely to report active 'Disparity Mitigation' measures (e.g., testing, monitoring, human review) compared to other AI systems, reflecting higher scrutiny.",
+  "id_in_run": 289,
+  "is_surprising": false,
+  "parent_id": "node_5_95",
+  "posterior": 0.9917582417582418,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9917582417582418,
+    "n": 60.0,
+    "prior_params": [
+      30.25,
+      0.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9758064516129032,
+  "prior_belief": {
+    "_empirical_mean": 0.9916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 29.0,
+    "maybe_false": 0.0,
+    "maybe_true": 1.0,
+    "mean": 0.9758064516129032,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed. The code improved upon the previous attempt by using keyword-based heuristics to parse the free-text 'disparity_mitigation' column rather than looking for exact matches. This allowed for the identification of 44 systems with documented mitigation strategies. The statistical analysis (Chi-square) was appropriate for the categorical data, and the findings (p < 0.05) support the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 278900.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.019142148174406248
+}

@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step3_incident_coding.csv
+
+=== Descriptive Statistics (Technique Count) ===
+               count   mean       std       sem
+Harm_Category                                  
+Other             16  7.625  2.418677  0.604669
+Security          36  7.500  3.166792  0.527799
+
+=== Statistical Test Results ===
+Mann-Whitney U Test: Statistic=255.5, p-value=0.52260
+Welch's T-Test:      Statistic=-0.1557, p-value=0.87708
+Result: No statistically significant difference detected (p >= 0.05).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (with error bars).
+*   **Purpose:** The plot compares the mean values of a numerical variable (ATLAS Technique Count) across two distinct categorical groups (Harm Categories: Security vs. Other). The inclusion of error bars indicates it is visualizing central tendency (mean) along with a measure of variability or precision (Standard Error of the Mean).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Harm Category"
+    *   **Labels:** Two categories are represented: "Security" and "Other".
+*   **Y-Axis:**
+    *   **Title:** "Mean Technique Count (+/- SEM)"
+    *   **Range:** The axis spans from 0 to slightly above 8, with grid lines marking integer intervals (0, 1, 2... 8).
+    *   **Units:** Count (numerical frequency).
+
+### 3. Data Trends
+*   **Bar Heights:**
+    *   The **"Other"** category represents the tallest bar with a value of **7.62**.
+    *   The **"Security"** category is slightly shorter with a value of **7.50**.
+*   **Pattern:** The two categories are remarkably similar in height. There is very little visual difference between the mean technique count for security-related harm compared to other categories.
+
+### 4. Annotations and Legends
+*   **Title:** "Mean ATLAS Technique Count by Harm Category" appears at the top center.
+*   **Value Labels:** Specific mean values are annotated in bold text above the bars:
+    *   Security: **7.50**
+    *   Other: **7.62**
+*   **Error Bars:** Black "whiskers" extend above and below the top of the bars. The Y-axis label specifies these represent the Standard Error of the Mean (SEM). The error bars appear to overlap when projected horizontally.
+*   **Color Coding:** The "Security" bar is colored salmon/light red, while the "Other" bar is colored light gray.
+
+### 5. Statistical Insights
+*   **Minimal Difference:** The difference between the mean technique count for "Security" (7.50) and "Other" (7.62) is numerically very small (0.12).
+*   **Variability and Overlap:** The error bars (SEM) for both categories overlap significantly. In statistical terms, overlapping error bars (specifically SEM) often suggest that the difference between the two groups is likely not statistically significant.
+*   **Conclusion:** Based on this chart, the category of harm (Security vs. Other) does not appear to be a strong predictor for the number of ATLAS techniques used, as the average counts are nearly identical.
+==================================================

@@ -1,0 +1,88 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Refined Adversarial Tactic-Gap Analysis...
+Subset 'step3_incident_coding' shape: (52, 196)
+Column 'competency_gaps' has 1 unique atomic values.
+Column 'competency_domains' has 16 unique atomic values.
+Column 'missing_controls' has 31 unique atomic values.
+
+Selected Gap Column: missing_controls
+Processed 52 incidents.
+Unique Atomic Tactics: 16
+Unique Atomic Gaps: 31
+
+--- Top 20 Strongest Correlations (Absolute Value) ---
+Tactic                                   | Gap                                      | Phi   
+------------------------------------------------------------------------------------------
+AML.TA0005                               | AML.M0003: Model Hardening               | -0.647
+AML.TA0005                               | AML.M0020: Generative AI Guardrails      | 0.607
+AML.TA0012                               | AML.M0021: Generative AI Guidelines      | 0.594
+AML.TA0012                               | AML.M0022: Generative AI Model Alignment | 0.594
+AML.TA0012                               | AML.M0026: Privileged AI Agent Permissions Configuration | 0.551
+AML.TA0005                               | AML.M0021: Generative AI Guidelines      | 0.548
+AML.TA0005                               | AML.M0022: Generative AI Model Alignment | 0.548
+AML.TA0012                               | AML.M0020: Generative AI Guardrails      | 0.525
+AML.TA0005                               | AML.M0010: Input Restoration             | -0.518
+AML.TA0001                               | AML.M0003: Model Hardening               | 0.505
+AML.TA0005                               | AML.M0024: AI Telemetry Logging          | 0.503
+AML.TA0005                               | AML.M0026: Privileged AI Agent Permissions Configuration | 0.488
+AML.TA0015                               | AML.M0031: Memory Hardening              | 0.480
+AML.TA0001                               | AML.M0004: Restrict Number of AI Model Queries | 0.474
+AML.TA0005                               | AML.M0006: Use Ensemble Methods          | -0.462
+AML.TA0001                               | AML.M0002: Passive AI Output Obfuscation | 0.413
+AML.TA0009                               | AML.M0017: AI Model Distribution Methods | 0.410
+AML.TA0004                               | AML.M0000: Limit Public Release of Information | -0.396
+AML.TA0005                               | AML.M0000: Limit Public Release of Information | -0.394
+AML.TA0005                               | AML.M0033: Input and Output Validation for AI Agent Components | 0.394
+
+--- Hypothesis Check ---
+Hypothesis Tactic                        | Hypothesis Gap                           | Phi   
+AML.TA0012                               | AML.M0026: Privileged AI Agent Permissions Configuration | 0.551
+AML.TA0012                               | AML.M0005: Control Access to AI Models and Data at Rest | -0.195
+AML.TA0012                               | AML.M0019: Control Access to AI Models and Data in Production | -0.091
+AML.TA0012                               | AML.M0027: Single-User AI Agent Permissions Configuration | -0.064
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically a Correlation Matrix).
+*   **Purpose:** To visualize the correlation strength and direction between "Atomic Adversarial Tactics" (rows) and "Governance Gaps" (columns). It helps identify which governance deficiencies are most strongly associated (positively or negatively) with specific adversarial tactics.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** Represents **Atomic Adversarial Tactics**.
+    *   **Values:** Categorical identifiers ranging from `T:AML.TA0000` to `T:AML.TA0015`.
+*   **X-Axis (Horizontal):**
+    *   **Label:** Represents **Governance Gaps** (Specific mitigation or policy items).
+    *   **Values:** Categorical descriptions starting with codes (e.g., `G:AML.M0000`) followed by descriptive text (e.g., "Limit Public Release of Information"). The labels cover `M0000` to `M0034`.
+*   **Color Axis (Z-Axis/Legend):**
+    *   **Range:** -0.6 to +0.6.
+    *   **Units:** Correlation coefficient (dimensionless).
+
+### 3. Data Trends
+*   **Color Scale:** The plot uses a diverging color scheme:
+    *   **Dark Red:** Indicates strong positive correlation (up to 0.6).
+    *   **Dark Blue:** Indicates strong negative correlation (down to -0.6).
+    *   **White/Light Colors:** Indicate near-zero or weak correlation.
+
+*   **Areas of High Positive Correlation (Red):**
+    *   **Generative AI Cluster:** There is a distinct block of deep red on the right side of the plot involving rows `T:AML.TA0005`, `T:AML.TA0006`, and `T:AML.TA0012` intersecting with columns `G:AML.M0020` ("Generative AI Guardrails"), `G:AML.M0021` ("Generative AI Guidelines"), and `G:AML.M0022` ("Generative AI Model Alignment"). This suggests gaps in Generative AI governance are strongly correlated with these specific tactics.
+    *   **Top-Left Cluster:** Row `T:AML.TA0001` shows strong positive correlation with `G:AML.M0002` ("Passive AI Output Obfuscation") and `G:AML.M0003` ("Model Hardening").
+
+*   **Areas of High Negative Correlation (Blue):**
+    *   **Specific Hotspot:** The strongest negative correlation (darkest blue) is found at the intersection of row `T:AML.TA0005` and column `G:AML.M0003` ("Model Hardening").
+    *   **General Pattern:** Rows `T:AML.TA0004` and `T:AML.TA0005` show generally negative correlations (blue shades) across the first third of the governance gaps (left side of the chart).
+
+*   **Neutral Areas:**
+    *   Row `T:AML.TA0014` is largely neutral (light grey/beige), suggesting this tactic has little correlation with the specific governance gaps listed.
+
+### 4. Annotations and Legends
+*   **Title:** "Correlation: Atomic Adversarial Tactics vs Governance Gaps" appears at the top, clearly defining the dataset relationship.
+*   **Color Bar:** Located on the right side, providing the key for interpreting the heatmap values. It is marked in increments of 0.2, from -0.6 to 0.6.
+
+### 5. Statistical Insights
+*   **Specific Vulnerabilities:** The tactic `T:AML.TA0012` appears to be highly sensitive to Generative AI governance issues. If an organization has gaps in `M0020`, `M0021`, or `M0022`, they are statistically more likely to see correlations with tactic `TA0012`.
+*   **Inverse Relationships:** Tactic `T:AML.TA0005` exhibits a "flip" behavior. It is negatively correlated with traditional hardening methods (left side of x-axis) but strongly positively correlated with modern Generative AI governance gaps (right side). This implies that `TA0005` might be a tactic specifically targeting Generative AI weaknesses, rather than traditional model hardening issues.
+*   **Correlation Strength:** The correlations peak at ±0.6 rather than ±1.0. This indicates moderate-to-strong relationships, but suggests that other variables (noise or unmeasured factors) also play a role; the relationship is not perfectly deterministic.
+==================================================

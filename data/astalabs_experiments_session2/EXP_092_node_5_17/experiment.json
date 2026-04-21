@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was successfully executed. The programmer correctly resolved previous data issues by merging the CSV dataset (containing the 'function' classification) with the JSON dataset (containing the detailed 'applicable_controls' list) using the 'req_id' key. \n\n### Hypothesis Verification:\nThe hypothesis that **'MAP' requirements map to significantly fewer technical controls than 'MANAGE' requirements** was **rejected**.\n\n*   **Observed Trend**: Contrary to the hypothesis, 'MAP' requirements actually mapped to a higher average number of controls (Mean = 2.33) compared to 'MANAGE' requirements (Mean = 1.80).\n*   **Statistical Significance**: The difference was not statistically significant. A T-test yielded a p-value of 0.0998 (t=1.8353), which exceeds the standard alpha of 0.05.\n*   **Data Insight**: The 'MANAGE' function showed high rigidity, with most requirements mapping to exactly 2 controls, whereas 'MAP' showed slightly more variability (2 to 3 controls). \n\nThe analysis successfully integrated the split datasets to provide a valid statistical test, concluding that there is no evidence to support the claim that 'MAP' requirements are less technically operationalizable in this framework.",
+  "child_ids": [
+    "node_6_49"
+  ],
+  "code": "import pandas as pd\nimport json\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport os\n\n# 1. Load CSV for 'function' and 'req_id'\ncsv_path = 'astalabs_discovery_all_data.csv'\nif not os.path.exists(csv_path):\n    csv_path = f\"../{csv_path}\"\n\ndf_csv = pd.read_csv(csv_path, low_memory=False)\n\n# Filter for crosswalk matrix\ncsv_subset = df_csv[df_csv['source_table'] == 'step2_crosswalk_matrix'].copy()\n\n# Keep relevant columns\nif 'function' not in csv_subset.columns or 'req_id' not in csv_subset.columns:\n    print(\"Error: Missing columns in CSV\")\n    exit(1)\n\n# Normalize req_id in CSV (strip whitespace)\ncsv_subset['req_id'] = csv_subset['req_id'].astype(str).str.strip()\ncsv_data = csv_subset[['req_id', 'function']]\n\nprint(f\"CSV Matrix Rows: {len(csv_data)}\")\nprint(f\"CSV Head req_id: {csv_data['req_id'].head().tolist()}\")\n\n# 2. Load JSON for 'req_id' and 'applicable_controls'\njson_path = 'context_crosswalk_evidence.json'\nif not os.path.exists(json_path):\n    json_path = f\"../{json_path}\"\n\nwith open(json_path, 'r') as f:\n    json_list = json.load(f)\n\ndf_json = pd.DataFrame(json_list)\n# Normalize req_id in JSON\ndf_json['req_id'] = df_json['req_id'].astype(str).str.strip()\n\nprint(f\"JSON Rows: {len(df_json)}\")\nprint(f\"JSON Head req_id: {df_json['req_id'].head().tolist()}\")\n\n# 3. Merge\n# Try inner join\nmerged = pd.merge(csv_data, df_json, on='req_id', how='inner')\nprint(f\"Merged Rows: {len(merged)}\")\n\n# If merge failed (0 rows) and counts match (42), try positional merge as fallback\nif len(merged) == 0 and len(csv_data) == 42 and len(df_json) == 42:\n    print(\"Warning: Merge on req_id failed. Attempting positional merge based on row order.\")\n    csv_data = csv_data.reset_index(drop=True)\n    df_json = df_json.reset_index(drop=True)\n    merged = pd.concat([csv_data, df_json.drop(columns=['req_id'])], axis=1)\n    print(f\"Positional Merge Rows: {len(merged)}\")\n\n# 4. Calculate Control Counts\ndef calc_len(x):\n    if isinstance(x, list):\n        return len(x)\n    return 0\n\nmerged['control_count'] = merged['applicable_controls'].apply(calc_len)\n\n# 5. Analyze MAP vs MANAGE\ntarget_functions = ['MAP', 'MANAGE']\nanalysis_set = merged[merged['function'].isin(target_functions)].copy()\n\nprint(f\"Analysis Set Size: {len(analysis_set)}\")\nprint(analysis_set.groupby('function')['control_count'].describe())\n\nmap_data = analysis_set[analysis_set['function'] == 'MAP']['control_count']\nmanage_data = analysis_set[analysis_set['function'] == 'MANAGE']['control_count']\n\nif len(map_data) > 0 and len(manage_data) > 0:\n    t_stat, p_val = stats.ttest_ind(map_data, manage_data, equal_var=False)\n    print(f\"\\nT-test Results (MAP vs MANAGE):\\nT-statistic: {t_stat:.4f}\\nP-value: {p_val:.4f}\")\n    if p_val < 0.05:\n        print(\"Result: Significant difference.\")\n    else:\n        print(\"Result: No significant difference.\")\n\n    # Visualization\n    plt.figure(figsize=(8, 6))\n    plt.boxplot([map_data, manage_data], tick_labels=['MAP', 'MANAGE'])\n    plt.title('Technical Controls: MAP vs MANAGE')\n    plt.ylabel('Count of Controls')\n    plt.grid(axis='y', linestyle='--', alpha=0.7)\n    plt.show()\nelse:\n    print(\"Insufficient data for analysis.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: CSV Matrix Rows: 42\nCSV Head req_id: ['NIST-GV-1', 'NIST-GV-2', 'NIST-GV-3', 'NIST-GV-4', 'NIST-GV-5']\nJSON Rows: 42\nJSON Head req_id: ['NIST-GV-1', 'NIST-GV-2', 'NIST-GV-3', 'NIST-GV-4', 'NIST-GV-5']\nMerged Rows: 42\nAnalysis Set Size: 11\n          count      mean       std  min  25%  50%   75%  max\nfunction                                                     \nMANAGE      5.0  1.800000  0.447214  1.0  2.0  2.0  2.00  2.0\nMAP         6.0  2.333333  0.516398  2.0  2.0  2.0  2.75  3.0\n\nT-test Results (MAP vs MANAGE):\nT-statistic: 1.8353\nP-value: 0.0998\nResult: No significant difference.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).\n*   **Purpose:** This plot compares the statistical distribution of a numerical variable (\"Count of Controls\") between two distinct categorical groups (\"MAP\" and \"MANAGE\"). It visualizes the median, quartiles, and potential outliers for each group.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** Represents the categories. The distinct groups are **\"MAP\"** and **\"MANAGE\"**.\n*   **Y-Axis:**\n    *   **Title:** **\"Count of Controls\"**.\n    *   **Range:** The axis is marked from **1.00 to 3.00** with increments of 0.25.\n    *   **Units:** Integer counts (implied by the variable name and integer data points).\n\n### 3. Data Trends\n*   **MAP Group (Left):**\n    *   **Median:** The orange line indicates the median value is **2.0**.\n    *   **Spread:** The data ranges from a minimum of **2.0** to a maximum of **3.0**.\n    *   **Quartiles:** The box extends from 2.0 (Q1/lower quartile) to 2.75 (Q3/upper quartile). This indicates that the upper 50% of the data shows some variance between 2 and 3, while the lower 50% is clustered strictly at 2.\n    *   **Shape:** The distribution is skewed upwards, as there is no bottom whisker (the minimum equals the median).\n\n*   **MANAGE Group (Right):**\n    *   **Median:** The median is also **2.0**.\n    *   **Spread/Consistency:** This group is highly consistent. The box is collapsed into a flat line at 2.0, meaning the 25th percentile, median, and 75th percentile are all likely the same value (2).\n    *   **Outliers:** There is a distinct outlier represented by a hollow circle at **1.0**.\n\n### 4. Annotations and Legends\n*   **Chart Title:** \"Technical Controls: MAP vs MANAGE\" at the top center.\n*   **Grid Lines:** Horizontal dashed grey lines are provided at 0.25 intervals to facilitate reading exact Y-axis values.\n*   **Outlier Marker:** A small circle is used to denote data points that fall statistically far from the rest of the dataset (visible in the MANAGE column at y=1).\n\n### 5. Statistical Insights\n*   **Central Tendency:** Both the MAP and MANAGE processes generally utilize the same number of technical controls on average, with a median of **2 controls** for both.\n*   **Variability:**\n    *   **MAP** is more variable on the higher end. While its baseline is 2 controls, a significant portion of the data points extend up to 3 controls.\n    *   **MANAGE** is extremely rigid. Almost all data points result in exactly 2 controls, showing very little variance.\n*   **Anomalies:** The MANAGE process has a rare instance (outlier) where only 1 control was used, whereas the MAP process never drops below 2.\n*   **Conclusion:** If consistency is the goal, MANAGE is the more consistent process (mostly 2s). If a higher count of controls is preferred/safer, MAP appears \"safer\" as it ranges between 2 and 3, whereas MANAGE has a risk of dropping to 1.\n==================================================",
+  "created_at": "2026-02-22T05:25:30.208862+00:00",
+  "creation_idx": 93,
+  "experiment_id": "node_5_17",
+  "experiment_plan": {
+    "deliverables": "Box plot of Control Counts by NIST Function; Statistical comparison results.",
+    "objective": "Determine if 'Map' requirements are less technically operationalizable than 'Manage' requirements.",
+    "steps": "1. Load 'context_crosswalk_evidence.json' (or the 'step2_crosswalk_matrix' subset). 2. Group records by the 'function' field (e.g., MAP vs MANAGE). 3. For each record, count the number of unique items in the 'applicable_controls' (or 'arch_controls') list. 4. Perform a One-Way ANOVA or T-test comparing the control counts between the two functions."
+  },
+  "hypothesis": "The 'Paperwork vs. Protection' Gap: Governance requirements categorized under the NIST AI RMF 'MAP' function map to significantly fewer technical architecture controls than those under the 'MANAGE' function.",
+  "id_in_run": 92,
+  "is_surprising": true,
+  "parent_id": "node_4_12",
+  "posterior": 0.3563218390804598,
+  "posterior_belief": {
+    "_empirical_mean": 0.14285714285714285,
+    "_type": "boolean_cat",
+    "definitely_false": 24.0,
+    "definitely_true": 0.0,
+    "maybe_false": 32.0,
+    "maybe_true": 0.0,
+    "mean": 0.3563218390804598,
+    "n": 56.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed. The programmer correctly resolved previous data issues by merging the CSV dataset (containing the 'function' classification) with the JSON dataset (containing the detailed 'applicable_controls' list) using the 'req_id' key. \n\n### Hypothesis Verification:\nThe hypothesis that **'MAP' requirements map to significantly fewer technical controls than 'MANAGE' requirements** was **rejected**.\n\n*   **Observed Trend**: Contrary to the hypothesis, 'MAP' requirements actually mapped to a higher average number of controls (Mean = 2.33) compared to 'MANAGE' requirements (Mean = 1.80).\n*   **Statistical Significance**: The difference was not statistically significant. A T-test yielded a p-value of 0.0998 (t=1.8353), which exceeds the standard alpha of 0.05.\n*   **Data Insight**: The 'MANAGE' function showed high rigidity, with most requirements mapping to exactly 2 controls, whereas 'MAP' showed slightly more variability (2 to 3 controls). \n\nThe analysis successfully integrated the split datasets to provide a valid statistical test, concluding that there is no evidence to support the claim that 'MAP' requirements are less technically operationalizable in this framework.",
+  "rich_outputs": null,
+  "runtime_ms": 363680.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.46273637374860954
+}

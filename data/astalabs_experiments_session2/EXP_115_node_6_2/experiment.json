@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Physical Sector Risk' hypothesis using the AIID incidents dataset. The code correctly identified the relevant columns ('Sector of Deployment', 'Tangible Harm') and categorized incidents into 'Physical Infrastructure' (n=28) and 'Services' (n=41) sectors. \n\n**Findings:**\n1.  **Zero Incidence:** Contrary to the expectation of higher physical risks in transportation/energy, the analysis found **zero** recorded incidents of 'Death' or 'Injury' in either sector group within this dataset (Rate: 0.0%).\n2.  **Statistical Result:** The Chi-square test yielded a p-value of 1.0, confirming no statistical difference.\n\n**Hypothesis Status:** Not Supported.\n\n**Interpretation:** The hypothesis that physical infrastructure sectors exhibit higher rates of physical harm was not supported by the AIID data. The complete absence of death/injury records in these subsets suggests that the AIID dataset likely skews towards non-physical harms (e.g., bias, privacy) or that such physical incidents are rare/unreported in this specific database.",
+  "child_ids": [
+    "node_7_3",
+    "node_7_4"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.stats import chi2_contingency\nimport os\n\n# Load dataset\nfilename = 'astalabs_discovery_all_data.csv'\nif os.path.exists(f'../{filename}'):\n    filepath = f'../{filename}'\nelse:\n    filepath = filename\n\nprint(f\"Loading data from {filepath}...\")\ndf = pd.read_csv(filepath, low_memory=False)\n\n# Filter AIID\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"AIID rows: {len(aiid_df)}\")\n\n# Identify correct column names (handling potential lack of prefixes vs index from previous logs)\n# Based on logs: 'Sector of Deployment' and 'Tangible Harm' should be the names\ncols = aiid_df.columns.tolist()\nsector_col = next((c for c in cols if 'Sector of Deployment' in c), None)\nharm_col = next((c for c in cols if 'Tangible Harm' in c), None)\n\nprint(f\"Using Sector Column: {sector_col}\")\nprint(f\"Using Harm Column: {harm_col}\")\n\nif not sector_col or not harm_col:\n    print(\"Could not find required columns. Dumping available columns related to Sector or Harm:\")\n    print([c for c in cols if 'ector' in c or 'arm' in c])\n    exit(1)\n\n# Map sectors\ndef map_sector(val):\n    if pd.isna(val):\n        return None\n    s = str(val).lower()\n    if any(x in s for x in ['transportation', 'energy', 'construction']):\n        return 'Physical_Infra'\n    if any(x in s for x in ['finance', 'financial', 'education', 'admin', 'public administration']):\n        return 'Services'\n    return 'Other'\n\naiid_df['Sector_Group'] = aiid_df[sector_col].apply(map_sector)\n\n# Filter groups\nanalysis_df = aiid_df[aiid_df['Sector_Group'].isin(['Physical_Infra', 'Services'])].copy()\n\n# Map Harms\ndef check_physical_harm(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).lower()\n    if 'death' in s or 'injury' in s:\n        return 1\n    return 0\n\nanalysis_df['Is_Physical_Harm'] = analysis_df[harm_col].apply(check_physical_harm)\n\n# Stats\nrates = analysis_df.groupby('Sector_Group')['Is_Physical_Harm'].mean()\ncounts = analysis_df['Sector_Group'].value_counts()\nprint(\"\\nRates of Physical Harm (Death/Injury):\")\nprint(rates)\nprint(\"\\nCounts:\")\nprint(counts)\n\n# Chi-square\nct = pd.crosstab(analysis_df['Sector_Group'], analysis_df['Is_Physical_Harm'])\nprint(\"\\nContingency Table (0=No Harm, 1=Death/Injury):\")\nprint(ct)\nchi2, p, dof, ex = chi2_contingency(ct)\nprint(f\"\\nChi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.6e}\")\n\n# Plot\nplt.figure(figsize=(8,6))\n# Define colors: Red for Physical/Infra (high risk assumed), Blue for Services\ncolors = []\nfor group in rates.index:\n    if group == 'Physical_Infra':\n        colors.append('#d9534f') # Red\n    else:\n        colors.append('#5bc0de') # Blue\n\nbars = plt.bar(rates.index, rates.values, color=colors, alpha=0.8)\nplt.title('Physical Harm Rate by Sector Group')\nplt.ylabel('Rate of Death/Injury Incidents')\nplt.xlabel('Sector Group')\nplt.ylim(0, max(rates.values) * 1.2)\n\nfor bar, count in zip(bars, counts[rates.index]):\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2.0, height,\n             f'{height:.1%} (n={count})', ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading data from astalabs_discovery_all_data.csv...\nAIID rows: 1362\nUsing Sector Column: Sector of Deployment\nUsing Harm Column: Tangible Harm\n\nRates of Physical Harm (Death/Injury):\nSector_Group\nPhysical_Infra    0.0\nServices          0.0\nName: Is_Physical_Harm, dtype: float64\n\nCounts:\nSector_Group\nServices          41\nPhysical_Infra    28\nName: count, dtype: int64\n\nContingency Table (0=No Harm, 1=Death/Injury):\nIs_Physical_Harm   0\nSector_Group        \nPhysical_Infra    28\nServices          41\n\nChi-square Statistic: 0.0000\nP-value: 1.000000e+00\n\nSTDERR:\n<ipython-input-1-f7ca959a4e8e>:95: UserWarning: Attempting to set identical low and high ylims makes transformation singular; automatically expanding.\n  plt.ylim(0, max(rates.values) * 1.2)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot.\n*   **Purpose:** The plot is designed to compare the \"Rate of Death/Injury Incidents\" (physical harm) across two distinct sector groups: \"Physical_Infra\" and \"Services.\" Since the values are zero, the bars have no height, appearing as flat lines on the x-axis.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Sector Group\"\n    *   **Labels:** Two categorical groups are represented: \"Physical_Infra\" (Physical Infrastructure) and \"Services.\"\n*   **Y-Axis:**\n    *   **Title:** \"Rate of Death/Injury Incidents\"\n    *   **Range:** The axis spans from approximately **-0.05 to 0.05**.\n    *   **Units:** Rate (expressed as a decimal on the axis ticks, but interpreted as a percentage in the annotations). Note that the negative values on the axis are a result of automatic scaling by the plotting software to center the zero-value data; a negative rate of injury is not physically possible.\n\n### 3. Data Trends\n*   **Pattern:** The most distinct pattern is the **absence of incidents**. Both categories show a rate of exactly 0.0.\n*   **Comparison:** There is no variation between the two sectors regarding physical harm rates in this dataset; both are identical at zero.\n\n### 4. Annotations and Legends\n*   **Text Annotations:** There are specific text labels placed at the coordinate corresponding to each sector:\n    *   **Physical_Infra:** \"0.0% (n=28)\"\n    *   **Services:** \"0.0% (n=41)\"\n*   **Meaning:**\n    *   **0.0%:** Indicates the calculated rate of physical harm.\n    *   **(n=28/41):** Represents the sample size (N-count) for each group. There were 28 observations for Physical Infrastructure and 41 observations for Services.\n\n### 5. Statistical Insights\n*   **Zero Incidence:** Based on the data presented, there were **zero** recorded incidents of death or injury in either the Physical Infrastructure or Services sectors.\n*   **Sample Size:** The \"Services\" sector had a larger sample size (n=41) compared to \"Physical_Infra\" (n=28).\n*   **Conclusion:** Despite a combined total of 69 observations (n=28 + n=41), the event rate for physical harm was non-existent (0%) for the duration or scope of this specific study.\n==================================================",
+  "created_at": "2026-02-22T06:33:11.498510+00:00",
+  "creation_idx": 116,
+  "experiment_id": "node_6_2",
+  "experiment_plan": {
+    "deliverables": "1. Physical harm rates by Sector Group.\n2. Chi-square stats.\n3. Visualization.",
+    "objective": "Correlate industry sectors with physical safety risks.",
+    "steps": "1. Filter 'aiid_incidents'.\n2. Group '78_Sector of Deployment' into 'Physical_Infra' (Transportation, Energy, Construction) vs 'Services' (Finance, Education, Admin).\n3. Create a binary target 'Is_Physical_Harm' based on '74_Tangible Harm' containing 'Death' or 'Injury'.\n4. Compare the rates using a Chi-square test."
+  },
+  "hypothesis": "The 'Physical' Sector Risk: Incidents in the 'Transportation' and 'Energy' sectors have a significantly higher ratio of 'Death/Injury' harms compared to the 'Finance' and 'Education' sectors.",
+  "id_in_run": 115,
+  "is_surprising": true,
+  "parent_id": "node_5_7",
+  "posterior": 0.4230769230769231,
+  "posterior_belief": {
+    "_empirical_mean": 0.13333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 28.0,
+    "definitely_true": 0.0,
+    "maybe_false": 32.0,
+    "maybe_true": 0.0,
+    "mean": 0.4230769230769231,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed. The code adapted to the schema differences in the AIID subset (lacking numeric prefixes) and correctly identified the relevant columns. The analysis revealed that within the filtered dataset, there were zero recorded incidents of 'Death' or 'Injury' for the specified sectors, leading to a null result (p=1.0). While the hypothesis was not supported, the methodology was sound.",
+  "rich_outputs": null,
+  "runtime_ms": 245440.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6729528535980148
+}

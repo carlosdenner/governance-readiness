@@ -1,0 +1,544 @@
+[
+  {
+    "construct": "AI Orientation",
+    "enriched_definition": "AI Orientation refers to the degree to which an organization’s senior leadership, particularly the CIO, actively shapes, prioritizes, and resources the enterprise’s AI agenda as a core driver of competitive advantage and operational transformation. It is characterized by the CIO’s central role in crafting enterprise strategy, championing AI as a business imperative, and ensuring significant investment in AI capabilities and operating models [#32, #03]. Organizations with strong AI Orientation demonstrate leadership commitment to scaling agentic AI systems, integrating AI into strategic decision-making, and rewiring business processes to maximize AI-driven innovation and growth [#32, #20].",
+    "theoretical_lens": "Dynamic Managerial Capabilities (DMC), Role Theory, Governance-as-Capability",
+    "sub_dimensions": [
+      {
+        "id": "AO-1",
+        "name": "CIO Strategic Centrality in AI Agenda-Setting",
+        "definition": "The extent to which the CIO is a primary architect and driver of the organization’s AI strategy, shaping enterprise priorities and aligning technology investments with business outcomes.",
+        "observable_practices": [
+          "CIO participates in or leads board-level discussions on AI strategy at least quarterly.",
+          "CIO has formal authority over AI investment decisions and portfolio prioritization.",
+          "CIO issues regular (e.g., quarterly) AI progress reports to the executive committee."
+        ],
+        "candidate_metrics": [
+          "% of board meetings in the past year where the CIO presented on AI strategy",
+          "% of AI budget directly overseen by the CIO"
+        ],
+        "constraints_addressed": [
+          "Lack of clear business use cases (6)",
+          "Difficulty measuring ROI/value (7)",
+          "Talent/capability gaps (1)"
+        ],
+        "grounding_sources": [
+          "#32: 'CIOs are increasingly responsible for creating bottom-line growth... CIOs at these companies know that technology velocity, not just efficiency, is what it will take to fuel growth. AI has become a business imperative... CIOs should strive to fully rewire their organizations around AI to drive maximum innovation.'",
+          "#03: 'Leaders with such capabilities can use AI to enhance decision-making by producing actionable insights from predictive analytics, thus enhancing strategic decision-making. Dynamic managerial capabilities enable leaders to harness evolving technological advances and stay ahead in competition by dynamically using AI to simulate various scenarios and assess potential outcomes.'",
+          "#20: 'CIOs should lead on responsible AI, establish a modular and scalable architecture, and develop governance practices that help companies reap the benefits of experimentation... CIOs must prioritize use cases based on value, rethink processes, invest in change management, and build internal talent with a hybrid approach.'"
+        ],
+        "source_types_represented": [
+          "academic",
+          "practitioner"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 3,
+        "discriminant_note": "Distinct from general executive sponsorship by emphasizing the CIO’s unique, hands-on leadership and authority in shaping and executing the AI agenda, rather than diffuse or collective leadership."
+      },
+      {
+        "id": "AO-2",
+        "name": "Strategic Intent and Prioritization of AI",
+        "definition": "The explicit articulation and prioritization of AI as a core strategic imperative, reflected in formal strategy documents, investment priorities, and leadership communications.",
+        "observable_practices": [
+          "AI is named as a top-three strategic priority in annual reports or strategy documents.",
+          "Organization maintains a published AI roadmap with defined milestones and KPIs.",
+          "Leadership communicates AI’s strategic importance in at least two enterprise-wide communications per year."
+        ],
+        "candidate_metrics": [
+          "% of strategic planning cycles in which AI is a named priority",
+          "Existence of a board-approved AI strategy document (Y/N)"
+        ],
+        "constraints_addressed": [
+          "Lack of clear business use cases (6)",
+          "Internal resistance/change management (8)"
+        ],
+        "grounding_sources": [
+          "#32: 'AI has become a business imperative, with half of all companies identifying AI as a priority investment. Top performers invest heavily to scale agentic AI systems... Leading companies are rewiring around AI and embracing capability-led operating models to generate measurable ROI.'",
+          "#17: 'Leaders have more permission space than they realize, so it’s on them to be bold and capture the value of AI now.'"
+        ],
+        "source_types_represented": [
+          "practitioner"
+        ],
+        "evidence_strength": "moderate",
+        "source_count": 2,
+        "discriminant_note": "Focuses on the explicit, organization-wide prioritization and communication of AI as a strategic goal, rather than the operational leadership or resource allocation aspects."
+      },
+      {
+        "id": "AO-3",
+        "name": "Resource Commitment to AI Capabilities",
+        "definition": "The degree to which the organization allocates dedicated financial, human, and technological resources to AI initiatives, including investment in talent, infrastructure, and scaling efforts.",
+        "observable_practices": [
+          "Dedicated AI budget line item in annual financial statements.",
+          "Formal AI talent acquisition or upskilling programs launched in the past 12 months.",
+          "Investment in scalable AI platforms or infrastructure (e.g., cloud, MLOps) tracked and reported."
+        ],
+        "candidate_metrics": [
+          "% of IT/technology budget allocated to AI initiatives",
+          "Number of FTEs dedicated to AI roles"
+        ],
+        "constraints_addressed": [
+          "Talent/capability gaps (1)",
+          "Integration complexity with existing systems/tools (2)",
+          "Lack of modern data foundations (5)"
+        ],
+        "grounding_sources": [
+          "#32: 'Top performers invest heavily to scale agentic AI systems... CIOs manage technology investment as a system that connects people, data, and strategy—not just a budget that needs to be tamed.'",
+          "#20: 'CIOs must prioritize use cases based on value, rethink processes, invest in change management, and build internal talent with a hybrid approach.'"
+        ],
+        "source_types_represented": [
+          "practitioner"
+        ],
+        "evidence_strength": "moderate",
+        "source_count": 2,
+        "discriminant_note": "Distinct from strategic intent by focusing on tangible resource allocation and capability-building, rather than the articulation or prioritization of AI in strategy."
+      }
+    ],
+    "boundary_conditions": "AI Orientation does not apply in organizations where AI is not considered strategically relevant (e.g., due to regulatory prohibition, lack of digital infrastructure, or industry irrelevance), or where technology leadership is structurally excluded from enterprise strategy-setting.",
+    "gaps_identified": [
+      "Limited direct evidence on board of directors’ role in AI Orientation; most evidence centers on CIO and executive leadership.",
+      "Few sources address cross-functional or business unit-level AI orientation beyond the CIO’s remit.",
+      "No strong evidence on explicit measurement or formalization of AI Orientation at the board level."
+    ],
+    "confidence_assessment": "high: There is strong, triangulated evidence from both academic and practitioner sources that CIO strategic centrality, explicit AI prioritization, and resource commitment are core, distinct sub-dimensions of AI Orientation. However, confidence is lower regarding board-level involvement and formal measurement practices.",
+    "evidence_extractions": [
+      {
+        "source_id": "#32",
+        "section": "The new CIO mandate: Strategy, speed, and scaled intelligence",
+        "quote": "Nearly two-thirds of top-performing companies say their technology leaders are “very involved” in crafting enterprise strategy, compared with 52 percent of other organizations. The elevation of technology leadership signals that CIOs are increasingly responsible for creating bottom-line growth. Technology expertise has become strategy expertise. CIOs at these companies know that technology velocity, not just efficiency, is what it will take to fuel growth. AI has become a business imperative, with half of all companies identifying AI as a priority investment. Top performers invest heavily to scale agentic AI systems that autonomously plan, decide, and act across workflows. Leading companies are rewiring around AI and embracing capability-led operating models to generate measurable ROI. CIOs should strive to fully rewire their organizations around AI to drive maximum innovation. CIOs manage technology investment as a system that connects people, data, and strategy—not just a budget that needs to be tamed. They apply their technology expertise to shape business outcomes. Most importantly, they ensure technology fuels growth.",
+        "relevance": "Strategic intent toward AI; CIO centrality in AI agenda-setting; Resource commitment depth",
+        "strength": "strong",
+        "reasoning": "This passage explicitly documents CIOs' strategic involvement in AI agenda-setting, prioritization, and significant resource commitment at top-performing companies, directly supporting multiple AI Orientation dimensions with empirical survey data."
+      },
+      {
+        "source_id": "#03",
+        "section": "Introduction and Literature Review",
+        "quote": "AI-driven capability refers to the leaders’ capacity to think and act in human-machine collaborative ways to lead in an AI-driven organizational environment. In AI environments, AI-driven capabilities are vital for leadership to address emerging challenges and direct organizations on the right strategic path. Leaders with such capabilities can use AI to enhance decision-making by producing actionable insights from predictive analytics, thus enhancing strategic decision-making. Dynamic managerial capabilities enable leaders to harness evolving technological advances and stay ahead in competition by dynamically using AI to simulate various scenarios and assess potential outcomes. Transformational leaders could be better suited to fundamentally rethink organizational strategies, structures, and resources to adopt in the rapidly evolving AI environment.",
+        "relevance": "Strategic intent toward AI; CIO centrality in AI agenda-setting",
+        "strength": "strong",
+        "reasoning": "This source explicitly defines AI-driven leadership capabilities as critical for setting strategic direction and rethinking organizational strategies in AI contexts, aligning with the theoretical spine and directly supporting AI Orientation dimensions."
+      },
+      {
+        "source_id": "#20",
+        "section": "The CIO's Role in AI Value Creation",
+        "quote": "At 86% of AI future-built companies, IT leads or co-leads with the business on GenAI, compared with 54% for AI stagnating companies. CIOs should lead on responsible AI, establish a modular and scalable architecture, and develop governance practices that help companies reap the benefits of experimentation without creating a zoo of tools. CIOs can help accelerate a broader AI transformation by taking point on complying with emerging regulations, fostering scaling, and avoiding shadow IT. To succeed, CIOs must prioritize use cases based on value, rethink processes, invest in change management, and build internal talent with a hybrid approach.",
+        "relevance": "Strategic intent toward AI; CIO centrality in AI agenda-setting; Resource commitment depth",
+        "strength": "moderate",
+        "reasoning": "While focused on CIO operational roles, this passage discusses CIO leadership in AI transformation strategy, prioritization, and capability building, supporting AI Orientation dimensions though less explicitly on strategic intent."
+      },
+      {
+        "source_id": "#17",
+        "section": "Employees are ready for AI; now leaders must step up",
+        "quote": "Employees are more ready to embrace AI in the workplace than business leaders imagine. Nearly all employees and C-suite leaders report familiarity with gen AI tools, but leaders underestimate employee usage. Nearly half of employees want more formal training and believe it is the best way to boost AI adoption. Leaders have more permission space than they realize, so it’s on them to be bold and capture the value of AI now.",
+        "relevance": "Strategic intent toward AI; CIO centrality in AI agenda-setting",
+        "strength": "moderate",
+        "reasoning": "This passage highlights leadership responsibility and urgency in driving AI adoption and strategic value capture, supporting AI Orientation dimensions but with less direct focus on CIO or board roles."
+      }
+    ],
+    "synthesis_notes": "Across sources, there is strong convergence that CIOs are increasingly central to setting strategic AI agendas, shaping enterprise strategy, and committing significant resources to AI initiatives, especially at top-performing companies (McKinsey #32, SAGE/Hossain #03). The strategic intent dimension is well supported by evidence of CIOs moving from technology managers to strategy architects. The breadth of AI adoption and resource commitment is also emphasized, with agentic AI integration and capability-led operating models highlighted. Moderate evidence from BCG (#20) and McKinsey (#17) supports CIO leadership in AI transformation and the need for bold leadership to capture AI value. However, gaps remain in explicit discussion of board-level AI awareness and strategic AI orientation beyond CIO roles. Some sources focus more on operational or individual competency aspects, which are distinct from AI Orientation. Overall, the evidence supports defining AI Orientation as a strategic, leadership-driven construct centered on CIO and executive commitment to AI as a competitive and transformative priority."
+  },
+  {
+    "construct": "Trust Readiness",
+    "enriched_definition": "Trust Readiness is the organizational capability to systematically govern, monitor, and manage AI systems in a manner that ensures safety, accountability, auditability, and compliance with regulatory and ethical standards. This capability is operationalized through formalized policies, risk management frameworks, transparent documentation, and structured oversight mechanisms that address both internal and external risks throughout the AI lifecycle [#26, #21, #25, #15, #29]. Trust Readiness also encompasses the ability to translate evolving regulatory requirements into actionable controls and to respond effectively to incidents and supply chain threats, thereby enabling the responsible scaling of AI [#26, #21, #25, #15].",
+    "theoretical_lens": "Dynamic Managerial Capabilities (DMC), Role Theory, Governance-as-Capability",
+    "sub_dimensions": [
+      {
+        "id": "TR-1",
+        "name": "AI Risk Policy and Accountability Structures",
+        "definition": "The establishment and enforcement of clear, organization-wide policies and accountability frameworks governing the ethical, safe, and compliant use of AI systems.",
+        "observable_practices": [
+          "Maintains a board-approved AI governance policy reviewed at least annually.",
+          "Assigns explicit accountability for AI risk management to named executives or committees.",
+          "Documents and communicates AI-related roles and responsibilities across business units."
+        ],
+        "candidate_metrics": [
+          "% of AI projects covered by formal risk policies at initiation",
+          "Existence of a named executive with AI risk accountability (Y/N)"
+        ],
+        "constraints_addressed": [
+          "Regulatory/privacy/compliance (4)",
+          "Security/reliability/hallucinations (3)",
+          "Internal resistance/change management (8)"
+        ],
+        "grounding_sources": [
+          "#26: 'establishing specific requirements and obligations, including in respect of the transparency, technical documentation and record-keeping of AI systems.'",
+          "#21: 'GOVERN applies to all stages of organizations’ AI risk management processes and procedures.'",
+          "#25: 'Clear policies are essential to guide the ethical use of AI, including data privacy, algorithmic transparency, and AI-driven decision-making accountability.'",
+          "#15: 'Establishing governance requires defining standardized oversight processes, including ownership and responsibilities within AI onboarding, deployment, and offboarding procedures.'",
+          "#33: 'Microsoft established a full-time AI policy and ethics role to address ethical risks such as algorithmic bias and transparency.'"
+        ],
+        "source_types_represented": [
+          "standard",
+          "practitioner",
+          "academic"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 5,
+        "discriminant_note": "Distinct from monitoring and incident response, this sub-dimension focuses on the existence and clarity of policies, roles, and accountability structures rather than ongoing operational controls."
+      },
+      {
+        "id": "TR-2",
+        "name": "AI Evaluation and Monitoring Governance",
+        "definition": "The systematic, ongoing evaluation and monitoring of AI system performance, alignment, and risk exposure, including mechanisms for anomaly detection, performance review, and auditability.",
+        "observable_practices": [
+          "Implements automated monitoring for AI system outputs and anomalies.",
+          "Conducts periodic audits of AI models for compliance and alignment with intended purpose.",
+          "Maintains logs and documentation for all high-risk AI deployments."
+        ],
+        "candidate_metrics": [
+          "% of high-risk AI systems with real-time monitoring enabled",
+          "Frequency of AI model audits per year"
+        ],
+        "constraints_addressed": [
+          "Security/reliability/hallucinations (3)",
+          "Difficulty measuring ROI/value (7)",
+          "Lack of modern data foundations (5)"
+        ],
+        "grounding_sources": [
+          "#21: 'Responsible AI practices can help align decisions about AI system design, development, and uses with intended aim and values ... Understanding and managing the risks of AI systems will help to enhance trustworthiness.'",
+          "#15: 'Organizations should establish regular performance reviews to evaluate whether agents remain aligned with their intended purpose ... monitoring and anomaly detection tied to KPIs.'",
+          "#25: 'Establishing a balanced governance approach ensures AI-enabled services contribute effectively to business objectives while adhering to ethical standards and organizational policies.'",
+          "#29: 'The project empowers organizations with actionable guidance and tools to ensure secure development, deployment, and governance of generative AI systems.'"
+        ],
+        "source_types_represented": [
+          "standard",
+          "practitioner"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 4,
+        "discriminant_note": "Focuses on ongoing operational oversight and technical monitoring, distinct from policy-setting or incident response."
+      },
+      {
+        "id": "TR-3",
+        "name": "Regulatory Compliance Translation Capability",
+        "definition": "The organizational ability to interpret, operationalize, and demonstrate compliance with evolving AI regulations and standards across jurisdictions.",
+        "observable_practices": [
+          "Maintains a compliance register mapping AI projects to applicable regulations (e.g., EU AI Act, NIST RMF).",
+          "Conducts regular compliance gap assessments for AI systems.",
+          "Provides documented evidence of compliance during regulatory audits."
+        ],
+        "candidate_metrics": [
+          "% of AI systems with documented regulatory mapping",
+          "Number of compliance gaps identified and remediated per year"
+        ],
+        "constraints_addressed": [
+          "Regulatory/privacy/compliance (4)",
+          "Security/reliability/hallucinations (3)"
+        ],
+        "grounding_sources": [
+          "#26: 'The obligations placed on various operators involved in the AI value chain under this Regulation should apply without prejudice to national law ... This Regulation aims to strengthen the effectiveness of such existing rights and remedies by establishing specific requirements and obligations.'",
+          "#25: 'Governance components include ... Principles, Policies, and Procedures ... Clear policies are essential to guide the ethical use of AI, including data privacy, algorithmic transparency, and AI-driven decision-making accountability.'",
+          "#21: 'AI risk management is a key component of responsible development and use of AI systems.'",
+          "#33: 'Microsoft has developed policies on facial recognition, bias mitigation, model transparency, and is working on legal remediation for AI harm.'"
+        ],
+        "source_types_represented": [
+          "standard",
+          "academic"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 4,
+        "discriminant_note": "Distinct from risk policy (TR-1), this sub-dimension emphasizes the translation of external regulatory requirements into internal controls and demonstrable compliance."
+      },
+      {
+        "id": "TR-4",
+        "name": "AI Incident Response and Recovery",
+        "definition": "The preparedness and capability to detect, respond to, and recover from AI-related incidents, including security breaches, model failures, or ethical harms.",
+        "observable_practices": [
+          "Maintains an AI-specific incident response plan reviewed and tested annually.",
+          "Conducts post-incident reviews and root cause analyses for AI-related incidents.",
+          "Implements sandboxing or isolation protocols for malfunctioning AI agents."
+        ],
+        "candidate_metrics": [
+          "Mean time to detect and respond to AI incidents",
+          "Number of AI incidents with documented post-mortems"
+        ],
+        "constraints_addressed": [
+          "Security/reliability/hallucinations (3)",
+          "Regulatory/privacy/compliance (4)"
+        ],
+        "grounding_sources": [
+          "#15: 'Organizations should develop a contingency plan, with proper security measures in place, for every critical agent ... Deploying an AI contingency plan and sandbox environment, in conjunction with IAM and guardrails, can effectively isolate an AI agent that attempts unauthorized privilege escalation.'",
+          "#21: 'AI risk management is a key component of responsible development and use of AI systems.'",
+          "#29: 'The project empowers organizations with actionable guidance and tools to ensure secure development, deployment, and governance of generative AI systems.'"
+        ],
+        "source_types_represented": [
+          "practitioner",
+          "standard"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 3,
+        "discriminant_note": "Focuses on reactive and recovery capabilities, distinct from proactive policy or monitoring functions."
+      },
+      {
+        "id": "TR-5",
+        "name": "Supply Chain and Third-Party AI Risk Governance",
+        "definition": "The identification, assessment, and mitigation of risks arising from third-party AI components, vendors, and supply chain dependencies.",
+        "observable_practices": [
+          "Conducts third-party risk assessments for all external AI vendors and components.",
+          "Maintains an inventory of all third-party AI dependencies with associated risk ratings.",
+          "Requires contractual assurances of compliance and security from AI suppliers."
+        ],
+        "candidate_metrics": [
+          "% of third-party AI components with completed risk assessments",
+          "Number of supply chain-related AI incidents per year"
+        ],
+        "constraints_addressed": [
+          "Integration complexity with existing systems/tools (2)",
+          "Security/reliability/hallucinations (3)"
+        ],
+        "grounding_sources": [
+          "#25: 'Supply chain and third-party AI risk governance.'",
+          "#29: 'The OWASP GenAI Security Project identifies critical security vulnerabilities in LLM applications, including ... supply chain vulnerabilities ... actionable guidance and tools to ensure secure development, deployment, and governance.'",
+          "#15: 'Supply chain and third-party AI risk governance.'"
+        ],
+        "source_types_represented": [
+          "standard",
+          "practitioner"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 3,
+        "discriminant_note": "Distinct from internal risk policy and monitoring, this sub-dimension targets external dependencies and the broader AI ecosystem."
+      }
+    ],
+    "boundary_conditions": "Trust Readiness does not apply in organizations that do not develop, deploy, or integrate AI systems, or where AI use is limited to trivial, non-impactful applications. It is also less relevant in jurisdictions or sectors without meaningful regulatory or ethical requirements for AI, or where AI is not used in decision-making affecting stakeholders.",
+    "gaps_identified": [
+      "Limited peer-reviewed academic literature directly operationalizing trust readiness in IS contexts.",
+      "Sparse evidence on trust readiness practices in small and medium-sized enterprises (SMEs) or non-Western regulatory environments.",
+      "Few empirical studies measuring the effectiveness of specific trust readiness practices or their impact on AI scaling outcomes."
+    ],
+    "confidence_assessment": "high",
+    "evidence_extractions": [
+      {
+        "source_id": "#26",
+        "section": "Recitals and Articles on AI Regulation and Governance",
+        "quote": "The purpose of this Regulation is to improve the functioning of the internal market by laying down a uniform legal framework ... to promote the uptake of human centric and trustworthy artificial intelligence (AI) while ensuring a high level of protection of health, safety, fundamental rights ... This Regulation ensures ... uniform obligations for operators and guaranteeing the uniform protection of overriding reasons of public interest and of rights of persons throughout the internal market ... The obligations placed on various operators involved in the AI value chain under this Regulation should apply without prejudice to national law, in compliance with Union law, having the effect of limiting the use of certain AI systems where such law falls outside the scope of this Regulation or pursues legitimate public interest objectives other than those pursued by this Regulation ... This Regulation aims to strengthen the effectiveness of such existing rights and remedies by establishing specific requirements and obligations, including in respect of the transparency, technical documentation and record-keeping of AI systems.",
+        "relevance": "AI risk policy and accountability structures; Regulatory compliance translation capability; AI evaluation and monitoring governance; Data governance and integrity assurance",
+        "strength": "strong",
+        "reasoning": "The EU AI Act explicitly establishes harmonized legal obligations, transparency, documentation, and accountability requirements for AI operators, directly defining governance and compliance structures essential for trust readiness."
+      },
+      {
+        "source_id": "#21",
+        "section": "Executive Summary and Part 2: Core and Profiles",
+        "quote": "The AI RMF is designed to equip organizations and individuals with approaches that increase the trustworthiness of AI systems ... The Framework describes four specific functions to help organizations address the risks of AI systems in practice: GOVERN, MAP, MEASURE, and MANAGE ... GOVERN applies to all stages of organizations’ AI risk management processes and procedures ... AI risk management is a key component of responsible development and use of AI systems ... Responsible AI practices can help align decisions about AI system design, development, and uses with intended aim and values ... Understanding and managing the risks of AI systems will help to enhance trustworthiness, and in turn, cultivate public trust.",
+        "relevance": "AI risk policy and accountability structures; AI evaluation and monitoring governance; AI incident response and recovery; Regulatory compliance translation capability",
+        "strength": "strong",
+        "reasoning": "NIST AI RMF 1.0 provides a detailed, operational risk management framework that explicitly includes governance, accountability, monitoring, and management of AI risks, directly supporting trust readiness."
+      },
+      {
+        "source_id": "#25",
+        "section": "Leveraging COBIT for Effective AI System Governance",
+        "quote": "COBIT offers a comprehensive framework for the governance and management of I&T ... It emphasizes accountability and responsibility to help organizations optimize the value of their I&T investments to reduce the associated risk ... Governance components include Processes, Organizational Structures, Information, People, Skills, and Competencies, Principles, Policies, and Procedures, Culture, Ethics, and Behavior ... Clear policies are essential to guide the ethical use of AI, including data privacy, algorithmic transparency, and AI-driven decision-making accountability ... Establishing a balanced governance approach ensures AI-enabled services contribute effectively to business objectives while adhering to ethical standards and organizational policies.",
+        "relevance": "AI risk policy and accountability structures; Data governance and integrity assurance; Regulatory compliance translation capability; Human override and control mechanisms; Supply chain and third-party AI risk governance",
+        "strength": "strong",
+        "reasoning": "COBIT’s structured governance system explicitly covers policies, accountability, ethical standards, and risk management for AI, providing a holistic organizational capability directly aligned with trust readiness."
+      },
+      {
+        "source_id": "#15",
+        "section": "Deploying Agentic AI with Safety & Security: A Playbook for Technology Leaders",
+        "quote": "Before an organization begins using autonomous agents, it should ensure that it has the necessary safeguards, risk management practices, and governance in place for a secure, responsible, and effective adoption of the technology ... Establishing governance requires defining standardized oversight processes, including ownership and responsibilities within AI onboarding, deployment, and offboarding procedures; monitoring and anomaly detection tied to KPIs; defining triggers for escalations; and developing standards of accountability for agent actions ... Organizations should establish regular performance reviews to evaluate whether agents remain aligned with their intended purpose ... Organizations should develop a contingency plan, with proper security measures in place, for every critical agent ... Deploying an AI contingency plan and sandbox environment, in conjunction with IAM and guardrails, can effectively isolate an AI agent that attempts unauthorized privilege escalation.",
+        "relevance": "AI risk policy and accountability structures; AI evaluation and monitoring governance; AI incident response and recovery; Human override and control mechanisms; Supply chain and third-party AI risk governance",
+        "strength": "strong",
+        "reasoning": "This source provides detailed, practical governance and risk management guidance for agentic AI systems, including policy frameworks, accountability, monitoring, incident response, and compliance, directly supporting trust readiness."
+      },
+      {
+        "source_id": "#29",
+        "section": "OWASP Top 10 for Large Language Model Applications",
+        "quote": "The OWASP GenAI Security Project identifies critical security vulnerabilities in LLM applications, including prompt injection, training data poisoning, supply chain vulnerabilities, sensitive information disclosure, insecure plugin design, excessive agency, and overreliance ... The project empowers organizations with actionable guidance and tools to ensure secure development, deployment, and governance of generative AI systems.",
+        "relevance": "Agentic threat surface mapping; Supply chain and third-party AI risk governance; AI evaluation and monitoring governance",
+        "strength": "strong",
+        "reasoning": "OWASP’s focused identification of top security risks and mitigation strategies for LLM and generative AI systems directly addresses threat surface mapping and supply chain risk governance, key trust readiness dimensions."
+      },
+      {
+        "source_id": "#33",
+        "section": "What Is an AI Ethicist? (MIT Sloan/WEF 2019)",
+        "quote": "Microsoft established a full-time AI policy and ethics role to address ethical risks such as algorithmic bias and transparency ... The AI ethicist promotes ethical perspectives on AI and related technologies, coordinates research, and helps disseminate responsible AI policies across the organization ... Microsoft has developed policies on facial recognition, bias mitigation, model transparency, and is working on legal remediation for AI harm ... The role supports building organizational awareness and governance around ethical AI use.",
+        "relevance": "AI risk policy and accountability structures; Regulatory compliance translation capability; AI evaluation and monitoring governance",
+        "strength": "moderate",
+        "reasoning": "While this source discusses organizational roles and policy advocacy for ethical AI, it is less detailed on specific governance structures or risk management processes, providing moderate support for trust readiness."
+      }
+    ],
+    "synthesis_notes": "Across multiple authoritative sources, trust readiness emerges as a multifaceted governance capability encompassing AI risk policy, accountability structures, monitoring, compliance translation, incident response, and supply chain risk management. The EU AI Act and NIST AI RMF provide foundational regulatory and risk management frameworks that define trust readiness requirements. ISACA’s COBIT framework offers a practical governance system integrating policies, organizational structures, and ethical culture to operationalize trust readiness. McKinsey’s agentic AI playbook adds pragmatic controls and oversight mechanisms for emerging AI risks. OWASP’s security focus complements these with detailed threat surface and supply chain risk insights. The MIT Sloan/WEF article highlights the growing organizational recognition of ethical AI governance roles, though with less operational detail. Notably, gaps remain in publicly accessible peer-reviewed IS literature and comprehensive academic treatments of trust readiness subdimensions, indicating an opportunity for further research. The strong emphasis on governance and risk management distinct from technical integration or strategic orientation aligns well with the construct’s discriminant validity."
+  },
+  {
+    "construct": "Integration Readiness",
+    "enriched_definition": "Integration Readiness is the organizational capability to architect, deploy, and operate agentic AI systems at enterprise scale through modular, agent-compatible architectures, robust orchestration protocols, and lifecycle governance frameworks. It encompasses the technical and operational practices needed to ensure secure, scalable, and auditable integration of AI agents into core business processes, including human-in-the-loop oversight, access controls, and contingency planning. This readiness is evidenced by the adoption of multiagent orchestration, lifecycle management, and monitoring infrastructures that enable organizations to manage complexity, risk, and performance in agentic AI environments [#09, #15].",
+    "theoretical_lens": "Dynamic Managerial Capabilities (DMC), Role Theory, Governance-as-Capability",
+    "sub_dimensions": [
+      {
+        "id": "IR-1",
+        "name": "Agentic Architecture & Orchestration",
+        "definition": "The design and implementation of modular, agent-compatible architectures and orchestration frameworks that enable scalable deployment and coordination of multiple AI agents across enterprise systems.",
+        "observable_practices": [
+          "Maintains documented architecture diagrams specifying agent orchestration patterns (single vs. multi-agent).",
+          "Implements and updates standardized protocols (e.g., Model Context Protocol) for agent-to-agent and agent-to-system interactions.",
+          "Conducts regular reviews of orchestration frameworks for scalability and interoperability."
+        ],
+        "candidate_metrics": [
+          "% of AI use cases deployed using standardized agent orchestration protocols",
+          "Number of documented multiagent workflows in production"
+        ],
+        "constraints_addressed": [
+          "Integration complexity with existing systems/tools",
+          "Talent/capability gaps"
+        ],
+        "grounding_sources": [
+          "#09: 'building agent-compatible architectures, implementing robust orchestration frameworks, and developing new management approaches for digital workers... Multiagent orchestration... enabled by evolving standards and protocols... microservices approach to AI'",
+          "#15: 'Are we prepared for agent-to-agent interactions, and are those connections secure?... Protocols to manage agentic interactions, such as Anthropic’s Model Context Protocol, Cisco’s Agent Connect Protocol, Google’s Agent2Agent protocol, and IBM’s Agent Communication Protocol, are under development but not yet fully mature.'"
+        ],
+        "source_types_represented": [
+          "practitioner"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 2,
+        "discriminant_note": "Distinct from lifecycle governance (IR-2) by focusing on the technical architecture and orchestration patterns rather than operational management or oversight."
+      },
+      {
+        "id": "IR-2",
+        "name": "Lifecycle Governance & Operational Management",
+        "definition": "The establishment of processes and controls for onboarding, monitoring, updating, and retiring AI agents, including cost management, performance tracking, and auditability throughout the agent lifecycle.",
+        "observable_practices": [
+          "Implements onboarding and performance management protocols for each deployed agent.",
+          "Maintains immutable logs and cryptographic receipts for agent actions and decisions.",
+          "Conducts periodic lifecycle reviews and updates for all active agents."
+        ],
+        "candidate_metrics": [
+          "% of agents with completed onboarding and performance review documentation",
+          "Frequency of lifecycle management audits per quarter"
+        ],
+        "constraints_addressed": [
+          "Security/reliability/hallucinations",
+          "Difficulty measuring ROI/value"
+        ],
+        "grounding_sources": [
+          "#09: 'Onboarding: Just as with human workers, agents will require onboarding processes... Performance management: Organizations will need systems to prove what agents did, why they made specific decisions... Life cycle management: Agents will require ongoing training updates, redeployment...'",
+          "#09: 'Organizations need specialized financial operations frameworks (or FinOps) to monitor and control agent-driven expenses... resource tagging, real-time monitoring, automated resource management including autoscaling and rightsizing, and strong governance frameworks to manage AI-specific expenditures.'",
+          "#11: 'LLMOps is the collection of tools and processes that manages the end-to-end process of developing, deploying, and maintaining LLM-based applications... Monitor covers tools and practices to assess and report on system and solution performance and health.'"
+        ],
+        "source_types_represented": [
+          "practitioner"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 3,
+        "discriminant_note": "Focuses on operational and lifecycle management, distinct from architectural design (IR-1) and security/access controls (IR-3)."
+      },
+      {
+        "id": "IR-3",
+        "name": "Security, Access, and Contingency Controls",
+        "definition": "The implementation of identity and access management, tool-use boundaries, traceability, and contingency planning to ensure secure, auditable, and resilient operation of agentic AI systems.",
+        "observable_practices": [
+          "Deploys identity and access management (IAM) systems for both human and AI agent users.",
+          "Defines and enforces least-privilege access and input/output guardrails for all agentic systems.",
+          "Maintains and tests contingency plans for agent failure, including isolation and termination protocols."
+        ],
+        "candidate_metrics": [
+          "% of agentic systems with active IAM and access logs",
+          "Number of contingency plan drills conducted annually"
+        ],
+        "constraints_addressed": [
+          "Security/reliability/hallucinations",
+          "Regulatory/privacy/compliance"
+        ],
+        "grounding_sources": [
+          "#15: 'Access to models and resources needs to be monitored and secured. Identity and access management systems should apply not only to human users, but also to AI agents... augment IAM with input/output guardrails...'",
+          "#15: 'Agentic systems should be created with traceability mechanisms in place from the outset... recording not only the agents’ actions but also the prompts, decisions, internal state changes, intermediate reasoning, and outputs...'",
+          "#15: 'Before deployment, organizations should develop a contingency plan, with proper security measures in place, for every critical agent... ensure that termination mechanisms and fallback solutions are available... deploy agents in self-contained environments with clearly defined network and data access.'"
+        ],
+        "source_types_represented": [
+          "practitioner"
+        ],
+        "evidence_strength": "strong",
+        "source_count": 1,
+        "discriminant_note": "Distinct from architectural (IR-1) and lifecycle (IR-2) sub-dimensions by focusing on security, access, traceability, and contingency planning."
+      }
+    ],
+    "boundary_conditions": "This construct does not apply to organizations that do not deploy agentic AI systems, operate only isolated AI pilots without enterprise integration, or lack the technical infrastructure for multiagent orchestration. It is also not relevant for purely human-centric or manual business processes.",
+    "gaps_identified": [
+      "Limited academic triangulation; all strong evidence comes from practitioner sources.",
+      "Scalable modular architecture (archetypes) and RAG/data grounding are only moderately evidenced and not sufficiently detailed for inclusion as distinct sub-dimensions.",
+      "No strong evidence on integration readiness for legacy system environments or cross-organizational agentic AI integration."
+    ],
+    "confidence_assessment": "High confidence in the three core sub-dimensions (Agentic Architecture & Orchestration, Lifecycle Governance & Operational Management, Security/Access/Contingency Controls) due to strong, convergent practitioner evidence [#09, #15]. Medium confidence in generalizability due to lack of academic and cross-industry triangulation.",
+    "evidence_extractions": [
+      {
+        "source_id": "#09",
+        "section": "The agentic reality check: Preparing for a silicon-based workforce",
+        "quote": "Leading organizations are discovering something different: True value comes from redesigning operations, not just layering agents onto old workflows. This means building agent-compatible architectures, implementing robust orchestration frameworks, and developing new management approaches for digital workers. ... Multiagent orchestration: The first wave of generative AI in the enterprise consisted largely of general-purpose chatbots, which, while useful as productivity tools, often don’t deliver the kind of opportunities to automate that businesses need to drive new efficiencies. With AI agents, organizations can develop highly specialized tools that automatically execute specific tasks. When these specialists are deployed in an orchestrated manner, they can automate entire workflows. This approach is enabled by evolving standards and protocols that facilitate agent interaction. Model Context Protocol (MCP): Developed by Anthropic, MCP standardizes how AI systems connect to data sources and tools, providing a universal interface for agents to access enterprise resources. ... These protocols represent the foundational layer for what experts describe as a “microservices approach to AI”: deploying numerous smaller, specialized agents across various platforms closer to where workflow instructions and data reside. This approach offers several advantages, such as reduced complexity (because smaller agents are easier to debug, test, and maintain); scalable orchestration, where multiple specialized agents can be combined for complex tasks; and platform flexibility that allows agents to run on different systems while maintaining interoperability.",
+        "relevance": "Orchestration pattern selection and design (single vs. multi-agent)",
+        "strength": "strong",
+        "reasoning": "This passage explicitly discusses the need for agent-compatible architectures, multiagent orchestration protocols, and microservices approaches, directly addressing technical integration readiness at the architectural and engineering level."
+      },
+      {
+        "source_id": "#09",
+        "section": "FinOps for agents",
+        "quote": "As agents operate continuously, poorly configured agent interactions can trigger cascading actions like unpredictable resource consumption and ballooning costs, making cost management critical. Organizations need specialized financial operations frameworks (or FinOps) to monitor and control agent-driven expenses and account for token-based pricing models. These frameworks help track costs in detail through resource tagging, real-time monitoring, automated resource management including autoscaling and rightsizing, and strong governance frameworks to manage AI-specific expenditures.",
+        "relevance": "GenAIOps / MLOps lifecycle governance",
+        "strength": "strong",
+        "reasoning": "This passage details operational governance practices specific to agentic AI, including monitoring, autoscaling, and cost control, which are core to lifecycle governance and operational readiness."
+      },
+      {
+        "source_id": "#09",
+        "section": "HR for agents",
+        "quote": "Onboarding: Just as with human workers, agents will require onboarding processes that train them in the enterprise’s unique data and operations. At the same time, the human supervisor of the agent should receive training and education on how to leverage the new agents. ... Performance management: Organizations will need systems to prove what agents did, why they made specific decisions, and under whose authority they acted. This requires digital identity systems, cryptographic receipts for transactions, and immutable logs for every agent action. ... Life cycle management: Agents will require ongoing training updates, redeployment to priority areas, and potentially even retirement planning. Organizations are beginning to assign individual names to agents to track productivity contributions, recognizing that digital workers may eventually be subject to taxation similar to human employees.",
+        "relevance": "GenAIOps / MLOps lifecycle governance",
+        "strength": "strong",
+        "reasoning": "This passage describes detailed lifecycle management practices for AI agents, including onboarding, performance tracking, and lifecycle updates, directly relevant to integration readiness in operations."
+      },
+      {
+        "source_id": "#15",
+        "section": "Emerging risks in the agentic era",
+        "quote": "By operating autonomously and automating tasks traditionally performed by human employees, agentic AI adds an additional dimension to the risk landscape. The key shift is a move from systems that enable interactions to systems that drive transactions that directly affect business processes and outcomes. ... Organizations should define roles and approval processes for agents to protect interactions with data, systems, and human users. Similarly, they should define and review the interactions of agentic solutions acquired from third parties with internal resources. ... Organizations should establish clear ownership of each use case, with human-in-the-loop oversight and responsible stakeholders for decision-making, security, and compliance, while also identifying and allocating capabilities to manage the risks.",
+        "relevance": "Human-in-the-loop architecture patterns",
+        "strength": "strong",
+        "reasoning": "This passage explicitly addresses the need for human oversight in agentic AI systems, role definitions, and governance controls, which are key aspects of human-in-the-loop architectures."
+      },
+      {
+        "source_id": "#15",
+        "section": "During the deployment of an agentic AI use case",
+        "quote": "Are we prepared for agent-to-agent interactions, and are those connections secure? AI agents interact with not only human users but also other AI agents. It is essential that organizations secure these agent-to-agent collaborations, especially as multiagent ecosystems grow. Protocols to manage agentic interactions, such as Anthropic’s Model Context Protocol, Cisco’s Agent Connect Protocol, Google’s Agent2Agent protocol, and IBM’s Agent Communication Protocol, are under development but not yet fully mature. ... Do we have control over who can use agentic systems and whether they are using them appropriately? Access to models and resources needs to be monitored and secured. Identity and access management systems should apply not only to human users, but also to AI agents that interact with other agents, humans, data, and system resources. Organizations should define which users, human or AI, are authorized to access or interface with such resources and assets and under what conditions. They should also augment IAM with input/output guardrails to prevent agents from being misused, manipulated, or triggered into unsafe behavior through adversarial prompts or misaligned objectives.",
+        "relevance": "Tool-use boundaries and least-privilege access",
+        "strength": "strong",
+        "reasoning": "This passage directly discusses securing agent-to-agent interactions, identity and access management for agents, and guardrails to prevent misuse, which are core to tool-use boundaries and least-privilege access."
+      },
+      {
+        "source_id": "#15",
+        "section": "During the deployment of an agentic AI use case",
+        "quote": "Can we trace agents’ actions and understand and account for their behavior? Agentic systems should be created with traceability mechanisms in place from the outset. That means recording not only the agents’ actions but also the prompts, decisions, internal state changes, intermediate reasoning, and outputs that led to these behaviors. Such systems are essential for auditability, root cause analysis, regulatory compliance, and postincident reviews. Organizations should establish regular performance reviews to evaluate whether agents remain aligned with their intended purpose.",
+        "relevance": "Evaluation and monitoring infrastructure",
+        "strength": "strong",
+        "reasoning": "This passage explicitly describes the need for traceability, logging, auditing, and performance reviews of AI agents, which are fundamental components of evaluation and monitoring infrastructure."
+      },
+      {
+        "source_id": "#15",
+        "section": "During the deployment of an agentic AI use case",
+        "quote": "Do we have a contingency plan if an agent fails or behaves unexpectedly? Even well-designed agents can fail, become corrupt, or be exploited. Before deployment, organizations should develop a contingency plan, with proper security measures in place, for every critical agent. That starts with simulating worst-case scenarios, such as agents that become unresponsive, deviate from the expected objective, are intentionally malicious, or escalate tasks without authorization. Next, organizations should ensure that termination mechanisms and fallback solutions are available. Lastly, they should deploy agents in self-contained environments with clearly defined network and data access. This also allows for immediate isolation if needed.",
+        "relevance": "Nondeterminism management and output validation",
+        "strength": "strong",
+        "reasoning": "This passage addresses managing unexpected agent behaviors, failure modes, and containment strategies, directly relevant to managing nondeterminism and validating outputs."
+      },
+      {
+        "source_id": "#13",
+        "section": "Enterprise knowledge: Data management",
+        "quote": "The ingestion process needs to capture object updates (changes, deletions) in addition to new objects on an ongoing basis. ... Implement unified fine-grained access controls for structured and unstructured datasets. ... Data discoverability: Unlike structured data, which is managed in well-defined rows and columns, unstructured data is stored as objects. For users to be able to discover and comprehend the data, the first step is to build a comprehensive catalog using the metadata that is generated and captured in the source systems. ... Vector store governance: Embeddings typically contain private and sensitive data, and encrypting the data is a recommended step in the user input workflow. ... Controlling access to the data with role-based access control (RBAC) becomes a key requirement to maintaining overall security.",
+        "relevance": "RAG architecture and data grounding",
+        "strength": "moderate",
+        "reasoning": "This passage discusses data cataloging, fine-grained access control, and vector store governance, which are important for RAG architectures and data grounding, though it focuses more on data governance than technical architecture."
+      },
+      {
+        "source_id": "#11",
+        "section": "LLMOps - Operational management of LLMs",
+        "quote": "LLMOps is the collection of tools and processes that manages the end-to-end process of developing, deploying, and maintaining LLM-based applications. ... The stages of LLMOps workflow are categorized into inner and outer loops. The inner loop focuses on the iterative process to develop, test, and refine the solution. The outer loop focuses on deploying and managing solutions in production. ... Monitor covers tools and practices to assess and report on system and solution performance and health. Monitored areas include tracking resource utilization, raising real-time alerts for anomalies or data privacy breaches, and evaluating queries and responses for issues such as inappropriate responses.",
+        "relevance": "GenAIOps / MLOps lifecycle governance",
+        "strength": "moderate",
+        "reasoning": "This passage outlines the lifecycle management of LLM applications including monitoring and feedback, relevant to operational governance though not specific to agentic AI."
+      },
+      {
+        "source_id": "#10",
+        "section": "Operationalizing AI in the organization",
+        "quote": "Implementing AI necessitates harmony between humans, processes, data, and technology. AI's integration should be user-centric, ensuring comprehensible, actionable outcomes. Clear AI training and deployment processes are essential, emphasizing the data's availability, quality, and management. This involves crafting a robust data infrastructure and meticulous data integration, purification, privacy, and security processes.",
+        "relevance": "Scalable modular architecture (archetypes)",
+        "strength": "moderate",
+        "reasoning": "This passage emphasizes the importance of robust data infrastructure and integration processes as part of AI deployment, which supports scalable modular architectures, though it is more strategic than technical."
+      }
+    ],
+    "synthesis_notes": "The strongest evidence for Integration Readiness comes from Deloitte (#09) and McKinsey (#15), which provide detailed discussions on agentic AI architectures, multiagent orchestration protocols, lifecycle governance, human-in-the-loop patterns, and security controls. These sources align well with the construct's focus on technical architecture and engineering. McKinsey (#16) and Microsoft Learn (#11) offer moderate support related to operational governance and lifecycle management but focus more on organizational change and LLMOps respectively. AWS (#13) and IBM (#12) contribute moderate evidence on data governance and infrastructure, which are foundational but more aligned with trust and data readiness than direct integration engineering. Strategic and workforce-focused sources like WEF (#19) and BCG (#20) lack relevant technical content. Overall, there is a convergence on the importance of modular, orchestrated architectures and robust lifecycle governance, but gaps remain in detailed discussion of nondeterminism management and scalable modular archetypes beyond high-level mentions."
+  }
+]

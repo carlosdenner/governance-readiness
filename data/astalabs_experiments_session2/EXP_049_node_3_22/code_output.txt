@@ -1,0 +1,82 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Experiment: Regulatory Safety Buffers Analysis
+Loading dataset from: astalabs_discovery_all_data.csv
+Loaded 1362 AIID incidents.
+
+Unique values in 'Tangible Harm' (first 10):
+<StringArray>
+[                 'no tangible harm, near-miss, or issue',
+                    'tangible harm definitively occurred',
+   'imminent risk of tangible harm (near miss) did occur',
+ 'non-imminent risk of tangible harm (an issue) occurred',
+                                                'Unknown',
+                                                'unclear']
+Length: 6, dtype: str
+
+Harm Status Counts:
+Harm_Status
+Actual Harm    1236
+Near-Miss       126
+Name: count, dtype: int64
+
+--- Sector Analysis (Sample) ---
+Harm_Status                     Sector of Deployment  ...     Ratio
+0                                          Education  ...  3.000000
+1                       entertainment and recreation  ...  3.500000
+2                 financial and insurance activities  ...  0.333333
+3            human health and social work activities  ...  0.777778
+4                         transportation and storage  ...  0.450000
+
+[5 rows x 6 columns]
+
+High Reg Sectors (n=3) Mean Ratio: 0.5204
+Low Reg Sectors (n=3) Mean Ratio: 2.4167
+
+Mann-Whitney U Test: U=1.0, p=0.2000
+Result: No significant difference.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (or Box-and-Whisker Plot).
+*   **Purpose:** This plot visualizes the distribution, central tendency (median), and variability of the "Safety Buffer Ratio" across two distinct categories of Regulation Tiers ("Low" and "High"). It allows for a direct comparison of how different regulation levels impact the relationship between near-misses and actual harm events.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Ratio (Near-Miss / Actual Harm)".
+    *   **Range:** The axis is marked from roughly **0.5 to 3.5**. However, the data spans from approximately 0.35 to 3.5.
+    *   **Interpretation:** A value greater than 1.0 indicates more near-misses than actual harm events. A value less than 1.0 indicates more actual harm events than near-misses.
+*   **X-Axis:**
+    *   **Label:** "Regulation Tier".
+    *   **Categories:** Two categorical variables: **"Low"** and **"High"**.
+
+### 3. Data Trends
+*   **Low Regulation Tier (Teal Box):**
+    *   **Median:** The median line is positioned at approximately **3.0**.
+    *   **Spread (Interquartile Range):** This group exhibits very high variability. The box spans from roughly **1.9 to 3.25**.
+    *   **Range:** The whiskers extend from a minimum of roughly **0.75** to a maximum of **3.5**.
+    *   **Observation:** There is a wide disparity in outcomes within this tier, but the central tendency is significantly higher than the High tier.
+
+*   **High Regulation Tier (Orange Box):**
+    *   **Median:** The median line is much lower, sitting just below **0.5**.
+    *   **Spread (Interquartile Range):** This group shows very low variability (high consistency). The box is compact, spanning roughly **0.4 to 0.6**.
+    *   **Range:** The whiskers are short, extending from approximately **0.35 to 0.8**.
+    *   **Observation:** The data is tightly clustered, indicating consistent outcomes, but the ratio is consistently low.
+
+### 4. Annotations and Legends
+*   **Title:** "Safety Buffer Ratio (Near-Miss / Actual Harm) by Regulation Tier".
+*   **Colors:**
+    *   **Teal/Green:** Represents the "Low" Regulation Tier.
+    *   **Orange/Salmon:** Represents the "High" Regulation Tier.
+*   There is no separate legend box; the distinct colors and X-axis labels serve as the identifiers.
+
+### 5. Statistical Insights
+*   **Inverse Relationship:** The plot suggests a strong inverse relationship between the Regulation Tier and the Safety Buffer Ratio. As regulation stringency increases from "Low" to "High," the ratio of near-misses to actual harm drops precipitously.
+*   **Significance of the Ratio:**
+    *   In the **"Low"** tier, the median ratio of ~3.0 suggests that for every 1 actual harm event, there are 3 near-misses. This implies a system where warning signs (near-misses) are frequent relative to actual accidents.
+    *   In the **"High"** tier, the median ratio of ~0.5 suggests that actual harm events are occurring twice as often as near-misses (or perhaps near-misses are not being reported/detected).
+*   **Variability vs. Consistency:** The "Low" regulation environment is highly unpredictable (large box height), suggesting that safety performance varies wildly in this tier. Conversely, the "High" regulation environment produces very consistent results (short box height), though those results (a low ratio) might be considered concerning depending on the desired safety outcome.
+*   **Potential Interpretation:** While "High" regulation implies strictness, a low Near-Miss/Actual Harm ratio could indicate that when failures happen in highly regulated environments, they are more likely to be catastrophic (resulting in harm) rather than benign near-misses. Alternatively, it could imply a reporting bias where "High" regulation environments discourage the reporting of near-misses.
+==================================================

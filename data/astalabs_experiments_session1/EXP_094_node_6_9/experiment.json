@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis that incidents involving 'Tool Use' or 'Plugin' execution imply higher attack complexity. Using the 'step3_incident_coding.csv' dataset, incidents were classified into 'Tool-Use' (n=18) and 'Non-Tool-Use' (n=34) groups. The analysis revealed nearly identical mean technique counts (7.67 for Tool-Use vs. 7.47 for Non-Tool-Use). The Mann-Whitney U test yielded a p-value of 0.4975, indicating no statistically significant difference between the groups. Consequently, the hypothesis is rejected. The data suggests that the complexity of an attack chain (number of steps/techniques) is independent of whether the attacker leverages agentic tool-use capabilities versus standard methods.",
+  "child_ids": [
+    "node_7_1"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom scipy import stats\nimport os\n\n# Load dataset\nfile_name = 'step3_incident_coding.csv'\n# Check current then parent directory\nfile_path = file_name if os.path.exists(file_name) else os.path.join('..', file_name)\n\ndf = pd.read_csv(file_path)\n\n# Define keywords for tool use / agentic features\n# Expanded list based on MITRE ATLAS techniques related to execution/tools\ntool_keywords = ['tool', 'plugin', 'execution', 'indirect prompt injection', 'function calling', 'api']\n\n# Function to classify tool use\ndef check_tool_use(row):\n    # Combine relevant text fields\n    text_content = (str(row.get('techniques_used', '')).lower() + \" \" + \n                   str(row.get('summary', '')).lower())\n    return any(keyword in text_content for keyword in tool_keywords)\n\n# Apply classification\ndf['is_tool_use'] = df.apply(check_tool_use, axis=1)\n\n# Separate groups\ngroup_tool = df[df['is_tool_use'] == True]['technique_count'].dropna()\ngroup_non_tool = df[df['is_tool_use'] == False]['technique_count'].dropna()\n\n# Descriptive Statistics\nprint(\"=== Descriptive Statistics ===\")\nprint(f\"Tool-Use Incidents (n={len(group_tool)}): Mean={group_tool.mean():.2f}, Median={group_tool.median():.2f}, Std={group_tool.std():.2f}\")\nprint(f\"Non-Tool-Use Incidents (n={len(group_non_tool)}): Mean={group_non_tool.mean():.2f}, Median={group_non_tool.median():.2f}, Std={group_non_tool.std():.2f}\")\n\n# Statistical Testing\nprint(\"\\n=== Statistical Analysis ===\")\n# Check Normality\nshapiro_tool = stats.shapiro(group_tool) if len(group_tool) >= 3 else (0, 0)\nshapiro_non = stats.shapiro(group_non_tool) if len(group_non_tool) >= 3 else (0, 0)\n\ntest_type = \"Mann-Whitney U\" if (shapiro_tool[1] < 0.05 or shapiro_non[1] < 0.05) else \"T-test\"\nprint(f\"Normality Check (Shapiro-Wilk): Tool-Use p={shapiro_tool[1]:.4f}, Non-Tool p={shapiro_non[1]:.4f} -> Using {test_type}\")\n\nif test_type == \"Mann-Whitney U\":\n    stat, p_val = stats.mannwhitneyu(group_tool, group_non_tool, alternative='two-sided')\n    print(f\"Mann-Whitney U Test: U={stat}, p-value={p_val:.4f}\")\nelse:\n    stat, p_val = stats.ttest_ind(group_tool, group_non_tool, equal_var=False)\n    print(f\"Welch's T-Test: t={stat:.4f}, p-value={p_val:.4f}\")\n\n# Visualization\nplt.figure(figsize=(10, 6))\n# Using histplot with kde=True is often clearer for discrete counts than pure KDE\nsns.histplot(data=df, x='technique_count', hue='is_tool_use', kde=True, element=\"step\", stat=\"density\", common_norm=False, palette='viridis')\nplt.title('Density of Attack Complexity (Technique Count)\\nTool-Use vs Non-Tool-Use Incidents')\nplt.xlabel('Number of Techniques Used')\nplt.ylabel('Density')\nplt.legend(title='Is Tool Use?', labels=['Non-Tool Use', 'Tool Use'])\nplt.grid(True, alpha=0.3)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: === Descriptive Statistics ===\nTool-Use Incidents (n=18): Mean=7.67, Median=8.00, Std=2.79\nNon-Tool-Use Incidents (n=34): Mean=7.47, Median=7.00, Std=3.05\n\n=== Statistical Analysis ===\nNormality Check (Shapiro-Wilk): Tool-Use p=0.0433, Non-Tool p=0.0558 -> Using Mann-Whitney U\nMann-Whitney U Test: U=341.5, p-value=0.4975\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** This is a **combined Histogram and Density Plot (Kernel Density Estimate - KDE)**.\n*   **Purpose:** It visualizes and compares the frequency distribution and probability density of a continuous or discrete variable (number of techniques used) across two distinct categories (Tool Use vs. Non-Tool Use). The bars represent the actual frequency counts (normalized to density), while the smooth lines estimate the underlying probability distribution.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Number of Techniques Used\"\n    *   **Range:** The axis spans from roughly **1 to 16**.\n    *   **Meaning:** This represents the attack complexity, measured by the count of distinct techniques employed in an incident.\n*   **Y-Axis:**\n    *   **Label:** \"Density\"\n    *   **Range:** The axis spans from **0.00 to 0.30**.\n    *   **Meaning:** This represents the probability density function. The area under the curve (or the sum of bar areas times widths) integrates to 1. Higher values indicate a higher likelihood of that specific technique count occurring.\n\n### 3. Data Trends\n*   **Green Distribution (Non-Tool Use):**\n    *   **Pattern:** This distribution is **highly concentrated (peaked)**. It shows a distinct \"leptokurtic\" shape, meaning it clusters tightly around the mean with smaller tails.\n    *   **Peak:** The tallest bar and the peak of the curve are centered roughly between **7 and 9 techniques**. The peak density is approximately **0.30**, which is significantly higher than the other group.\n    *   **Interpretation:** \"Non-Tool Use\" incidents tend to have a very consistent level of complexity, frequently utilizing around 8 techniques.\n*   **Blue/Grey Distribution (Tool Use):**\n    *   **Pattern:** This distribution is much **flatter and wider (dispersed)**. It shows a \"platykurtic\" shape, indicating high variance.\n    *   **Peak:** The distribution does not have a single sharp peak but rather a broad plateau ranging from approximately **4 to 9 techniques**. The maximum density is much lower, peaking around **0.13 to 0.14**.\n    *   **Outliers/Range:** This group covers a wider range of complexity, with visible density stretching from as low as 1 technique to as high as 16 techniques.\n\n### 4. Annotations and Legends\n*   **Title:** \"Density of Attack Complexity (Technique Count) Tool-Use vs Non-Tool-Use Incidents\".\n*   **Legend:** Located in the top right, titled **\"Is Tool Use?\"**.\n    *   **Non-Tool Use:** Represented by the **Light Green** filled bars and Green curve.\n    *   **Tool Use:** Represented by the **Blue/Grey** filled bars and Blue curve. *(Note: The legend marker for \"Tool Use\" appears to display a green line in the image, likely a plotting artifact, but by process of elimination and standard color cycling, the Blue distribution corresponds to \"Tool Use\".)*\n\n### 5. Statistical Insights\n*   **Consistency vs. Variability:** The most significant insight is the difference in variance. Incidents classified as **\"Non-Tool Use\"** are highly predictable in their complexity, clustering tightly around 8 techniques. Conversely, **\"Tool Use\"** incidents are highly variable; they can be very simple (few techniques) or highly complex (14+ techniques).\n*   **Average Complexity:** Visually, the mode (most frequent value) for \"Non-Tool Use\" (approx. 8) appears slightly higher than the central tendency of \"Tool Use\" (which centers closer to 6 or 7).\n*   **Implication:** This suggests that when attackers do *not* use specific tools (perhaps relying on manual execution or \"living off the land\"), the attack chain requires a specific, consistent number of steps. When tools *are* used, the attack profile varies wildly—likely depending on the specific tool's capability or the automation level.\n==================================================",
+  "created_at": "2026-02-21T00:34:25.797435+00:00",
+  "creation_idx": 95,
+  "experiment_id": "node_6_9",
+  "experiment_plan": {
+    "deliverables": "Density plot of Attack Complexity for Tool-Use vs Non-Tool-Use incidents and test results.",
+    "objective": "Test if agentic/tool-use features inherently increase attack complexity.",
+    "steps": "1. Load 'step3_incident_coding.csv'.\n2. Create a boolean column 'is_tool_use' by searching for keywords like 'Tool', 'Plugin', 'Execution', or 'Indirect Prompt Injection' in the 'techniques_used' and 'summary' columns.\n3. Compare the 'technique_count' distribution for 'is_tool_use' = True vs False.\n4. Perform an Independent Samples T-test or Mann-Whitney U test.\n5. Generate a density plot (KDE) or histogram for both groups."
+  },
+  "hypothesis": "Incidents that involve 'Tool Use' or 'Plugin' execution techniques exhibit a significantly higher 'Technique Count' than non-tool-use incidents, reflecting the compounding complexity of agentic attack surfaces.",
+  "id_in_run": 94,
+  "is_surprising": true,
+  "parent_id": "node_5_13",
+  "posterior": 0.1921487603305785,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.1921487603305785,
+    "n": 90.0,
+    "prior_params": [
+      23.25,
+      7.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.75,
+  "prior_belief": {
+    "_empirical_mean": 0.7583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 1.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.75,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis that incidents involving 'Tool Use' or 'Plugin' execution imply higher attack complexity. Using the 'step3_incident_coding.csv' dataset, incidents were classified into 'Tool-Use' (n=18) and 'Non-Tool-Use' (n=34) groups. The analysis revealed nearly identical mean technique counts (7.67 for Tool-Use vs. 7.47 for Non-Tool-Use). The Mann-Whitney U test yielded a p-value of 0.4975, indicating no statistically significant difference between the groups. Consequently, the hypothesis is rejected. The data suggests that the complexity of an attack chain (number of steps/techniques) is independent of whether the attacker leverages agentic tool-use capabilities versus standard methods.",
+  "rich_outputs": null,
+  "runtime_ms": 301100.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6474398184735973
+}

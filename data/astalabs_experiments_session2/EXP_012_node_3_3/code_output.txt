@@ -1,0 +1,51 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Analysis Counts ---
+risk_domain
+Digital     80
+Physical    44
+Name: count, dtype: int64
+
+--- Mann-Whitney U Test ---
+U-statistic: 1762.0
+p-value: 0.99317
+Result: No significant difference found.
+Median Autonomy (Physical): 2.0
+Median Autonomy (Digital): 1.0
+
+
+=== Plot Analysis (figure 1) ===
+Based on the visual analysis of the provided image, here is the detailed breakdown:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot** (also known as a Box-and-Whisker plot).
+*   **Purpose:** It compares the distribution of quantitative data (Autonomy Level) across a categorical variable (Risk Domain). It visualizes the range, quartiles, and potential spread of the data.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Risk Domain"
+    *   **Categories:** Two discrete categories: "Physical" and "Digital".
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Autonomy Level (1=Low, 3=High)"
+    *   **Value Range:** The axis scale runs from **1.00 to 3.00**.
+    *   **Tick Marks:** Major ticks are distinct, with grid lines appearing at 0.25 intervals (1.0, 1.25, 1.50, ... 3.00).
+
+### 3. Data Trends
+*   **Physical Sector:**
+    *   **Interquartile Range (IQR):** The blue box spans from a value of **1.0 to 2.0**. This indicates that the middle 50% of the data falls within the Low to Medium autonomy range.
+    *   **Whisker:** There is a top whisker extending upwards to **3.0**. This indicates that while the bulk of the data is lower, the maximum value in this category does reach "High" (3.0).
+    *   **Distribution:** The data is skewed toward the lower end of the autonomy scale.
+*   **Digital Sector:**
+    *   **Interquartile Range (IQR):** The blue box spans the entire range from **1.0 to 3.0**.
+    *   **Whiskers:** There are no visible whiskers extending beyond the box, suggesting the IQR covers the full range of the data (min to max).
+    *   **Distribution:** The "Digital" sector shows a much broader distribution of central data, indicating a higher prevalence of high autonomy levels compared to the Physical sector.
+
+### 4. Annotations and Legends
+*   **Title:** "AI Autonomy Levels: Physical vs Digital Sectors" is displayed at the top.
+*   **Grid Lines:** Horizontal dashed grid lines are present to assist in reading specific Y-axis values.
+*   **Legend:** There is no distinct legend because the categories are explicitly labeled on the X-axis. The solid blue color is consistent across both categories.
+
+### 5. Statistical Insights
+*   **Higher Autonomy in Digital:** The Digital sector generally exhibits higher levels of autonomy than the Physical sector. The upper quartile (top of the box) for Digital is at the maximum level (3.0), whereas the upper quartile for Physical is only at 2.0.
+*   **Constraint in Physical Systems:** The Physical sector appears more constrained. While it *can* reach high autonomy (as indicated by the whisker reaching 3.0), the majority of physical systems (75%) operate at or below level 2.0. This likely reflects real-world safety constraints and regulatory hurdles inherent to physical robotics that do not apply as strictly to purely digital software.
+*   **Variability:** The Digital sector has high variability within its core distribution (a larger box), implying that digital AI agents are just as likely to be high autonomy as they are low autonomy, whereas physical agents are clustered more heavily in the low-autonomy region.
+==================================================

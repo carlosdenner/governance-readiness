@@ -1,0 +1,59 @@
+{
+  "analysis": "The experiment successfully quantified the Privacy-Control Gap within the EO 13960 dataset. Out of 1,757 systems, the code identified 171 systems that explicitly process PII. The analysis revealed a massive disconnect between privacy risk and control implementation: only 13 of these 171 systems (7.6%) provide an explicit 'Opt-Out' mechanism, resulting in a Privacy-Control Gap of 92.40%. \n\nAgency-level breakdown for those with significant PII system counts showed distinct variations (Chi-square p=0.021). HHS (0/14) and SSA (0/19) had a 100% gap, offering no opt-out mechanisms for their PII-processing AI. The VA had a 94.7% gap, while DHS performed best among the large holders, though still with a high gap of 81.4%. The analysis treated specific justifications for lacking opt-out (e.g., law enforcement exceptions, waivers) as part of the gap, accurately reflecting the unavailability of the control to the end-user.",
+  "child_ids": [
+    "node_3_6",
+    "node_3_13",
+    "node_3_20"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport numpy as np\n\n# Load dataset\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    # Try one level up if not found in current directory as per hint, though instructions say \"use dataset given\"\n    # Assuming standard path first based on previous context.\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\nprint(\"Dataset loaded successfully.\")\n\n# Filter for EO 13960 data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 Scored subset shape: {df_eo.shape}\")\n\n# Normalize column names just in case (though previous output showed them clearly)\n# Columns of interest: '29_contains_pii', '67_opt_out', '3_abr'\n\n# Check unique values to ensure correct filtering\nprint(\"\\nUnique values in '29_contains_pii':\", df_eo['29_contains_pii'].unique())\nprint(\"Unique values in '67_opt_out':\", df_eo['67_opt_out'].unique())\n\n# Standardize values to boolean-like logic for analysis\n# Assuming 'Yes' indicates presence. Adjusting for potential case sensitivity.\ndf_eo['has_pii'] = df_eo['29_contains_pii'].astype(str).str.strip().str.lower() == 'yes'\ndf_eo['has_opt_out'] = df_eo['67_opt_out'].astype(str).str.strip().str.lower() == 'yes'\n\n# Filter for systems containing PII\ndf_pii = df_eo[df_eo['has_pii']].copy()\npii_count = len(df_pii)\nprint(f\"\\nSystems processing PII: {pii_count} (out of {len(df_eo)} total EO systems)\")\n\nif pii_count == 0:\n    print(\"No PII systems found. Exiting analysis.\")\nelse:\n    # Calculate Privacy Control Gap (Percentage of PII systems missing Opt-Out)\n    missing_opt_out_count = len(df_pii[~df_pii['has_opt_out']])\n    privacy_control_gap = (missing_opt_out_count / pii_count) * 100\n\n    print(f\"\\n--- Privacy-Control Gap Analysis ---\")\n    print(f\"PII Systems with Opt-Out: {len(df_pii) - missing_opt_out_count}\")\n    print(f\"PII Systems MISSING Opt-Out: {missing_opt_out_count}\")\n    print(f\"Overall Privacy Control Gap: {privacy_control_gap:.2f}%\")\n\n    # Agency-level breakdown\n    # Group by Agency ('3_abr')\n    agency_col = '3_abr'\n    \n    # Create a crosstab of Agency vs Has_Opt_Out for PII systems only\n    agency_stats = pd.crosstab(df_pii[agency_col], df_pii['has_opt_out'])\n    agency_stats.columns = ['No_Opt_Out', 'Has_Opt_Out']  # False is No, True is Yes\n    \n    # Note: If all are True or all are False, crosstab might have 1 column. Handle this.\n    if 'No_Opt_Out' not in agency_stats.columns:\n        agency_stats['No_Opt_Out'] = 0\n    if 'Has_Opt_Out' not in agency_stats.columns:\n        agency_stats['Has_Opt_Out'] = 0\n        \n    agency_stats['Total_PII_Systems'] = agency_stats['No_Opt_Out'] + agency_stats['Has_Opt_Out']\n    agency_stats['Gap_Percentage'] = (agency_stats['No_Opt_Out'] / agency_stats['Total_PII_Systems']) * 100\n    \n    # Filter for agencies with a meaningful number of PII systems (e.g., > 10) to reduce noise\n    relevant_agencies = agency_stats[agency_stats['Total_PII_Systems'] >= 10].sort_values('Gap_Percentage', ascending=False)\n    \n    print(\"\\n--- Agency-Level Breakdown (Agencies with >= 10 PII Systems) ---\")\n    print(relevant_agencies[['Total_PII_Systems', 'No_Opt_Out', 'Gap_Percentage']].round(2))\n\n    # Chi-square test\n    # We test if the distribution of Opt-Out (Yes/No) is independent of the Agency\n    # Using the relevant agencies subset to ensure statistical validity\n    if len(relevant_agencies) > 1:\n        contingency_table = relevant_agencies[['No_Opt_Out', 'Has_Opt_Out']]\n        chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n        \n        print(f\"\\n--- Chi-Square Test for Independence (Agency vs Opt-Out Availability) ---\")\n        print(f\"Chi2 Statistic: {chi2:.4f}\")\n        print(f\"P-value: {p:.4e}\")\n        if p < 0.05:\n            print(\"Result: Statistically significant. Opt-out availability depends on the agency.\")\n        else:\n            print(\"Result: Not statistically significant. Opt-out availability appears independent of agency.\")\n    else:\n        print(\"\\nInsufficient data for valid Chi-square test across agencies.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Dataset loaded successfully.\nEO 13960 Scored subset shape: (1757, 196)\n\nUnique values in '29_contains_pii': <StringArray>\n['No', 'Yes', nan, ' ']\nLength: 4, dtype: str\nUnique values in '67_opt_out': <StringArray>\n[                                                                                                                                                                                                                                            nan,\n                                                                                                                                                                                                                                           'Yes',\n 'No – This AI use case is not subject to the opt-out requirement because the AI functionality is solely used for the prevention, detection, and investigation of fraud or cybersecurity incidents, or the conduct of a criminal investigation.',\n                                                                                                                                                                                                                                         'Other',\n                                                                                                                                                        'No – There is law or governmentwide guidance that restricts opt-out for this context. ',\n                                                                                                                                                   'N/A; COTS tool used for code conversion, no individual's information is input into a model.',\n                                                                                                                                                                 'Agency CAIO has waived this minimum practice and reported such waiver to OMB.']\nLength: 7, dtype: str\n\nSystems processing PII: 171 (out of 1757 total EO systems)\n\n--- Privacy-Control Gap Analysis ---\nPII Systems with Opt-Out: 13\nPII Systems MISSING Opt-Out: 158\nOverall Privacy Control Gap: 92.40%\n\n--- Agency-Level Breakdown (Agencies with >= 10 PII Systems) ---\n       Total_PII_Systems  No_Opt_Out  Gap_Percentage\n3_abr                                               \nHHS                   14          14          100.00\nSSA                   19          19          100.00\nVA                    57          54           94.74\nDHS                   43          35           81.40\n\n--- Chi-Square Test for Independence (Agency vs Opt-Out Availability) ---\nChi2 Statistic: 9.7078\nP-value: 2.1221e-02\nResult: Statistically significant. Opt-out availability depends on the agency.\n",
+  "created_at": "2026-02-22T01:20:31.779028+00:00",
+  "creation_idx": 8,
+  "experiment_id": "node_2_6",
+  "experiment_plan": {
+    "deliverables": "Percentage of PII systems missing Opt-Out controls; Agency-level breakdown of the Privacy Control Gap.",
+    "objective": "Quantify the gap between PII presence and Opt-Out control availability.",
+    "steps": "1. Filter `eo13960_scored` for systems where `29_contains_pii` is 'Yes'.\n2. Within this subset, analyze the distribution of `67_opt_out` (Yes/No).\n3. Calculate the 'Privacy Control Gap' as the percentage of PII-processing systems with `67_opt_out` = 'No'.\n4. Compare this gap across different agencies (`3_abr`) to see if specific agencies (e.g., DHS vs HHS) have better implementation rates using a Chi-square test."
+  },
+  "hypothesis": "The Privacy-Control Gap: Among federal AI systems that explicitly process PII (Personally Identifiable Information), a significant majority fail to provide an 'Opt-Out' mechanism, indicating a disconnect between privacy risk acknowledgement and privacy control implementation.",
+  "id_in_run": 7,
+  "is_surprising": false,
+  "parent_id": "node_1_0",
+  "posterior": 0.9917582417582418,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9917582417582418,
+    "n": 60.0,
+    "prior_params": [
+      30.25,
+      0.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9758064516129032,
+  "prior_belief": {
+    "_empirical_mean": 0.9916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 29.0,
+    "maybe_false": 0.0,
+    "maybe_true": 1.0,
+    "mean": 0.9758064516129032,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis regarding the Privacy-Control Gap. The implementation correctly handled the messy data in the `67_opt_out` column by treating various 'No' justifications (e.g., waivers, law enforcement exceptions) and 'N/A' responses as a lack of affirmative opt-out controls, which is methodologically sound for quantifying a 'gap'. The analysis revealed that among 171 federal AI systems processing PII, 92.4% fail to provide an opt-out mechanism. The Chi-square test (p=0.02) confirmed that this gap is not uniform, with agencies like HHS and SSA showing a 100% gap, while DHS performed comparatively better (81% gap).",
+  "rich_outputs": null,
+  "runtime_ms": 185990.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.019142148174406248
+}

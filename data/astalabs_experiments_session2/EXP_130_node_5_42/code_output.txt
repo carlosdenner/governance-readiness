@@ -1,0 +1,20 @@
+exitcode: 0 (execution succeeded)
+Code output: AIID Incidents loaded: 1362 rows
+
+--- Contingency Table (GenAI vs Harm Type) ---
+harm_type  Intangible  Tangible
+Non-GenAI        1265        72
+GenAI              25         0
+
+--- Percentages (Row-wise) ---
+harm_type  Intangible  Tangible
+is_genai                       
+False       94.614809  5.385191
+True       100.000000  0.000000
+
+Fisher's Exact Test Results:
+Odds Ratio: 0.0000
+P-value: 0.6388
+
+--- Interpretation ---
+Result: Not Statistically Significant. No evidence that GenAI harm profiles differ from Non-GenAI in this dataset.

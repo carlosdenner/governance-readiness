@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Unique Values Analysis ---
+16_dev_stage: <StringArray>
+[ 'Implementation and Assessment', 'Acquisition and/or Development',
+                      'Initiated',                        'Retired',
+      'Operation and Maintenance',                  'In production',
+                     'In mission',                        'Planned',
+                              nan]
+Length: 9, dtype: str
+52_impact_assessment: <StringArray>
+[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']
+Length: 5, dtype: str
+
+--- Contingency Table ---
+                 No Assessment  Has Assessment
+Status                                        
+Operational                585              56
+Pre-Operational            369               2
+
+--- Assessment Rates (% of Stage) ---
+                 No Assessment  Has Assessment
+Status                                        
+Operational          91.263651        8.736349
+Pre-Operational      99.460916        0.539084
+
+Chi-Square Statistic: 27.7288
+P-Value: 0.0000
+Result: Statistically Significant Difference (Reject Null Hypothesis)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot, here are the detailed observations:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot is designed to compare the "AI Impact Assessment Completion Rate" across two distinct categories of development stages: "Operational" and "Pre-Operational."
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Development Stage"
+    *   **Categories:** The axis displays two categorical variables: "Operational" and "Pre-Operational."
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Completion Rate (%)"
+    *   **Range:** The scale ranges from 0 to 100, representing percentage points.
+    *   **Ticks:** The axis is marked in intervals of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Operational" category (represented by the light blue bar) has the highest value at 8.7%.
+*   **Shortest Bar:** The "Pre-Operational" category (represented by the orange bar) has the lowest value at 0.5%.
+*   **Pattern:** There is a significant disparity between the two stages. The completion rate for AI systems that are already operational is substantially higher than for those in the pre-operational phase, though both values are relatively low on the 0-100% scale.
+
+### 4. Annotations and Legends
+*   **Value Labels:** Specific data values are annotated directly above each bar for clarity:
+    *   "8.7%" is placed above the Operational bar.
+    *   "0.5%" is placed above the Pre-Operational bar.
+*   **Color Coding:** While there is no separate legend box, the bars are distinct colors—light blue for Operational and orange for Pre-Operational—to differentiate the categories visually.
+
+### 5. Statistical Insights
+*   **Low Overall Adherence:** The most striking insight is that the completion rates for AI Impact Assessments are extremely low across the board. Even the highest category (Operational) has not even reached a 10% completion rate.
+*   **Stage Discrepancy:** There is a massive relative difference between the stages. Operational projects are roughly **17.4 times** more likely to have a completed impact assessment than Pre-Operational projects ($8.7 / 0.5 = 17.4$).
+*   **Implication:** This suggests that impact assessments are possibly being treated as a final "gatekeeping" step prior to deployment or a compliance requirement for active systems, rather than an integral part of the early development (pre-operational) lifecycle. Alternatively, it highlights a potential compliance gap where the vast majority of AI projects, regardless of stage, lack these assessments.
+==================================================

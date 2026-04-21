@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Total incidents in analysis: 40
+harm_type
+security       36
+reliability     4
+Name: count, dtype: int64
+
+Contingency Table (Harm Type vs. Gap Scope):
+gap_scope    Single Domain  Both Domains
+harm_type                               
+security                 5            31
+reliability              0             4
+
+Fisher's Exact Test Results:
+Odds Ratio: inf
+P-value: 1.0000
+Conclusion: Fail to Reject Null Hypothesis. No significant association detected.
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** This chart is designed to compare the relative proportions of two categories of "Gap Scope" (Single Domain vs. Both Domains) across different "Harm Types" (security vs. reliability). By normalizing the height of the bars to 1.0, it focuses on the composition ratio rather than absolute counts.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Harm Type"
+    *   **Categories:** Two discrete categories are plotted: "security" and "reliability".
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Incidents"
+    *   **Range:** The scale runs from **0.0 to 1.0**, representing 0% to 100% of the incidents.
+    *   **Ticks:** Intervals are marked at every 0.2 units (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Security Category:**
+    *   The bar is split into two sections.
+    *   The smaller portion (bottom, pink) represents **0.14** (or 14%).
+    *   The larger portion (top, blue) represents **0.86** (or 86%).
+    *   **Pattern:** The vast majority of security incidents involve "Both Domains".
+*   **Reliability Category:**
+    *   The bar is entirely a single color (blue).
+    *   The value is **1.00** (or 100%).
+    *   **Pattern:** Reliability incidents in this dataset appear exclusively in the "Both Domains" scope; there are no "Single Domain" instances recorded.
+*   **Overall Comparison:** The "Both Domains" scope is the dominant category for both harm types, but "reliability" shows a homogenous distribution compared to the slight variation seen in "security."
+
+### 4. Annotations and Legends
+*   **Title:** "Proportion of Gap Scope (Single vs Both) by Harm Type" appearing at the top.
+*   **Legend:** Located in the upper right corner titled "**Gap Scope**":
+    *   **Pink/Light Red:** Represents "Single Domain".
+    *   **Blue/Light Blue:** Represents "Both Domains".
+*   **Data Labels:** Numerical values are annotated directly inside the bar segments for clarity:
+    *   Inside the security bar: **0.14** (bottom) and **0.86** (top).
+    *   Inside the reliability bar: **1.00** (centered).
+
+### 5. Statistical Insights
+*   **Prevalence of Multi-Domain Scope:** Across both harm types presented, the incidents predominantly span "Both Domains." This suggests that when these harms occur, they rarely affect only a single domain in isolation.
+*   **Reliability vs. Security Nature:** There is a distinct difference in the nature of the harms. Reliability issues are shown to be strictly multi-domain (100% Both Domains), implying that reliability failures in this context are systemic or cross-cutting.
+*   **Security Variability:** While security issues are also largely cross-cutting (86%), there is a non-negligible subset (14%) that remains contained within a "Single Domain." This indicates slightly more variability in the scope of security incidents compared to reliability incidents.
+==================================================

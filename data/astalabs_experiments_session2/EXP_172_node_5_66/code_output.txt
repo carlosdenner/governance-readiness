@@ -1,0 +1,17 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Analysis of Impact vs SAOP Review ---
+
+Contingency Table (Impact [Rows] vs SAOP Review [Cols]):
+review_binary    No  Yes
+impact_binary           
+High Impact     170   57
+Low Impact     1313  178
+
+Probability of Review | High Impact: 25.11% (57/227)
+Probability of Review | Low Impact:  11.94% (178/1491)
+
+Chi-square Statistic: 27.8427
+P-value: 1.3159e-07
+Phi Coefficient: 0.1273
+Result: Statistically Significant.
+Direction: Supports hypothesis (Higher impact leads to higher review probability).

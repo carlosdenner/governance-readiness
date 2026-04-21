@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis that 'Trust Readiness' governance requirements map to a significantly higher number of architecture controls than 'Integration Readiness' requirements. Processing the `step2_crosswalk_evidence.json` dataset (n=42), the analysis found that Trust Readiness requirements mapped to a mean of 1.68 controls (SD=0.75), while Integration Readiness requirements mapped to a mean of 2.00 controls (SD=0.52). The Welch's t-test resulted in a t-statistic of -1.5519 and a p-value of 0.1308. Since the p-value exceeds the alpha of 0.05, the difference is not statistically significant. Consequently, the hypothesis is rejected; the data does not support the claim that Trust requirements are more structurally diffuse. If anything, the non-significant trend points in the opposite direction.",
+  "child_ids": [
+    "node_5_15",
+    "node_5_22"
+  ],
+  "code": "import json\nimport os\nimport numpy as np\nfrom scipy import stats\n\nfile_name = 'step2_crosswalk_evidence.json'\nfile_path = file_name\n\n# Check if file exists in current directory, otherwise check parent directory\nif not os.path.exists(file_path):\n    if os.path.exists(os.path.join('..', file_name)):\n        file_path = os.path.join('..', file_name)\n\nprint(f\"Loading dataset from: {file_path}\")\n\ntry:\n    with open(file_path, 'r') as f:\n        data = json.load(f)\n\n    trust_counts = []\n    integration_counts = []\n\n    for entry in data:\n        bundle = entry.get('bundle')\n        controls = entry.get('applicable_controls', [])\n        \n        # Determine count based on type (list or semicolon-separated string)\n        if isinstance(controls, list):\n            count = len(controls)\n        elif isinstance(controls, str):\n            count = len([c for c in controls.split(';') if c.strip()])\n        else:\n            count = 0\n            \n        if bundle == 'Trust Readiness':\n            trust_counts.append(count)\n        elif bundle == 'Integration Readiness':\n            integration_counts.append(count)\n\n    # Convert to numpy arrays\n    trust_arr = np.array(trust_counts)\n    integration_arr = np.array(integration_counts)\n\n    # Calculate descriptive statistics\n    trust_n = len(trust_arr)\n    trust_mean = np.mean(trust_arr) if trust_n > 0 else 0\n    trust_std = np.std(trust_arr, ddof=1) if trust_n > 1 else 0\n    \n    integration_n = len(integration_arr)\n    integration_mean = np.mean(integration_arr) if integration_n > 0 else 0\n    integration_std = np.std(integration_arr, ddof=1) if integration_n > 1 else 0\n\n    print(f\"\\n--- Descriptive Statistics ---\")\n    print(f\"Trust Readiness:       n={trust_n}, Mean={trust_mean:.4f}, Std Dev={trust_std:.4f}\")\n    print(f\"Integration Readiness: n={integration_n}, Mean={integration_mean:.4f}, Std Dev={integration_std:.4f}\")\n\n    # Perform Welch's t-test (equal_var=False for unequal variances/sample sizes)\n    t_stat, p_val = stats.ttest_ind(trust_arr, integration_arr, equal_var=False)\n\n    print(f\"\\n--- Welch's t-test Results ---\")\n    print(f\"T-statistic: {t_stat:.4f}\")\n    print(f\"P-value: {p_val:.4f}\")\n\n    # Interpret results regarding the hypothesis\n    # Hypothesis: Trust > Integration (Significant)\n    alpha = 0.05\n    if p_val < alpha:\n        print(\"\\nResult: Statistically significant difference detected.\")\n        if t_stat > 0:\n            print(\"Direction: Trust Readiness maps to MORE controls (Hypothesis Supported).\")\n        else:\n            print(\"Direction: Trust Readiness maps to FEWER controls (Hypothesis Rejected).\")\n    else:\n        print(\"\\nResult: No statistically significant difference detected (Hypothesis Rejected).\")\n\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_crosswalk_evidence.json\n\n--- Descriptive Statistics ---\nTrust Readiness:       n=19, Mean=1.6842, Std Dev=0.7493\nIntegration Readiness: n=23, Mean=2.0000, Std Dev=0.5222\n\n--- Welch's t-test Results ---\nT-statistic: -1.5519\nP-value: 0.1308\n\nResult: No statistically significant difference detected (Hypothesis Rejected).\n",
+  "created_at": "2026-02-20T23:24:18.203186+00:00",
+  "creation_idx": 60,
+  "experiment_id": "node_4_17",
+  "experiment_plan": {
+    "deliverables": "Mean control count per bundle, standard deviations, T-statistic, and p-value.",
+    "objective": "Compare the mean number of mapped architecture controls per governance requirement between the two bundles.",
+    "steps": "1. Load 'step2_crosswalk_evidence.json'.\n2. For each entry, calculate the length of the 'applicable_controls' list.\n3. Group the data by the 'bundle' field.\n4. Perform an Independent Samples T-test (Welch's t-test) to compare the mean control counts of 'Trust Readiness' vs. 'Integration Readiness'."
+  },
+  "hypothesis": "Governance requirements classified as 'Trust Readiness' map to a significantly higher number of architecture controls per requirement than 'Integration Readiness' requirements, indicating a higher degree of structural diffuseness.",
+  "id_in_run": 59,
+  "is_surprising": true,
+  "parent_id": "node_3_5",
+  "posterior": 0.1962809917355372,
+  "posterior_belief": {
+    "_empirical_mean": 0.008333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 87.0,
+    "definitely_true": 0.0,
+    "maybe_false": 3.0,
+    "maybe_true": 0.0,
+    "mean": 0.1962809917355372,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis that 'Trust Readiness' governance requirements map to a significantly higher number of architecture controls than 'Integration Readiness' requirements. Processing the `step2_crosswalk_evidence.json` dataset (n=42), the analysis found that Trust Readiness requirements mapped to a mean of 1.68 controls (SD=0.75), while Integration Readiness requirements mapped to a mean of 2.00 controls (SD=0.52). The Welch's t-test resulted in a t-statistic of -1.5519 and a p-value of 0.1308. Since the p-value exceeds the alpha of 0.05, the difference is not statistically significant. Consequently, the hypothesis is rejected; the data does not support the claim that Trust requirements are more structurally diffuse. If anything, the non-significant trend points in the opposite direction.",
+  "rich_outputs": null,
+  "runtime_ms": 178890.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6332843242345688
+}

@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+Contingency Table (Assessment vs Monitoring):
+monitor_bin     0   1
+assess_bin           
+0            1645  51
+1               5  56
+(Row=Assessment, Col=Monitoring; 0=No, 1=Yes)
+
+--- McNemar's Test Results ---
+Statistic (chi-squared): 36.1607
+P-value: 1.8170e-09
+
+--- Detailed Analysis ---
+Total Systems: 1757
+Assessment Completed: 61 (3.5%)
+Monitoring Established: 107 (6.1%)
+
+Discordant Pairs:
+Paperwork Only (Assess=Yes, Mon=No): 5
+Ops Only (Assess=No, Mon=Yes): 51
+Result: No significant Paperwork-Operations Gap detected in the expected direction.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** This chart compares the count of AI systems across four distinct categories regarding their status of assessment and monitoring, likely in the context of compliance with Executive Order (EO) 13960.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** The axis categorizes the systems into four groups: "Assess & Mon" (Assessed and Monitored), "Assess Only", "Mon Only" (Monitored Only), and "Neither".
+    *   **Nature:** Categorical/Nominal data.
+*   **Y-Axis:**
+    *   **Title:** "Number of AI Systems".
+    *   **Range:** The scale begins at 0 and extends to 1600, with tick marks every 200 units. The effective data range goes up to the maximum value of 1645.
+
+### 3. Data Trends
+*   **Dominant Category (Tallest Bar):** The "Neither" category is overwhelmingly the largest, with a count of **1645**. This indicates that the vast majority of AI systems in this dataset have undergone neither assessment nor monitoring.
+*   **Minority Categories:**
+    *   **"Assess Only"** is the rarest category with only **5** systems.
+    *   **"Assess & Mon"** and **"Mon Only"** are comparable in size but very low in absolute numbers, with **56** and **51** systems respectively.
+*   **Pattern:** There is a drastic disparity between the number of systems that have some form of oversight (assessment or monitoring) and those that have none. The visual weight of the grey "Neither" bar highlights a significant lack of coverage or compliance.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "The Paperwork-Operations Gap (EO 13960)" suggests the chart is illustrating a failure or gap in the implementation of the Executive Order.
+*   **Data Labels:** Exact values are annotated on top of each bar (56, 5, 51, 1645), allowing for precise reading of the data without estimating from the y-axis.
+*   **Color Coding:** The bars are distinct colors to differentiate the categories:
+    *   **Green:** Assess & Mon
+    *   **Orange:** Assess Only
+    *   **Blue:** Mon Only
+    *   **Grey:** Neither
+
+### 5. Statistical Insights
+*   **Total Population:** Summing the values ($56 + 5 + 51 + 1645$) gives a total of **1,757** AI systems represented in this dataset.
+*   **The "Gap":**
+    *   **93.6%** of the AI systems ($1645/1757$) fall into the "Neither" category, meaning they are completely outside the assessment and monitoring framework depicted here.
+    *   Only **3.2%** of systems ($56/1757$) are fully covered ("Assess & Mon").
+*   **Operational Insight:** The title "Paperwork-Operations Gap" is statistically substantiated by the data. If the goal of EO 13960 is to assess and monitor AI systems, the current operational reality is missing that target for over 90% of the inventory.
+==================================================

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Malice and Monetization' hypothesis on the 'aiid_incidents' dataset using text mining to derive harm categories.\n\n1. **Data Processing**: The keyword-based extraction strategy successfully classified 81 incidents. However, the dataset revealed a severe class imbalance: only 5 incidents were confirmed as 'Intentional', compared to 76 'Unintentional' accidents.\n\n2. **Statistical Results**: Due to the low cell counts (specifically the 'Intentional' row), the code correctly applied Fisher's Exact Test instead of Chi-square. The test yielded a p-value of **0.2293**, which is above the standard significance threshold of 0.05.\n\n3. **Hypothesis Evaluation**: The hypothesis was **not supported** by the available data. While the Odds Ratio (3.23) indicates a directional trend where 'Intentional' incidents are more likely to be Financial/Privacy-related (40%) compared to Unintentional ones (17%), the result is not statistically significant. The analysis highlights a data limitation: the AIID dataset primarily documents accidental/unintentional failures, making it a poor fit for studying malicious use patterns without supplementary data.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency, fisher_exact\nimport re\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid = df[df['source_table'] == 'aiid_incidents'].copy()\n\n# Normalize columns\naiid.columns = [c.strip().lower().replace(' ', '_').replace(':', '').replace('.', '') for c in aiid.columns]\n\n# Identify columns\nintent_col = next((c for c in aiid.columns if 'intentional_harm' in c), None)\n\n# Find text columns for keyword search (Title, Description, Summary, Reports)\n# Common names in AIID: title, description, summary, reports\npotential_text_cols = ['title', 'description', 'summary', 'reports', 'incident_description', 'short_description']\ntext_cols = [c for c in aiid.columns if any(x in c for x in potential_text_cols)]\n\nprint(f\"Identified Intent Column: {intent_col}\")\nprint(f\"Identified Text Columns: {text_cols}\")\n\n# --- 1. Map Intent ---\ndef map_intent(val):\n    if pd.isna(val): return None\n    s = str(val).lower()\n    if 'yes' in s and 'intentionally' in s:\n        return 'Intentional'\n    if 'no' in s and 'not intentionally' in s:\n        return 'Unintentional'\n    return None\n\naiid['intent_mapped'] = aiid[intent_col].apply(map_intent) if intent_col else None\n\n# --- 2. Map Harm (Keyword Search) ---\n# Keywords\nfinancial_keywords = [\n    'financial', 'money', 'bank', 'fraud', 'theft', 'scam', 'monetary', 'economic', \n    'credit', 'loan', 'cost', 'fund', 'wallet', 'crypto', 'currency', 'privacy', \n    'surveillance', 'leak', 'data breach', 'identity', 'spy', 'monitor', 'record'\n]\n\nphysical_keywords = [\n    'physical', 'safety', 'death', 'dead', 'kill', 'injury', 'injure', 'hurt', 'harm',\n    'accident', 'crash', 'collision', 'hit', 'run over', 'medical', 'patient', 'hospital',\n    'health', 'burn', 'explode', 'fire', 'attack', 'assault', 'robot', 'drone', 'autonomous'\n]\n\ndef classify_harm(row):\n    # Aggregate text from all available text columns\n    text_content = \" \"\n    for col in text_cols:\n        val = row[col]\n        if pd.notna(val):\n            text_content += str(val) + \" \"\n    \n    text_lower = text_content.lower()\n    \n    has_financial = any(k in text_lower for k in financial_keywords)\n    has_physical = any(k in text_lower for k in physical_keywords)\n    \n    if has_financial and not has_physical:\n        return 'Financial/Privacy'\n    elif has_physical and not has_financial:\n        return 'Physical Safety'\n    elif has_financial and has_physical:\n        # Conflict resolution: Check for strong physical indicators (death/injury) vs generic 'safety'\n        strong_physical = any(k in text_lower for k in ['death', 'dead', 'kill', 'injury', 'crash'])\n        if strong_physical:\n            return 'Physical Safety'\n        else:\n            return 'Ambiguous/Mixed'\n    else:\n        return 'Other'\n\naiid['harm_derived'] = aiid.apply(classify_harm, axis=1)\n\n# --- 3. Analysis ---\n# Filter for mapped intent and mapped harm (excluding Other/Ambiguous)\nanalysis_df = aiid.dropna(subset=['intent_mapped', 'harm_derived'])\nanalysis_df = analysis_df[analysis_df['harm_derived'].isin(['Financial/Privacy', 'Physical Safety'])]\n\nprint(f\"\\nTotal Mapped Rows: {len(analysis_df)}\")\nif len(analysis_df) > 0:\n    print(\"Intent Breakdown:\\n\", analysis_df['intent_mapped'].value_counts())\n    print(\"Harm Breakdown:\\n\", analysis_df['harm_derived'].value_counts())\n    \n    # Contingency Table\n    contingency = pd.crosstab(analysis_df['intent_mapped'], analysis_df['harm_derived'])\n    print(\"\\nContingency Table:\\n\", contingency)\n    \n    # Check sample size for test selection\n    total_obs = contingency.to_numpy().sum()\n    min_expected = 0\n    if contingency.shape == (2,2):\n        chi2, p, dof, ex = chi2_contingency(contingency)\n        min_expected = ex.min()\n    \n    if contingency.shape == (2,2):\n        if min_expected < 5:\n            print(\"\\nSmall sample size detected. Using Fisher's Exact Test.\")\n            odds_ratio, p_val = fisher_exact(contingency)\n            print(f\"Fisher's Exact P-value: {p_val:.4e}\")\n            print(f\"Odds Ratio: {odds_ratio:.4f}\")\n        else:\n            print(\"\\nUsing Chi-Square Test.\")\n            print(f\"Chi2 Statistic: {chi2:.4f}\")\n            print(f\"P-value: {p:.4e}\")\n            \n        # Interpretation\n        if p_val < 0.05 if 'p_val' in locals() else p < 0.05:\n            print(\"Result: Statistically Significant Association.\")\n            # Calculate Row Percentages to see direction\n            row_pcts = contingency.div(contingency.sum(axis=1), axis=0) * 100\n            print(\"\\nRow Percentages:\\n\", row_pcts)\n        else:\n            print(\"Result: No Statistically Significant Association.\")\n    else:\n        print(\"Contingency table is not 2x2. Cannot perform binary association test.\")\nelse:\n    print(\"No valid data points found after filtering.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Identified Intent Column: intentional_harm\nIdentified Text Columns: ['reports', 'description', 'title', 'summary']\n\nTotal Mapped Rows: 81\nIntent Breakdown:\n intent_mapped\nUnintentional    76\nIntentional       5\nName: count, dtype: int64\nHarm Breakdown:\n harm_derived\nPhysical Safety      66\nFinancial/Privacy    15\nName: count, dtype: int64\n\nContingency Table:\n harm_derived   Financial/Privacy  Physical Safety\nintent_mapped                                    \nIntentional                    2                3\nUnintentional                 13               63\n\nSmall sample size detected. Using Fisher's Exact Test.\nFisher's Exact P-value: 2.2925e-01\nOdds Ratio: 3.2308\nResult: No Statistically Significant Association.\n",
+  "created_at": "2026-02-22T15:10:59.328632+00:00",
+  "creation_idx": 296,
+  "experiment_id": "node_7_21",
+  "experiment_plan": {
+    "deliverables": "Contingency table showing the distribution of harm types by intent and statistical test results.",
+    "objective": "Correlate actor intent with specific harm domains in the AIID dataset.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'source_table' == 'aiid_incidents'.\n2. Map '82_Intentional Harm' to 'Intentional' (Yes) vs 'Unintentional' (No/Accident).\n3. Map '73_Harm Domain' (or derive from text fields) to 'Financial/Privacy' vs 'Physical Safety'.\n4. Remove ambiguous rows.\n5. Run a Chi-square test on the Intent vs. Harm Domain table."
+  },
+  "hypothesis": "Malice and Monetization: Incidents classified as 'Intentional Harm' are significantly more likely to result in 'Economic/Financial' or 'Privacy' harms, whereas 'Unintentional' incidents cluster around 'Physical Safety' harms.",
+  "id_in_run": 295,
+  "is_surprising": true,
+  "parent_id": "node_6_43",
+  "posterior": 0.47802197802197804,
+  "posterior_belief": {
+    "_empirical_mean": 0.3416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 46.0,
+    "maybe_true": 8.0,
+    "mean": 0.47802197802197804,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 6.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment pipeline was executed successfully and faithfully followed the research plan. All datasets were correctly loaded, and the sparse CSV structure was handled effectively to segment data for analysis. The three hypotheses were tested with appropriate statistical rigor (Chi-square and Fisher's Exact tests), and the findings provide significant insights into the nature of the data:\n\n1. **Operational Governance Decay (Rejected)**: Contrary to the hypothesis, 'Operational' systems showed a significantly higher Impact Assessment compliance rate (75.7%) compared to 'Development' systems (10.0%) (p < 0.001). This indicates that governance controls function as a 'deployment gate' rather than decaying post-launch.\n\n2. **Autonomy-Safety Escalation (Rejected)**: The data did not support the claim that higher autonomy leads to physical risks. Instead, High Autonomy systems were overwhelmingly associated with 'Intangible' harms (86%), while 'Physical' harms were more prevalent in Low Autonomy/Human-in-the-Loop contexts (p=0.077).\n\n3. **Malice and Monetization (Not Supported)**: While there was a directional trend suggesting Intentional incidents are more likely to involve Financial/Privacy harms (Odds Ratio ~3.23), the result was not statistically significant (p=0.23) due to the dataset's scarcity of confirmed 'Intentional' malice cases (N=5).\n\nOverall, the analysis was robust, correctly identifying that the dataset primarily captures unintentional failures and that federal AI governance is effectively front-loaded.",
+  "rich_outputs": null,
+  "runtime_ms": 247150.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.31669620701878765
+}

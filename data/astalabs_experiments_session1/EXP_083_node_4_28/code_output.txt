@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step3_incident_coding.csv with shape (52, 22)
+Original unique values in 'trust_integration_split':
+<StringArray>
+['both', 'trust-dominant', 'integration-dominant']
+Length: 3, dtype: str
+
+--- Sample Counts (Normalized) ---
+trust_integration_split_norm
+integration-dominant    4
+trust-dominant          2
+Name: count, dtype: int64
+
+--- Descriptive Statistics for Technique Count ---
+                              count  mean       std  min   25%  50%   75%   max
+trust_integration_split_norm                                                   
+integration-dominant            4.0  8.25  1.707825  6.0  7.50  8.5  9.25  10.0
+trust-dominant                  2.0  5.50  0.707107  5.0  5.25  5.5  5.75   6.0
+
+--- Statistical Test Results ---
+Welch's T-test: Statistic=2.7791, p-value=0.0499
+Mann-Whitney U test: Statistic=7.5000, p-value=0.1588
+Result: Statistically significant difference found (p < 0.05).
+
+STDERR:
+<ipython-input-1-8d673a31e4cf>:83: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.boxplot(x='Display Label', y='technique_count', data=subset, palette="Set2", order=['Trust-Dominant', 'Integration-Dominant'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **box plot** (also known as a box-and-whisker plot) with overlaid data points.
+*   **Purpose:** It is used to compare the distribution of a quantitative variable ("Number of Distinct Techniques") across two categorical groups ("Trust-Dominant" and "Integration-Dominant"). It visualizes the median, interquartile range (IQR), and the overall spread (min/max) of the data.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Competency Gap Dominance"
+    *   **Categories:** Two categories are displayed: "Trust-Dominant" and "Integration-Dominant".
+*   **Y-Axis:**
+    *   **Label:** "Number of Distinct Techniques"
+    *   **Range:** The visible axis ticks range from 5 to 10, representing integer counts.
+    *   **Grid:** Horizontal dashed grid lines are placed at each integer value (5, 6, 7, etc.) to assist with readability.
+
+### 3. Data Trends
+*   **Trust-Dominant (Left Group):**
+    *   **Range:** The data is tightly clustered between 5 and 6.
+    *   **Distribution:** This group shows very low variability. The box (representing the middle 50% of data) is narrow, situated roughly between 5.25 and 5.75.
+    *   **Median:** The median line is centered at roughly 5.5.
+*   **Integration-Dominant (Right Group):**
+    *   **Range:** The data is spread much wider, ranging from a minimum of 6 to a maximum of 10.
+    *   **Distribution:** This group shows high variability. The box spans from approximately 7.5 (25th percentile) to roughly 9.25 (75th percentile).
+    *   **Median:** The median is significantly higher, located at approximately 8.5.
+
+### 4. Annotations and Legends
+*   **Title:** "Attack Technique Count by Competency Gap Type" appears at the top.
+*   **Color Coding:**
+    *   **Teal/Green Box:** Represents the "Trust-Dominant" category.
+    *   **Orange/Salmon Box:** Represents the "Integration-Dominant" category.
+*   **Data Points:** Dark circular markers are superimposed on the whiskers and boxes (e.g., at 5, 6, 8, 9, 10). These likely represent the actual observed data points or specific outliers, indicating that the underlying data consists of discrete integer counts.
+
+### 5. Statistical Insights
+*   **Significant Difference in Magnitude:** There is a clear separation between the two groups. The "Integration-Dominant" gaps are associated with a significantly higher number of distinct attack techniques compared to "Trust-Dominant" gaps. The lowest value for Integration-Dominant (6) is equal to the highest value for Trust-Dominant.
+*   **Variance Discrepancy:** The "Trust-Dominant" group is highly consistent (low variance), suggesting predictable behavior where the number of techniques is almost always 5 or 6. In contrast, the "Integration-Dominant" group is much more volatile, with attack technique counts varying widely between 6 and 10.
+*   **Conclusion:** The plot suggests that security vulnerabilities or gaps classified as "Integration-Dominant" are more complex or severe in terms of the variety of attack techniques they attract or facilitate compared to "Trust-Dominant" gaps.
+==================================================

@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step2_crosswalk_matrix.csv
+
+Unique sources in dataset:
+<StringArray>
+[      'NIST AI RMF 1.0',    'NIST GenAI Profile', 'EU AI Act (2024/1689)',
+      'OWASP Top 10 LLM']
+Length: 4, dtype: str
+
+Contingency Table (Source Type vs Bundle):
+bundle       Integration Readiness  Trust Readiness
+source_type                                        
+Normative                       12               16
+Technical                       11                3
+
+Chi-Square Test Results:
+Chi-square Statistic: 3.4720
+P-value: 0.0624
+Degrees of Freedom: 1
+
+Expected Frequencies:
+[[15.33333333 12.66666667]
+ [ 7.66666667  6.33333333]]
+
+Conclusion: Fail to reject the null hypothesis. No statistically significant association found.
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided image, here is the analysis:
+
+**1. Plot Type**
+*   **Type:** Mosaic Plot (also known as a Marimekko chart).
+*   **Purpose:** This plot is used to visualize the relationship between two categorical variables ("Source Type" and "Competency Bundle") by displaying a contingency table. The area of each rectangle is proportional to the frequency (count) of that specific category combination within the dataset.
+
+**2. Axes**
+*   **Titles and Labels:**
+    *   **X-axis (Bottom):** Represents the "Source Type" variable. The categories are labeled "Normative" and "Technical".
+    *   **Y-axis (Left):** Represents the "Competency Bundle" variable. The categories are labeled "Integration Readiness" and "Trust Readiness".
+*   **Value Ranges:**
+    *   There are no numerical scales explicitly shown. However, in a mosaic plot:
+        *   The **width** of the columns on the X-axis represents the marginal proportion of each Source Type in the total population (0 to 100%).
+        *   The **height** of the segments within a column represents the conditional proportion of the Competency Bundle given that Source Type (0 to 100%).
+
+**3. Data Trends**
+*   **Column Widths (Source Type Distribution):** The "Normative" column is significantly wider than the "Technical" column. This indicates that the dataset contains a much larger number of "Normative" observations compared to "Technical" observations.
+*   **Block Heights (Competency Bundle Distribution):**
+    *   **Within Normative Sources (Left/Red):** The vertical split is relatively balanced. The area for "Trust Readiness" (bottom brown block) appears slightly larger or roughly equal to "Integration Readiness" (top dark red block). This suggests that Normative sources are split fairly evenly between these two competencies.
+    *   **Within Technical Sources (Right/Green):** The vertical split is highly uneven. The "Integration Readiness" block (top bright green) is much taller than the "Trust Readiness" block (bottom dark green). This indicates that Technical sources are overwhelmingly associated with "Integration Readiness."
+
+**4. Annotations and Legends**
+*   **Title:** "Mosaic Plot: Source Type vs Competency Bundle" identifies the variables being analyzed.
+*   **Color Coding:**
+    *   **Red/Brown tones:** Represent the "Normative" category.
+    *   **Green tones:** Represent the "Technical" category.
+*   **Separators:** Thick white lines separate the rectangles, clearly defining the boundaries of the four distinct groups formed by the intersection of the two variables.
+
+**5. Statistical Insights**
+*   **Dependence of Variables:** The variables "Source Type" and "Competency Bundle" appear to be dependent (correlated). If they were independent, the horizontal dividing lines in both columns would align at the same height. The fact that the line is much lower in the Technical column indicates a difference in distribution.
+*   **Key Association:** "Technical" sources have a much higher probability of being associated with "Integration Readiness" compared to "Normative" sources.
+*   **Prevalence:** The "Normative" source type is the dominant category in this dataset, comprising the majority of the data (likely 60-70% based on visual width estimation).
+==================================================

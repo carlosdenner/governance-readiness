@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: Using columns: 'tactics' and 'techniques'
+
+Analysis of Attack Complexity (Distinct Techniques):
+Impact Cases (n=36): Mean = 1.00, Median = 1.0
+Exfil-Only Cases (n=6): Mean = 1.00, Median = 1.0
+
+Mann-Whitney U Test Results (Alternative: Impact > Exfil Only):
+U-statistic: 108.0
+P-value: 1.0000
+Conclusion: Fail to Reject Null Hypothesis.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the analysis:
+
+**1. Plot Type**
+*   **Type:** Overlapping Histogram (or Density Plot).
+*   **Purpose:** The plot compares the distribution of "Kill Chain Complexity" (measured by the count of distinct techniques) across two categories of cyber incidents: "Impact Cases" and "Exfiltration-Only Cases". It aims to visualize whether one type of incident involves a more complex set of techniques than the other.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Label:** "Count of Distinct Techniques"
+    *   **Range:** The axis spans from 0.0 to 3.0.
+    *   **Units:** Integer count (distinct techniques).
+*   **Y-Axis:**
+    *   **Label:** "Density"
+    *   **Range:** The axis spans from 0.0 to roughly 1.05.
+    *   **Units:** Probability density (proportion of total cases).
+
+**3. Data Trends**
+*   **Visual Pattern:** The plot shows a single, solid rectangular block spanning the x-axis from 1.0 to 2.0. The block is purple, indicating a complete overlap between the semi-transparent red bars ("Impact Cases") and blue bars ("Exfil-Only Cases").
+*   **Distribution:**
+    *   There is no spread in the data. All data points for both categories appear to fall into the same bin.
+    *   The height of the bar is 1.0, indicating that 100% of the observed data for both categories lies within this specific range.
+*   **Comparison:** There is no visible difference between the two datasets. They mirror each other perfectly.
+
+**4. Annotations and Legends**
+*   **Legend:** located in the upper right corner, it distinguishes the datasets:
+    *   **Red Square:** Represents "Impact Cases".
+    *   **Blue Square:** Represents "Exfil-Only Cases".
+    *   **Red Dashed Line:** Indicates the "Mean Impact," explicitly labeled with a value of **(1.0)**.
+    *   **Blue Dashed Line:** Indicates the "Mean Exfil," explicitly labeled with a value of **(1.0)**.
+*   **Vertical Lines:** There is a dashed vertical line at **x = 1.0**. Because the means for both groups are identical (1.0), the red and blue dashed lines overlap perfectly.
+
+**5. Statistical Insights**
+*   **Uniform Complexity:** The most significant insight is the lack of variance. Every single case in this dataset—whether it resulted in "Impact" or "Exfiltration-Only"—utilized exactly **1 distinct technique**.
+*   **Identical Averages:** As noted in the legend, the mean distinct technique count for both groups is exactly 1.0.
+*   **Conclusion:** Based on this specific data, there is no correlation between the complexity of the kill chain (technique count) and the outcome (Impact vs. Exfiltration). Both outcomes are associated with the minimum complexity level shown on the graph.
+==================================================

@@ -1,0 +1,54 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_crosswalk_matrix.csv
+
+--- Contingency Table (Count) ---
+                       Absent  Present
+bundle                                
+Integration Readiness      22        1
+Trust Readiness            19        0
+
+--- Contingency Table (Percentage) ---
+                           Absent   Present
+bundle                                     
+Integration Readiness   95.652174  4.347826
+Trust Readiness        100.000000  0.000000
+
+--- Statistical Test Results ---
+Fisher's Exact Test P-value: 1.0000
+Odds Ratio (Trust/Integration): 0.0000
+Result: Not Statistically Significant (Fail to Reject Null Hypothesis)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot (Column Chart).
+*   **Purpose:** To compare the prevalence (percentage) of a specific control feature, "Audit Logging & Telemetry," across distinct categorical groups known as "Competency Bundles."
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Competency Bundle"
+    *   **Categories:** The axis displays two discrete categories: "Integration Readiness" and "Trust Readiness."
+*   **Y-Axis:**
+    *   **Label:** "Percentage of Requirements with Control (%)"
+    *   **Range:** The axis ranges from 0 to 100.
+    *   **Scale:** The scale is linear with major tick marks every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Integration Readiness" category has the highest value, represented by a light blue bar.
+*   **Shortest Bar:** The "Trust Readiness" category has the lowest value, represented by the absence of a visible bar (height is zero).
+*   **Pattern:** Both categories show extremely low prevalence values. The data is heavily skewed toward the bottom of the 0-100% scale, indicating that this specific control is rare in both bundles.
+
+### 4. Annotations and Legends
+*   **Title:** "Prevalence of 'Audit Logging & Telemetry' by Bundle" appears at the top center.
+*   **Data Labels:**
+    *   Above the "Integration Readiness" bar, there is a specific numerical annotation: **"4.3%"**.
+    *   Above the "Trust Readiness" position, there is a specific numerical annotation: **"0.0%"**.
+*   **Legend:** There is no separate legend box; the categories are identified directly on the x-axis.
+
+### 5. Statistical Insights
+*   **Absence in Trust Readiness:** The "Trust Readiness" bundle has zero coverage (0.0%) for "Audit Logging & Telemetry," suggesting this specific control is currently completely missing from that bundle's requirements.
+*   **Low Prevalence in Integration Readiness:** While "Integration Readiness" performs better than "Trust Readiness," the prevalence is still very low at only 4.3%. This indicates that less than 1 in 20 requirements in this bundle include this control.
+*   **Overall Gap:** The data highlights a significant gap in "Audit Logging & Telemetry" controls across both competency bundles analyzed. Neither bundle comes close to substantial coverage.
+==================================================

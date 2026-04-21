@@ -1,0 +1,77 @@
+exitcode: 0 (execution succeeded)
+Code output: Total EO 13960 records: 1757
+
+Unique values in '16_dev_stage':
+<StringArray>
+[ 'Implementation and Assessment', 'Acquisition and/or Development',
+                      'Initiated',                        'Retired',
+      'Operation and Maintenance',                  'In production',
+                     'In mission',                        'Planned',
+                              nan]
+Length: 9, dtype: str
+
+Unique values in '52_impact_assessment':
+<StringArray>
+[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']
+Length: 5, dtype: str
+
+Records after cleaning and mapping: 94
+
+Contingency Table (Count):
+has_impact_assessment  No  Yes
+lifecycle_category            
+Development            18    2
+Operational            18   56
+
+Compliance Rates (%):
+has_impact_assessment         No        Yes
+lifecycle_category                         
+Development            90.000000  10.000000
+Operational            24.324324  75.675676
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 26.0267
+P-value: 3.3673e-07
+Degrees of Freedom: 1
+Result: Statistically Significant (Reject Null Hypothesis)
+Interpretation: There is a significant association between lifecycle stage and impact assessment compliance.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% Stacked Bar Chart).
+*   **Purpose:** The plot compares the relative percentage distribution of a binary variable ("Impact Assessment" compliance) across two distinct categories ("Lifecycle Stage"). It allows viewers to quickly see the proportion of "Yes" versus "No" responses within each stage.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Lifecycle Stage"
+    *   **Categories:** Two discrete stages are represented: "Development" and "Operational".
+*   **Y-Axis:**
+    *   **Title:** "Percentage"
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Increments:** Ticks are marked every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Development Stage:**
+    *   This category is dominated by the "No" segment (Pink). Visually, the "No" bar extends up to the 90 mark on the Y-axis.
+    *   Consequently, the "Yes" segment (Blue) comprises only about 10% of the total for the Development stage.
+*   **Operational Stage:**
+    *   This category shows a reversal of the trend seen in Development. The "Yes" segment (Blue) is the dominant portion.
+    *   The "No" segment (Pink) appears to reach roughly the 24 mark.
+    *   This implies the "Yes" segment comprises approximately 76% of the Operational stage.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Impact Assessment Compliance by Lifecycle Stage" – situated at the top center.
+*   **Legend:** Located in the top right corner with the title **"Impact Assessment"**.
+    *   **No:** Represented by the Salmon/Pink color.
+    *   **Yes:** Represented by the Light Blue color.
+
+### 5. Statistical Insights
+*   **Significant Compliance Gap:** There is a stark contrast in compliance between the two lifecycle stages. Projects in the "Development" phase have a very low rate of Impact Assessment compliance (~10%), whereas "Operational" projects have a high compliance rate (~76%).
+*   **Process Implication:** The data suggests that Impact Assessments are likely treated as a prerequisite for moving a project from development into operations, or that enforcement is much stricter once a system is live. Alternatively, it indicates a potential risk area where projects in development are evolving without assessing their potential impact.
+*   **Dominant Status:**
+    *   For **Development**, the status quo is overwhelmingly non-compliant.
+    *   For **Operational**, the status quo is majority compliant.
+==================================================

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the revised 'Physical-Impact Link' hypothesis by inferring sectors from the names and summaries of 52 ATLAS cases. Using keyword matching, 38 cases were classified (26 Digital, 12 Physical), while 14 remained unclassified and were excluded. \n\nContrary to the hypothesis that Physical sectors face more destructive 'Impact' tactics, the data showed a higher prevalence of Impact tactics in Digital sectors (73.08%, 19/26) compared to Physical sectors (58.33%, 7/12). However, the Fisher's Exact Test yielded a p-value of 0.4605, indicating that this difference is not statistically significant. \n\nTherefore, the hypothesis is rejected. There is no evidence in the ATLAS dataset to support the claim that adversarial attacks in physical industries are more likely to involve destructive payloads than those in digital industries; in fact, the trend in this limited sample leaned slightly in the opposite direction.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport sys\n\n# Load dataset\nprint(\"Loading dataset...\")\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        print(\"Dataset not found.\")\n        sys.exit(1)\n\n# Filter for ATLAS cases\natlas_df = df[df['source_table'] == 'atlas_cases'].copy()\nprint(f\"ATLAS cases loaded: {len(atlas_df)}\")\n\n# Define keywords\nphysical_keywords = [\n    'automotive', 'car', 'vehicle', 'drive', 'driving', 'energy', 'power', 'grid', \n    'defense', 'military', 'weapon', 'healthcare', 'medical', 'hospital', \n    'surveillance', 'camera', 'cctv', 'drone', 'robot', 'biometric', 'physical', \n    'traffic', 'face', 'facial', 'recognition', 'sensor', 'gps'\n]\n\ndigital_keywords = [\n    'finance', 'bank', 'trading', 'software', 'malware', 'phishing', 'email', \n    'internet', 'web', 'cloud', 'network', 'chatbot', 'language model', 'llm', \n    'text', 'spam', 'bypass', 'antivirus', 'translation', 'bot', 'algorithm', \n    'filter', 'online', 'media'\n]\n\n# Function to categorize sector\ndef categorize_sector(row):\n    # Combine name and summary, handle NaN\n    text = str(row.get('name', '')) + \" \" + str(row.get('summary', ''))\n    text = text.lower()\n    \n    # Check Physical first (prioritizing domain of application)\n    for kw in physical_keywords:\n        if kw in text:\n            return 'Physical'\n            \n    # Check Digital\n    for kw in digital_keywords:\n        if kw in text:\n            return 'Digital'\n            \n    return 'Unclassified'\n\n# Apply categorization\natlas_df['inferred_sector'] = atlas_df.apply(categorize_sector, axis=1)\n\n# Identify Impact tactic\n# Tactics seem to be strings like \"{{impact.id}}|...\"\natlas_df['has_impact'] = atlas_df['tactics'].astype(str).str.contains('impact', case=False, na=False)\n\n# Filter out Unclassified\nanalysis_df = atlas_df[atlas_df['inferred_sector'] != 'Unclassified'].copy()\n\nprint(\"\\nSector Inference Results:\")\nprint(analysis_df['inferred_sector'].value_counts())\nprint(f\"Unclassified cases dropped: {len(atlas_df) - len(analysis_df)}\")\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(analysis_df['inferred_sector'], analysis_df['has_impact'])\nprint(\"\\nContingency Table (Sector vs Has Impact):\")\nprint(contingency_table)\n\n# Check if we have enough data for 2x2\nif contingency_table.shape == (2, 2):\n    # Perform Fisher's Exact Test\n    # Table structure:\n    #              False  True\n    # inferred_sector\n    # Digital       A      B\n    # Physical      C      D\n    odds_ratio, p_value = stats.fisher_exact(contingency_table)\n    \n    print(f\"\\nFisher's Exact Test Results:\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\n    print(f\"P-value: {p_value:.4f}\")\n    \n    alpha = 0.05\n    if p_value < alpha:\n        print(\"Result: Statistically significant association found.\")\n    else:\n        print(\"Result: No statistically significant association found.\")\n        \n    # Calculate percentages for clarity\n    physical_total = contingency_table.loc['Physical'].sum()\n    physical_impact = contingency_table.loc['Physical', True]\n    digital_total = contingency_table.loc['Digital'].sum()\n    digital_impact = contingency_table.loc['Digital', True]\n    \n    print(f\"\\nPhysical Sector Impact Rate: {physical_impact}/{physical_total} ({physical_impact/physical_total:.2%})\")\n    print(f\"Digital Sector Impact Rate: {digital_impact}/{digital_total} ({digital_impact/digital_total:.2%})\")\n\nelse:\n    print(\"\\nInsufficient data dimensions for Fisher's Exact Test (need 2x2 table).\")\n    print(\"Observed shape:\", contingency_table.shape)\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset...\nATLAS cases loaded: 52\n\nSector Inference Results:\ninferred_sector\nDigital     26\nPhysical    12\nName: count, dtype: int64\nUnclassified cases dropped: 14\n\nContingency Table (Sector vs Has Impact):\nhas_impact       False  True \ninferred_sector              \nDigital              7     19\nPhysical             5      7\n\nFisher's Exact Test Results:\nOdds Ratio: 0.5158\nP-value: 0.4605\nResult: No statistically significant association found.\n\nPhysical Sector Impact Rate: 7/12 (58.33%)\nDigital Sector Impact Rate: 19/26 (73.08%)\n",
+  "created_at": "2026-02-22T15:20:34.175568+00:00",
+  "creation_idx": 299,
+  "experiment_id": "node_6_85",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table showing counts of Impact/No-Impact for Physical vs Digital sectors.\n2. Fisher's Exact Test statistic and p-value.\n3. Conclusion on whether the hypothesis is supported.",
+    "objective": "Investigate if physical industries face more destructive adversarial AI tactics by inferring sectors from case summaries due to missing metadata.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for rows where 'source_table' is 'atlas_cases'.\n2. FIll missing 'sector' values by analyzing 'name' and 'summary' columns using keyword matching:\n   - Physical: ['automotive', 'car', 'vehicle', 'drive', 'energy', 'power', 'grid', 'defense', 'military', 'weapon', 'healthcare', 'medical', 'hospital', 'surveillance', 'camera', 'drone', 'robot', 'biometric', 'physical']\n   - Digital: ['finance', 'bank', 'trading', 'software', 'malware', 'phishing', 'email', 'internet', 'web', 'cloud', 'network', 'chatbot', 'language model', 'llm', 'text', 'image', 'spam', 'bypass']\n3. Create a 'has_impact' boolean column by checking if the 'tactics' column contains the substring 'impact' (case-insensitive).\n4. Filter the dataset to include only rows classified as 'Physical' or 'Digital'.\n5. Generate a contingency table of Sector vs. Impact Tactic Presence.\n6. Perform a Fisher's Exact Test (due to small sample size n=52) to test for independence."
+  },
+  "hypothesis": "The 'Physical-Impact' Link (ATLAS - Revised): Adversarial attacks in 'Physical' sectors (inferred from case descriptions) are significantly more likely to involve the 'Impact' tactic (destructive payload) compared to attacks in 'Digital' sectors.",
+  "id_in_run": 298,
+  "is_surprising": true,
+  "parent_id": "node_5_62",
+  "posterior": 0.4065934065934066,
+  "posterior_belief": {
+    "_empirical_mean": 0.23333333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 4.0,
+    "definitely_true": 0.0,
+    "maybe_false": 56.0,
+    "maybe_true": 0.0,
+    "mean": 0.4065934065934066,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the revised 'Physical-Impact Link' hypothesis using the ATLAS dataset. The implementation effectively handled the missing 'sector' metadata by inferring categories from case summaries, allowing for a valid statistical comparison. \n\nAnalysis of the 38 classified cases (26 Digital, 12 Physical) revealed that Digital sectors actually had a higher rate of 'Impact' tactics (73.08%) compared to Physical sectors (58.33%), which contradicts the hypothesis direction. However, the Fisher's Exact Test yielded a p-value of 0.4605, indicating that this difference is not statistically significant. \n\nTherefore, the hypothesis is rejected. The data suggests that 'Impact' tactics (destructive payloads) are a common feature across both physical and digital adversarial AI scenarios in the ATLAS framework, with no significant skew toward physical industries.",
+  "rich_outputs": null,
+  "runtime_ms": 283050.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4024104927330734
+}

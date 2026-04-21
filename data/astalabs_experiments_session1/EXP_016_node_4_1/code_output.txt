@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step3_tactic_frequency.csv
+Dataset shape: (16, 6)
+Columns: ['tactic_id', 'tactic_name', 'incident_count', 'bundle', 'sub_competency_id', 'competency_domain']
+Grouping by column: bundle
+Unique groups: <StringArray>
+['Integration Readiness', 'Trust Readiness']
+Length: 2, dtype: str
+
+=== Descriptive Statistics ===
+Trust Readiness (n=9): Mean=21.89, Median=17.0, Std=11.82
+Integration Readiness (n=7): Mean=29.14, Median=33.0, Std=26.59
+
+=== Mann-Whitney U Test Results ===
+Hypothesis: Integration > Trust (frequency)
+U-statistic: 32.0
+p-value: 0.50000
+Result: Not Statistically Significant (Fail to Reject Null)
+
+STDERR:
+<ipython-input-1-209a34a6f203>:89: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box and Whisker Plot (Boxplot).
+*   **Purpose:** This plot visualizes the distribution of quantitative data ("Incident Count") across two categorical groups ("Trust Readiness" vs. "Integration Readiness"). It is designed to facilitate the comparison of central tendency (median), spread (variability), and the presence of outliers between these two groups.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Incident Count per Tactic"
+    *   **Range:** The axis is marked from 0 to 80 in increments of 10.
+    *   **Units:** Count (integer values representing the number of incidents).
+*   **X-Axis:**
+    *   **Label:** Represents the two categories of tactics being analyzed.
+    *   **Categories:**
+        1.  "Trust Readiness"
+        2.  "Integration Readiness"
+
+### 3. Data Trends
+*   **Trust Readiness (Left Box):**
+    *   **Distribution:** This group shows a relatively compact distribution. The Interquartile Range (IQR)—represented by the blue box height—is small, roughly spanning from 15 to 24.
+    *   **Spread:** The overall range (excluding outliers) is narrower, extending from approximately 11 to 34.
+    *   **Outlier:** There is a distinct outlier (represented by the open circle) at approximately 47. This indicates that one specific tactic within this group resulted in a significantly higher incident count than the rest of the cohort.
+*   **Integration Readiness (Right Box):**
+    *   **Distribution:** This group exhibits a very wide distribution. The box is tall, with an IQR roughly spanning from 7 to 39.
+    *   **Spread:** The whiskers cover a vast range, from a minimum of roughly 2 to a maximum of roughly 77. This indicates high variability in the results; some tactics had very few incidents, while others had the highest in the dataset.
+    *   **Outliers:** No outliers are visible for this group; the spread is continuous.
+
+### 4. Annotations and Legends
+*   **Title:** "Incident Frequency Distribution: Trust vs Integration Tactics" — Defines the context of the comparison.
+*   **Sample Size (n):** The X-axis labels include annotations for sample size:
+    *   Trust Readiness: `n=9`
+    *   Integration Readiness: `n=7`
+*   **Median Line:** The red horizontal line inside each blue box indicates the median value for that group.
+*   **Grid Lines:** Horizontal dashed grey lines serve as a visual aid to estimate Y-axis values.
+
+### 5. Statistical Insights
+*   **Central Tendency:** The **Integration Readiness** group has a noticeably higher median incident count (approx. 33) compared to the **Trust Readiness** group (approx. 17). This suggests that, typically, Integration Readiness tactics are associated with a higher frequency of incidents.
+*   **Variability (Risk):** The **Integration Readiness** group shows significantly higher volatility. The large spread suggests unpredictability; while the median is higher, the group contains both the lowest and highest incident counts in the entire dataset. Conversely, **Trust Readiness** is more consistent and predictable, with most data points clustered tightly, barring the single outlier.
+*   **Impact of Sample Size:** The sample sizes are small (`n=9` and `n=7`). While the visual difference in distribution is strong, the small `n` suggests that the outlier in the Trust group significantly impacts the mean, though the median remains robust. The extreme range in the Integration group is notable given there are only 7 data points.
+==================================================

@@ -1,0 +1,59 @@
+{
+  "analysis": "The experiment successfully tested the 'Privacy Oversight Evasion' hypothesis using the EO 13960 dataset. After filtering for systems containing PII, 117 relevant cases were identified (84 in Benefits/Services, 33 in Law Enforcement/Security). \n\nThe results **strongly contradict the hypothesis**:\n1.  **Observed Rates**: 'Benefits/Services' deployments exhibited a much higher rate of SAOP review bypass (44.05%) compared to 'Law Enforcement/Security' deployments (21.21%).\n2.  **Statistical Test**: The one-sided Z-test (testing if LE > Benefits) yielded a Z-statistic of -2.2946 and a p-value of 0.989. This high p-value confirms we fail to reject the null hypothesis in the hypothesized direction. \n3.  **Inversion**: The data suggests the inverse relationship is statistically significant: non-security 'Benefits' agencies are approximately twice as likely to bypass privacy oversight compared to Law Enforcement agencies in this dataset.",
+  "child_ids": [
+    "node_4_16",
+    "node_4_34",
+    "node_4_47"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom statsmodels.stats.proportion import proportions_ztest\n\n# Load dataset\nfile_path = '../astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 Scored dataset\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# 1. Filter for rows where PII is present\npii_positive = ['Yes', 'yes', 'True', 'true', '1']\neo_pii = eo_df[eo_df['29_contains_pii'].astype(str).str.strip().isin(pii_positive)].copy()\n\nprint(f\"Total records with PII: {len(eo_pii)}\")\n\n# 2. Segment into Groups\nle_keywords = ['Law Enforcement', 'Justice', 'Security', 'Defense', 'Intelligence', 'Homeland']\nsvc_keywords = ['Health', 'Benefits', 'Services', 'Transportation', 'Education', 'Energy', 'Environment', 'Labor', 'Commerce', 'Housing', 'Agriculture']\n\ndef classify_topic(topic):\n    topic_str = str(topic)\n    if any(k in topic_str for k in le_keywords):\n        return 'Law Enforcement/Security'\n    elif any(k in topic_str for k in svc_keywords):\n        return 'Benefits/Services'\n    else:\n        return 'Other'\n\neo_pii['group'] = eo_pii['8_topic_area'].apply(classify_topic)\n\n# Filter only for the two groups of interest\nanalysis_df = eo_pii[eo_pii['group'].isin(['Law Enforcement/Security', 'Benefits/Services'])].copy()\n\nprint(\"\\nCounts by Group:\")\nprint(analysis_df['group'].value_counts())\n\n# 3. Define Metric: Bypass Rate\n# Bypass = 'No' or Missing (NaN)\ndef is_bypass(val):\n    s = str(val).strip().lower()\n    if s == 'no' or s == 'nan':\n        return 1\n    return 0\n\nanalysis_df['bypass_flag'] = analysis_df['30_saop_review'].apply(is_bypass)\n\n# 4. Statistical Test\ngroup_stats = analysis_df.groupby('group')['bypass_flag'].agg(['sum', 'count', 'mean'])\n# Rename columns for clarity\ngroup_stats.columns = ['bypassed', 'total', 'rate']\n\nprint(\"\\nBypass Statistics:\")\nprint(group_stats)\n\nif len(group_stats) == 2:\n    # Extract stats for z-test\n    # Note: 'Benefits/Services' is likely at index 0, 'Law Enforcement/Security' at index 1 due to sorting\n    le_stats = group_stats.loc['Law Enforcement/Security']\n    ben_stats = group_stats.loc['Benefits/Services']\n    \n    print(f\"\\nLE Bypass Rate: {le_stats['rate']:.2%}\")\n    print(f\"Benefits Bypass Rate: {ben_stats['rate']:.2%}\")\n    \n    # Hypothesis: LE > Benefits\n    # Alternative='larger' means prop(group1) > prop(group2)\n    # We pass counts and nobs as lists: [count_LE, count_Ben], [nobs_LE, nobs_Ben]\n    \n    # FIXED: Use 'bypassed' instead of 'sum' since columns were renamed\n    count = [le_stats['bypassed'], ben_stats['bypassed']]\n    nobs = [le_stats['total'], ben_stats['total']]\n    \n    stat, pval = proportions_ztest(count, nobs, alternative='larger')\n    \n    print(f\"\\nZ-test Statistic (LE > Benefits): {stat:.4f}\")\n    print(f\"P-value: {pval:.4e}\")\n    \n    # Interpretation check\n    if pval < 0.05:\n        print(\"Result: Statistically Significant (Reject Null)\")\n    else:\n        print(\"Result: Not Significant (Fail to Reject Null)\")\n        \n    # 5. Visualization\n    plt.figure(figsize=(8, 6))\n    colors = ['skyblue', 'salmon']\n    # Ensure order matches\n    groups = ['Benefits/Services', 'Law Enforcement/Security']\n    rates = [ben_stats['rate'], le_stats['rate']]\n    \n    plt.bar(groups, rates, color=colors, alpha=0.8)\n    plt.ylabel('Rate of SAOP Review Bypass (No/Missing)')\n    plt.title('Privacy Oversight Evasion: Law Enforcement vs Benefits')\n    plt.ylim(0, 1.0)\n    for i, v in enumerate(rates):\n        plt.text(i, v + 0.02, f\"{v:.1%}\", ha='center', fontweight='bold')\n    plt.tight_layout()\n    plt.show()\nelse:\n    print(\"Insufficient groups for comparison.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total records with PII: 171\n\nCounts by Group:\ngroup\nBenefits/Services           84\nLaw Enforcement/Security    33\nName: count, dtype: int64\n\nBypass Statistics:\n                          bypassed  total      rate\ngroup                                              \nBenefits/Services               37     84  0.440476\nLaw Enforcement/Security         7     33  0.212121\n\nLE Bypass Rate: 21.21%\nBenefits Bypass Rate: 44.05%\n\nZ-test Statistic (LE > Benefits): -2.2946\nP-value: 9.8912e-01\nResult: Not Significant (Fail to Reject Null)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot.\n*   **Purpose:** The plot is designed to compare the rates of privacy oversight evasion (specifically, bypassing the SAOP review) across two distinct functional categories: \"Benefits/Services\" and \"Law Enforcement/Security.\"\n\n### 2. Axes\n*   **Y-Axis:**\n    *   **Title:** \"Rate of SAOP Review Bypass (No/Missing)\"\n    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).\n    *   **Ticks:** The axis is marked at 0.2 intervals (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n*   **X-Axis:**\n    *   **Labels:** The axis represents two categories: \"Benefits/Services\" and \"Law Enforcement/Security.\"\n\n### 3. Data Trends\n*   **Highest Value:** The \"Benefits/Services\" category (left bar, light blue) has the highest rate of review bypass.\n*   **Lowest Value:** The \"Law Enforcement/Security\" category (right bar, salmon/light red) has the lowest rate.\n*   **Comparison:** The bar representing \"Benefits/Services\" is visibly more than twice the height of the \"Law Enforcement/Security\" bar, indicating a significant disparity in how often these two groups bypass privacy reviews.\n\n### 4. Annotations and Legends\n*   **Plot Title:** \"Privacy Oversight Evasion: Law Enforcement vs Benefits\"\n*   **Value Annotations:** Specific percentage values are placed directly above each bar for precision:\n    *   **44.0%** above the Benefits/Services bar.\n    *   **21.2%** above the Law Enforcement/Security bar.\n*   **Color Coding:** The plot uses distinct colors to differentiate the categories (Blue for Benefits, Salmon/Red for Law Enforcement), though the labels on the x-axis serve as the primary identifier.\n\n### 5. Statistical Insights\n*   **Significant Discrepancy:** There is a 22.8 percentage point difference between the two categories.\n*   **Relative Risk:** Systems or processes related to \"Benefits/Services\" are more than twice as likely (approx. 2.07 times) to bypass the SAOP (Senior Agency Official for Privacy) review compared to those in \"Law Enforcement/Security.\"\n*   **Implication:** This suggests that while Law Enforcement/Security sectors generally have a higher compliance rate (only ~1 in 5 bypass review), the Benefits/Services sector struggles significantly with oversight compliance, with nearly half (44%) of instances missing the required review.\n==================================================",
+  "created_at": "2026-02-22T02:26:39.603396+00:00",
+  "creation_idx": 31,
+  "experiment_id": "node_3_14",
+  "experiment_plan": {
+    "deliverables": "Bar chart of SAOP Bypass rates by Topic; Z-test statistic.",
+    "objective": "Detect patterns of governance avoidance in sensitive sectors.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'eo13960_scored'.\n2. Filter for rows where '29_contains_pii' is Affirmative.\n3. Segment data into Topic Areas: 'Law Enforcement/Security' vs 'Benefits/Health/Services'.\n4. Compare the rate of '30_saop_review' == 'NO' (or missing) between the two groups.\n5. Run a Two-proportion Z-test."
+  },
+  "hypothesis": "Privacy Oversight Evasion: 'Law Enforcement' AI deployments containing PII are significantly more likely to bypass 'SAOP Review' (Senior Agency Official for Privacy) compared to 'Benefits/Services' deployments, indicating a security-exemption culture.",
+  "id_in_run": 30,
+  "is_surprising": true,
+  "parent_id": "node_2_7",
+  "posterior": 0.28296703296703296,
+  "posterior_belief": {
+    "_empirical_mean": 0.03333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 52.0,
+    "definitely_true": 0.0,
+    "maybe_false": 8.0,
+    "maybe_true": 0.0,
+    "mean": 0.28296703296703296,
+    "n": 60.0,
+    "prior_params": [
+      23.75,
+      7.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7661290322580645,
+  "prior_belief": {
+    "_empirical_mean": 0.775,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 3.0,
+    "maybe_false": 0.0,
+    "maybe_true": 27.0,
+    "mean": 0.7661290322580645,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Privacy Oversight Evasion' hypothesis using the EO 13960 dataset. The code correctly filtered for systems containing PII and segmented them into the target groups ('Law Enforcement/Security' vs. 'Benefits/Services'). The analysis revealed 117 relevant cases. Contrary to the hypothesis, 'Benefits/Services' deployments exhibited a significantly higher rate of SAOP review bypass (44.05%) compared to 'Law Enforcement/Security' deployments (21.21%). The one-sided Z-test (testing for LE > Benefits) yielded a p-value of 0.99, leading to a failure to reject the null hypothesis in the predicted direction. The findings suggest the inverse: civilian service agencies are more likely to bypass privacy oversight than security agencies in this dataset.",
+  "rich_outputs": null,
+  "runtime_ms": 206910.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5797943991492378
+}

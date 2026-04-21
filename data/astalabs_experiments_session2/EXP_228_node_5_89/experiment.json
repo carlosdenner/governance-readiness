@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Adversarial Tactic-Gap Alignment' hypothesis with refined keyword definitions. \n\n1. **Evasion vs. Trust Gaps**: The analysis found a highly significant association (p=0.0001). All 23 cases involving 'Evasion' tactics were associated with 'Trust' gaps (e.g., Defense Evasion Detection, Model Access), while cases without Evasion tactics were split (14 without trust gaps, 15 with). This strongly supports the hypothesis that Evasion tactics cluster with Trust/Robustness failures.\n\n2. **Exfiltration vs. Integration Gaps**: The analysis found no significant association (p=0.4977). 'Integration' gaps (Access, Privilege, Network) were pervasive across the dataset (present in 50/52 cases), appearing in nearly all Exfiltration cases (14/15) but also in nearly all non-Exfiltration cases (36/37). This saturation prevented the identification of a specific correlation.\n\n**Conclusion**: The hypothesis is partially supported. There is strong evidence linking Evasion tactics to Trust gaps, but Integration gaps appear to be a baseline issue across almost all adversarial cases in this dataset, rather than specific to Exfiltration.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import fisher_exact\n\n# Load the dataset\nds_path = 'astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(ds_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('../' + ds_path, low_memory=False)\n\n# Filter for relevant tables\natlas_df = df[df['source_table'] == 'atlas_cases'].copy()\ncoding_df = df[df['source_table'] == 'step3_incident_coding'].copy()\n\n# Merge on 'name'\nmerged_df = pd.merge(atlas_df[['name', 'tactics']], \n                     coding_df[['name', 'competency_domains']], \n                     on='name', how='inner')\n\n# Refined Classification Logic to avoid \"everything is True\"\n# We will look for specific keywords associated with the Hypothesis mechanism\n\ndef classify_row(row):\n    tactics = str(row.get('tactics', '')).upper()\n    domains = str(row.get('competency_domains', '')).upper()\n    \n    # Tactics\n    is_exfil = 'EXFILTRATION' in tactics\n    is_evasion = 'EVASION' in tactics\n    \n    # Integration Gaps (Focus on Access/Architectural controls as per hypothesis)\n    # Keywords: Access Boundary, Privilege, Identity, Network, Supply Chain\n    int_keywords = ['ACCESS BOUNDARY', 'PRIVILEGE', 'IDENTITY', 'NETWORK', 'SUPPLY CHAIN']\n    has_integration_gap = any(k in domains for k in int_keywords)\n    \n    # Trust Gaps (Focus on Model Robustness/Evasion Defense as per hypothesis)\n    # Keywords: Defense Evasion, Robustness, Model Access, Adversarial\n    # Note: 'Defense Evasion' appears in both tactic and gap names, ensure we look at domains column\n    trust_keywords = ['DEFENSE EVASION', 'ROBUSTNESS', 'MODEL ACCESS', 'ADVERSARIAL']\n    has_trust_gap = any(k in domains for k in trust_keywords)\n    \n    return pd.Series([is_exfil, is_evasion, has_integration_gap, has_trust_gap])\n\nmerged_df[['is_exfil', 'is_evasion', 'has_int_gap', 'has_trust_gap']] = merged_df.apply(classify_row, axis=1)\n\n# --- Analysis 1: Exfiltration vs Integration Gaps ---\n# Hypothesis: Exfiltration tactics are associated with Integration Gaps\nprint(\"\\n--- Analysis 1: Exfiltration vs Integration (Access/Network) Gaps ---\")\ncont_exfil = pd.crosstab(merged_df['is_exfil'], merged_df['has_int_gap'], \n                         rownames=['Tactic: Exfiltration'], colnames=['Gap: Integration'])\nprint(cont_exfil)\n\nif cont_exfil.size == 4:\n    odds_exfil, p_exfil = fisher_exact(cont_exfil)\n    print(f\"Fisher Exact p-value: {p_exfil:.4f}\")\n    print(f\"Odds Ratio: {odds_exfil:.4f}\")\nelse:\n    print(\"Degenerate table\")\n\n# --- Analysis 2: Evasion vs Trust Gaps ---\n# Hypothesis: Evasion tactics are associated with Trust (Robustness) Gaps\nprint(\"\\n--- Analysis 2: Evasion vs Trust (Robustness/Model) Gaps ---\")\ncont_evasion = pd.crosstab(merged_df['is_evasion'], merged_df['has_trust_gap'], \n                           rownames=['Tactic: Evasion'], colnames=['Gap: Trust'])\nprint(cont_evasion)\n\nif cont_evasion.size == 4:\n    odds_evasion, p_evasion = fisher_exact(cont_evasion)\n    print(f\"Fisher Exact p-value: {p_evasion:.4f}\")\n    print(f\"Odds Ratio: {odds_evasion:.4f}\")\nelse:\n    print(\"Degenerate table\")\n\n# Correlation Matrix for visibility\nprint(\"\\n--- Correlation Matrix (Phi Coefficient approximation) ---\")\ncorr_matrix = merged_df[['is_exfil', 'is_evasion', 'has_int_gap', 'has_trust_gap']].corr()\nprint(corr_matrix)\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: \n--- Analysis 1: Exfiltration vs Integration (Access/Network) Gaps ---\nGap: Integration      False  True \nTactic: Exfiltration              \nFalse                     1     36\nTrue                      1     14\nFisher Exact p-value: 0.4977\nOdds Ratio: 0.3889\n\n--- Analysis 2: Evasion vs Trust (Robustness/Model) Gaps ---\nGap: Trust       False  True \nTactic: Evasion              \nFalse               14     15\nTrue                 0     23\nFisher Exact p-value: 0.0001\nOdds Ratio: inf\n\n--- Correlation Matrix (Phi Coefficient approximation) ---\n               is_exfil  is_evasion  has_int_gap  has_trust_gap\nis_exfil       1.000000   -0.139704    -0.093385      -0.187715\nis_evasion    -0.139704    1.000000     0.178113       0.540552\nhas_int_gap   -0.093385    0.178113     1.000000      -0.121395\nhas_trust_gap -0.187715    0.540552    -0.121395       1.000000\n",
+  "created_at": "2026-02-22T11:40:26.033992+00:00",
+  "creation_idx": 229,
+  "experiment_id": "node_5_89",
+  "experiment_plan": {
+    "deliverables": "Correlation matrix or contingency tables linking tactic types to gap categories.",
+    "objective": "Link adversarial tactics to specific types of governance/architectural gaps.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv`. Merge/Join `atlas_cases` (for tactics) with `step3_incident_coding` (for competency_gaps) using `case_id` or row alignment.\n2. Create two binary tactic flags: `Is_Exfiltration` and `Is_Evasion`.\n3. Categorize `competency_gaps` into 'Integration' (Access, API, Logging) vs 'Trust' (Robustness, Bias, Verification).\n4. Run a correlation analysis or contingency table to see if Exfiltration co-occurs with Integration gaps and Evasion with Trust gaps."
+  },
+  "hypothesis": "Adversarial Tactic-Gap Alignment: In the ATLAS dataset, attacks utilizing 'Exfiltration' tactics are predominantly associated with gaps in 'System Integration' (e.g., access controls), whereas 'Evasion' tactics cluster with gaps in 'Trust/Model Robustness' (e.g., adversarial training).",
+  "id_in_run": 228,
+  "is_surprising": false,
+  "parent_id": "node_4_52",
+  "posterior": 0.8104395604395604,
+  "posterior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 60.0,
+    "mean": 0.8104395604395604,
+    "n": 60.0,
+    "prior_params": [
+      28.75,
+      2.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9274193548387096,
+  "prior_belief": {
+    "_empirical_mean": 0.9416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 23.0,
+    "maybe_false": 0.0,
+    "maybe_true": 7.0,
+    "mean": 0.9274193548387096,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented and successfully executed. The code correctly loaded and merged the ATLAS and Incident Coding datasets (n=52) and applied a refined keyword-based classification strategy to categorize tactics and governance gaps. \n\n**Hypothesis Test Results**:\nThe hypothesis was **partially supported**.\n\n1.  **Evasion vs. Trust Gaps (Supported):** A strong, statistically significant relationship was found between 'Evasion' tactics and 'Trust' gaps (e.g., Defense Evasion Detection, Model Access Governance). \n    -   **Result:** Fisher's Exact Test p-value = 0.0001.\n    -   **Observation:** Every single case involving Evasion tactics (23/23) exhibited a Trust gap, whereas cases without Evasion tactics were split (14 without, 15 with).\n\n2.  **Exfiltration vs. Integration Gaps (Not Supported):** No specific association was found between 'Exfiltration' tactics and 'Integration' gaps.\n    -   **Result:** Fisher's Exact Test p-value = 0.4977.\n    -   **Observation:** 'Integration' gaps (e.g., Access Boundary, Privilege Management) were pervasive, identified in 96% (50/52) of all cases regardless of the tactic used. This saturation indicates that Integration failures are a baseline vulnerability across the entire dataset rather than a discriminator for Exfiltration attacks.",
+  "rich_outputs": null,
+  "runtime_ms": 392360.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.14037575327897903
+}

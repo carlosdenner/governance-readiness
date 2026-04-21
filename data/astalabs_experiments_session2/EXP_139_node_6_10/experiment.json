@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Autonomy-Harm Escalation' hypothesis using a text-mining approach to overcome missing metadata labels. By analyzing incident descriptions for keywords (e.g., 'crash', 'injury', 'killed'), the code classified 185 incidents where valid Autonomy Levels were present.\n\n**Findings:**\n1.  **Physical Harm Rates:** Contrary to the hypothesis, 'High Autonomy' systems (Level 3) showed a *lower* rate of physical harm (15.1%, 8/53 incidents) compared to 'Low/Medium Autonomy' systems (26.5%, 35/132 incidents).\n2.  **Statistical Significance:** The Chi-square test yielded a p-value of 0.1415, indicating that the observed difference is **not statistically significant** at the alpha=0.05 level.\n\n**Conclusion:** The hypothesis is **rejected**. The data does not support the claim that higher autonomy correlates with increased physical safety risks; in fact, the trend suggests the opposite, though the difference is not statistically distinguishing.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport sys\nimport os\n\n# Experiment: Autonomy-Harm Escalation (Text Analysis Approach)\n# Objective: Infer 'Physical Harm' from incident descriptions since structured labels are missing.\n\n# 1. Load Dataset\nfilenames = ['astalabs_discovery_all_data.csv', '../astalabs_discovery_all_data.csv']\nfile_path = None\nfor fn in filenames:\n    if os.path.exists(fn):\n        file_path = fn\n        break\n\nif not file_path:\n    print(\"Error: Dataset not found.\")\n    sys.exit(1)\n\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept Exception as e:\n    print(f\"Error loading dataset: {e}\")\n    sys.exit(1)\n\n# 2. Filter for AIID Incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"Total AIID Incidents: {len(aiid_df)}\")\n\n# 3. Identify Columns\n# Autonomy\nautonomy_col = next((c for c in aiid_df.columns if 'autonomy' in c.lower() and 'level' in c.lower()), None)\n\n# Text Column (Description/Summary)\n# We prefer 'description' or 'summary'\ntext_col = next((c for c in aiid_df.columns if c.lower() in ['description', 'summary', 'text', 'abstract']), None)\n\nif not autonomy_col or not text_col:\n    print(f\"Critical columns missing. Autonomy: {autonomy_col}, Text: {text_col}\")\n    # Fallback search for text column\n    candidates = [c for c in aiid_df.columns if aiid_df[c].dtype == 'object' and aiid_df[c].str.len().mean() > 50]\n    if candidates:\n        text_col = candidates[0]\n        print(f\"Fallback: Using '{text_col}' as text column.\")\n    else:\n        print(\"No suitable text column found.\")\n        sys.exit(1)\n\nprint(f\"Using columns: Autonomy='{autonomy_col}', Text='{text_col}'\")\n\n# 4. Mappings\n\ndef map_autonomy(val):\n    if pd.isna(val):\n        return None\n    val_str = str(val).strip()\n    # High: Autonomy3\n    if 'Autonomy3' in val_str:\n        return 'High Autonomy'\n    # Low/Medium: Autonomy1, Autonomy2\n    elif 'Autonomy1' in val_str or 'Autonomy2' in val_str:\n        return 'Low/Medium Autonomy'\n    return None\n\ndef map_harm_from_text(val):\n    if pd.isna(val):\n        return 'Non-Physical Harm'\n    text = str(val).lower()\n    # Keywords for Physical Harm / Safety\n    physical_keywords = [\n        'killed', 'death', 'died', 'injury', 'injured', 'hurt', 'collision', \n        'crash', 'hit', 'accident', 'safety', 'physical', 'bodily', 'fatal', \n        'wound', 'burn', 'assault', 'violence', 'attack', 'robot'\n    ]\n    if any(k in text for k in physical_keywords):\n        return 'Physical Harm'\n    return 'Non-Physical Harm'\n\naiid_df['Autonomy_Category'] = aiid_df[autonomy_col].apply(map_autonomy)\naiid_df['Harm_Category'] = aiid_df[text_col].apply(map_harm_from_text)\n\n# 5. Analysis\nanalysis_df = aiid_df.dropna(subset=['Autonomy_Category', 'Harm_Category'])\nprint(f\"Rows used for analysis: {len(analysis_df)}\")\n\n# Check distribution\nprint(\"Harm Category Distribution:\")\nprint(analysis_df['Harm_Category'].value_counts())\n\ncontingency_table = pd.crosstab(analysis_df['Autonomy_Category'], analysis_df['Harm_Category'])\nprint(\"\\n--- Contingency Table (Counts) ---\")\nprint(contingency_table)\n\nif contingency_table.size > 0:\n    # Percentages\n    prop_table = pd.crosstab(analysis_df['Autonomy_Category'], analysis_df['Harm_Category'], normalize='index') * 100\n    print(\"\\n--- Contingency Table (Percentages) ---\")\n    print(prop_table.round(2))\n    \n    # Chi-Square Test\n    chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n    print(\"\\n--- Chi-Square Test Results ---\")\n    print(f\"Chi2 Statistic: {chi2:.4f}\")\n    print(f\"p-value: {p:.4e}\")\n    \n    if p < 0.05:\n        print(\"Result: Statistically significant relationship found.\")\n    else:\n        print(\"Result: No statistically significant relationship found.\")\nelse:\n    print(\"Insufficient data for analysis.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total AIID Incidents: 1362\nUsing columns: Autonomy='Autonomy Level', Text='description'\nRows used for analysis: 185\nHarm Category Distribution:\nHarm_Category\nNon-Physical Harm    142\nPhysical Harm         43\nName: count, dtype: int64\n\n--- Contingency Table (Counts) ---\nHarm_Category        Non-Physical Harm  Physical Harm\nAutonomy_Category                                    \nHigh Autonomy                       45              8\nLow/Medium Autonomy                 97             35\n\n--- Contingency Table (Percentages) ---\nHarm_Category        Non-Physical Harm  Physical Harm\nAutonomy_Category                                    \nHigh Autonomy                    84.91          15.09\nLow/Medium Autonomy              73.48          26.52\n\n--- Chi-Square Test Results ---\nChi2 Statistic: 2.1617\np-value: 1.4149e-01\nResult: No statistically significant relationship found.\n",
+  "created_at": "2026-02-22T07:33:38.198803+00:00",
+  "creation_idx": 140,
+  "experiment_id": "node_6_10",
+  "experiment_plan": {
+    "deliverables": "1. List of unique values in 'Harm Domain'.\n2. Contingency table showing the distribution of Physical vs. Non-Physical harm across Autonomy levels.\n3. Chi-square statistic and p-value.",
+    "objective": "Verify if higher AI autonomy levels correlate with physical safety risks by analyzing the relationship between Autonomy Level and Harm Domain.",
+    "steps": "1. Load the dataset 'astalabs_discovery_all_data.csv'.\n2. Filter the dataframe to include only rows where `source_table` is 'aiid_incidents'.\n3. Identify the columns for 'Autonomy Level' (likely index ~81) and 'Harm Domain' (likely index ~73). Normalize column names if necessary.\n4. Print the unique values of the 'Harm Domain' column to the console to verify the vocabulary (expecting values like 'Safety', 'Financial', etc.).\n5. Create a new column 'Autonomy_Category': Map values containing 'Autonomy3' or 'High' to 'High Autonomy', and values containing 'Autonomy1', 'Autonomy2', 'Low', or 'Medium' to 'Low/Medium Autonomy'. Drop rows that do not match these.\n6. Create a new column 'Harm_Category': Map values in 'Harm Domain' containing 'Safety', 'Physical', 'Life', 'Death', or 'Injury' (case-insensitive) to 'Physical Harm'. Map all other non-null values to 'Non-Physical Harm'.\n7. Print the value counts for the new 'Harm_Category' to ensure 'Physical Harm' is populated.\n8. Create a contingency table of 'Autonomy_Category' vs. 'Harm_Category'.\n9. Perform a Chi-square test of independence.\n10. Print the contingency table (counts and percentages) and the statistical test results."
+  },
+  "hypothesis": "The 'Autonomy-Harm' Escalation: Incidents involving 'High' autonomy AI systems (e.g., autonomous vehicles, robots) result in a significantly higher proportion of 'Physical' harms compared to 'Low' autonomy systems, which primarily generate 'Economic' or 'Psychological' harms.",
+  "id_in_run": 139,
+  "is_surprising": true,
+  "parent_id": "node_5_11",
+  "posterior": 0.4258241758241758,
+  "posterior_belief": {
+    "_empirical_mean": 0.19166666666666668,
+    "_type": "boolean_cat",
+    "definitely_false": 14.0,
+    "definitely_true": 0.0,
+    "maybe_false": 46.0,
+    "maybe_true": 0.0,
+    "mean": 0.4258241758241758,
+    "n": 60.0,
+    "prior_params": [
+      27.25,
+      3.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8790322580645161,
+  "prior_belief": {
+    "_empirical_mean": 0.8916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 17.0,
+    "maybe_false": 0.0,
+    "maybe_true": 13.0,
+    "mean": 0.8790322580645161,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully recovered and executed. After identifying that the structured `Harm Domain` and `Tangible Harm` columns lacked specific categorical labels (containing only boolean or generic indicators), the programmer correctly pivoted to a text-mining approach. By analyzing incident descriptions for physical harm keywords (e.g., 'crash', 'injury', 'death'), the experiment successfully classified 185 incidents. The statistical analysis was valid and sufficient to reject the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 654120.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5438496986884084
+}

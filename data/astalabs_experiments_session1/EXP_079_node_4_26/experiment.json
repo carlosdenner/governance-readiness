@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment tested the hypothesis that 'Trust Readiness' competencies are supported by significantly higher evidence confidence levels than 'Integration Readiness' competencies. The analysis of 42 competency statements mapped confidence ratings to a numeric scale (High=3, Medium=2, Low=1). \n\nDescriptive statistics showed nearly identical high-confidence levels for both groups: 'Trust Readiness' had a mean score of 2.84 (n=19), while 'Integration Readiness' had a slightly higher mean of 2.87 (n=23). The Mann-Whitney U test (U=212.5, p=0.8187) confirmed that this difference is not statistically significant. \n\nTherefore, the hypothesis is unsupported. The results indicate that the evidence base for the framework is uniformly strong across both governance and architectural domains, with the vast majority of competencies in both bundles rated as 'High' confidence.",
+  "child_ids": [
+    "node_5_23"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# 1. Load Data\ntry:\n    df = pd.read_csv('../step2_competency_statements.csv')\n    print(\"Dataset loaded successfully.\")\nexcept FileNotFoundError:\n    print(\"Error: Dataset not found at '../step2_competency_statements.csv'. Checking current directory...\")\n    try:\n        df = pd.read_csv('step2_competency_statements.csv')\n        print(\"Dataset loaded from current directory.\")\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        exit(1)\n\n# 2. Preprocessing\n# Map confidence to numeric values\n# Assuming values might be 'High', 'Medium', 'Low' (case-insensitive)\nconfidence_map = {'high': 3, 'medium': 2, 'low': 1}\ndf['confidence_cleaned'] = df['confidence'].astype(str).str.strip().str.lower()\ndf['confidence_score'] = df['confidence_cleaned'].map(confidence_map)\n\n# Debug: Check for unmapped values\nunmapped = df[df['confidence_score'].isna()]\nif not unmapped.empty:\n    print(f\"Warning: {len(unmapped)} records have unmapped confidence values:\")\n    print(unmapped['confidence'].unique())\n    # Drop them for analysis\n    df = df.dropna(subset=['confidence_score'])\n\n# 3. Grouping\ntrust_scores = df[df['bundle'] == 'Trust Readiness']['confidence_score']\nintegration_scores = df[df['bundle'] == 'Integration Readiness']['confidence_score']\n\n# 4. Descriptive Statistics\nmean_trust = trust_scores.mean()\nstd_trust = trust_scores.std(ddof=1)\nmedian_trust = trust_scores.median()\nn_trust = len(trust_scores)\n\nmean_integration = integration_scores.mean()\nstd_integration = integration_scores.std(ddof=1)\nmedian_integration = integration_scores.median()\nn_integration = len(integration_scores)\n\nprint(\"\\n--- Descriptive Statistics ---\")\nprint(f\"Trust Readiness (n={n_trust}): Mean={mean_trust:.2f}, Median={median_trust}, Std={std_trust:.2f}\")\nprint(f\"Integration Readiness (n={n_integration}): Mean={mean_integration:.2f}, Median={median_integration}, Std={std_integration:.2f}\")\n\n# Cross-tabulation for detailed view\nprint(\"\\n--- Confidence Level Distribution ---\")\nct = pd.crosstab(df['bundle'], df['confidence_cleaned'])\n# Reorder columns if they exist\norder = [col for col in ['low', 'medium', 'high'] if col in ct.columns]\nprint(ct[order])\n\n# 5. Statistical Test (Mann-Whitney U)\n# Using Mann-Whitney U because data is ordinal and likely not normally distributed\nu_stat, p_val = stats.mannwhitneyu(trust_scores, integration_scores, alternative='two-sided')\n\nprint(\"\\n--- Mann-Whitney U Test Results ---\")\nprint(f\"U-statistic: {u_stat}\")\nprint(f\"P-value: {p_val:.4f}\")\n\nalpha = 0.05\nif p_val < alpha:\n    print(\"Conclusion: Reject the null hypothesis. There is a statistically significant difference in confidence levels.\")\nelse:\n    print(\"Conclusion: Fail to reject the null hypothesis. No statistically significant difference in confidence levels detected.\")\n\n# 6. Visualization\nlabels = ['Trust Readiness', 'Integration Readiness']\nmeans = [mean_trust, mean_integration]\nstds = [std_trust, std_integration]\n\nplt.figure(figsize=(8, 6))\n# Use standard error for error bars (std / sqrt(n))\nse_trust = std_trust / np.sqrt(n_trust)\nse_integration = std_integration / np.sqrt(n_integration)\nerrors = [se_trust, se_integration]\n\nbars = plt.bar(labels, means, yerr=errors, capsize=10, color=['#4c72b0', '#55a868'], alpha=0.8)\n\n# Add values on top of bars\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 0.05,\n             f'{height:.2f}',\n             ha='center', va='bottom')\n\nplt.title('Mean Evidence Confidence Score by Competency Bundle')\nplt.ylabel('Confidence Score (1=Low, 2=Med, 3=High)')\nplt.ylim(0, 3.5)\nplt.grid(axis='y', linestyle='--', alpha=0.5)\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Error: Dataset not found at '../step2_competency_statements.csv'. Checking current directory...\nDataset loaded from current directory.\n\n--- Descriptive Statistics ---\nTrust Readiness (n=19): Mean=2.84, Median=3.0, Std=0.37\nIntegration Readiness (n=23): Mean=2.87, Median=3.0, Std=0.34\n\n--- Confidence Level Distribution ---\nconfidence_cleaned     medium  high\nbundle                             \nIntegration Readiness       3    20\nTrust Readiness             3    16\n\n--- Mann-Whitney U Test Results ---\nU-statistic: 212.5\nP-value: 0.8187\nConclusion: Fail to reject the null hypothesis. No statistically significant difference in confidence levels detected.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot (with error bars).\n*   **Purpose:** The plot compares the mean \"Evidence Confidence Score\" between two distinct categories (Competency Bundles). It utilizes error bars to visualize the variability or uncertainty associated with the mean values.\n\n### 2. Axes\n*   **X-axis:**\n    *   **Label/Title:** The specific axis title is implied by the main chart title \"Competency Bundle.\"\n    *   **Categories:** The axis displays two distinct categories: **\"Trust Readiness\"** and **\"Integration Readiness.\"**\n*   **Y-axis:**\n    *   **Label:** \"Confidence Score (1=Low, 2=Med, 3=High)\". This label provides both the metric name and a key for interpreting the numerical scale.\n    *   **Range:** The axis spans from **0.0 to 3.5**, with tick marks at intervals of 0.5.\n\n### 3. Data Trends\n*   **Tallest Bar:** The **\"Integration Readiness\"** bar (colored green) is the tallest, with a mean value of **2.87**.\n*   **Shortest Bar:** The **\"Trust Readiness\"** bar (colored blue) is slightly shorter, with a mean value of **2.84**.\n*   **Comparison:** The difference between the two bundles is minimal (only 0.03 points). Both bars are nearing the top of the defined scale (3.0), indicating that the values are clustered at the high end of the spectrum.\n*   **Error Bars:** Both bars feature error bars at the top. The overlap in the vertical range of these error bars relative to the means suggests that the difference between the two groups may not be statistically significant.\n\n### 4. Annotations and Legends\n*   **Value Labels:** The exact mean values (**2.84** and **2.87**) are annotated directly above the error bars for precise reading.\n*   **Gridlines:** Horizontal dashed gridlines are included at every 0.5 interval to assist with visual estimation of bar height.\n*   **Color Coding:** The bars are distinct colors (blue for Trust Readiness, green for Integration Readiness) to visually differentiate the categories, though no separate legend box is provided or necessary given the x-axis labels.\n\n### 5. Statistical Insights\n*   **High Confidence Levels:** Based on the y-axis definition where 3 represents \"High,\" both competency bundles exhibit very high confidence scores (2.84 and 2.87). This indicates that, on average, the evidence provided for both Trust and Integration readiness is considered very reliable or robust.\n*   **Uniformity:** There is a lack of significant disparity between \"Trust Readiness\" and \"Integration Readiness.\" This suggests that the confidence in evidence is consistent across these different competency areas; one area is not significantly lagging behind or outperforming the other in terms of evidence quality.\n==================================================",
+  "created_at": "2026-02-21T00:05:47.946328+00:00",
+  "creation_idx": 80,
+  "experiment_id": "node_4_26",
+  "experiment_plan": {
+    "deliverables": "Bar chart of mean confidence scores and Mann-Whitney U test results.",
+    "objective": "Assess if governance/policy competencies are more firmly established in literature than emerging technical/integration competencies.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Map the 'confidence' column to numeric values (High=3, Medium=2, Low=1).\n3. Group the data by 'bundle' ('Trust Readiness' vs. 'Integration Readiness').\n4. Compare the numeric confidence scores between the two groups using a Mann-Whitney U test.\n5. Calculate the mean confidence score for each bundle."
+  },
+  "hypothesis": "Competency statements classified as 'Trust Readiness' are supported by significantly higher evidence confidence levels in the literature compared to 'Integration Readiness' competencies.",
+  "id_in_run": 79,
+  "is_surprising": true,
+  "parent_id": "node_3_6",
+  "posterior": 0.14256198347107438,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.14256198347107438,
+    "n": 90.0,
+    "prior_params": [
+      17.25,
+      13.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.5564516129032258,
+  "prior_belief": {
+    "_empirical_mean": 0.5583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 1.0,
+    "definitely_true": 0.0,
+    "maybe_false": 9.0,
+    "maybe_true": 18.0,
+    "mean": 0.5564516129032258,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 2.0
+  },
+  "review": "The experiment successfully tested the hypothesis that 'Trust Readiness' competencies are supported by significantly higher evidence confidence levels than 'Integration Readiness' competencies. The analysis of 42 competency statements mapped confidence ratings to a numeric scale (High=3, Medium=2, Low=1). Descriptive statistics showed nearly identical high-confidence levels for both groups: 'Trust Readiness' had a mean score of 2.84 (n=19), while 'Integration Readiness' had a slightly higher mean of 2.87 (n=23). The Mann-Whitney U test (U=212.5, p=0.8187) confirmed that this difference is not statistically significant. Therefore, the hypothesis is unsupported. The results indicate that the evidence base for the framework is uniformly strong across both governance and architectural domains, with the vast majority of competencies in both bundles rated as 'High' confidence.",
+  "rich_outputs": null,
+  "runtime_ms": 172310.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4803585749965399
+}

@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Deployment-Privacy Tradeoff' hypothesis using the EO 13960 dataset. The code correctly segmented the data into 'Development' (n=626) and 'Operational' (n=627) lifecycle phases and analyzed the documentation of 'Opt-Out' mechanisms. \n\nThe results contradict the hypothesis: Operational systems were significantly *more* likely to have documented 'Opt-Out' mechanisms (8.61%, 54 systems) compared to Development systems (3.35%, 21 systems). The Chi-square test (statistic=14.47, p<0.001) confirms this difference is statistically significant. Instead of privacy controls being de-prioritized during deployment, the data suggests these controls are more likely to be finalized and documented in operational systems than in those still under development. The hypothesis is therefore rejected.",
+  "child_ids": [
+    "node_7_15"
+  ],
+  "code": "import pandas as pd\nfrom scipy.stats import chi2_contingency\nimport os\n\n# Define file path based on instructions\nfile_name = 'astalabs_discovery_all_data.csv'\nfile_path = f'../{file_name}'\n\nif not os.path.exists(file_path):\n    # Fallback to current directory if not found in parent\n    if os.path.exists(file_name):\n        file_path = file_name\n    else:\n        print(f\"Error: {file_name} not found in current or parent directory.\")\n        exit(1)\n\nprint(f\"Loading dataset from {file_path}...\")\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept Exception as e:\n    print(f\"Failed to load CSV: {e}\")\n    exit(1)\n\n# Filter for EO 13960 data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 subset shape: {df_eo.shape}\")\n\n# Lifecycle Categorization\ndef categorize_stage(stage):\n    if pd.isna(stage):\n        return None\n    stage_str = str(stage).lower()\n    if 'operation' in stage_str or 'maintenance' in stage_str:\n        return 'Operational'\n    if 'development' in stage_str or 'implementation' in stage_str or 'planning' in stage_str:\n        return 'Development'\n    return None\n\ndf_eo['lifecycle_phase'] = df_eo['16_dev_stage'].apply(categorize_stage)\n\n# Drop rows where phase could not be determined\ndf_eo = df_eo.dropna(subset=['lifecycle_phase'])\n\n# Opt-Out Categorization\n# Column '67_opt_out' is the target. Identify correct column name if slight variation exists.\ntarget_col = '67_opt_out'\nif target_col not in df_eo.columns:\n    # Try to find it\n    possible_cols = [c for c in df_eo.columns if 'opt_out' in c.lower()]\n    if possible_cols:\n        target_col = possible_cols[0]\n        print(f\"Warning: Exact column '{target_col}' found and used instead of '67_opt_out'.\")\n    else:\n        print(\"Error: '67_opt_out' column not found.\")\n        exit(1)\n\n# Create binary variable: 1 if 'Yes', 0 otherwise\ndf_eo['has_opt_out'] = df_eo[target_col].astype(str).str.strip().str.lower().apply(lambda x: 1 if x == 'yes' else 0)\n\n# Generate Summary Statistics\nsummary = df_eo.groupby('lifecycle_phase')['has_opt_out'].agg(['count', 'sum', 'mean'])\nsummary['percent'] = summary['mean'] * 100\n\nprint(\"\\n--- Opt-Out Documentation Rates by Lifecycle Phase ---\")\nprint(summary)\n\n# Contingency Table for Chi-Square\ncontingency_table = pd.crosstab(df_eo['lifecycle_phase'], df_eo['has_opt_out'])\n\n# Ensure table has columns for both 0 and 1\nfor c in [0, 1]:\n    if c not in contingency_table.columns:\n        contingency_table[c] = 0\ncontingency_table = contingency_table[[0, 1]]\n\nprint(\"\\n--- Contingency Table (0=No, 1=Yes) ---\")\nprint(contingency_table)\n\n# Chi-Square Test\nchi2, p, dof, expected = chi2_contingency(contingency_table)\n\nprint(\"\\n--- Chi-Square Test Results ---\")\nprint(f\"Chi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\nif p < 0.05:\n    print(\"Conclusion: Statistically significant difference detected.\")\nelse:\n    print(\"Conclusion: No statistically significant difference detected.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nEO 13960 subset shape: (1757, 196)\n\n--- Opt-Out Documentation Rates by Lifecycle Phase ---\n                 count  sum      mean   percent\nlifecycle_phase                                \nDevelopment        626   21  0.033546  3.354633\nOperational        627   54  0.086124  8.612440\n\n--- Contingency Table (0=No, 1=Yes) ---\nhas_opt_out        0   1\nlifecycle_phase         \nDevelopment      605  21\nOperational      573  54\n\n--- Chi-Square Test Results ---\nChi-square Statistic: 14.4683\nP-value: 1.4254e-04\nConclusion: Statistically significant difference detected.\n",
+  "created_at": "2026-02-22T09:33:13.575663+00:00",
+  "creation_idx": 180,
+  "experiment_id": "node_6_23",
+  "experiment_plan": {
+    "deliverables": "Opt-Out rates by Lifecycle Stage; Chi-square statistics.",
+    "objective": "Investigate if privacy controls like Opt-Out mechanisms are maintained as systems move to production.",
+    "steps": "1. Load 'eo13960_scored'.\n2. Define 'Stage': 'Operation/Maintenance' vs 'Development/Planning' based on `16_dev_stage`.\n3. Define 'Has_Opt_Out': `67_opt_out` (or `61_opt_out` depending on column index/name) == 'Yes' -> 1, else 0.\n4. Calculate Opt-Out rates per Stage.\n5. Run Chi-square test."
+  },
+  "hypothesis": "The 'Deployment-Privacy' Tradeoff: Operational AI systems are significantly less likely to document 'Opt-Out' mechanisms compared to systems in the 'Development' phase, suggesting privacy controls are de-prioritized during deployment.",
+  "id_in_run": 179,
+  "is_surprising": true,
+  "parent_id": "node_5_46",
+  "posterior": 0.18956043956043955,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.18956043956043955,
+    "n": 60.0,
+    "prior_params": [
+      17.25,
+      13.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.5564516129032258,
+  "prior_belief": {
+    "_empirical_mean": 0.5583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 1.0,
+    "definitely_true": 0.0,
+    "maybe_false": 10.0,
+    "maybe_true": 19.0,
+    "mean": 0.5564516129032258,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented and successfully tested the 'Deployment-Privacy Tradeoff' hypothesis. The code correctly loaded the EO 13960 dataset, segmented systems into 'Development' (n=626) and 'Operational' (n=627) phases, and analyzed the presence of documented 'Opt-Out' mechanisms. \n\nContrary to the hypothesis that privacy controls decay in deployment, the results showed that 'Operational' systems were significantly *more* likely to have documented 'Opt-Out' mechanisms (8.61%) compared to systems in 'Development' (3.35%). The Chi-square test (p < 0.001) confirmed this difference was statistically significant. The hypothesis is therefore rejected; the data suggests that privacy controls like opt-out mechanisms are more frequently finalized or documented in deployed systems rather than during the development phase.",
+  "rich_outputs": null,
+  "runtime_ms": 174520.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4402694080113434
+}

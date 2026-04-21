@@ -1,0 +1,78 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+EO13960 Scored records: 1757
+Total Transparent Systems: 71
+Total Accountable Systems: 53
+
+Agencies with > 10 systems: 21
+                                             3_agency  ...  accountability_rate
+0    Board of Governors of the Federal Reserve System  ...             0.000000
+3                           Department of Agriculture  ...             0.000000
+4                              Department of Commerce  ...             0.122807
+5                                Department of Energy  ...             0.101266
+6             Department of Health and Human Services  ...             0.000000
+7                     Department of Homeland Security  ...             0.098361
+9                                 Department of Labor  ...             0.014286
+10                                Department of State  ...             0.000000
+11                     Department of Veterans Affairs  ...             0.044053
+13                         Department of the Interior  ...             0.000000
+14                         Department of the Treasury  ...             0.000000
+16                    Environmental Protection Agency  ...             0.000000
+18              Federal Deposit Insurance Corporation  ...             0.000000
+20                     Federal Housing Finance Agency  ...             0.000000
+22                    General Services Administration  ...             0.041667
+23      National Aeronautics and Space Administration  ...             0.000000
+25                        National Science Foundation  ...             0.000000
+31                 Securities and Exchange Commission  ...             0.000000
+32                     Social Security Administration  ...             0.000000
+33                         Tennessee Valley Authority  ...             0.000000
+35  United States Agency for International Develop...  ...             0.007299
+
+[21 rows x 4 columns]
+
+--- Correlation Results ---
+Pearson Correlation:  0.6921 (p-value: 0.0005)
+Spearman Correlation: 0.8465 (p-value: 0.0000)
+Result: Statistically significant correlation found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** This is a **bubble plot** (a variation of a scatter plot) overlaid with a linear regression trend line.
+*   **Purpose:** The plot aims to visualize the correlation between two metrics of agency performance regarding AI systems: Transparency (providing notice) and Accountability (conducting independent evaluations). The varying size of the bubbles suggests a third dimension of data, likely representing the total number of AI systems or the size of the agency, although this specific metric is not explicitly labeled in the legend.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Transparency Rate (Proportion of Systems with AI Notice)"
+    *   **Range:** 0.00 to 0.35.
+    *   **Meaning:** Represents the percentage (expressed as a decimal) of an agency's systems for which they provide AI notices.
+*   **Y-Axis:**
+    *   **Title:** "Accountability Rate (Proportion of Systems with Indep. Eval)"
+    *   **Range:** 0.00 to roughly 0.125.
+    *   **Meaning:** Represents the percentage (expressed as a decimal) of an agency's systems that undergo independent evaluation.
+
+### 3. Data Trends
+*   **Clustering at Origin:** There is a significant cluster of data points (bubbles) at the bottom-left corner (0.00, 0.00). This indicates that a large number of agencies have both zero transparency and zero accountability rates regarding their AI systems.
+*   **Positive Correlation:** There is a general upward trend, indicated by the red line. As the Transparency Rate increases, the Accountability Rate tends to increase as well.
+*   **Outliers/High Performers:**
+    *   There is one notable outlier with the highest **Accountability Rate** (approx. 0.12) and a moderate Transparency Rate (approx. 0.16).
+    *   The point with the highest **Transparency Rate** (approx. 0.33) also has a high Accountability Rate (approx. 0.10).
+    *   Several agencies (labeled "Department of H...", "Department of V...") sit in the middle ground, showing some progress in both metrics but remaining below 0.10 for accountability.
+
+### 4. Annotations and Legends
+*   **Trend Line Legend:** A legend in the top right corner identifies the red dashed line as the "Fit: y=0.26x + 0.01".
+*   **Agency Labels:** Several bubbles have text labels, though some are truncated. Visible labels include:
+    *   "Department of H..."
+    *   "Department of V..."
+    *   "United States A..."
+    *   "Department of T..."
+*   **Grid:** A light dotted grid is present to help align the data points with the axis values.
+
+### 5. Statistical Insights
+*   **Linear Relationship (The Equation):** The regression line equation $y = 0.26x + 0.01$ provides specific insights:
+    *   **Slope (0.26):** This suggests that for every 1 unit increase (or 100% increase) in the Transparency Rate, the Accountability Rate generally increases by only 0.26 (or 26%). This implies that agencies are generally much faster to implement transparency measures (notices) than they are to implement accountability measures (independent evaluations).
+    *   **Intercept (0.01):** The Y-intercept is very close to zero. This confirms that agencies with zero transparency typically have near-zero accountability.
+*   **Disparity in Adoption:** The scales of the axes highlight a disparity. While transparency rates reach up to ~33%, accountability rates top out much lower at ~12%. This suggests that "Accountability" (independent evaluation) is a harder metric for these agencies to achieve than "Transparency" (AI notices).
+==================================================

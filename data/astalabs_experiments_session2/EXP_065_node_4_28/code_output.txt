@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Found dataset at: astalabs_discovery_all_data.csv
+ATLAS subset shape: (52, 196)
+AIID subset shape: (1362, 196)
+
+ATLAS (Theoretical):
+  Total Cases: 52
+  Cases with 'Evasion' tactics: 33
+  Proportion: 0.6346
+
+AIID (Real-World):
+  Total Incidents: 1362
+  Incidents with 'Robustness/Reliability' failures: 4
+  Proportion: 0.0029
+
+--- Statistical Comparison (Z-test) ---
+Z-score: 28.0055
+P-value: 1.3929e-172
+Result: Significant difference
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot (Categorical Comparison).
+*   **Purpose:** The plot compares the prevalence (proportion) of a specific attribute (Evasion/Robustness) across two different datasets or contexts: "ATLAS" and "AIID". It aims to visualize the significant disparity—the "gap"—between theoretical findings and real-world observations.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title/Labels:** The axis represents two distinct categories:
+        1.  **ATLAS** (labeled "Theoretical Evasion")
+        2.  **AIID** (labeled "Real-World Robustness")
+    *   **Nature:** Categorical / Nominal data.
+*   **Y-axis:**
+    *   **Title/Label:** "Prevalence (Proportion of Dataset)".
+    *   **Units:** The values represent ratios or proportions (decimal format), which are also interpreted as percentages in the annotations.
+    *   **Value Range:** The axis ticks range from **0.0 to 0.7**, with the visual space extending slightly up to approximately 0.75.
+
+### 3. Data Trends
+*   **Tallest Bar (ATLAS):** The blue bar representing "Theoretical Evasion" is dominant, reaching a height of roughly 0.635 on the y-axis. This indicates a high prevalence of evasion-related entries in the ATLAS dataset.
+*   **Shortest Bar (AIID):** The orange bar representing "Real-World Robustness" is extremely short, barely visible above the baseline, indicating a negligible prevalence (0.003 or 0.3%) in the AIID dataset.
+*   **Trend/Pattern:** There is a drastic and visually stark contrast between the two categories. The plot demonstrates that "Evasion" is a primary focus or occurrence in the theoretical dataset (ATLAS), while it is virtually non-existent or rarely reported in the real-world dataset (AIID).
+
+### 4. Annotations and Legends
+*   **Bar Annotations (Percentages):**
+    *   Above the **ATLAS** bar: **"63.5%"** is written in bold, indicating the exact proportion.
+    *   Above the **AIID** bar: **"0.3%"** is written in bold.
+*   **Bar Annotations (Counts):**
+    *   Inside the ATLAS bar: **"n=52"**, likely representing the raw count of entries or the sample size associated with that percentage.
+    *   Inside/Near the AIID bar: There is an "n" value annotation, partially obscured by the small size of the bar, indicating the raw count for that category.
+*   **Chart Title:** "The 'Theory-Reality' Gap: Evasion vs. Robustness". This title provides the narrative frame for the data: a comparison between theory and reality.
+*   **Statistical Annotation:** The title includes **"(p=1.3929e-172)"**. This indicates a statistical test result (likely a Chi-square or proportion test).
+*   **Gridlines:** Horizontal dashed gridlines appear at intervals of 0.1 (0.0, 0.1, 0.2...) to assist with reading the y-values.
+
+### 5. Statistical Insights
+*   **The "Gap" is Confirmed:** The plot statistically validates the "Theory-Reality Gap." While 63.5% of the theoretical dataset (ATLAS) relates to Evasion, only 0.3% of the real-world dataset (AIID) relates to Robustness failures. This suggests that while researchers focus heavily on evasion attacks in theory, these attacks are rarely reported in real-world AI incidents.
+*   **Extreme Statistical Significance:** The p-value of **1.3929e-172** is extremely close to zero. This implies that the difference between the two proportions is statistically significant to a very high degree. It confirms that the discrepancy is not due to random chance or sampling error; the distributions of these attributes in the two datasets are fundamentally different.
+==================================================

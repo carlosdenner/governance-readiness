@@ -1,0 +1,74 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting execution...
+EO 13960 subset shape: (1757, 196)
+Analyzable rows: 1710
+
+Group Sizes:
+procurement_type
+Custom/GOTS          1357
+Commercial (COTS)     353
+Name: count, dtype: int64
+
+--- Analysis: Commercial vs Code Access ---
+code_access_bin     No  Yes
+procurement_type           
+Commercial (COTS)   45   36
+Custom/GOTS        312  563
+Chi-Square: 11.7096, p-value: 6.2178e-04
+Odds Ratio (Commercial likelihood of NO access): 2.2556
+
+--- Analysis: Commercial vs Data Documentation ---
+data_docs_bin       No  Yes
+procurement_type           
+Commercial (COTS)   26   60
+Custom/GOTS        222  733
+Chi-Square: 1.7545, p-value: 1.8531e-01
+Odds Ratio (Commercial likelihood of NO docs): 1.4308
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Two side-by-side **100% Stacked Bar Charts**.
+*   **Purpose:** These plots compare the proportions of binary outcomes (Yes/No) regarding transparency ("Code Access" and "Data Documentation") across two specific categories of procurement types: "Commercial (COTS)" and "Custom/GOTS".
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** `procurement_type`
+    *   **Categories:** "Commercial (COTS)" and "Custom/GOTS". (COTS likely stands for Commercial Off-The-Shelf; GOTS stands for Government Off-The-Shelf).
+*   **Y-Axis:**
+    *   **Label:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** Increments of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+**Left Plot: Code Access Transparency**
+*   **Commercial (COTS):** The majority (approx. 55-60%) falls into the "No" category (Red), meaning code access is frequently unavailable.
+*   **Custom/GOTS:** The majority (approx. 60-65%) falls into the "Yes" category (Green).
+*   **Trend:** There is a visible inversion between the two types. Custom software is much more likely to have code access transparency compared to Commercial software.
+
+**Right Plot: Data Documentation Transparency**
+*   **Commercial (COTS):** A strong majority (approx. 70%) falls into the "Yes" category (Green).
+*   **Custom/GOTS:** An even stronger majority (approx. 75-80%) falls into the "Yes" category (Green).
+*   **Trend:** Both procurement types show high levels of data documentation transparency, with Custom/GOTS showing a slightly higher proportion of "Yes" than Commercial.
+
+### 4. Annotations and Legends
+*   **Main Title:** "Commercial (COTS) vs Custom (GOTS) Transparency Gap"
+*   **Subplot Titles:**
+    *   Left: "Code Access Transparency"
+    *   Right: "Data Documentation Transparency"
+*   **Sample Size (n):**
+    *   Left: `(n=956)` indicating the total number of observations for the code access analysis.
+    *   Right: `(n=1041)` indicating the total number of observations for the data documentation analysis.
+*   **P-values:**
+    *   Left: `p=6.2e-04` (0.00062)
+    *   Right: `p=1.9e-01` (0.19)
+*   **Legends:**
+    *   **Red:** Represents "No" (Lack of transparency).
+    *   **Green:** Represents "Yes" (Presence of transparency).
+
+### 5. Statistical Insights
+*   **Significant Difference in Code Access:** The p-value for the Code Access Transparency chart is **6.2e-04**, which is well below the standard alpha level of 0.05. This indicates a **statistically significant difference**. We can confidently conclude that Custom/GOTS software provides significantly higher rates of code access transparency compared to Commercial (COTS) software.
+*   **No Significant Difference in Data Documentation:** The p-value for the Data Documentation Transparency chart is **1.9e-01** (0.19), which is greater than 0.05. This indicates the result is **not statistically significant**. Although the bar chart visually suggests Custom software performs slightly better, the difference is likely due to chance or sampling variability; statistically, both procurement types perform similarly regarding data documentation.
+==================================================

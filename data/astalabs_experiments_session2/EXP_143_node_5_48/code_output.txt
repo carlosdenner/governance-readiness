@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Total AIID incidents loaded: 1362
+Incidents in target sectors (Healthcare/Financial): 21
+
+--- Contingency Table (Sector vs Harm) ---
+harm_category      Physical  Economic  Other
+normalized_sector                           
+Financial                 1         3      2
+Healthcare                1         4     10
+
+Chi-Square Statistic: 1.9833
+P-value: 3.7096e-01
+Degrees of Freedom: 2
+Result: Not Statistically Significant (Fail to Reject Null Hypothesis)
+
+--- Row Percentages ---
+harm_category      Physical  Economic  Other
+normalized_sector                           
+Financial             16.67     50.00  33.33
+Healthcare             6.67     26.67  66.67
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart is used to compare the relative distribution (percentage composition) of different "Harm Categories" within two distinct "Sectors" (Financial and Healthcare). By normalizing the height of the bars to 100%, it focuses on the proportion of each harm type rather than the absolute number of incidents.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Sector"
+    *   **Categories:** The axis represents categorical data with two groups: "Financial" and "Healthcare".
+*   **Y-Axis:**
+    *   **Label:** "Percentage of Incidents"
+    *   **Value Range:** 0 to 100.
+    *   **Units:** Percent (%).
+
+### 3. Data Trends
+*   **Financial Sector:**
+    *   **Dominant Category:** "Economic" harm is the most prevalent type, accounting for half of the incidents (**50.0%**).
+    *   **Secondary Category:** "Other" harm types account for one-third of incidents (**33.3%**).
+    *   **Minor Category:** "Physical" harm is the least common, representing **16.7%** of incidents.
+*   **Healthcare Sector:**
+    *   **Dominant Category:** "Other" harm types are overwhelmingly dominant, constituting two-thirds of the incidents (**66.7%**).
+    *   **Secondary Category:** "Economic" harm accounts for **26.7%**.
+    *   **Minor Category:** "Physical" harm is very low, at only **6.7%**.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Distribution of Harm Types by Sector (Text-Inferred)" indicates the dataset is likely derived from natural language processing or text analysis of incident reports.
+*   **Legend:** Located on the right side, titled "Harm Category," mapping colors to specific categories:
+    *   **Dark Red/Burgundy:** Physical
+    *   **Pale Yellow:** Economic
+    *   **Dark Blue:** Other
+*   **Data Labels:** Percentage values are explicitly annotated within each segment of the bars, providing exact figures for easy reading (e.g., 50.0%, 33.3%).
+
+### 5. Statistical Insights
+*   **Sector-Specific Risks:** There is a distinct difference in the profile of harm between the two sectors. The **Financial sector** is characterized heavily by **Economic harm** (50.0%), which aligns with the nature of the industry. Conversely, the **Healthcare sector** is characterized predominantly by **"Other" types of harm** (66.7%), suggesting the risks there fall outside traditional physical or economic definitions (possibly data privacy, psychological, or service denial).
+*   **Physical Harm Prevalence:** While "Physical" harm is the minority category in both sectors, it is notably **more than twice as prevalent** in the Financial sector (16.7%) compared to the Healthcare sector (6.7%) according to this specific dataset.
+*   **Inverse Relationship:** There appears to be an inverse relationship between the "Economic" and "Other" categories across the two sectors; as the share of Economic harm decreases (from Financial to Healthcare), the share of "Other" harm increases significantly.
+==================================================

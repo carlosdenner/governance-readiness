@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Sector-Specific Justice - Appeal Process Analysis
+Loaded EO 13960 subset: 1757 rows
+Filtered for target sectors: 763 rows
+sector
+Benefits       529
+Enforcement    234
+Name: count, dtype: int64
+
+Sample of raw '65_appeal_process' values (first 5): <StringArray>
+[                                                                          'Yes',
+                         'No – it is not operationally practical to offer this.',
+ 'Agency CAIO has waived this minimum practice and reported such waiver to OMB.']
+Length: 3, dtype: str
+
+Sector Analysis Summary:
+             Total Systems  With Appeal Process  Proportion
+sector                                                     
+Benefits               529                    1    0.001890
+Enforcement            234                   15    0.064103
+
+Comparing: Benefits (n=529) vs Enforcement (n=234)
+
+Z-Test Results:
+Z-statistic: -5.5304
+P-value: 0.0000
+Conclusion: Significant difference in appeal process availability between sectors.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot compares categorical data across two distinct groups ("Benefits" vs. "Enforcement") to visualize the prevalence of defined appeal processes within AI systems used in those sectors.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Agency Sector"
+    *   **Labels:** Two categories are represented: **Benefits** and **Enforcement**.
+*   **Y-Axis:**
+    *   **Title:** "Proportion (0-1)"
+    *   **Range:** The axis spans from **0.0 to 1.0**.
+    *   **Ticks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Comparison of Heights:** The bar representing the "Enforcement" sector is significantly taller than the bar for the "Benefits" sector, which is barely visible on the scale.
+*   **Magnitude:** Both values are extremely low relative to the maximum possible value of 1.0 (or 100%). The vast majority of the plot area is empty, indicating low proportions for both categories.
+*   **Pattern:** There is a clear disparity where the enforcement sector has a notably higher rate of defined appeal processes compared to the benefits sector, though both rates are objectively low.
+
+### 4. Annotations and Legends
+*   **Bar Annotations:** Specific values are annotated directly above each bar, providing exact percentages and sample sizes ($n$):
+    *   **Benefits:** **0.2%** with a sample size of **(n=529)**.
+    *   **Enforcement:** **6.4%** with a sample size of **(n=234)**.
+*   **Color Coding:**
+    *   **Blue:** Represents the Benefits sector.
+    *   **Orange:** Represents the Enforcement sector.
+
+### 5. Statistical Insights
+*   **Extremely Low Adoption:** Overall, the data indicates that AI systems with defined appeal processes are rare in both sectors. Even the higher of the two (Enforcement) only reaches 6.4%.
+*   **Sector Disparity:** Despite the low overall numbers, there is a massive relative difference. An AI system in the Enforcement sector is roughly **32 times more likely** (6.4% vs 0.2%) to have a defined appeal process than one in the Benefits sector.
+*   **Sample Size Context:** The "Benefits" sector has a much larger sample size ($n=529$) compared to "Enforcement" ($n=234$), yet the absolute number of systems with appeal processes is likely much lower in Benefits (approx. 1 system) compared to Enforcement (approx. 15 systems). This highlights a potential systemic lack of recourse mechanisms in benefits-related AI systems compared to enforcement-related ones.
+==================================================

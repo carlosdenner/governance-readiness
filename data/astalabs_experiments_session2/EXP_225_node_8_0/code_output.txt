@@ -1,0 +1,29 @@
+exitcode: 0 (execution succeeded)
+Code output: EO13960 records loaded: 1757
+
+Modality Counts:
+modality
+Text      413
+Vision    310
+Name: count, dtype: int64
+
+Unique values in '52_impact_assessment': <StringArray>
+[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']
+Length: 5, dtype: str
+
+Contingency Table (Modality x Has Assessment):
+has_assessment  False  True
+modality                   
+Text              404     9
+Vision            298    12
+
+Chi-Square Results:
+Chi2 Statistic: 1.2473
+P-value: 2.6406e-01
+Degrees of Freedom: 1
+
+Assessment Rates:
+Text:   2.18%
+Vision: 3.87%
+
+Conclusion: No Statistically Significant Difference found.

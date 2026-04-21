@@ -1,0 +1,54 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 records loaded: 1757
+
+--- Compliance Summary by Category ---
+                  Total Cases  Compliant Cases  Compliance Rate
+risk_category                                                  
+Administrative            579               11         0.018998
+Other                     802               31         0.038653
+Rights-Impacting          365               19         0.052055
+Unclassified               11                0         0.000000
+
+--- Statistical Test Results (Chi-Square) ---
+Comparison: Rights-Impacting (n=365) vs Administrative (n=579)
+Rights Compliance Rate: 5.21%
+Admin Compliance Rate:  1.90%
+Chi2 Statistic: 6.9124
+P-Value: 0.0086
+Result: Statistically Significant Difference
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot is designed to compare the "Impact Assessment Compliance Rate" between two distinct categories of use cases: "Rights-Impacting" and "Administrative."
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Impact Assessment Compliance Rate".
+    *   **Range:** The axis runs from **0.0 to 1.0**.
+    *   **Units:** The axis ticks represent decimal proportions (0.0, 0.2, 0.4, etc.), effectively representing 0% to 100%.
+*   **X-Axis:**
+    *   **Labels:** The axis represents categorical data with two labeled groups: "Rights-Impacting" and "Administrative".
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Rights-Impacting" category represents the higher value of the two.
+*   **Shortest Bar:** The "Administrative" category represents the lower value.
+*   **Key Pattern:** Both values are extremely low relative to the potential maximum of 1.0 (100%). Visually, the bars occupy a very small fraction of the total chart height, emphasizing the low magnitude of the data.
+
+### 4. Annotations and Legends
+*   **Title:** "Impact Assessment Compliance: Rights-Impacting vs. Administrative Use Cases" appears at the top.
+*   **Bar Annotations:** Specific percentage values are annotated directly above each bar for precision:
+    *   Rights-Impacting: **5.2%**
+    *   Administrative: **1.9%**
+*   **Grid Lines:** Horizontal dashed grid lines are placed at intervals of 0.2 along the Y-axis to aid in visual estimation, though the exact labels make estimation unnecessary.
+*   **Colors:** The "Rights-Impacting" bar is colored red/pink, while the "Administrative" bar is colored blue, visually distinguishing the two categories.
+
+### 5. Statistical Insights
+*   **Overall Low Compliance:** The most significant insight is that compliance rates are incredibly low across the board. Neither category reaches even 6% compliance. This suggests a systemic lack of adherence to impact assessment protocols regardless of the use case type.
+*   **Relative Comparison:** While the absolute numbers are low, the "Rights-Impacting" use cases have a compliance rate (**5.2%**) that is nearly **2.7 times higher** than "Administrative" use cases (**1.9%**). This suggests that while compliance is poor generally, there is slightly more rigor or attention paid to cases that impact rights compared to purely administrative ones.
+*   **Gap to Target:** If the target compliance rate is 1.0 (100%), there is a massive gap of 94.8% for Rights-Impacting cases and 98.1% for Administrative cases.
+==================================================

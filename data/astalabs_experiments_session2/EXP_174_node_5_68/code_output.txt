@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Analyzed rows: 1710
+Distribution of Procurement Type:
+Procurement_Type
+Custom        1357
+Commercial     353
+Name: count, dtype: int64
+
+Distribution of Documentation Status:
+Has_Documentation
+0    899
+1    811
+Name: count, dtype: int64
+
+Contingency Table:
+                  No Doc  Has Doc
+Procurement_Type                 
+Commercial           292       61
+Custom               607      750
+
+Chi-Square Statistic: 160.6143
+P-value: 8.3067e-37
+
+Documentation Rates:
+Commercial: 17.28%
+Custom: 55.27%
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot is designed to compare the prevalence of data documentation between two distinct categories of AI systems: "Commercial" and "Custom."
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Percentage of Systems with Data Documentation (%)"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Linear, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+*   **X-Axis:**
+    *   **Label:** Categorical labels representing the type of AI system: "Commercial" and "Custom."
+    *   **Range:** N/A (Categorical data).
+
+### 3. Data Trends
+*   **Commercial Bar (Orange):** This represents the shortest bar in the plot. It indicates a low level of documentation compliance.
+*   **Custom Bar (Light Blue):** This is the tallest bar, visually appearing more than three times the height of the commercial bar.
+*   **Pattern:** There is a distinct and significant upward trend in documentation transparency when moving from Commercial systems to Custom systems.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Transparency Gap: Commercial vs Custom AI Documentation" – This annotation frames the data as a comparison of transparency levels.
+*   **Value Labels:** Exact percentage values are annotated directly above each bar for precision:
+    *   Commercial: **17.3%**
+    *   Custom: **55.3%**
+*   **Gridlines:** Horizontal dashed gridlines are included to assist in visually estimating the bar heights relative to the Y-axis scale.
+
+### 5. Statistical Insights
+*   **Significant Transparency Gap:** There is a 38 percentage point difference between the two categories ($55.3\% - 17.3\% = 38.0\%$).
+*   **Relative Performance:** Custom AI systems are approximately **3.2 times more likely** to have data documentation compared to Commercial AI systems.
+*   **Majority vs. Minority:** While a majority of Custom systems (over half) include data documentation, the vast majority of Commercial systems (82.7%) lack such documentation, highlighting a critical deficiency in transparency within the commercial sector.
+==================================================

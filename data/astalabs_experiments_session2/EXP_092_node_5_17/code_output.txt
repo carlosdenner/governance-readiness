@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: CSV Matrix Rows: 42
+CSV Head req_id: ['NIST-GV-1', 'NIST-GV-2', 'NIST-GV-3', 'NIST-GV-4', 'NIST-GV-5']
+JSON Rows: 42
+JSON Head req_id: ['NIST-GV-1', 'NIST-GV-2', 'NIST-GV-3', 'NIST-GV-4', 'NIST-GV-5']
+Merged Rows: 42
+Analysis Set Size: 11
+          count      mean       std  min  25%  50%   75%  max
+function                                                     
+MANAGE      5.0  1.800000  0.447214  1.0  2.0  2.0  2.00  2.0
+MAP         6.0  2.333333  0.516398  2.0  2.0  2.0  2.75  3.0
+
+T-test Results (MAP vs MANAGE):
+T-statistic: 1.8353
+P-value: 0.0998
+Result: No significant difference.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot compares the statistical distribution of a numerical variable ("Count of Controls") between two distinct categorical groups ("MAP" and "MANAGE"). It visualizes the median, quartiles, and potential outliers for each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Represents the categories. The distinct groups are **"MAP"** and **"MANAGE"**.
+*   **Y-Axis:**
+    *   **Title:** **"Count of Controls"**.
+    *   **Range:** The axis is marked from **1.00 to 3.00** with increments of 0.25.
+    *   **Units:** Integer counts (implied by the variable name and integer data points).
+
+### 3. Data Trends
+*   **MAP Group (Left):**
+    *   **Median:** The orange line indicates the median value is **2.0**.
+    *   **Spread:** The data ranges from a minimum of **2.0** to a maximum of **3.0**.
+    *   **Quartiles:** The box extends from 2.0 (Q1/lower quartile) to 2.75 (Q3/upper quartile). This indicates that the upper 50% of the data shows some variance between 2 and 3, while the lower 50% is clustered strictly at 2.
+    *   **Shape:** The distribution is skewed upwards, as there is no bottom whisker (the minimum equals the median).
+
+*   **MANAGE Group (Right):**
+    *   **Median:** The median is also **2.0**.
+    *   **Spread/Consistency:** This group is highly consistent. The box is collapsed into a flat line at 2.0, meaning the 25th percentile, median, and 75th percentile are all likely the same value (2).
+    *   **Outliers:** There is a distinct outlier represented by a hollow circle at **1.0**.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Technical Controls: MAP vs MANAGE" at the top center.
+*   **Grid Lines:** Horizontal dashed grey lines are provided at 0.25 intervals to facilitate reading exact Y-axis values.
+*   **Outlier Marker:** A small circle is used to denote data points that fall statistically far from the rest of the dataset (visible in the MANAGE column at y=1).
+
+### 5. Statistical Insights
+*   **Central Tendency:** Both the MAP and MANAGE processes generally utilize the same number of technical controls on average, with a median of **2 controls** for both.
+*   **Variability:**
+    *   **MAP** is more variable on the higher end. While its baseline is 2 controls, a significant portion of the data points extend up to 3 controls.
+    *   **MANAGE** is extremely rigid. Almost all data points result in exactly 2 controls, showing very little variance.
+*   **Anomalies:** The MANAGE process has a rare instance (outlier) where only 1 control was used, whereas the MAP process never drops below 2.
+*   **Conclusion:** If consistency is the goal, MANAGE is the more consistent process (mostly 2s). If a higher count of controls is preferred/safer, MAP appears "safer" as it ranges between 2 and 3, whereas MANAGE has a risk of dropping to 1.
+==================================================

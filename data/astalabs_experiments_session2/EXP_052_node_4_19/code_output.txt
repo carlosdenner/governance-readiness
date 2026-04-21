@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: ATLAS Kill Chain Analysis (Attempt 4 - Fixed Parser)
+ATLAS cases loaded: 52
+Unique tactics identified: 16
+Tactics list: ['Collection', 'Command And Control', 'Credential Access', 'Defense Evasion', 'Discovery', 'Execution', 'Exfiltration', 'Impact', 'Initial Access', 'Lateral Movement', 'Ml Attack Staging', 'Ml Model Access', 'Persistence', 'Privilege Escalation', 'Reconnaissance', 'Resource Development']
+
+Contingency Table (Defense Evasion vs Exfiltration):
+has_exfiltration  False  True 
+has_evasion                   
+False                19     10
+True                 18      5
+
+Full Contingency Table:
+       False  True 
+False     19     10
+True      18      5
+
+Fisher's Exact Test Results:
+Odds Ratio: 0.5278
+P-value: 0.3688
+Conclusion: No significant association found (Fail to reject H0).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the image provided, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Co-occurrence Heatmap (Symmetric Matrix).
+*   **Purpose:** This plot visualizes the frequency with which different adversarial tactics (from the MITRE ATLAS framework) occur together. The grid structure allows for a pairwise comparison of all tactics, showing relationship strength through color intensity and numerical counts.
+
+### 2. Axes
+*   **Labels:** Both the X-axis (bottom) and Y-axis (left) list the same categorical variables representing **Adversarial Tactics**:
+    *   Collection, Command And Control, Credential Access, Defense Evasion, Discovery, Execution, Exfiltration, Impact, Initial Access, Lateral Movement, MI Attack Staging, MI Model Access, Persistence, Privilege Escalation, Reconnaissance, Resource Development.
+*   **Units:** The axes represent categories, not numerical units. The values within the cells represent **counts (frequency)** of co-occurrence.
+*   **Ranges:** N/A (Categorical).
+
+### 3. Data Trends
+*   **High Activity Areas (Dark Blue):**
+    *   **The Diagonal:** The highest values generally appear on the diagonal line from top-left to bottom-right (e.g., **Initial Access at 38**, **Resource Development at 38**, **Impact at 36**). This usually represents the total frequency of that specific tactic appearing in the dataset.
+    *   **Key Clusters:** There is a distinct cluster of high co-occurrence involving **Initial Access**, **Impact**, **Execution**, and **Resource Development**.
+        *   *Initial Access* & *Impact*: **30** occurrences.
+        *   *Initial Access* & *Resource Development*: **27** occurrences.
+        *   *Execution* & *Initial Access*: **23** occurrences.
+        *   *Resource Development* & *Execution*: **21** occurrences.
+*   **Low Activity Areas (Light Yellow):**
+    *   **Lateral Movement:** This row/column is predominantly light yellow, with values mostly between 0 and 2. This suggests that in this dataset, Lateral Movement is rarely observed co-occurring with other tactics.
+    *   **Command And Control:** similarly shows very low engagement with other tactics (mostly single digits).
+*   **Asymmetry/Symmetry:** The matrix appears to be **symmetric**. For example, the intersection of "Impact" (Row) and "Initial Access" (Column) is 30, and "Initial Access" (Row) and "Impact" (Column) is also 30. This indicates a non-directional relationship (Tactic A happened with Tactic B).
+
+### 4. Annotations and Legends
+*   **Color Bar (Right):** A gradient legend indicates the scale of values.
+    *   **Light Yellow (0):** Represents no or very low co-occurrence.
+    *   **Teal/Green (~15-20):** Represents moderate co-occurrence.
+    *   **Dark Blue (>35):** Represents high frequency/co-occurrence.
+*   **Cell Annotations:** Each cell contains an integer specifying the exact number of times the two intersecting tactics occurred together.
+*   **Title:** "Adversarial Tactic Co-occurrence Heatmap (ATLAS) - Final" identifies the dataset context (likely related to Machine Learning security, given the "MI" in tactics like "MI Model Access").
+
+### 5. Statistical Insights
+*   **Dominant Tactic:** **Initial Access** appears to be the most "connected" or prevalent tactic. It has the highest self-occurrence (38) and strongly co-occurs with almost every other major category (Impact, Execution, Defense Evasion, Resource Development). This suggests that most attacks in this dataset rely heavily on gaining initial access.
+*   **The "Impact" Correlation:** The tactic **Impact** is strongly correlated with **Initial Access (30)** and **Resource Development (25)**. This might suggest a pattern where attacks move quickly from entry to impact, or that these tactics are frequently logged together in incident reports.
+*   **Specialized Tactics:** Tactics specific to Machine Learning (MI Attack Staging, MI Model Access) show moderate clustering. Specifically, **MI Model Access** co-occurs significantly with **MI Attack Staging (20)** and **Defense Evasion (22)**, indicating a sub-pattern of behavior specific to ML-based threats.
+*   **Outliers:** **Lateral Movement** and **Command and Control** are statistical outliers in that they are underrepresented. This could imply that the attacks analyzed in this dataset (ATLAS) are perhaps more focused on immediate impact or data theft rather than long-term movement through a network.
+==================================================

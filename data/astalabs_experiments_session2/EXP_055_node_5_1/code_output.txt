@@ -1,0 +1,72 @@
+exitcode: 0 (execution succeeded)
+Code output: Initial EO 13960 records: 1757
+
+Agency Type Distribution:
+agency_type
+Civilian       1574
+Security/LE     183
+Name: count, dtype: int64
+
+Agencies classified as Security/LE: ['Department of Homeland Security']...
+
+Records for Analysis (Clean Dev Methods): 920
+Development Category Distribution:
+dev_category
+Outsourced    481
+In-House      439
+Name: count, dtype: int64
+
+Contingency Table (Rows=Agency, Cols=Method):
+dev_category  In-House  Outsourced
+agency_type                       
+Civilian           428         411
+Security/LE         11          70
+
+Chi-Square Test Results:
+Statistic: 40.0020
+P-value: 2.5371e-10
+Security/LE In-House Rate: 13.58%
+Civilian In-House Rate: 51.01%
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot compares the proportion of AI projects developed "In-House" across two different categories of government agencies: "Civilian" and "Security/LE" (Law Enforcement).
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Proportion Developed In-House"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Units:** Decimal ratio (proportion).
+*   **X-Axis:**
+    *   **Label:** Although not explicitly labeled with a collective noun (e.g., "Agency Type"), the axis lists the categories: "Civilian" and "Security/LE".
+    *   **Range:** Two distinct categorical variables.
+
+### 3. Data Trends
+*   **Civilian Agencies:**
+    *   This represents the tallest bar in the plot.
+    *   Civilian agencies show a significantly higher rate of in-house development compared to the other category.
+    *   Value: **51.0%**.
+*   **Security/LE Agencies:**
+    *   This represents the shortest bar.
+    *   Security and Law Enforcement agencies show a much lower rate of in-house development.
+    *   Value: **13.6%**.
+*   **Comparison:** There is a stark contrast between the two groups, with Civilian agencies being nearly four times as likely to develop AI in-house as Security/LE agencies.
+
+### 4. Annotations and Legends
+*   **Title Annotations:**
+    *   **Main Title:** "The Security Sovereignty of AI"
+    *   **Subtitle:** "In-House Development Rates by Agency Mission"
+    *   **Statistical Note:** The title includes a p-value annotation **(p=2.5e-10)**, indicating the statistical significance of the difference between the two groups.
+*   **Bar Annotations:**
+    *   **Civilian Bar:** Labeled with "51.0%" and the specific count "(n=428/839)". This indicates that out of 839 total civilian projects, 428 were developed in-house.
+    *   **Security/LE Bar:** Labeled with "13.6%" and the specific count "(n=11/81)". This indicates that out of 81 total security/LE projects, only 11 were developed in-house.
+
+### 5. Statistical Insights
+*   **High Statistical Significance:** The p-value of $2.5 \times 10^{-10}$ is extremely small (well below the standard 0.05 threshold). This suggests that the observed difference in development rates between Civilian and Security/LE agencies is highly statistically significant and not due to random chance.
+*   **Operational Reliance:** The data suggests a structural difference in procurement strategies. Security and Law Enforcement agencies appear to rely heavily on external vendors or contractors (86.4% outsourced), whereas Civilian agencies have a roughly even split between in-house development and outsourcing.
+*   **Sample Size Disparity:** There is a notable imbalance in the sample sizes ($n=839$ for Civilian vs. $n=81$ for Security/LE). While the Security/LE sample is smaller, the difference in proportions is large enough to remain statistically significant.
+==================================================

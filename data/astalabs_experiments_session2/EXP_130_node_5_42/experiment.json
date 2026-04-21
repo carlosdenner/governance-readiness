@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between Generative AI and harm type using the AIID dataset. Correcting for previous data mapping issues, the code identified 25 Generative AI incidents and 1,337 Non-Generative incidents. \n\n**Findings:**\n1. **Data Distribution:** \n   - **Generative AI:** 25 incidents total. 100% were classified as 'Intangible' (25 incidents), with 0 'Tangible' harms.\n   - **Non-Generative AI:** 1,337 incidents total. 94.6% were 'Intangible' (1,265 incidents), and 5.4% resulted in 'Tangible' harm (72 incidents).\n\n2. **Statistical Test:** \n   - A Fisher's Exact Test was performed due to the zero cell count. \n   - **P-value:** 0.6388\n   - **Odds Ratio:** 0.0\n\n3. **Conclusion:** \n   The difference is **not statistically significant** (p > 0.05). Although GenAI incidents had a 0% rate of tangible harm compared to 5.4% for non-GenAI, the small sample size of GenAI incidents (n=25) combined with the overall rarity of 'definitively occurred' tangible harm in the dataset means this result could easily happen by chance. The hypothesis that GenAI is *significantly* more associated with intangible harm is **rejected** based on this evidence.",
+  "child_ids": [
+    "node_6_40"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport numpy as np\n\n# Load dataset\nfile_path = 'astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\ndf_aiid = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"AIID Incidents loaded: {len(df_aiid)} rows\")\n\n# --- Step 1: define GenAI ---\n# Keywords for Generative AI\ngenai_keywords = ['generative', 'llm', 'gpt', 'diffusion', 'language model', 'chatbot', 'deepfake', 'dall-e', 'midjourney']\n\ndef is_genai(text):\n    if pd.isna(text):\n        return False\n    text_lower = str(text).lower()\n    return any(keyword in text_lower for keyword in genai_keywords)\n\ndf_aiid['is_genai'] = df_aiid['Known AI Technology'].apply(is_genai)\n\n# --- Step 2: Define Harm Type ---\n# Based on previous debug, 'Tangible Harm' column contains specific strings.\n# We define 'Tangible' as cases where harm definitively occurred.\n# We define 'Intangible' as cases where it did not (near-misses, issues, or explicitly no tangible harm).\n\ntangible_marker = 'tangible harm definitively occurred'\n\ndef classify_harm(val):\n    if pd.isna(val):\n        return 'Intangible' # Treat missing as Intangible/Unknown for this binary split or drop? \n        # Safer to treat as Intangible if we assume Tangible is the exception, \n        # but let's check if 'nan' means no info. \n        # For this experiment, let's map strictly based on the string.\n    \n    val_lower = str(val).lower()\n    if tangible_marker in val_lower:\n        return 'Tangible'\n    else:\n        return 'Intangible'\n\ndf_aiid['harm_type'] = df_aiid['Tangible Harm'].apply(classify_harm)\n\n# --- Step 3: Analysis ---\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(df_aiid['is_genai'], df_aiid['harm_type'])\n\n# Rename indices for clarity\ncontingency_table.index = ['Non-GenAI', 'GenAI']\nprint(\"\\n--- Contingency Table (GenAI vs Harm Type) ---\")\nprint(contingency_table)\n\n# Check if we have data in both columns\nif 'Tangible' not in contingency_table.columns:\n    contingency_table['Tangible'] = 0\nif 'Intangible' not in contingency_table.columns:\n    contingency_table['Intangible'] = 0\n\n# Calculate percentages for context\ncontingency_pct = pd.crosstab(df_aiid['is_genai'], df_aiid['harm_type'], normalize='index') * 100\nprint(\"\\n--- Percentages (Row-wise) ---\")\nprint(contingency_pct)\n\n# Statistical Test\n# Using Fisher's Exact Test if sample size is small, otherwise Chi2.\n# Given the likely imbalance, Fisher's is safer or Chi2 with Yates correction.\n# We will use Fisher's Exact Test for 2x2.\n\nodds_ratio, p_value = stats.fisher_exact(contingency_table.loc[['Non-GenAI', 'GenAI'], ['Intangible', 'Tangible']])\n\nprint(f\"\\nFisher's Exact Test Results:\")\nprint(f\"Odds Ratio: {odds_ratio:.4f}\")\nprint(f\"P-value: {p_value:.4f}\")\n\n# Interpretation\nprint(\"\\n--- Interpretation ---\")\nif p_value < 0.05:\n    print(\"Result: Statistically Significant.\")\n    if odds_ratio > 1:\n        print(\"GenAI incidents are significantly more likely to be associated with Intangible harm (vs Tangible) compared to Non-GenAI.\")\n    else:\n        print(\"GenAI incidents are significantly LESS likely to be associated with Intangible harm compared to Non-GenAI.\")\nelse:\n    print(\"Result: Not Statistically Significant. No evidence that GenAI harm profiles differ from Non-GenAI in this dataset.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: AIID Incidents loaded: 1362 rows\n\n--- Contingency Table (GenAI vs Harm Type) ---\nharm_type  Intangible  Tangible\nNon-GenAI        1265        72\nGenAI              25         0\n\n--- Percentages (Row-wise) ---\nharm_type  Intangible  Tangible\nis_genai                       \nFalse       94.614809  5.385191\nTrue       100.000000  0.000000\n\nFisher's Exact Test Results:\nOdds Ratio: 0.0000\nP-value: 0.6388\n\n--- Interpretation ---\nResult: Not Statistically Significant. No evidence that GenAI harm profiles differ from Non-GenAI in this dataset.\n",
+  "created_at": "2026-02-22T07:09:38.776245+00:00",
+  "creation_idx": 131,
+  "experiment_id": "node_5_42",
+  "experiment_plan": {
+    "deliverables": "Contingency table and statistical test results.",
+    "objective": "Analyze the relationship between AI technology type and the nature of the harm produced.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table` = 'aiid_incidents'.\n2. Create a binary `is_genai` by searching `Known AI Technology` for keywords ['Generative', 'LLM', 'GPT', 'Diffusion', 'Language Model', 'Chatbot'].\n3. Create a binary `is_intangible_harm` by mapping `Harm Domain` or `Tangible Harm` columns (if `Tangible Harm` is 'NaN' or explicitly 'Intangible', set to 1; if it lists physical/financial harms, set to 0. Requires data inspection).\n4. Perform a Chi-square test on the association between Technology Type and Harm Type."
+  },
+  "hypothesis": "GenAI Harm Profile: Incidents involving 'Generative AI' are significantly more likely to result in 'Intangible' harms (e.g., Reputation, Bias) compared to Non-Generative systems, which are more associated with 'Tangible' harms.",
+  "id_in_run": 130,
+  "is_surprising": true,
+  "parent_id": "node_4_10",
+  "posterior": 0.4258241758241758,
+  "posterior_belief": {
+    "_empirical_mean": 0.25,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 60.0,
+    "maybe_true": 0.0,
+    "mean": 0.4258241758241758,
+    "n": 60.0,
+    "prior_params": [
+      23.75,
+      7.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7661290322580645,
+  "prior_belief": {
+    "_empirical_mean": 0.775,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 3.0,
+    "maybe_false": 0.0,
+    "maybe_true": 27.0,
+    "mean": 0.7661290322580645,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully implemented the plan, incorporating the necessary corrections from previous iterations regarding categorical string matching for 'Tangible Harm'.\n\n**Hypothesis:** GenAI Harm Profile (GenAI incidents are significantly more likely to cause Intangible harm than Tangible harm compared to Non-GenAI).\n\n**Findings:**\n1.  **Data Distribution:**\n    -   **Generative AI:** 25 incidents identified. 100% (25) were associated with Intangible harm; 0 were associated with definitively Tangible harm.\n    -   **Non-Generative AI:** 1,337 incidents identified. 94.6% (1,265) were Intangible; 5.4% (72) were Tangible.\n\n2.  **Statistical Test:**\n    -   A Fisher's Exact Test was performed due to the zero cell count in the GenAI/Tangible category.\n    -   **P-value:** 0.6388\n    -   **Odds Ratio:** 0.0 (indicating infinite odds in the other direction or undefined, but practically meaning 0 tangible cases).\n\n3.  **Conclusion:**\n    The difference is **not statistically significant** (p > 0.05). While GenAI showed a 0% rate of tangible harm compared to 5.4% for Non-GenAI, the small sample size of GenAI incidents (n=25) means this difference is indistinguishable from random chance. The hypothesis is **rejected** based on this dataset; there is insufficient evidence to claim GenAI harm profiles are distinct regarding tangibility.",
+  "rich_outputs": null,
+  "runtime_ms": 206680.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.40836582772066643
+}

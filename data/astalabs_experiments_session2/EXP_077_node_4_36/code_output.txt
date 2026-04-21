@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: The Generative Malice Gap (Attempt 2)
+Total AIID incidents: 1362
+Identified Tech Column: Known AI Technology
+Identified Intent Column: Intentional Harm
+
+Data points for analysis: 112
+Distribution by Tech Category:
+tech_category
+Predictive/Other    97
+Generative          15
+Name: count, dtype: int64
+Distribution by Intent Category:
+intent_category
+Unintentional    110
+Intentional        2
+Name: count, dtype: int64
+
+Contingency Table:
+intent_category   Intentional  Unintentional
+tech_category                               
+Generative                  0             15
+Predictive/Other            2             95
+
+Proportions (Row-normalized):
+intent_category   Intentional  Unintentional
+tech_category                               
+Generative           0.000000       1.000000
+Predictive/Other     0.020619       0.979381
+
+Chi-Square Test Results:
+Chi2 Statistic: 0.0000
+P-value: 1.0000e+00
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart compares the relative proportions of two sub-groups ("Intentional" vs. "Unintentional" harm) across two distinct categories of AI technology ("Generative" and "Predictive/Other"). It is designed to show the composition of incidents rather than the total volume of incidents.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Technology Category"
+    *   **Categories:** Two discrete categories are displayed: "Generative" and "Predictive/Other".
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Incidents"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Scale:** Linear scale with major tick marks every 0.2 units.
+
+### 3. Data Trends
+*   **Dominant Pattern:** For both technology categories, the vast majority of incidents are categorized as **"Unintentional"** (represented by the blue bars).
+*   **Generative AI:** The bar for "Generative" appears to be entirely blue. Visually, this indicates that nearly **100%** of the recorded incidents in this category were unintentional, with no visible proportion of intentional harm.
+*   **Predictive/Other AI:** While still dominated by "Unintentional" incidents (blue), this bar shows a very thin strip of pink (light red) at the bottom. This indicates a small, non-zero proportion of **"Intentional"** harm, roughly estimated visually to be between 1% and 3% (0.01 - 0.03).
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Intentionality of Harm by AI Technology Type" – clear and descriptive of the data subject.
+*   **Legend:** Located on the right side of the plot with the header "Intentional Harm".
+    *   **Pink/Light Red:** Represents "Intentional" incidents.
+    *   **Blue:** Represents "Unintentional" incidents.
+
+### 5. Statistical Insights
+*   **Prevalence of Unintentional Harm:** The data strongly suggests that regardless of the AI technology type (Generative vs. Predictive), harm caused by these systems is overwhelmingly unintentional (likely due to errors, bias, or unforeseen consequences) rather than the result of malicious intent.
+*   **Category Comparison:** There is a slight divergence between the two technologies. While Generative AI incidents in this dataset appear completely devoid of intentionality, the "Predictive/Other" category involves a marginal risk of intentional misuse or harm, though it remains a statistical outlier compared to unintentional incidents.
+==================================================

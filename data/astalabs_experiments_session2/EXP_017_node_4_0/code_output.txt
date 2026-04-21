@@ -1,0 +1,76 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 Records: 1757
+Unique values in 67_opt_out: <StringArray>
+[                                                                                                                                                                                                                                            nan,
+                                                                                                                                                                                                                                           'Yes',
+ 'No – This AI use case is not subject to the opt-out requirement because the AI functionality is solely used for the prevention, detection, and investigation of fraud or cybersecurity incidents, or the conduct of a criminal investigation.',
+                                                                                                                                                                                                                                         'Other',
+                                                                                                                                                        'No – There is law or governmentwide guidance that restricts opt-out for this context. ',
+                                                                                                                                                   'N/A; COTS tool used for code conversion, no individual's information is input into a model.',
+                                                                                                                                                                 'Agency CAIO has waived this minimum practice and reported such waiver to OMB.']
+Length: 7, dtype: str
+Unique values in 65_appeal_process: <StringArray>
+[                                                                                                                  nan,
+                                                                                                                 'Yes',
+                                                               'No – it is not operationally practical to offer this.',
+                         'N/A; COTS tool used for code conversion, no individual's information is input into a model.',
+ 'No – Law, operational limitations, or governmentwide guidance precludes an opportunity for an individual to appeal.',
+                                       'Agency CAIO has waived this minimum practice and reported such waiver to OMB.']
+Length: 6, dtype: str
+
+Contingency Table (Counts):
+             No Appeal  Has Appeal
+No Opt-Out        1656          19
+Has Opt-Out         25          57
+
+Contingency Table (Row Percentages):
+             No Appeal  Has Appeal
+No Opt-Out   98.865672    1.134328
+Has Opt-Out  30.487805   69.512195
+
+Chi-Square Statistic: 866.7367
+P-Value: 1.6711e-190
+Phi Coefficient (Correlation Strength): 0.7024
+Jaccard Similarity Index (Overlap of 'Yes'): 0.5644
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart compares the relative percentage distribution of one categorical variable (Appeal Process status) within two different groups defined by another categorical variable (Opt-Out Mechanism status). It is designed to visualize the relationship or correlation between these two system features.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Opt-Out Mechanism Provided?"
+    *   **Categories:** The axis is divided into two discrete categories: "**No Opt-Out**" and "**Has Opt-Out**".
+*   **Y-axis:**
+    *   **Title:** "Percentage of Systems"
+    *   **Range:** 0 to 100.
+    *   **Units:** Percent (%).
+    *   **Increments:** Marked every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **"No Opt-Out" Column:**
+    *   This category is overwhelmingly dominated by the **"No Appeal"** segment (Red), which accounts for **98.9%** of the column.
+    *   Only a tiny fraction, **1.1%** (Green), represents systems that have an appeal process despite lacking an opt-out mechanism.
+*   **"Has Opt-Out" Column:**
+    *   This category shows a significant shift. The majority, **69.5%**, corresponds to the **"Has Appeal"** segment (Green).
+    *   The minority, **30.5%**, corresponds to the **"No Appeal"** segment (Red).
+*   **Overall Pattern:** There is a visible inversion of trends. Systems without an opt-out mechanism almost certainly lack an appeal process, whereas systems that *do* provide an opt-out mechanism are significantly more likely to also provide an appeal process.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Correlation between Opt-Out and Appeal Process (EO 13960)" indicates the context is likely related to compliance with Executive Order 13960 regarding AI or automated systems.
+*   **Legend:** Located on the right, titled "Appeal Process Provided?".
+    *   **Red:** Represents "No Appeal".
+    *   **Green:** Represents "Has Appeal".
+*   **Bar Labels:** White text inside the bars provides the exact percentage values (e.g., "98.9%", "69.5%", "30.5%").
+*   **Gridlines:** Horizontal dashed lines are used to help estimate the height of the bar segments relative to the Y-axis.
+
+### 5. Statistical Insights
+*   **Strong Positive Association:** There is a very strong correlation between the two variables. If a system includes an Opt-Out mechanism, the probability of it also having an Appeal process increases dramatically (from ~1% to ~70%).
+*   **"All or Nothing" Compliance:** The data suggests that systems lacking one safeguard (Opt-Out) almost universally lack the other (Appeal). This implies that systems are generally either designed with a suite of rights/safeguards or with very few/none, rather than mixing and matching.
+*   **Interdependency:** The existence of an Opt-Out mechanism serves as a strong predictor for the existence of an Appeal process. Conversely, the absence of an Opt-Out mechanism is a near-perfect predictor for the absence of an Appeal process.
+==================================================

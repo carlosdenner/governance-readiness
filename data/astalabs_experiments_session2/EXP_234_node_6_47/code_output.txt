@@ -1,0 +1,64 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+AIID Incidents loaded: 1362 rows
+Using columns: Autonomy='Autonomy Level', Tech='Known AI Technology'
+
+Data points available for analysis: 62
+Tech_Category
+Computer Vision    49
+Language           13
+Name: count, dtype: int64
+
+Kruskal-Wallis H-test results:
+Statistic: 0.7370
+p-value: 3.9061e-01
+Result: No significant difference.
+
+STDERR:
+<ipython-input-1-ef88b3d5934a>:117: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.boxplot(x='Tech_Category', y='Autonomy_Score', data=analysis_df,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a box-and-whisker plot).
+*   **Purpose:** The plot is designed to visualize and compare the distribution of statistical data (likely minimum, first quartile, median, third quartile, and maximum) for a continuous variable ("Autonomy Score") across distinct categorical groups ("Technology Domain").
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "Technology Domain".
+    *   **Categories:** The axis displays three specific domains: "Robotics", "Computer Vision", and "Language".
+*   **Y-axis:**
+    *   **Label:** "Autonomy Score".
+    *   **Value Range:** The visible markings range from **1.00 to 3.00**, with major intervals marked every 0.25 units.
+
+### 3. Data Trends
+*   **Robotics:**
+    *   There is **no visible data distribution** plotted for the "Robotics" category. The area above this label is empty, indicating either missing data, null values, or that the values fall outside the current plot parameters.
+*   **Computer Vision (Teal Box):**
+    *   **Range:** The distribution spans from a minimum of **1.0** to a maximum of **3.0** (indicated by the top whisker).
+    *   **Interquartile Range (IQR):** The box itself, representing the middle 50% of the data, spans from **1.0 to 2.0**.
+    *   **Pattern:** There is no lower whisker visible, suggesting the minimum value and the first quartile (Q1) are identical (both at 1.0).
+*   **Language (Light Green Box):**
+    *   **Range & IQR:** The distribution for "Language" appears visually identical to "Computer Vision." The box spans from **1.0 to 2.0**, and the top whisker extends to **3.0**.
+    *   **Pattern:** Similar to Computer Vision, the lack of a lower whisker suggests a concentration of data at the lower end of the scale (1.0).
+
+### 4. Annotations and Legends
+*   **Title:** The chart is titled **"Distribution of Autonomy Levels by AI Technology"** at the top center.
+*   **Gridlines:** Horizontal dashed grey lines are provided across the plot area to assist in reading the Y-axis values.
+*   **Color Coding:**
+    *   **Teal:** Represents Computer Vision.
+    *   **Light Green:** Represents Language.
+    *   (No legend box is provided, as the X-axis labels serve as the legend).
+
+### 5. Statistical Insights
+*   **Uniformity between Vision and Language:** The data suggests that, within this specific dataset or study, **Computer Vision** and **Language** technologies share nearly identical distributions regarding their Autonomy Scores. Both exhibit a variability ranging from score 1 to 3.
+*   **Skewness:** The distributions for both Computer Vision and Language appear right-skewed (or positively skewed). Since the "box" (1.0 to 2.0) is at the bottom of the total range (1.0 to 3.0) and there is no bottom whisker, it implies a high density of lower scores (around 1.0), with fewer instances reaching the higher score of 3.0.
+*   **Missing Robotics Data:** A key insight is the notable absence of data for **Robotics**. This gap suggests that Robotics was either not measured in this specific experiment, yielded invalid results, or had a sample size of zero.
+*   **Ceiling Effect:** The maximum score observed is 3.0, which acts as a hard ceiling for the data presented in the visible domains.
+==================================================

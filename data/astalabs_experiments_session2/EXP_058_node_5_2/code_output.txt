@@ -1,0 +1,83 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+Subset 'eo13960_scored' loaded. Rows: 1757
+
+--- Analysis Groups ---
+source_label
+Custom / Gov         1357
+Commercial (COTS)     353
+Name: count, dtype: int64
+
+>>> Analyzing: Data Documentation <<<
+Contingency Table (0=Absent, 1=Present):
+has_data_docs         0   1
+source_label               
+Commercial (COTS)   352   1
+Custom / Gov       1341  16
+Compliance Rates:
+source_label
+Commercial (COTS)    0.002833
+Custom / Gov         0.011791
+Name: has_data_docs, dtype: float64
+Chi-Square: 1.4643, p-value: 2.2624e-01
+Odds Ratio (Commercial / Custom): 0.2381
+Result: Not statistically significant.
+
+>>> Analyzing: Code Access <<<
+Contingency Table (0=Absent, 1=Present):
+has_code_access       0   1
+source_label               
+Commercial (COTS)   346   7
+Custom / Gov       1316  41
+Compliance Rates:
+source_label
+Commercial (COTS)    0.019830
+Custom / Gov         0.030214
+Name: has_code_access, dtype: float64
+Chi-Square: 0.7592, p-value: 3.8358e-01
+Odds Ratio (Commercial / Custom): 0.6494
+Result: Not statistically significant.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (also known as a Clustered Bar Chart).
+*   **Purpose:** The chart is designed to compare two distinct metrics of transparency ("Data Documentation" and "Code Access") across two different categories of AI procurement ("Commercial" vs. "Custom/Gov"). This allows for a direct comparison of compliance rates both within a category and between categories.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title/Labels:** The axis represents the source of the AI technology. The categories are **"Commercial (COTS)"** (likely standing for Commercial Off-The-Shelf) and **"Custom / Gov"** (Custom-built or Government-developed).
+*   **Y-Axis:**
+    *   **Title:** **"Compliance Rate (%)"**.
+    *   **Units:** Percentage points.
+    *   **Range:** The visual axis ranges from **0.0 to roughly 4.0** (with major tick marks labeled every 0.5 units up to 3.5).
+
+### 3. Data Trends
+*   **Overall Low Values:** The most immediate trend is that compliance rates are universally low. The highest value on the entire chart is only 3.0%, indicating that the vast majority of AI systems in this inventory do not meet these transparency standards.
+*   **Custom vs. Commercial:** Custom/Government AI systems show consistently higher transparency compliance than Commercial systems across both metrics.
+    *   *Data Documentation:* Custom (1.2%) is **4x higher** than Commercial (0.3%).
+    *   *Code Access:* Custom (3.0%) is **1.5x higher** than Commercial (2.0%).
+*   **Metric Comparison:** Across both categories, compliance for **"Code Access"** (Orange) is significantly higher than for **"Data Documentation"** (Blue).
+*   **Tallest and Shortest Bars:**
+    *   **Tallest Bar:** "Code Access" for Custom/Gov AI at **3.0%**.
+    *   **Shortest Bar:** "Data Documentation" for Commercial (COTS) AI at **0.3%**.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner.
+    *   **Blue Square:** Represents **"Data Documentation"**.
+    *   **Orange Square:** Represents **"Code Access"**.
+*   **Annotations:** Each bar is annotated with its exact percentage value above the bar:
+    *   Commercial / Data Documentation: **0.3%**
+    *   Commercial / Code Access: **2.0%**
+    *   Custom / Data Documentation: **1.2%**
+    *   Custom / Code Access: **3.0%**
+*   **Chart Title:** "Transparency Gap: Commercial vs Custom AI (Federal Inventory)" – This title sets the context, highlighting that the chart intends to show the disparity in transparency between these two groups.
+
+### 5. Statistical Insights
+*   **The "Black Box" Problem in COTS:** The Commercial (COTS) sector exhibits extreme opacity regarding data documentation (0.3%). This suggests that vendors are highly protective of their proprietary data or training sets, making it nearly impossible for federal inventory managers to document the data underlying these tools.
+*   **The Transparency Gap:** There is a clear "Transparency Gap" where Custom/Government-developed tools are more transparent. Because the government likely owns the IP for custom tools, they face fewer legal barriers to providing code access and data documentation compared to commercial vendors.
+*   **Code is Easier than Data:** The data suggests that for federal agencies, providing access to code is easier or more common than documenting data. This may be because "Code Access" can often be satisfied by sharing a repository link, whereas "Data Documentation" requires the creation of artifacts (like datasheets or system cards) which is labor-intensive and often neglected.
+*   **Critical Non-Compliance:** Regardless of the relative differences, the primary statistical insight is that compliance is close to zero. Even the "best" performing category (Custom Code Access) has a non-compliance rate of 97%. This indicates a systemic failure in enforcing or achieving transparency standards within the Federal AI Inventory.
+==================================================

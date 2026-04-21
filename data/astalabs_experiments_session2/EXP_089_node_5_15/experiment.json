@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Maturity Clustering' hypothesis. The code loaded the dataset, correctly cleaned the 'Authority to Operate' (ATO) and 'Impact Assessment' columns based on the values identified in the debug phase, and performed a Chi-square test of independence.\n\n**Findings:**\n1.  **Strong Association:** The data reveals a highly significant association between security compliance (ATO) and governance compliance (Impact Assessment). The Chi-square statistic is 63.26 with a p-value of 1.81e-15, overwhelmingly rejecting the null hypothesis of independence.\n2.  **Odds Ratio:** Systems with an ATO are approximately **10.9 times** more likely to have a documented impact assessment than those without one.\n3.  **Compliance Rates:** \n    - **No ATO:** Only 0.80% (9/1119) have an impact assessment.\n    - **Has ATO:** 8.15% (52/638) have an impact assessment.\n\nThe visualization confirms this disparity, showing a massive relative difference despite the overall low absolute compliance rates.",
+  "child_ids": [
+    "node_6_31"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# 1. Load the dataset\nfilename = 'astalabs_discovery_all_data.csv'\ndf = pd.read_csv(filename, low_memory=False)\n\n# Filter for EO 13960 scored data\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# 2. Clean '40_has_ato' (Authority to Operate)\n# Positive values indicating an ATO or equivalent approved status\nato_positive = ['Yes', 'Operated in an approved enclave']\n\n# Function to clean ATO column\ndef clean_ato(val):\n    if pd.isna(val):\n        return 0\n    val_str = str(val).strip()\n    if val_str in ato_positive:\n        return 1\n    return 0\n\neo_data['has_ato_binary'] = eo_data['40_has_ato'].apply(clean_ato)\n\n# 3. Clean '52_impact_assessment'\n# Positive values indicating a documented assessment\nimpact_positive = ['Yes', 'YES']\n\n# Function to clean Impact Assessment column\ndef clean_impact(val):\n    if pd.isna(val):\n        return 0\n    val_str = str(val).strip()\n    if val_str in impact_positive:\n        return 1\n    return 0\n\neo_data['has_impact_binary'] = eo_data['52_impact_assessment'].apply(clean_impact)\n\n# 4. Create Contingency Table\ncontingency_table = pd.crosstab(eo_data['has_ato_binary'], eo_data['has_impact_binary'])\ncontingency_table.index = ['No ATO', 'Has ATO']\ncontingency_table.columns = ['No Impact Assessment', 'Has Impact Assessment']\n\nprint(\"--- Contingency Table ---\")\nprint(contingency_table)\nprint(\"\\n\")\n\n# 5. Perform Chi-square test\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n\n# 6. Calculate Odds Ratio\n# OR = (a*d) / (b*c) where a=HasATO_HasImpact, b=HasATO_NoImpact, c=NoATO_HasImpact, d=NoATO_NoImpact\n# But crosstab order is [0,0], [0,1], [1,0], [1,1]\n# NoATO_NoImpact (0,0), NoATO_HasImpact (0,1)\n# HasATO_NoImpact (1,0), HasATO_HasImpact (1,1)\n\nn00 = contingency_table.iloc[0, 0] # No ATO, No Impact\nn01 = contingency_table.iloc[0, 1] # No ATO, Has Impact\nn10 = contingency_table.iloc[1, 0] # Has ATO, No Impact\nn11 = contingency_table.iloc[1, 1] # Has ATO, Has Impact\n\n# Use Haldane-Anscombe correction if any cell is 0 (add 0.5), though unlikely here with n=1757\nif (n00==0 or n01==0 or n10==0 or n11==0):\n    odds_ratio = ((n11 + 0.5) * (n00 + 0.5)) / ((n10 + 0.5) * (n01 + 0.5))\nelse:\n    odds_ratio = (n11 * n00) / (n10 * n01)\n\nprint(f\"--- Chi-Square Results ---\")\nprint(f\"Chi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\nprint(f\"Odds Ratio: {odds_ratio:.4f}\")\n\n# Calculate percentages for plotting\nato_compliance_rate = n11 / (n11 + n10) * 100\nno_ato_compliance_rate = n01 / (n01 + n00) * 100\n\nprint(f\"\\nCompliance Rate (Has ATO): {ato_compliance_rate:.2f}%\")\nprint(f\"Compliance Rate (No ATO): {no_ato_compliance_rate:.2f}%\")\n\n# 7. Visualization\nlabels = ['No ATO', 'Has ATO']\nrates = [no_ato_compliance_rate, ato_compliance_rate]\n\nplt.figure(figsize=(8, 6))\nplt.bar(labels, rates, color=['#e74c3c', '#2ecc71'], alpha=0.8)\nplt.ylabel('Percentage with Documented Impact Assessment')\nplt.title('Impact Assessment Compliance by ATO Status')\nplt.ylim(0, max(rates) * 1.2)\n\nfor i, v in enumerate(rates):\n    plt.text(i, v + 0.2, f\"{v:.1f}%\", ha='center', fontweight='bold')\n\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- Contingency Table ---\n         No Impact Assessment  Has Impact Assessment\nNo ATO                   1110                      9\nHas ATO                   586                     52\n\n\n--- Chi-Square Results ---\nChi-square Statistic: 63.2583\nP-value: 1.8130e-15\nOdds Ratio: 10.9443\n\nCompliance Rate (Has ATO): 8.15%\nCompliance Rate (No ATO): 0.80%\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot (or Bar Chart).\n*   **Purpose:** The plot compares the percentage of documented impact assessments between two distinct categorical groups: those with \"No ATO\" and those with \"Has ATO\". It is designed to visualize the disparity in compliance rates based on ATO status.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label/Categories:** The axis represents categorical data with two groups: **\"No ATO\"** and **\"Has ATO\"**.\n    *   **Range:** Categorical.\n*   **Y-Axis:**\n    *   **Label:** \"Percentage with Documented Impact Assessment\".\n    *   **Units:** Percentage (%).\n    *   **Value Range:** The axis displays tick marks from **0 to 8**, with the vertical space extending slightly higher (likely to a maximum of 10) to accommodate the tallest bar.\n\n### 3. Data Trends\n*   **Tallest Bar:** The **\"Has ATO\"** category is represented by the tallest bar (green), indicating a higher value.\n*   **Shortest Bar:** The **\"No ATO\"** category is represented by the shortest bar (red), indicating a very low value.\n*   **Pattern:** There is a significant positive correlation between having an ATO and having a documented impact assessment. The visual difference suggests that entities with an ATO are much more likely to be compliant than those without.\n\n### 4. Annotations and Legends\n*   **Bar Labels:**\n    *   Above the \"No ATO\" bar, the specific value **0.8%** is annotated in bold.\n    *   Above the \"Has ATO\" bar, the specific value **8.2%** is annotated in bold.\n*   **Color Coding:**\n    *   **Red (\"No ATO\"):** Likely used to signify a \"warning,\" \"poor performance,\" or negative status regarding compliance.\n    *   **Green (\"Has ATO\"):** Likely used to signify \"good,\" \"safe,\" or positive status relative to the other category.\n\n### 5. Statistical Insights\n*   **Relative Performance:** Entities that have an ATO (\"Authority to Operate,\" typically) are more than **10 times (10.25x)** more likely to have a documented impact assessment compared to those without an ATO ($8.2\\% / 0.8\\% \\approx 10.25$).\n*   **Absolute Performance:** despite the \"Has ATO\" group performing significantly better relatively, the absolute compliance rate is still quite low. An **8.2%** compliance rate indicates that even among those with an ATO, **91.8%** of the population *lacks* a documented impact assessment.\n*   **Conclusion:** While obtaining an ATO status is strongly associated with better documentation practices, the overall adherence to documenting impact assessments is critically low across both groups.\n==================================================",
+  "created_at": "2026-02-22T05:18:52.208124+00:00",
+  "creation_idx": 90,
+  "experiment_id": "node_5_15",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistics, Odds Ratio, and a clustered bar chart.",
+    "objective": "Determine if security compliance (ATO) is a predictor of broader governance compliance (Impact Assessments) in federal AI.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'eo13960_scored'.\n2. Clean '40_has_ato' into a binary variable (Yes vs No/Pending). Treat 'Yes' variants as 1, others as 0.\n3. Clean '52_impact_assessment' into a binary variable (Documented vs Not Documented) using text analysis (exclude 'N/A', 'None').\n4. Create a contingency table.\n5. Perform a Chi-square test of independence.\n6. Calculate the Odds Ratio to quantify the strength of the association."
+  },
+  "hypothesis": "The 'Maturity Clustering' Effect: Governance capabilities are not isolated; federal AI systems that have achieved a security 'Authority to Operate' (ATO) are significantly more likely to also possess a documented 'Impact Assessment' compared to systems without an ATO.",
+  "id_in_run": 89,
+  "is_surprising": false,
+  "parent_id": "node_4_15",
+  "posterior": 0.9258241758241759,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9258241758241759,
+    "n": 60.0,
+    "prior_params": [
+      24.25,
+      6.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.782258064516129,
+  "prior_belief": {
+    "_empirical_mean": 0.7916666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 5.0,
+    "maybe_false": 0.0,
+    "maybe_true": 25.0,
+    "mean": 0.782258064516129,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the hypothesis was rigorously tested. The programmer correctly handled the file path issues identified in the debug step and implemented robust data cleaning for the 'Authority to Operate' (ATO) and 'Impact Assessment' columns. The use of a Chi-square test and Odds Ratio provided a comprehensive statistical evaluation of the relationship between security compliance and governance documentation.\n\n**Hypothesis Evaluation**:\nThe 'Maturity Clustering' hypothesis is **strongly supported**.\n\n**Key Findings**:\n1.  **Statistical Significance**: There is an extremely strong, statistically significant association between achieving an ATO and possessing a documented Impact Assessment (Chi-square = 63.26, p < 0.001).\n2.  **Magnitude of Effect**: The Odds Ratio of 10.94 indicates that systems with an ATO are nearly **11 times more likely** to have an Impact Assessment than those without one.\n3.  **Absolute vs. Relative**: While the relative difference is massive, the absolute compliance rates remain low. Only 8.15% of systems *with* an ATO have a documented Impact Assessment, compared to a negligible 0.80% for those without. This suggests that while ATO is a strong predictor of broader governance, the overall maturity of federal AI systems regarding impact assessments is still nascent.",
+  "rich_outputs": null,
+  "runtime_ms": 226970.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.17227933356965622
+}

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Legacy Governance Debt' hypothesis using the EO 13960 dataset (n=978). The analysis categorized systems into 'Operation' (n=627) and 'Development' (n=351) stages. Contrary to the hypothesis that legacy (operational) systems would lack governance documentation, the results show that Operational systems are significantly **more** likely to have an Impact Assessment (8.93%) compared to systems in Development (0.57%). The Chi-square test (X2=26.72, p<0.001) and Odds Ratio (17.11) indicate a strong positive correlation between deployment status and impact assessment compliance. This suggests that Impact Assessments function as a 'Deployment Gate'—a requirement fulfilled before a system goes live—rather than a new standard that older systems have bypassed. The original hypothesis is rejected.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 scored data\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Categorize Lifecycle Stage\ndef categorize_stage(stage):\n    if pd.isna(stage):\n        return None\n    stage_lower = str(stage).lower()\n    # Operation keywords\n    if any(x in stage_lower for x in ['operation', 'maintenance', 'use', 'implemented']):\n        return 'Operation'\n    # Development keywords\n    elif any(x in stage_lower for x in ['development', 'acquisition', 'pilot', 'planning', 'research']):\n        return 'Development'\n    return None\n\neo_data['lifecycle_group'] = eo_data['16_dev_stage'].apply(categorize_stage)\nanalysis_df = eo_data.dropna(subset=['lifecycle_group']).copy()\n\n# Binarize Impact Assessment\ndef parse_impact_assessment(val):\n    if pd.isna(val):\n        return 0\n    val_str = str(val).strip().lower()\n    if val_str.startswith('yes'):\n        return 1\n    return 0\n\nanalysis_df['has_ia'] = analysis_df['52_impact_assessment'].apply(parse_impact_assessment)\n\n# Contingency Table\ncontingency_table = pd.crosstab(analysis_df['lifecycle_group'], analysis_df['has_ia'])\ncontingency_table.columns = ['No Impact Assessment', 'Has Impact Assessment']\n\nprint(\"--- Contingency Table (Counts) ---\")\nprint(contingency_table)\n\n# Percentages\nprops = pd.crosstab(analysis_df['lifecycle_group'], analysis_df['has_ia'], normalize='index') * 100\nprops.columns = ['No IA (%)', 'Has IA (%)']\nprint(\"\\n--- Contingency Table (Percentages) ---\")\nprint(props)\n\n# Statistical Test\nchi2, p, dof, expected = chi2_contingency(contingency_table)\nprint(f\"\\nChi-square statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Odds Ratio Calculation\ntry:\n    dev_yes = contingency_table.loc['Development', 'Has Impact Assessment']\n    dev_no = contingency_table.loc['Development', 'No Impact Assessment']\n    op_yes = contingency_table.loc['Operation', 'Has Impact Assessment']\n    op_no = contingency_table.loc['Operation', 'No Impact Assessment']\n    \n    # Handle zeros with pseudocount if necessary\n    if dev_yes == 0 or dev_no == 0 or op_yes == 0 or op_no == 0:\n        print(\"\\n(Note: Zero counts detected, adding 0.5 correction for Odds Ratio)\")\n        dev_yes += 0.5\n        dev_no += 0.5\n        op_yes += 0.5\n        op_no += 0.5\n\n    odds_dev = dev_yes / dev_no\n    odds_op = op_yes / op_no\n    \n    # Calculate OR comparing Operation relative to Development\n    odds_ratio_op_vs_dev = odds_op / odds_dev\n    \n    print(f\"\\nOdds (Development): {odds_dev:.4f}\")\n    print(f\"Odds (Operation): {odds_op:.4f}\")\n    print(f\"Odds Ratio (Operation / Development): {odds_ratio_op_vs_dev:.4f}\")\n    \n    print(\"\\nInterpretation:\")\n    if p < 0.05:\n        if odds_ratio_op_vs_dev > 1:\n            print(f\"Significant Result: Systems in Operation are {odds_ratio_op_vs_dev:.2f} times MORE likely to have an Impact Assessment than those in Development.\")\n        else:\n            print(f\"Significant Result: Systems in Operation are {1/odds_ratio_op_vs_dev:.2f} times LESS likely to have an Impact Assessment than those in Development.\")\n    else:\n        print(\"No statistically significant difference found between lifecycle stages.\")\n\nexcept Exception as e:\n    print(f\"Error calculating odds ratio: {e}\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- Contingency Table (Counts) ---\n                 No Impact Assessment  Has Impact Assessment\nlifecycle_group                                             \nDevelopment                       349                      2\nOperation                         571                     56\n\n--- Contingency Table (Percentages) ---\n                 No IA (%)  Has IA (%)\nlifecycle_group                       \nDevelopment      99.430199    0.569801\nOperation        91.068581    8.931419\n\nChi-square statistic: 26.7230\nP-value: 2.3481e-07\n\nOdds (Development): 0.0057\nOdds (Operation): 0.0981\nOdds Ratio (Operation / Development): 17.1138\n\nInterpretation:\nSignificant Result: Systems in Operation are 17.11 times MORE likely to have an Impact Assessment than those in Development.\n",
+  "created_at": "2026-02-22T13:00:06.283676+00:00",
+  "creation_idx": 254,
+  "experiment_id": "node_6_60",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistics, and Odds Ratio comparing compliance in Operation vs Development stages.",
+    "objective": "Assess whether governance compliance (Impact Assessment) correlates with the lifecycle stage of the AI system.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'source_table' == 'eo13960_scored'.\n2. Create a variable 'lifecycle_stage': Categorize '16_dev_stage' into 'Development' (containing 'Development', 'Acquisition', 'Pilot') vs 'Operation' (containing 'Operation', 'Maintenance'). Discard ambiguous rows.\n3. Create a binary variable 'has_impact_assessment': Parse '52_impact_assessment' for affirmative responses (starts with 'Yes').\n4. Create a contingency table of Lifecycle Stage vs Impact Assessment.\n5. Perform a Chi-square test and calculate the Odds Ratio."
+  },
+  "hypothesis": "The 'Legacy Governance Debt': AI systems in the 'Operation and Maintenance' stage in the EO 13960 inventory are significantly less likely to have a documented 'Impact Assessment' compared to systems in the 'Development/Acquisition' stage, suggesting that new governance requirements are not being retroactively applied to older deployments.",
+  "id_in_run": 253,
+  "is_surprising": true,
+  "parent_id": "node_5_28",
+  "posterior": 0.2554945054945055,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2554945054945055,
+    "n": 60.0,
+    "prior_params": [
+      23.25,
+      7.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.75,
+  "prior_belief": {
+    "_empirical_mean": 0.7583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 1.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.75,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed according to the plan. The code correctly loaded the EO 13960 dataset, categorized the lifecycle stages, and parsed the compliance data. The analysis (n=978) revealed a statistically significant relationship (Chi2=26.72, p<0.001) that **contradicts** the original 'Legacy Governance Debt' hypothesis. Instead of legacy (operational) systems lacking governance, they are significantly **more** likely (8.93%) to have an Impact Assessment compared to systems in development (0.57%). The Odds Ratio of 17.11 suggests that Impact Assessments likely function as a 'deployment gate'—a requirement that must be satisfied before a system moves from development to operation—rather than a new standard that older systems have bypassed.",
+  "rich_outputs": null,
+  "runtime_ms": 208400.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5934065934065934
+}

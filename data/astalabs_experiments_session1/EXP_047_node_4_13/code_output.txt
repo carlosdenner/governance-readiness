@@ -1,0 +1,21 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_crosswalk_matrix.csv
+Successfully loaded. Shape: (42, 24)
+
+=== Hypothesis Testing: Regulatory (EU AI Act (2024/1689)) vs Technical (OWASP Top 10 LLM) ===
+
+Contingency Table:
+bundle                 Integration Readiness  Trust Readiness
+source                                                       
+EU AI Act (2024/1689)                      4                5
+OWASP Top 10 LLM                           9                1
+
+Fisher's Exact Test:
+Odds Ratio: 0.0889
+P-value: 0.0573
+
+Chi-square Test (with Yates correction):
+Chi2 Statistic: 2.6856
+P-value: 0.1013
+
+Result: No statistically significant difference found (p >= 0.05).

@@ -1,0 +1,18 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+ATLAS cases found: 52
+
+--- Contingency Table ---
+Has Resource Dev    False
+Has Reconnaissance       
+False                  32
+True                   20
+
+Formatted for Fisher's Test ([[NoRecon/NoRes, NoRecon/YesRes], [Recon/NoRes, Recon/YesRes]]):
+[[32, 0], [20, 0]]
+
+--- Statistical Test Results ---
+Fisher's Exact Test p-value: 1.0000
+Odds Ratio: nan
+Result: Not Statistically Significant (Fail to Reject H0)
+Interpretation: No significant association found between these tactics in this dataset.

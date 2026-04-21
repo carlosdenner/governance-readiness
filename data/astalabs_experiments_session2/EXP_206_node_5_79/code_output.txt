@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+Contingency Table:
+Stakeholder Consult     0   1
+Impact Assessment            
+0                    1659  37
+1                      36  25
+
+Statistical Results:
+Chi-Square Statistic: 249.1465
+P-Value: 3.9857e-56
+Phi Coefficient: 0.3850
+Odds Ratio: 31.1374
+
+Result: Hypothesis CONFIRMED. Significant positive clustering observed.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap visualization of a Contingency Table (or Confusion Matrix).
+*   **Purpose:** The plot displays the frequency distribution and co-occurrence of two categorical variables: **Impact Assessment** and **Stakeholder Consultation**. It helps identify how often these two competencies appear together versus independently.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Title:** Impact Assessment
+    *   **Labels:** "No/Other" (Top row), "Yes" (Bottom row).
+*   **X-Axis:**
+    *   **Title:** Stakeholder Consultation
+    *   **Labels:** "No/Other" (Left column), "Yes" (Right column).
+*   **Value Ranges:** The axes represent categorical choices (Binary: Yes vs. No/Other) rather than numerical ranges. The values inside the grid represent counts.
+
+### 3. Data Trends
+*   **Highest Value (Dominant Category):** The top-left cell (**No/Other, No/Other**) contains the vast majority of the data points (**1659**). This indicates that in most observed cases, neither Impact Assessment nor Stakeholder Consultation was present. This cell is colored dark blue, indicating the highest density.
+*   **Low Values:** The remaining three quadrants contain significantly lower counts:
+    *   **No/Other, Yes:** 37
+    *   **Yes, No/Other:** 36
+    *   **Yes, Yes:** 25
+*   **Visual Pattern:** The heatmap is extremely sparse/imbalanced. The color gradient clearly highlights the massive imbalance between the null cases (No/No) and the active cases (Yes).
+
+### 4. Annotations and Legends
+*   **Title:** "Competency Bundle: Impact Assessment vs Stakeholder Consult".
+*   **Statistical Metrics (in Title):**
+    *   **Phi=0.38:** Represents the Phi coefficient, a measure of association for two binary variables.
+    *   **OR=31.14:** Represents the Odds Ratio.
+*   **Cell Annotations:** Each cell contains the exact count of observations for that specific intersection of categories (1659, 37, 36, and 25).
+
+### 5. Statistical Insights
+*   **High Odds Ratio (OR = 31.14):** This is a significant finding. It suggests a very strong association between the two variables. Specifically, the odds of having an "Impact Assessment" are over 31 times higher if "Stakeholder Consultation" is also present, compared to when it is not.
+*   **Moderate Correlation (Phi = 0.38):** The Phi coefficient indicates a moderate positive relationship between the two variables. While they are correlated, they are not perfectly predictive of one another.
+*   **Co-occurrence vs. Isolation:**
+    *   When "Impact Assessment" occurs (Total Yes = 36 + 25 = 61), it co-occurs with "Stakeholder Consultation" about 41% of the time (25/61).
+    *   Similarly, when "Stakeholder Consultation" occurs (Total Yes = 37 + 25 = 62), it co-occurs with "Impact Assessment" about 40% of the time (25/62).
+*   **Rarity of Competencies:** The "Yes" condition is rare for both variables within this dataset (occurring in less than 4% of the total 1,757 cases). The vast majority of the bundle lacks both specific competencies.
+==================================================

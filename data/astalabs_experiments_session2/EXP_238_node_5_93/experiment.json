@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment was successfully executed and the code correctly mapped the ordinal autonomy codes and unstructured harm distribution text into binary categories. The analysis of 180 incidents revealed a visible trend aligning with the hypothesis: High Autonomy systems were associated with a higher rate of Collective/Societal harm (48%) compared to Low Autonomy systems (33%). However, the Chi-Square test resulted in a p-value of 0.0801, which fails to meet the standard significance threshold of 0.05. Consequently, the hypothesis is technically rejected; while the data suggests a potential link between higher autonomy and broader societal risks, the association is not statistically significant within this specific sample size.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.stats import chi2_contingency\n\n# Load the dataset\nfile_path = '../astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\n# Mapping functions based on debug findings\ndef map_autonomy(val):\n    if pd.isna(val):\n        return np.nan\n    val_str = str(val).strip()\n    \n    if val_str == 'Autonomy3':\n        return 'High' # High Autonomy\n    elif val_str in ['Autonomy1', 'Autonomy2']:\n        return 'Low' # Low/Assistive Autonomy\n    return np.nan\n\ndef map_harm_dist(val):\n    if pd.isna(val):\n        return np.nan\n    val_str = str(val).lower().strip()\n    \n    if val_str == 'none':\n        # If harm is not distributed based on a group trait, we categorize it as Individual/General\n        return 'Individual'\n    elif val_str == 'unclear':\n        return np.nan\n    else:\n        # Any presence of demographic traits (race, sex, etc.) implies Collective/Group-based harm\n        return 'Collective'\n\n# Apply mappings\naiid_df['autonomy_bin'] = aiid_df['Autonomy Level'].apply(map_autonomy)\naiid_df['harm_bin'] = aiid_df['Harm Distribution Basis'].apply(map_harm_dist)\n\n# Filter out unmapped data\nanalysis_df = aiid_df.dropna(subset=['autonomy_bin', 'harm_bin'])\n\nprint(f\"Data points for analysis: {len(analysis_df)}\")\nprint(\"Autonomy counts:\")\nprint(analysis_df['autonomy_bin'].value_counts())\nprint(\"Harm Scale counts:\")\nprint(analysis_df['harm_bin'].value_counts())\n\nif len(analysis_df) == 0:\n    print(\"No valid data points found after mapping. Exiting.\")\nelse:\n    # Create Contingency Table\n    contingency_table = pd.crosstab(analysis_df['autonomy_bin'], analysis_df['harm_bin'])\n    print(\"\\nContingency Table (Count):\")\n    print(contingency_table)\n\n    # Calculate Proportions (Row-wise) for plotting\n    props = pd.crosstab(analysis_df['autonomy_bin'], analysis_df['harm_bin'], normalize='index')\n    print(\"\\nProportions (Row-wise):\")\n    print(props)\n\n    # Perform Chi-Square Test\n    chi2, p, dof, expected = chi2_contingency(contingency_table)\n    print(f\"\\nChi-Square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4f}\")\n    \n    # Interpret results\n    alpha = 0.05\n    if p < alpha:\n        print(\"\\nConclusion: Reject Null Hypothesis. There is a significant association between Autonomy Level and Harm Scale.\")\n    else:\n        print(\"\\nConclusion: Fail to Reject Null Hypothesis. No significant association found.\")\n\n    # Visualization\n    # Colors: Collective (Red/Orange), Individual (Blue/Green)\n    # Check column order for colors. Usually alphabetical: Collective, Individual.\n    colors = ['#d62728', '#1f77b4'] \n    \n    ax = props.plot(kind='bar', stacked=True, color=colors, figsize=(8, 6))\n    plt.title('Harm Distribution Scale by AI Autonomy Level')\n    plt.xlabel('Autonomy Level')\n    plt.ylabel('Proportion of Incidents')\n    plt.legend(title='Harm Scale', bbox_to_anchor=(1.05, 1), loc='upper left')\n    plt.tight_layout()\n    \n    # Add labels\n    for c in ax.containers:\n        ax.bar_label(c, fmt='%.2f', label_type='center', color='white')\n\n    plt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Data points for analysis: 180\nAutonomy counts:\nautonomy_bin\nLow     128\nHigh     52\nName: count, dtype: int64\nHarm Scale counts:\nharm_bin\nIndividual    113\nCollective     67\nName: count, dtype: int64\n\nContingency Table (Count):\nharm_bin      Collective  Individual\nautonomy_bin                        \nHigh                  25          27\nLow                   42          86\n\nProportions (Row-wise):\nharm_bin      Collective  Individual\nautonomy_bin                        \nHigh            0.480769    0.519231\nLow             0.328125    0.671875\n\nChi-Square Statistic: 3.0629\nP-value: 0.0801\n\nConclusion: Fail to Reject Null Hypothesis. No significant association found.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the analysis of the provided plot, here are the detailed findings:\n\n### 1. Plot Type\n*   **Type:** 100% Stacked Bar Chart.\n*   **Purpose:** The chart is designed to compare the relative proportions of two categories of harm (\"Individual\" and \"Collective\") across two distinct levels of AI autonomy (\"High\" and \"Low\"). By stacking the bars to a total height of 1.0, it facilitates a direct comparison of the composition of incidents rather than absolute counts.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Autonomy Level\"\n    *   **Categories:** The axis displays categorical data with two specific groups: \"High\" and \"Low\".\n*   **Y-Axis:**\n    *   **Label:** \"Proportion of Incidents\"\n    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).\n    *   **Ticks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n\n### 3. Data Trends\n*   **High Autonomy Level:**\n    *   The distribution is nearly balanced but leans slightly towards Individual harm.\n    *   **Individual Harm (Blue):** Comprises **0.52** (52%) of incidents.\n    *   **Collective Harm (Red):** Comprises **0.48** (48%) of incidents.\n*   **Low Autonomy Level:**\n    *   There is a clear dominance of Individual harm over Collective harm.\n    *   **Individual Harm (Blue):** Comprises **0.67** (67%) of incidents.\n    *   **Collective Harm (Red):** Comprises **0.33** (33%) of incidents.\n*   **Comparison:** As the autonomy level shifts from Low to High, the proportion of \"Collective\" harm increases significantly (from 0.33 to 0.48), while \"Individual\" harm decreases proportionally.\n\n### 4. Annotations and Legends\n*   **Title:** \"Harm Distribution Scale by AI Autonomy Level\" describes the chart's content.\n*   **Legend:** Located at the top right, titled \"Harm Scale.\"\n    *   **Red:** Represents \"Collective\" harm.\n    *   **Blue:** Represents \"Individual\" harm.\n*   **Data Labels:** White numerical annotations are placed centrally within each bar segment, indicating the exact proportion for that specific category (e.g., \"0.52\", \"0.48\").\n\n### 5. Statistical Insights\n*   **Prevalence of Individual Harm:** Across both autonomy levels, \"Individual\" harm is the majority category (exceeding 0.50 in both cases). This suggests that regardless of autonomy level, AI incidents are more likely to impact individuals rather than collectives.\n*   **Autonomy and Collective Risk:** There is a positive correlation between higher AI autonomy and the scale of collective harm. When AI systems operate with **High Autonomy**, the risk of collective harm is nearly equal to that of individual harm (48% vs 52%). In contrast, **Low Autonomy** systems are twice as likely to cause individual harm (67%) as they are to cause collective harm (33%).\n*   **Implication:** This suggests that as AI systems become more autonomous, the nature of the risks they pose shifts from isolated incidents affecting specific users to broader issues affecting groups or society at large.\n==================================================",
+  "created_at": "2026-02-22T12:10:52.204307+00:00",
+  "creation_idx": 239,
+  "experiment_id": "node_5_93",
+  "experiment_plan": {
+    "deliverables": "Chi-Square test results; Stacked bar chart of Harm Distribution by Autonomy Level.",
+    "objective": "Assess if the level of AI autonomy correlates with the scale of harm distribution.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `aiid_incidents`. 2. Bin `81: Autonomy Level` into 'High' (High, Full, System-Level) and 'Low' (Low, Assistive, Human-in-the-loop). 3. Bin `76: Harm Distribution Basis` into 'Collective' (Group, Society, Community) and 'Individual'. 4. Create a contingency table and perform a Chi-Square test. 5. Visualize the ratio of Individual vs Collective harm for each autonomy level."
+  },
+  "hypothesis": "The 'Autonomous' Escalation: High-autonomy AI systems (e.g., those that act independently) are significantly more likely to cause 'Collective/Societal' harm rather than 'Individual' harm, compared to Low-autonomy (assistive) systems.",
+  "id_in_run": 238,
+  "is_surprising": false,
+  "parent_id": "node_4_9",
+  "posterior": 0.7417582417582418,
+  "posterior_belief": {
+    "_empirical_mean": 0.7416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 58.0,
+    "mean": 0.7417582417582418,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 2.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully executed. The programmer successfully adapted to data quality issues by identifying that 'Autonomy Level' used ordinal codes (mapping 'Autonomy3' to High and 'Autonomy1/2' to Low) and that 'Harm Distribution Basis' required mapping specific demographic traits to 'Collective' harm. The analysis of 180 incidents revealed a distinct trend: High Autonomy systems were associated with a higher rate of Collective/Societal harm (48%) compared to Low Autonomy systems (33%). However, the Chi-Square test yielded a p-value of 0.0801, which fails to meet the standard significance threshold of 0.05. Consequently, the hypothesis is formally rejected based on this sample, although the data suggests a potential underlying relationship that might reach significance with a larger dataset.",
+  "rich_outputs": null,
+  "runtime_ms": 285220.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.00021269053527115387
+}

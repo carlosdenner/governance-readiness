@@ -1,0 +1,72 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1757 rows from EO 13960 dataset.
+
+Unique values in '16_dev_stage' (first 10): <StringArray>
+[ 'Implementation and Assessment', 'Acquisition and/or Development',
+                      'Initiated',                        'Retired',
+      'Operation and Maintenance',                  'In production',
+                     'In mission',                        'Planned',
+                              nan]
+Length: 9, dtype: str
+
+Rows after filtering for valid lifecycle stages: 992
+lifecycle_group
+Legacy/Ops    641
+New/Dev       351
+Name: count, dtype: int64
+
+Unique values in '52_impact_assessment': <StringArray>
+[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']
+Length: 5, dtype: str
+
+Contingency Table (Count):
+has_assessment    No  Yes
+lifecycle_group          
+Legacy/Ops       585   56
+New/Dev          349    2
+
+Compliance Rates by Lifecycle Stage:
+has_assessment   Total  Compliance Rate (%)
+lifecycle_group                            
+Legacy/Ops         641             8.736349
+New/Dev            351             0.569801
+
+Chi-Square Test Results:
+Chi2 Statistic: 26.0141
+P-value: 0.000000
+Result: Statistically Significant.
+Hypothesis Contradicted: Legacy/Ops systems (8.7%) have higher compliance than New/Dev (0.6%).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot is designed to compare the "Compliance Rate" percentages across two distinct categorical groups representing different stages of a project or product lifecycle ("Legacy/Ops" and "New/Dev").
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Compliance Rate (%)"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Linear, with tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+*   **X-Axis:**
+    *   **Label:** "Lifecycle Stage"
+    *   **Categories:** Two distinct categories are displayed: "Legacy/Ops" and "New/Dev". The labels are oriented vertically (90 degrees) for readability.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Legacy/Ops" category (colored light blue) represents the highest value on the chart at **8.7%**.
+*   **Shortest Bar:** The "New/Dev" category (colored salmon/light red) is significantly lower, barely visible on the scale, at **0.6%**.
+*   **Pattern:** There is a drastic drop-off in compliance between the operational legacy stage and the new development stage. While the "Legacy/Ops" bar is visibly larger, both values occupy the very bottom fraction of the overall 0-100% scale.
+
+### 4. Annotations and Legends
+*   **Data Labels:** Both bars feature bold numerical annotations directly above them indicating the exact percentage values:
+    *   Legacy/Ops: **8.7%**
+    *   New/Dev: **0.6%**
+*   **Color Coding:** The bars use distinct colors—light blue for "Legacy/Ops" and red/salmon for "New/Dev"—to visually distinguish the categories. No separate legend box is provided or necessary as the X-axis labels define the groups.
+
+### 5. Statistical Insights
+*   **Extremely Low Overall Compliance:** The most critical insight is that impact assessment compliance is exceptionally low across the board. Even the better-performing category (Legacy/Ops) has not reached 10% compliance, leaving a gap of over 90% to reach full compliance.
+*   **Process Failure in Development:** The "New/Dev" stage has a near-zero compliance rate (0.6%). This suggests that impact assessments are being almost completely bypassed, ignored, or are not yet implemented during the new development phases.
+*   **Relative Comparison:** Although both figures are low, the "Legacy/Ops" stage is performing significantly better in relative terms—it is roughly **14.5 times higher** than the "New/Dev" stage ($8.7 \div 0.6 \approx 14.5$). This suggests that governance or compliance checks are likely more established in older, operational systems than in new builds.
+==================================================

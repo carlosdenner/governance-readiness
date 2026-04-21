@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+File not found in parent directory, trying current directory.
+EO 13960 records: 1757
+Unique values in '31_data_catalog': <StringArray>
+['No', nan, 'Yes', 'Other', 'NO', ' ']
+Length: 6, dtype: str
+Parsed 1191 valid dates out of 1757 records.
+
+--- Cohort Analysis ---
+           n  compliance_rate  num_compliant
+cohort                                      
+Legacy   165         0.624242            103
+Modern  1026         0.402534            413
+
+--- Contingency Table (0=No, 1=Yes) ---
+has_catalog    0    1
+cohort               
+Legacy        62  103
+Modern       613  413
+
+Chi-Square Test: statistic=27.5589, p-value=0.0000
+Odds Ratio (Modern vs Legacy): 0.4055
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot visualizes the compliance rate (proportion) of projects possessing a data catalog, categorized by the year the project was initiated. It aims to show historical trends and how compliance has changed over time, specifically highlighting a cutoff point in 2019.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Year Initiated"
+    *   **Range:** The axis spans from roughly **1900 to 2025**.
+    *   **Scale:** The data is grouped into distinct years. There is a significant gap in data between the early 1900s and the cluster of data starting around 2015.
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Proportion with Data Catalog"
+    *   **Range:** **0.0 to 1.15** (though the grid lines stop at 1.0).
+    *   **Units:** The values represent a decimal proportion (ratio), equivalent to 0% to 100%.
+
+### 3. Data Trends
+*   **Historical Outlier (approx. 1905):** There is a single isolated bar in the early 20th century (roughly 1905) with a high compliance rate of **0.73**. This likely represents legacy data or a specific archival dataset.
+*   **Recent Cluster (2015–2023):** The majority of the data is clustered in the last decade.
+    *   **Tallest Bar:** The highest recent compliance rate occurred in **2015** with a proportion of **0.75**.
+    *   **Shortest Bar:** The lowest compliance rate in the recent cluster is the most recent year shown (likely **2023**), with a proportion of **0.33**.
+    *   **Pattern of Decline:** There is a noticeable downward trend in the most recent years. After a spike in 2019 (0.62), the rate steadily drops: 0.58 (2020) -> 0.45 (2021) -> 0.40 (2022) -> 0.33 (2023).
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top-left corner.
+    *   **"2019 Cutoff"**: Represented by a dashed red line.
+    *   **"Data Catalog Rate"**: Represented by the blue bars.
+*   **2019 Cutoff Line:** A vertical, dashed red line is drawn at the year 2019. This likely marks a policy change, a system implementation, or a deadline relevant to data cataloging.
+*   **Value Labels:** Specific numerical values are annotated directly on top of each bar (e.g., 0.73, 0.75, 0.63, etc.) for precise reading of the data.
+
+### 5. Statistical Insights
+*   **Post-Cutoff Effect:** Immediately following the "2019 Cutoff," the compliance rate jumped from a local low of **0.38** (in 2018) to **0.62** (in 2019) and **0.58** (in 2020). This suggests that the event marked by the cutoff initially boosted compliance.
+*   **Lag or Decay:** Following the 2019/2020 boost, compliance rates have degraded significantly, dropping by nearly half from 2019 (0.62) to 2023 (0.33). This could indicate that newer projects are lagging in documentation, or that enforcement of the requirement has relaxed.
+*   **Volatility:** The data shows high volatility. Between 2015 and 2018, rates dropped from 0.75 to 0.38 before rebounding. This suggests inconsistent application of data cataloging practices over time.
+==================================================

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis that failure modes differ by harm type using Fisher's Exact Test on 52 incidents from 'step3_incident_coding.csv'. The data revealed an extreme imbalance: 51 of 52 incidents (98%) were classified as 'Prevention' failures. Contrary to the hypothesis that non-security incidents (Reliability, Privacy, etc.) would be more likely to manifest as Detection/Response failures, the 'Other' category consisted exclusively of Prevention failures (16/16). The single recorded 'Detection/Response' failure (AML.CS0042) occurred within the 'Security' category (35 Prevention, 1 Detection). The Fisher's Exact Test resulted in a p-value of 1.0, indicating no statistically significant difference in failure mode distribution between Security and non-Security harms. The hypothesis is therefore rejected.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport os\n\n# Define file path\nfile_name = 'step3_incident_coding.csv'\nfile_path = file_name\n\n# Robust path checking based on feedback\nif not os.path.exists(file_path):\n    # Check parent directory just in case\n    if os.path.exists(f\"../{file_name}\"):\n        file_path = f\"../{file_name}\"\n    else:\n        print(f\"Error: {file_name} not found in current or parent directory.\")\n        # List current dir for debugging purposes if file not found\n        print(\"Current directory contents:\", os.listdir('.'))\n        exit(1)\n\nprint(f\"Loading {file_path}...\")\ntry:\n    df = pd.read_csv(file_path)\nexcept Exception as e:\n    print(f\"Failed to load CSV: {e}\")\n    exit(1)\n\n# Data Processing\n# 1. Harm Category: Security vs Other\ndf['harm_normalized'] = df['harm_type'].astype(str).str.strip().str.lower()\ndf['Harm_Category'] = df['harm_normalized'].apply(lambda x: 'Security' if x == 'security' else 'Other')\n\n# 2. Failure Category: Prevention vs Detection/Response\ndf['failure_normalized'] = df['failure_mode'].astype(str).str.strip().str.lower()\n\ndef classify_failure(val):\n    if 'prevention' in val:\n        return 'Prevention'\n    elif 'detection' in val or 'response' in val:\n        return 'Detection/Response'\n    else:\n        return 'Other/Unknown'\n\ndf['Failure_Category'] = df['failure_normalized'].apply(classify_failure)\n\n# Filter out Unknown if any\ndf_clean = df[df['Failure_Category'] != 'Other/Unknown'].copy()\n\n# Generate Contingency Table\n# Rows: Harm (Security, Other)\n# Cols: Failure (Prevention, Detection/Response)\ncontingency = pd.crosstab(df_clean['Harm_Category'], df_clean['Failure_Category'])\n\n# Ensure all columns/rows exist for the test\nexpected_cols = ['Prevention', 'Detection/Response']\nfor col in expected_cols:\n    if col not in contingency.columns:\n        contingency[col] = 0\n\n# Reorder columns\ncontingency = contingency[expected_cols]\n\n# Ensure all rows exist\nexpected_rows = ['Security', 'Other']\nfor row in expected_rows:\n    if row not in contingency.index:\n        contingency.loc[row] = [0, 0]\n\n# Reorder rows\ncontingency = contingency.reindex(expected_rows)\n\nprint(\"\\n=== Contingency Table ===\")\nprint(contingency)\n\n# Fisher's Exact Test\nodds_ratio, p_value = stats.fisher_exact(contingency)\n\nprint(\"\\n=== Fisher's Exact Test Results ===\")\nprint(f\"Odds Ratio: {odds_ratio}\")\nprint(f\"P-value: {p_value}\")\n\nif p_value < 0.05:\n    print(\"Result: Significant association (p < 0.05)\")\nelse:\n    print(\"Result: No significant association (p >= 0.05)\")\n\n# Insight into the rare class\nprint(\"\\n=== Detailed Breakdown of Non-Prevention Failures ===\")\nnon_prev = df[df['Failure_Category'] == 'Detection/Response']\nif not non_prev.empty:\n    print(non_prev[['case_study_id', 'harm_type', 'failure_mode']])\nelse:\n    print(\"No Detection/Response failures found.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading step3_incident_coding.csv...\n\n=== Contingency Table ===\nFailure_Category  Prevention  Detection/Response\nHarm_Category                                   \nSecurity                  35                   1\nOther                     16                   0\n\n=== Fisher's Exact Test Results ===\nOdds Ratio: 0.0\nP-value: 1.0\nResult: No significant association (p >= 0.05)\n\n=== Detailed Breakdown of Non-Prevention Failures ===\n   case_study_id harm_type       failure_mode\n42    AML.CS0042  security  detection_failure\n",
+  "created_at": "2026-02-20T23:57:47.219108+00:00",
+  "creation_idx": 76,
+  "experiment_id": "node_5_15",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table of Harm Category vs. Failure Category.\n2. Fisher's Exact Test results (Odds Ratio and P-value).",
+    "objective": "Assess whether failure modes differ significantly by harm type (Security vs. Other) using the incident coding dataset.",
+    "steps": "1. Load the dataset 'step3_incident_coding.csv' from the current directory.\n2. Create a new column 'Harm_Category' derived from 'harm_type': set to 'Security' if the value is 'security', otherwise set to 'Other'.\n3. Create a new column 'Failure_Category' derived from 'failure_mode': set to 'Prevention' if the text contains 'prevention', otherwise set to 'Detection/Response'.\n4. Generate a 2x2 contingency table (crosstab) of Harm_Category (rows) vs. Failure_Category (columns).\n5. Perform a Fisher's Exact Test on the contingency table to determine if there is a statistically significant association.\n6. Output the contingency table, the Odds Ratio, and the P-value."
+  },
+  "hypothesis": "AI incidents classified as 'Security' harms are significantly more likely to manifest as 'Prevention Failures', whereas non-security incidents (Reliability, Privacy, etc.) are significantly more likely to manifest as 'Detection' or 'Response' failures.",
+  "id_in_run": 75,
+  "is_surprising": true,
+  "parent_id": "node_4_17",
+  "posterior": 0.1446280991735537,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.1446280991735537,
+    "n": 90.0,
+    "prior_params": [
+      17.5,
+      13.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.5645161290322581,
+  "prior_belief": {
+    "_empirical_mean": 0.5666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 11.0,
+    "maybe_true": 19.0,
+    "mean": 0.5645161290322581,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully implemented the analysis plan. The hypothesis that failure modes differ by harm type (specifically that non-security harms manifest as detection/response failures) was tested using Fisher's Exact Test. The results definitively rejected the hypothesis (p=1.0). The analysis highlighted a critical characteristic of the dataset: an overwhelming prevalence of 'prevention_failure' modes (51 out of 52 incidents), with the solitary 'detection_failure' occurring within the Security category rather than the 'Other' category. The findings confirm that, within the MITRE ATLAS corpus, incidents are consistently characterized as failures of preventive controls regardless of whether the harm is security-related or safety/privacy-related.",
+  "rich_outputs": null,
+  "runtime_ms": 241790.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.48732029347475075
+}

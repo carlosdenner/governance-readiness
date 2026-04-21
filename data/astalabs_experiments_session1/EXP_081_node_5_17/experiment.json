@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully loaded the 'step3_incident_coding.csv' dataset and filtered for 'Security' (n=36) and 'Reliability' (n=4) incidents. The analysis revealed a near-total dominance of 'Prevention Failure' as the recorded failure mode (39 out of 40 incidents). Specifically, Security incidents showed 35 prevention failures and 1 detection failure, while Reliability incidents showed 4 prevention failures and 0 others. Consequently, Fisher's Exact Test yielded a p-value of 1.0, indicating no statistically significant difference between the groups. The hypothesis could not be validated due to the lack of variance in the 'failure_mode' variable, as both harm types were overwhelmingly characterized by prevention failures.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport os\n\n# Define file path based on instructions\nfile_path = '../step3_incident_coding.csv'\n\n# Check if file exists at the expected location, else try current directory\nif not os.path.exists(file_path):\n    if os.path.exists('step3_incident_coding.csv'):\n        file_path = 'step3_incident_coding.csv'\n    else:\n        print(f\"Error: File not found at {file_path} or current directory.\")\n        exit(1)\n\nprint(f\"Loading dataset from: {file_path}\")\n\n# Load the dataset\ntry:\n    df = pd.read_csv(file_path)\nexcept Exception as e:\n    print(f\"Error loading CSV: {e}\")\n    exit(1)\n\n# Filter for 'security' and 'reliability' harm types\nsubset = df[df['harm_type'].isin(['security', 'reliability'])].copy()\n\nprint(f\"Filtered subset size: {len(subset)} rows\")\nprint(f\"Harm Type counts:\\n{subset['harm_type'].value_counts()}\")\nprint(f\"Failure Mode counts:\\n{subset['failure_mode'].value_counts()}\")\n\n# Create binary classification: Prevention vs Other\n# Note: 'Other' includes detection_failure, response_failure, etc.\nsubset['is_prevention'] = subset['failure_mode'].apply(lambda x: 1 if x == 'prevention_failure' else 0)\n\n# Construct Contingency Table\n# Rows: Security, Reliability\n# Columns: Prevention (1), Other (0)\n\n# Counts\nsec_prev = len(subset[(subset['harm_type'] == 'security') & (subset['is_prevention'] == 1)])\nsec_other = len(subset[(subset['harm_type'] == 'security') & (subset['is_prevention'] == 0)])\n\nrel_prev = len(subset[(subset['harm_type'] == 'reliability') & (subset['is_prevention'] == 1)])\nrel_other = len(subset[(subset['harm_type'] == 'reliability') & (subset['is_prevention'] == 0)])\n\n# Table structure: [[Security_Prev, Security_Other], [Reliability_Prev, Reliability_Other]]\ncontingency_table = [[sec_prev, sec_other], [rel_prev, rel_other]]\n\nprint(\"\\nContingency Table:\")\nprint(\"              | Prevention | Other\")\nprint(f\"Security      | {sec_prev:<10} | {sec_other}\")\nprint(f\"Reliability   | {rel_prev:<10} | {rel_other}\")\n\n# Perform Fisher's Exact Test\n# We use two-sided to test for any significant difference in distribution\nodds_ratio, p_value = stats.fisher_exact(contingency_table, alternative='two-sided')\n\nprint(f\"\\nFisher's Exact Test Results:\")\nprint(f\"Odds Ratio: {odds_ratio}\")\nprint(f\"P-value: {p_value}\")\n\n# Interpretation\nalpha = 0.05\nif p_value < alpha:\n    print(\"\\nResult: Statistically significant difference found.\")\nelse:\n    print(\"\\nResult: No statistically significant difference found.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step3_incident_coding.csv\nFiltered subset size: 40 rows\nHarm Type counts:\nharm_type\nsecurity       36\nreliability     4\nName: count, dtype: int64\nFailure Mode counts:\nfailure_mode\nprevention_failure    39\ndetection_failure      1\nName: count, dtype: int64\n\nContingency Table:\n              | Prevention | Other\nSecurity      | 35         | 1\nReliability   | 4          | 0\n\nFisher's Exact Test Results:\nOdds Ratio: 0.0\nP-value: 1.0\n\nResult: No statistically significant difference found.\n",
+  "created_at": "2026-02-21T00:09:19.695873+00:00",
+  "creation_idx": 82,
+  "experiment_id": "node_5_17",
+  "experiment_plan": {
+    "deliverables": "Contingency table and Fisher's Exact Test p-value.",
+    "objective": "Analyze the relationship between harm type and failure mode to understand if security issues are predominantly preventative gaps.",
+    "steps": "1. Load 'step3_incident_coding.csv'.\n2. Filter the dataset to include only rows where 'harm_type' is 'security' or 'reliability'.\n3. Create a binary column 'is_prevention_failure' (1 if failure_mode == 'prevention_failure', 0 otherwise).\n4. Create a contingency table comparing Harm Type (Security vs. Reliability) against Failure Mode (Prevention vs. Other).\n5. Perform Fisher's Exact Test to assess statistical significance."
+  },
+  "hypothesis": "Incidents classified as 'Security' harm types are significantly more likely to manifest as 'Prevention Failures' compared to 'Reliability' incidents, which are more likely to manifest as Detection or Response failures.",
+  "id_in_run": 81,
+  "is_surprising": true,
+  "parent_id": "node_4_19",
+  "posterior": 0.3739669421487603,
+  "posterior_belief": {
+    "_empirical_mean": 0.24166666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 3.0,
+    "definitely_true": 0.0,
+    "maybe_false": 87.0,
+    "maybe_true": 0.0,
+    "mean": 0.3739669421487603,
+    "n": 90.0,
+    "prior_params": [
+      23.5,
+      7.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7580645161290323,
+  "prior_belief": {
+    "_empirical_mean": 0.7666666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 2.0,
+    "maybe_false": 0.0,
+    "maybe_true": 28.0,
+    "mean": 0.7580645161290323,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully followed the analysis plan. The dataset 'step3_incident_coding.csv' was correctly loaded and filtered for 'Security' (n=36) and 'Reliability' (n=4) incidents. The analysis revealed a near-total dominance of 'Prevention Failure' across the board, accounting for 39 out of the 40 analyzed incidents. Specifically, Security incidents had 35 prevention failures and 1 detection failure, while Reliability incidents had 4 prevention failures and 0 others. Consequently, Fisher's Exact Test yielded a p-value of 1.0, indicating no statistically significant difference between the groups. The hypothesis that Security incidents are *more* likely to be prevention failures than Reliability incidents cannot be supported, as both harm types in this dataset predominantly manifest as prevention failures.",
+  "rich_outputs": null,
+  "runtime_ms": 165130.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4457820398880934
+}

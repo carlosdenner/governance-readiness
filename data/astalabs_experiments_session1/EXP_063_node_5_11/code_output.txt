@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment...
+Loading dataset from: step2_crosswalk_matrix.csv
+
+=== Contingency Table (Count) ===
+has_rag                 0  1
+bundle                      
+Integration Readiness  21  2
+Trust Readiness        17  2
+
+=== Contingency Table (Percentage) ===
+has_rag                        0          1
+bundle                                     
+Integration Readiness  91.304348   8.695652
+Trust Readiness        89.473684  10.526316
+
+=== Fisher's Exact Test Results ===
+Comparison: Integration Readiness vs. Trust Readiness
+Integration RAG Rate: 2/23 (8.7%)
+Trust RAG Rate:       2/19 (10.5%)
+Odds Ratio: 0.8095
+P-value:    1.0000
+Conclusion: No Statistically Significant Difference. Trust Readiness is more associated with RAG.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot compares the prevalence (expressed as a percentage) of a specific control mechanism—"RAG Architecture & Data Grounding"—across two distinct categories termed "Competency Bundles."
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Competency Bundle"
+    *   **Categories:** The axis displays two categorical variables: "Integration Readiness" and "Trust Readiness."
+*   **Y-axis:**
+    *   **Title:** "Percentage of Requirements (%)"
+    *   **Value Range:** The scale ranges from **0 to 100**, representing percentage points.
+    *   **Ticks:** Major ticks are marked at intervals of 20 (0, 20, 40, 60, 80, 100), with horizontal gridlines provided for readability.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"Trust Readiness"** bar (salmon/red color) is slightly taller, reaching approximately 10.5%.
+*   **Shortest Bar:** The **"Integration Readiness"** bar (light blue color) is shorter, reaching approximately 8.7%.
+*   **Overall Pattern:** Both values are quite low on the 0-100% scale, indicating that this specific control is a minor component of both competency bundles. The visual difference between the two bars is minimal.
+
+### 4. Annotations and Legends
+*   **Bar Annotations:** Each bar is annotated with specific statistical data located directly above it:
+    *   **Integration Readiness:** "8.7% (n=2/23)"
+    *   **Trust Readiness:** "10.5% (n=2/19)"
+*   **Legend:** There is no separate legend box; however, the categories are clearly labeled on the x-axis. Distinct colors (blue and salmon) are used to distinguish the two categories visually.
+
+### 5. Statistical Insights
+*   **Low Occurrence Rate:** The control "RAG Architecture & Data Grounding" is relatively rare in both contexts. It appears in roughly **1 in 10** requirements for both categories.
+*   **Identical Absolute Frequency:** Interestingly, the absolute count of occurrences is identical for both bundles (**n=2**).
+*   **Denominator Effect:** The difference in percentage (10.5% vs. 8.7%) is driven entirely by the sample size (denominator). Since "Trust Readiness" has a smaller total pool of requirements (19) compared to "Integration Readiness" (23), the same number of occurrences (2) results in a slightly higher percentage for Trust Readiness.
+*   **Conclusion:** There is no significant difference in the *number* of times this control is required between the two bundles; it is an infrequent requirement for both.
+==================================================

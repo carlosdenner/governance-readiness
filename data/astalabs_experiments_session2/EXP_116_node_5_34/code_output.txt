@@ -1,0 +1,28 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Total EO 13960 records: 1757
+
+Mapping check (Sample of values -> Result):
+                                          59_ai_notice  has_notice
+0                                                  NaN           0
+49   Online - in the terms or instructions for the ...           1
+53                                     In-person,Other           1
+58   Online - in the terms or instructions for the ...           1
+107  N/A - individuals are not interacting with the...           0
+108                                  None of the above           0
+113                                          In-person           1
+213                                             Other            1
+222                                              Email           1
+243                                             Email            1
+
+Contingency Table:
+             No Notice  Has Notice
+Low Impact        1619          61
+High Impact         64          13
+
+Low Impact Notice Rate:  3.63% (61/1680)
+High Impact Notice Rate: 16.88% (13/77)
+
+Chi-Square Statistic: 28.8494
+P-value: 7.8229e-08
+Conclusion: Significant difference in notice rates.

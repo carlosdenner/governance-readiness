@@ -1,0 +1,19 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1757 rows from EO 13960 source.
+
+--- Contingency Table (Risk Level vs Impact Assessment) ---
+has_impact_assess  False  True 
+risk_level                     
+High Stakes          341     26
+Low Stakes            71      1
+
+--- Proportions ---
+             Total Cases  With Assessment  Proportion
+risk_level                                           
+High Stakes          367               26    0.070845
+Low Stakes            72                1    0.013889
+
+--- Chi-Square Test Results ---
+Chi-square Statistic: 2.4680
+P-value: 1.1618e-01
+Conclusion: No statistically significant difference found (Governance Decoupling supported).

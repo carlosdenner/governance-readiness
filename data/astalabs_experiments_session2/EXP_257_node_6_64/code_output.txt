@@ -1,0 +1,37 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Loaded 1757 rows from EO 13960 subset.
+Analyzable use cases after cleaning: 967
+Group Distribution:
+Commercial_Status
+Custom/In-house    722
+Commercial         245
+Name: count, dtype: int64
+
+=======================================================
+TEST 1: Commercial Status vs. Code Access
+=======================================================
+Contingency Table (Code Access):
+Has_Code_Access     No  Yes
+Commercial_Status          
+Commercial         219   26
+Custom/In-house    147  575
+
+Chi-Square Statistic: 367.5988
+P-Value: 6.2376e-82
+Odds Ratio (Commercial vs Custom): 0.0304
+Interpretation: Commercial systems are 32.95x LESS likely to have Code Access.
+
+=======================================================
+TEST 2: Commercial Status vs. Impact Assessment
+=======================================================
+Contingency Table (Impact Assessment):
+Has_Impact_Assessment   No  Yes
+Commercial_Status              
+Commercial             234   11
+Custom/In-house        674   48
+
+Chi-Square Statistic: 1.1346
+P-Value: 2.8679e-01
+Odds Ratio (Commercial vs Custom): 0.6601
+Interpretation: Commercial systems are 1.51x LESS likely to have Impact Assessments.

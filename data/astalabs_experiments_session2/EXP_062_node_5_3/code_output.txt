@@ -1,0 +1,69 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Agency Maturity Effect
+Loaded EO 13960 data: 1757 rows
+Quartiles -> Q1 (Nascent threshold): 4.0, Q3 (Mature threshold): 54.75
+Unique values in 55_independent_eval: <StringArray>
+[                                                                                                    nan,
+                                                                                     'Yes – by the CAIO',
+                                                                                'Planned or in-progress',
+ 'Yes – by another appropriate agency office that was not directly involved in the system’s development',
+               'Yes – by an agency AI oversight board not directly involved in the system’s development',
+                                       'Does not apply, use case is neither safety or rights impacting.',
+                         'Agency CAIO has waived this minimum practice and reported such waiver to OMB.',
+                                                                 'AI is not safety or rights-impacting.',
+                                                                                                  'TRUE']
+Length: 9, dtype: str
+
+--- Group Statistics (Independent Evaluation Rate) ---
+          count      mean  sum
+maturity                      
+Mature     1348  0.033383   45
+Nascent      29  0.103448    3
+
+Chi-Square Test Results:
+Contingency Table (Rows: Mature, Nascent; Cols: Has_Eval, No_Eval):
+[[np.int64(45), np.int64(1303)], [np.int64(3), np.int64(26)]]
+Chi2 Statistic: 2.3217
+P-value: 1.2758e-01
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Scatter Plot with a linear regression trendline.
+*   **Purpose:** The plot visualizes the relationship between the size of an agency (measured by the logarithm of its case count) and the rigor of its governance (measured by the independent evaluation rate). It categorizes agencies into three maturity levels: Nascent, Middle, and Mature.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "Log(Agency Case Count)"
+    *   **Range:** Approximately **0.7 to 5.6**.
+    *   **Meaning:** This represents the scale of the agency's operations on a logarithmic scale. Higher values indicate a significantly larger volume of cases.
+*   **Y-axis:**
+    *   **Label:** "Independent Evaluation Rate"
+    *   **Range:** **0.0 to 0.5** (representing 0% to 50%).
+    *   **Meaning:** This measures the proportion of cases or projects that undergo independent evaluation, serving as a proxy for governance rigor.
+
+### 3. Data Trends
+*   **Grouping by Maturity:**
+    *   **Nascent (Red):** Clustered on the far left (low case count, Log value < 1.7). They show high variance; while several are at 0.0, there are two significant outliers with very high evaluation rates (approx. 0.25 and 0.50).
+    *   **Middle (Grey):** Occupy the central range of the X-axis (Log value ~1.8 to 4.0). The vast majority are clustered at 0.0, with one significant outlier showing a high evaluation rate around 0.44.
+    *   **Mature (Green):** Clustered on the far right (high case count, Log value > 4.0). These agencies consistently show low evaluation rates, generally below 0.15, with many resting at 0.0.
+*   **Overall Trend:**
+    *   There is a visible **negative correlation**. As the agency case count increases (moving right on the X-axis), the rate of independent evaluation tends to decrease.
+    *   **Clustering at Zero:** A significant portion of the data points across all categories lie on the y=0 line, indicating that many agencies, regardless of size or maturity, have no independent evaluation recorded.
+
+### 4. Annotations and Legends
+*   **Legend (Top Right):**
+    *   **Green Circle:** Represents "Mature" agencies.
+    *   **Red Circle:** Represents "Nascent" agencies.
+    *   **Grey Circle:** Represents "Middle" agencies.
+    *   **Blue Dashed Line:** Represents the "Trendline" (linear fit).
+*   **Title:** "Agency Maturity vs Governance Rigor (Independent Eval)" clearly defines the variables under investigation.
+*   **Gridlines:** Light dotted gridlines are present to assist in estimating the coordinates of the data points.
+
+### 5. Statistical Insights
+*   **Inverse Relationship:** The negative slope of the blue trendline suggests that as agencies grow larger (or "mature" in terms of case count), the proportion of their work subject to independent evaluation decreases. This could be due to the sheer volume of cases making high evaluation rates logistically difficult (the denominator effect).
+*   **Variance in Smaller Agencies:** "Nascent" agencies show the highest variability. While some have zero governance rigor (by this metric), others have the highest rigor in the dataset (up to 50%). This suggests early-stage agencies lack a standardized approach—some are highly rigorous while others are not.
+*   **Consistency in Mature Agencies:** "Mature" agencies are more consistent but consistently low. None of the mature agencies exceed an evaluation rate of ~0.12, suggesting that at scale, high rates of independent evaluation are rare.
+==================================================

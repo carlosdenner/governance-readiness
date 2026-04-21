@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Ownership-Monitoring Correlation' hypothesis by correcting the data mapping for development methods and monitoring status. \n\n**Methodology:**\nUsing the EO13960 dataset (n=920 qualifying systems), the analysis compared 'In-house' development (n=439) against 'Contractor' development (n=481). Monitoring status was derived from free-text descriptions, classifying 'Automated', 'Intermittent', or 'Established' processes as positive indicators.\n\n**Findings:**\n1.  **Monitoring Gap (Confirmed):** The data supports the hypothesis. Systems developed In-house demonstrated a monitoring rate of **12.3%** (54/439), nearly double the **6.7%** (32/481) rate observed for Contractor-developed systems.\n2.  **Statistical Significance:** A Chi-Square test confirmed this difference is statistically significant (Chi2=7.99, p=0.0047, p<0.05).\n3.  **Overall Maturity:** Despite the relative advantage of in-house ownership, the absolute rates of continuous monitoring are alarmingly low across both groups (<13%), suggesting a systemic lack of MLOps maturity in federal AI deployments.\n\n**Conclusion:**\nThe hypothesis is **supported**. In-house ownership is significantly correlated with better post-deployment monitoring, likely due to the incentives for long-term maintenance that are often absent or descoped in limited-term external contracts.",
+  "child_ids": [
+    "node_6_62"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        exit(1)\n\n# Filter for EO13960 data\neo_data = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO13960 Data Shape: {eo_data.shape}\")\n\n# --- 1. Define Groups (Development Method) ---\n# Specific strings found in debug step\nIN_HOUSE_STR = \"Developed in-house.\"\nCONTRACTOR_STR = \"Developed with contracting resources.\"\n\ndef classify_dev(val):\n    if pd.isna(val):\n        return None\n    if val == IN_HOUSE_STR:\n        return \"In-house\"\n    if val == CONTRACTOR_STR:\n        return \"Contractor\"\n    return None\n\neo_data['dev_group'] = eo_data['22_dev_method'].apply(classify_dev)\n\n# Filter only for the two groups of interest\nanalysis_df = eo_data[eo_data['dev_group'].notna()].copy()\n\n# --- 2. Define Outcome (Continuous Monitoring) ---\n# Mapping based on debugged values\n# Positive indicators: 'Intermittent', 'Automated', 'Established'\n# Negative/Null indicators: 'No monitoring', 'AI is not safety', NaN\n\ndef classify_monitor(val):\n    if pd.isna(val):\n        return 0 # Treating missing as 'No Monitoring'\n    val_str = str(val)\n    if \"Intermittent\" in val_str or \"Automated\" in val_str or \"Established\" in val_str:\n        return 1\n    return 0\n\nanalysis_df['is_monitored'] = analysis_df['56_monitor_postdeploy'].apply(classify_monitor)\n\n# --- 3. Analysis ---\nstats = analysis_df.groupby('dev_group')['is_monitored'].agg(['count', 'sum', 'mean'])\nstats.columns = ['Total Systems', 'Monitored Systems', 'Monitoring Rate']\n\nprint(\"\\n--- Monitoring Compliance by Development Ownership ---\")\nprint(stats)\n\n# Contingency Table\ncontingency = pd.crosstab(analysis_df['dev_group'], analysis_df['is_monitored'])\nprint(\"\\n--- Contingency Table (0=No, 1=Yes) ---\")\nprint(contingency)\n\n# Chi-Square Test\nchi2, p, dof, expected = chi2_contingency(contingency)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\nif p < 0.05:\n    print(\"Result: Statistically significant difference detected.\")\nelse:\n    print(\"Result: No statistically significant difference detected.\")\n\n# --- 4. Visualization ---\nplt.figure(figsize=(8, 6))\n\n# Prepare data for plotting\ngroups = stats.index.tolist()\nrates = stats['Monitoring Rate'].tolist()\ncolors = ['#e74c3c', '#3498db'] # Red for Contractor, Blue for In-house (usually)\nif groups[0] == 'In-house':\n    colors = ['#3498db', '#e74c3c']\n\nbars = plt.bar(groups, rates, color=colors, alpha=0.8, edgecolor='black')\n\nplt.title('AI System Continuous Monitoring Rates: In-house vs. Contractor')\nplt.ylabel('Proportion of Systems with Monitoring')\nplt.xlabel('Development Ownership')\nplt.ylim(0, max(rates) * 1.2 if max(rates) > 0 else 0.1)\nplt.grid(axis='y', linestyle='--', alpha=0.5)\n\n# Annotate bars\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + (max(rates)*0.02 if max(rates)>0 else 0.005),\n             f'{height:.1%}',\n             ha='center', va='bottom', fontweight='bold')\n\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: EO13960 Data Shape: (1757, 196)\n\n--- Monitoring Compliance by Development Ownership ---\n            Total Systems  Monitored Systems  Monitoring Rate\ndev_group                                                    \nContractor            481                 32         0.066528\nIn-house              439                 54         0.123007\n\n--- Contingency Table (0=No, 1=Yes) ---\nis_monitored    0   1\ndev_group            \nContractor    449  32\nIn-house      385  54\n\nChi-Square Statistic: 7.9862\nP-value: 4.7136e-03\nResult: Statistically significant difference detected.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Chart (Column Chart).\n*   **Purpose:** This chart compares the prevalence of continuous monitoring in AI systems across two distinct categories of development ownership: \"Contractor\" and \"In-house.\"\n\n### 2. Axes\n*   **X-Axis (Horizontal):**\n    *   **Title:** \"Development Ownership\"\n    *   **Labels:** Categorical variables representing the two groups: \"Contractor\" and \"In-house.\"\n*   **Y-Axis (Vertical):**\n    *   **Title:** \"Proportion of Systems with Monitoring\"\n    *   **Range:** The axis is scaled from 0.00 to 0.14 (with grid lines indicating it could extend slightly to 0.15).\n    *   **Units:** The axis ticks are formatted as decimals (proportions), ranging from 0.00 to 0.14 in increments of 0.02.\n\n### 3. Data Trends\n*   **Tallest Bar:** The \"In-house\" category (blue bar) represents the higher value.\n*   **Shortest Bar:** The \"Contractor\" category (salmon/red bar) represents the lower value.\n*   **Pattern:** There is a distinct disparity between the two groups. The proportion of in-house developed systems that utilize continuous monitoring is significantly higher—nearly double—than that of systems developed by contractors.\n\n### 4. Annotations and Legends\n*   **Bar Labels:** Specific percentage values are annotated directly above each bar for clarity:\n    *   Contractor: **6.7%**\n    *   In-house: **12.3%**\n*   **Color Coding:** The bars are distinctively colored (Salmon for Contractor, Blue for In-house) to visually separate the categories, though no separate legend box is provided or necessary given the clear x-axis labels.\n*   **Grid Lines:** Horizontal dashed grid lines are included to assist in estimating values relative to the Y-axis.\n\n### 5. Statistical Insights\n*   **Significant Gap in Standards:** Systems developed in-house are approximately **1.8 times** more likely (12.3% vs. 6.7%) to have continuous monitoring implemented compared to those developed by contractors.\n*   **Low Overall Adoption:** Despite the difference between the groups, the absolute adoption rates for continuous monitoring are low across the board. Even in the higher-performing \"In-house\" group, only about 1 in 8 systems (12.3%) are continuously monitored.\n*   **Implication:** This data suggests a potential governance gap in outsourced AI development. It implies that external contracts may lack stringent requirements for post-deployment monitoring or that in-house teams have better infrastructure and incentives for long-term system maintenance and observability.\n==================================================",
+  "created_at": "2026-02-22T04:56:30.664575+00:00",
+  "creation_idx": 83,
+  "experiment_id": "node_5_10",
+  "experiment_plan": {
+    "deliverables": "1. Monitoring rates for In-house vs Contractor systems. 2. Statistical test results. 3. Visualization of the monitoring gap.",
+    "objective": "Assess the impact of development ownership on long-term AI lifecycle maintenance.",
+    "steps": "1. Load EO13960 data. 2. Use `22_dev_method` to classify 'In-house' vs 'Contracting resources'. 3. Analyze `56_monitor_postdeploy` (convert to binary). 4. Compare the percentage of monitored systems in both groups. 5. Run a Z-test for proportions or Chi-square test."
+  },
+  "hypothesis": "Ownership-Monitoring Correlation: Systems developed 'In-house' are significantly more likely to have 'Continuous Monitoring' protocols than systems developed by 'Contractors', reflecting the challenge of long-term maintenance in outsourced projects.",
+  "id_in_run": 82,
+  "is_surprising": true,
+  "parent_id": "node_4_29",
+  "posterior": 0.9120879120879121,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9120879120879121,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully validated the 'Ownership-Monitoring Correlation' hypothesis using the EO13960 dataset. After an initial debugging phase to identify correct string mappings, the pipeline correctly classified 920 systems into 'In-house' (n=439) and 'Contractor' (n=481) groups and parsed the free-text 'monitor_postdeploy' field to identify active monitoring protocols.\n\nFindings:\n1. **Hypothesis Supported**: The analysis revealed a statistically significant difference in monitoring rates (Chi-square p=0.0047). Systems developed in-house were nearly twice as likely (12.3%) to have continuous monitoring compared to those developed by contractors (6.7%).\n2. **Low Maturity Baseline**: Despite the relative advantage of in-house ownership, the absolute rates of monitoring are remarkably low (<13% for both groups), highlighting a critical gap in MLOps and long-term maintenance across the federal AI inventory.\n\nThe implementation was faithful to the plan, and the statistical methods (Chi-square) were appropriate for the categorical data.",
+  "rich_outputs": null,
+  "runtime_ms": 330800.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.20418291386033316
+}

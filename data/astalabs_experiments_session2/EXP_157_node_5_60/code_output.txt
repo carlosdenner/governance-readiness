@@ -1,0 +1,20 @@
+exitcode: 0 (execution succeeded)
+Code output: Processing with columns: '8_topic_area', '38_code_access', '34_data_docs'
+Filtered for analysis: 475 rows (Coercive + Civil/Scientific)
+
+--- Contingency Table (Sector vs Transparency) ---
+                  Opaque (0)  Transparent (1)
+sector_group                                 
+Civil/Scientific         107              282
+Coercive                  27               59
+
+--- Transparency Rates (% with Code or Data Access) ---
+sector_group
+Civil/Scientific    72.493573
+Coercive            68.604651
+Name: is_transparent, dtype: float64
+
+--- Chi-Square Test Results ---
+Chi-square statistic: 0.3514
+p-value: 0.553294
+Result: No statistically significant difference found.

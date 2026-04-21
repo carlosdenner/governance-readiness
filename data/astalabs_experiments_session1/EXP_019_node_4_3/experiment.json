@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the association between competency gap types (Trust vs. Integration) and harm types (Privacy vs. Security). Due to the high prevalence of incidents classified as 'both' in the dataset (as noted in metadata), the strict filter for 'trust-dominant' or 'integration-dominant' incidents resulted in a small sample size of n=5. \n\nThe contingency table revealed that 100% of the analyzed incidents resulted in 'Security' harms (4 for Integration-dominant, 1 for Trust-dominant). There were zero 'Privacy' incidents in this specific subset. Consequently, the Fisher's Exact Test yielded a p-value of 1.0000 and an undefined (NaN) Odds Ratio, indicating no statistical association. The hypothesis is rejected, as the data provides no evidence that Trust Readiness gaps are more likely to result in Privacy harms; rather, the limited data suggests Security harms are the predominant outcome regardless of the competency gap type.",
+  "child_ids": [
+    "node_5_0",
+    "node_5_11"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nimport os\n\n# [debug] Check file existence to handle path variability\nfilename = 'step3_incident_coding.csv'\npossible_paths = [filename, f'../{filename}']\nfile_path = None\nfor path in possible_paths:\n    if os.path.exists(path):\n        file_path = path\n        break\n\nif not file_path:\n    print(f\"Error: Could not find {filename} in current or parent directory.\")\nelse:\n    print(f\"Loading dataset from: {file_path}\")\n    df = pd.read_csv(file_path)\n\n    # Normalize text to lowercase to ensure matching\n    df['trust_integration_split'] = df['trust_integration_split'].astype(str).str.lower().str.strip()\n    df['harm_type'] = df['harm_type'].astype(str).str.lower().str.strip()\n\n    print(\"\\nUnique splits found:\", df['trust_integration_split'].unique())\n    print(\"Unique harms found:\", df['harm_type'].unique())\n\n    # Define the categories of interest\n    target_splits = ['trust-dominant', 'integration-dominant']\n    target_harms = ['security', 'privacy']\n\n    # Filter the dataframe\n    filtered_df = df[\n        df['trust_integration_split'].isin(target_splits) &\n        df['harm_type'].isin(target_harms)\n    ].copy()\n\n    print(f\"\\nFiltered dataset shape: {filtered_df.shape}\")\n    \n    if filtered_df.empty:\n        print(\"No records match the filter criteria (Trust/Integration dominant AND Security/Privacy).\")\n    else:\n        # Create contingency table\n        contingency_table = pd.crosstab(filtered_df['trust_integration_split'], filtered_df['harm_type'])\n        \n        # Ensure all expected columns/indexes are present for the test, filling with 0 if missing\n        # We want rows: integration-dominant, trust-dominant\n        # We want cols: privacy, security\n        # (Order matters for odds ratio interpretation, though p-value is invariant)\n        contingency_table = contingency_table.reindex(index=target_splits, columns=target_harms, fill_value=0)\n\n        print(\"\\nContingency Table:\")\n        print(contingency_table)\n\n        # Perform Fisher's Exact Test\n        # null hypothesis: the true odds ratio of the populations underlying the observations is one (no association)\n        odds_ratio, p_value = stats.fisher_exact(contingency_table)\n\n        print(f\"\\nFisher's Exact Test Results:\")\n        print(f\"Odds Ratio: {odds_ratio:.4f}\")\n        print(f\"P-value: {p_value:.4f}\")\n\n        # Visualization\n        plt.figure(figsize=(8, 6))\n        sns.heatmap(contingency_table, annot=True, fmt='d', cmap='YlGnBu')\n        plt.title('Harm Type by Competency Split')\n        plt.ylabel('Competency Split')\n        plt.xlabel('Harm Type')\n        plt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step3_incident_coding.csv\n\nUnique splits found: <StringArray>\n['both', 'trust-dominant', 'integration-dominant']\nLength: 3, dtype: str\nUnique harms found: <StringArray>\n[             'security', 'intellectual_property',   'bias_discrimination',\n           'reliability',          'supply_chain',               'privacy',\n       'autonomy_misuse']\nLength: 7, dtype: str\n\nFiltered dataset shape: (5, 22)\n\nContingency Table:\nharm_type                security  privacy\ntrust_integration_split                   \ntrust-dominant                  1        0\nintegration-dominant            4        0\n\nFisher's Exact Test Results:\nOdds Ratio: nan\nP-value: 1.0000\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Heatmap (specifically visualizing a contingency table or confusion matrix).\n*   **Purpose:** The plot visualizes the frequency or count of occurrences at the intersection of two categorical variables: \"Competency Split\" and \"Harm Type.\" It uses color intensity to represent the magnitude of the values, making it easy to spot patterns, dominance, or scarcity of data points.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Harm Type\"\n    *   **Labels:** The axis represents categorical data with two specific categories: **\"security\"** and **\"privacy\"**.\n*   **Y-Axis:**\n    *   **Title:** \"Competency Split\"\n    *   **Labels:** The axis represents categorical data with two specific categories: **\"trust-dominant\"** and **\"integration-dominant\"**.\n*   **Color Scale (Z-Axis):**\n    *   **Range:** The numerical values range from **0.0 to 4.0**.\n    *   **Gradient:** The color gradient shifts from a pale cream/yellow (representing 0) through teal/green (representing lower numbers like 1-2) to a deep dark blue (representing the maximum value of 4).\n\n### 3. Data Trends\n*   **High Values:** The highest value in the dataset is located at the intersection of **\"integration-dominant\"** and **\"security\"**, with a count of **4**. This is visualized by the darkest blue square.\n*   **Low Values:** The lowest values are found in the **\"privacy\"** column. Both \"trust-dominant\" and \"integration-dominant\" splits show a count of **0** for privacy harms, indicated by the palest yellow squares.\n*   **Intermediate Values:** The intersection of \"trust-dominant\" and \"security\" shows a low count of **1**, represented by a light green color.\n*   **Overall Pattern:** The data indicates that \"security\" harms are the only type of harm recorded in this dataset, while \"privacy\" harms are non-existent. Furthermore, these security harms are heavily skewed toward the \"integration-dominant\" category.\n\n### 4. Annotations and Legends\n*   **Title:** The chart is titled **\"Harm Type by Competency Split\"**, clearly defining the two variables being compared.\n*   **Cell Annotations:** Each cell in the 2x2 grid contains a numerical annotation (1, 0, 4, 0) indicating the exact count for that specific intersection.\n*   **Color Bar Legend:** A vertical color bar on the right side provides a reference for interpreting the cell colors, with ticks marking intervals at 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, and 4.0.\n\n### 5. Statistical Insights\n*   **Dominance of Security Harms:** 100% of the recorded data points (5 total) fall under the \"security\" harm type. There were zero incidents of \"privacy\" harm.\n*   **Competency Split Distribution:**\n    *   **Integration-dominant:** Accounts for **80%** (4 out of 5) of the total observed harms.\n    *   **Trust-dominant:** Accounts for **20%** (1 out of 5) of the total observed harms.\n*   **Conclusion:** Based on this sample, there is a strong correlation between \"integration-dominant\" competency splits and \"security\" issues. Conversely, \"privacy\" does not appear to be a factor for either competency split in this specific dataset.\n==================================================",
+  "created_at": "2026-02-20T22:04:16.927960+00:00",
+  "creation_idx": 20,
+  "experiment_id": "node_4_3",
+  "experiment_plan": {
+    "deliverables": "Contingency table of Harm Type by Competency Gap, Fisher's Exact Test results (Odds Ratio, P-value), and a heatmap plot.",
+    "objective": "Verify if the type of competency gap (Trust vs Integration) predicts the specific category of harm using statistical association testing.",
+    "steps": "1. Load the dataset 'step3_incident_coding.csv'.\n2. Normalize the text in columns 'trust_integration_split' and 'harm_type' to lowercase.\n3. Filter the dataframe to include only rows where 'trust_integration_split' is either 'trust-dominant' or 'integration-dominant' AND 'harm_type' is either 'security' or 'privacy'.\n4. Create a contingency table (crosstab) with 'trust_integration_split' as rows and 'harm_type' as columns.\n5. Perform a Fisher's Exact Test on the contingency table to calculate the Odds Ratio and P-value.\n6. Generate a heatmap visualization of the contingency table to display the counts."
+  },
+  "hypothesis": "Incidents attributed to 'Trust Readiness' competency gaps are significantly more likely to result in 'Privacy' harms compared to 'Integration Readiness' gaps, which are predominantly associated with 'Security' harms.",
+  "id_in_run": 19,
+  "is_surprising": true,
+  "parent_id": "node_3_4",
+  "posterior": 0.34297520661157027,
+  "posterior_belief": {
+    "_empirical_mean": 0.20833333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 15.0,
+    "definitely_true": 0.0,
+    "maybe_false": 75.0,
+    "maybe_true": 0.0,
+    "mean": 0.34297520661157027,
+    "n": 90.0,
+    "prior_params": [
+      22.75,
+      8.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7338709677419355,
+  "prior_belief": {
+    "_empirical_mean": 0.7416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.7338709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment was faithfully implemented. The code correctly loaded the dataset, applied the necessary filters to isolate 'trust-dominant' vs 'integration-dominant' incidents and 'security' vs 'privacy' harms, and performed the Fisher's Exact Test. The low sample size (n=5) was an expected artifact of the dataset's distribution (where 46/52 incidents are classified as 'both'), and the code handled this gracefully.",
+  "rich_outputs": null,
+  "runtime_ms": 227000.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.45367198749673215
+}

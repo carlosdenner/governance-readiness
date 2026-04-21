@@ -1,0 +1,35 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+AIID Incidents loaded: 1362 records
+
+--- Contingency Table (Counts) ---
+Harm_Category  Other
+Tech_Category       
+Biometric         52
+Other           1310
+
+--- Contingency Table (Percentages by Tech) ---
+Harm_Category  Other
+Tech_Category       
+Biometric      100.0
+Other          100.0
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 0.0000
+P-Value: 1.0000e+00
+
+--- Conclusion ---
+Result: Not Statistically Significant.
+The data does not show a significant association between Biometric technologies and Civil Rights harms compared to other technologies.
+
+[Debug Info] Top 5 Tech strings classified as Biometric:
+Known AI Technology
+Face Detection, Visual Object Detection, Image Segmentation                          7
+Optical Character Recognition, Visual Object Detection                               4
+Face Detection, Visual Object Detection                                              3
+Convolutional Neural Network, Face Detection                                         2
+Image Classification, Face Detection, Visual Object Detection, Image Segmentation    2
+Name: count, dtype: int64
+
+[Debug Info] Top 5 Harm Domains classified as Civil Rights:
+Series([], Name: count, dtype: int64)

@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+AIID Incidents loaded: 1362
+Using columns -> Tech: Known AI Technology, Harm: Harm Domain, Description: description
+
+--- Contingency Table ---
+Harm_Type         Civil Rights  Other
+Tech_Type                            
+Biometric/Facial            22    249
+Other                       19   1072
+
+Chi-Square Statistic: 28.0868
+P-value: 0.0000
+Odds Ratio: 4.9850
+
+STDERR:
+<ipython-input-1-61f6459b5bcf>:95: Pandas4Warning: Starting with pandas version 4.0 all arguments of sum will be keyword-only.
+  contingency_pct = contingency.div(contingency.sum(1), axis=0) * 100
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Plot.
+*   **Purpose:** This plot is designed to compare the relative proportions of different harm types ("Civil Rights" vs. "Other") across two distinct categories of technology ("Biometric/Facial" vs. "Other"). By stacking the bars to reach 100%, it normalizes the data, allowing for a comparison of distribution percentages rather than absolute counts.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Technology Type".
+    *   **Labels:** The axis contains two categorical variables: "Biometric/Facial" and "Other". The labels are oriented vertically (rotated 90 degrees).
+*   **Y-axis:**
+    *   **Title:** "Percentage".
+    *   **Units:** Percent (%).
+    *   **Range:** The scale runs from 0 to 100, with tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Overall Pattern:** For both technology categories, the vast majority of harms fall under the "Other" harm type (represented by the blue section).
+*   **Biometric/Facial Bar:**
+    *   The "Civil Rights" harm (red section) comprises a visible minority of the bar. Visually, it appears to represent approximately 8% to 10% of the total harms in this category.
+    *   The "Other" harm type (blue section) makes up the remaining ~90-92%.
+*   **Other (Technology) Bar:**
+    *   The "Civil Rights" harm (red section) is extremely minimal, appearing as a thin sliver at the bottom. It likely represents less than 2% of the total.
+    *   The "Other" harm type (blue section) dominates almost the entirely of the bar, representing close to 98-99%.
+*   **Comparison:** The proportion of harms related to Civil Rights is noticeably larger in "Biometric/Facial" technologies compared to "Other" technologies.
+
+### 4. Annotations and Legends
+*   **Title:** "Harm Distribution: Biometric vs Other Technologies" – This clearly sets the context of the comparison.
+*   **Legend:** A box located to the right of the plot titled "Harm Type" defines the color coding:
+    *   **Red:** Represents "Civil Rights" harms.
+    *   **Blue:** Represents "Other" types of harms.
+
+### 5. Statistical Insights
+*   **Disproportionate Impact:** The data suggests that while Civil Rights violations are not the majority of reported harms for Biometric/Facial recognition technologies, they occur at a significantly higher rate (proportionally) within that sector compared to other general technologies.
+*   **Category Dominance:** In both technology sectors, non-civil rights harms (grouped as "Other") are the predominant issue reported, suggesting that while civil rights are a specific concern for biometrics, other issues (likely technical errors, privacy, security, etc.) are more frequent overall.
+==================================================

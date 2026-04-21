@@ -1,0 +1,68 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Filtered 104 records from sources: ['atlas_cases', 'step3_incident_coding']
+Using column 'tactics' for tactics analysis.
+Sample values from tactics column:
+<StringArray>
+[                                        '{{defense_evasion.id}}|{{ml_attack_staging.id}}|{{reconnaissance.id}}|{{resource_development.id}}',
+                                         '{{defense_evasion.id}}|{{ml_attack_staging.id}}|{{reconnaissance.id}}|{{resource_development.id}}',
+                                             '{{initial_access.id}}|{{ml_attack_staging.id}}|{{persistence.id}}|{{resource_development.id}}',
+ '{{defense_evasion.id}}|{{discovery.id}}|{{ml_attack_staging.id}}|{{ml_model_access.id}}|{{reconnaissance.id}}|{{resource_development.id}}',
+                              '{{impact.id}}|{{initial_access.id}}|{{ml_model_access.id}}|{{reconnaissance.id}}|{{resource_development.id}}']
+Length: 5, dtype: str
+
+Contingency Table:
+Has Exfiltration (TA0010)  False  True 
+Has Collection (TA0009)                
+False                         87      7
+True                           2      8
+
+Fisher's Exact Test Results:
+Odds Ratio: 49.7143
+P-value: 0.0000
+
+Jaccard Similarity Coefficient: 0.4706
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Contingency Table** visualized as a **Heatmap** (or confusion matrix).
+*   **Purpose:** Its purpose is to display the frequency distribution of two categorical variables simultaneously. Specifically, it visualizes the co-occurrence of "Collection" and "Exfiltration" tactics within adversarial chains.
+
+### 2. Axes
+*   **Vertical Axis (Y-axis):**
+    *   **Label:** "Has Collection (TA0009)"
+    *   **Categories:** "False" (top row) and "True" (bottom row).
+    *   **Context:** Refers to the MITRE ATT&CK tactic TA0009 (Collection).
+*   **Horizontal Axis (X-axis):**
+    *   **Label:** "Has Exfiltration (TA0010)"
+    *   **Categories:** "False" (left column) and "True" (right column).
+    *   **Context:** Refers to the MITRE ATT&CK tactic TA0010 (Exfiltration).
+*   **Value Ranges:** The axes represent binary categories (Boolean True/False), not continuous numerical ranges.
+
+### 3. Data Trends
+*   **Highest Value (Darkest Area):** The top-left cell (False/False) contains the value **87**. This indicates that the vast majority of the observed adversarial chains involved neither Collection nor Exfiltration.
+*   **Lowest Values:** The bottom-left cell (True/False) contains the lowest value, **2**. This indicates it is very rare to have "Collection" without "Exfiltration" in this dataset.
+*   **Patterns:**
+    *   There is a distinct disparity in sample sizes. The "False/False" category dominates the dataset.
+    *   The second most common category is the "True/True" case (bottom-right) with **8** occurrences, followed closely by "False/True" (top-right) with **7** occurrences.
+
+### 4. Annotations and Legends
+*   **Title:** "Adversarial Chains: Collection (TA0009) vs Exfiltration (TA0010)". This establishes the subject matter as cybersecurity threat analysis based on the MITRE ATT&CK framework.
+*   **Cell Annotations:** Each quadrant contains a numerical count:
+    *   **87:** No Collection, No Exfiltration.
+    *   **7:** No Collection, Has Exfiltration.
+    *   **2:** Has Collection, No Exfiltration.
+    *   **8:** Has Collection, Has Exfiltration.
+*   **Color Scale:** The plot uses a sequential blue color palette where darker blue indicates a higher count/frequency and lighter blue/white indicates a lower count.
+
+### 5. Statistical Insights
+*   **Strong Correlation in Presence:** When "Collection" is present (True), "Exfiltration" is highly likely to also be present.
+    *   Out of 10 cases where Collection is True, 8 involved Exfiltration (80%).
+*   **Low Baseline Rate:** When "Collection" is absent (False), "Exfiltration" is unlikely.
+    *   Out of 94 cases where Collection is False, only 7 involved Exfiltration (~7.4%).
+*   **Dataset Composition:** The total sample size is 104. Approximately **83.6%** (87/104) of the data points represent negative samples for both tactics.
+*   **Cybersecurity Context:** The data supports a logical progression in an attack chain: attackers often perform Collection (gathering data) specifically to perform Exfiltration (stealing data). Therefore, seeing Collection without Exfiltration is rare (only 2 cases), likely representing failed attacks or interdicted chains. The 7 cases of Exfiltration without Collection might represent scenarios where data was accessed and stolen immediately without a distinct staging/collection phase.
+==================================================

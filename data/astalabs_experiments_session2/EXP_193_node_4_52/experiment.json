@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the Autonomy-Intent Paradox hypothesis using the AIID dataset. After cleaning the 'Autonomy Level' (mapped to Low/High) and 'Intentional Harm' (mapped to Intentional/Unintentional) columns, 177 valid incidents remained for analysis.\n\n**Results**:\n- **Contingency Counts**: \n  - Low Autonomy: 5 Intentional (4.9%), 98 Unintentional.\n  - High Autonomy: 3 Intentional (4.1%), 71 Unintentional.\n- **Fisher's Exact Test**: \n  - Odds Ratio: 1.2075\n  - P-value: 0.5524\n\n**Conclusion**: The analysis found no statistically significant difference in the likelihood of intentional harm between Low and High autonomy systems. The hypothesis is **not supported**; the proportion of intentional incidents is nearly identical across autonomy levels in this dataset.",
+  "child_ids": [
+    "node_5_89"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport sys\n\n# Load the dataset\nfile_path = 'astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    # Fallback for alternative directory structures if needed, though instruction says same level\n    # Trying relative path based on previous prompt hint\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\nprint(f\"Total AIID Incidents: {len(aiid_df)}\")\n\n# --- Corrected Preprocessing ---\n\n# 1. Clean Autonomy Level\n# Mapping based on typical definitions for Autonomy1/2/3 in this dataset context:\n# Autonomy1 = System recommends action, human decides (Low)\n# Autonomy2 = System initiates action, human can override (High/Medium)\n# Autonomy3 = System initiates action, human out of loop (High)\n\ndef map_autonomy_corrected(val):\n    if pd.isna(val):\n        return None\n    val_str = str(val).strip()\n    \n    if val_str == 'Autonomy1':\n        return 'Low'\n    elif val_str in ['Autonomy2', 'Autonomy3']:\n        return 'High'\n    return None\n\n# 2. Clean Intentional Harm\n# Values start with 'Yes' or 'No'\n\ndef map_intent_corrected(val):\n    if pd.isna(val):\n        return None\n    val_str = str(val).strip().lower()\n    \n    if val_str.startswith('yes'):\n        return 'Intentional'\n    elif val_str.startswith('no'):\n        return 'Unintentional'\n    return None\n\naiid_df['autonomy_bin'] = aiid_df['Autonomy Level'].apply(map_autonomy_corrected)\naiid_df['intent_bin'] = aiid_df['Intentional Harm'].apply(map_intent_corrected)\n\n# Drop records where we couldn't classify\nanalysis_df = aiid_df.dropna(subset=['autonomy_bin', 'intent_bin'])\n\nprint(f\"Records available for analysis: {len(analysis_df)}\")\n\n# --- Analysis ---\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(analysis_df['autonomy_bin'], analysis_df['intent_bin'])\nprint(\"\\nContingency Table (Autonomy vs Intentionality):\")\nprint(contingency_table)\n\n# Check if we have data for all cells to be safe\nif contingency_table.empty:\n    print(\"\\nNo valid data found for contingency table.\")\nelse:\n    # Extract values for Fisher's Exact Test\n    # Structure: [[Low_Intentional, Low_Unintentional], [High_Intentional, High_Unintentional]]\n    \n    # Helper to safely get value\n    def get_val(r, c):\n        try:\n            return contingency_table.loc[r, c]\n        except KeyError:\n            return 0\n\n    low_intent = get_val('Low', 'Intentional')\n    low_unintent = get_val('Low', 'Unintentional')\n    high_intent = get_val('High', 'Intentional')\n    high_unintent = get_val('High', 'Unintentional')\n    \n    table_for_stats = [[low_intent, low_unintent], [high_intent, high_unintent]]\n    \n    print(f\"\\nMatrix for Fisher's Test:\\n {table_for_stats}\")\n    \n    if (low_intent + low_unintent == 0) or (high_intent + high_unintent == 0):\n         print(\"Cannot run test: One row is empty.\")\n    else:\n        # We expect Low Autonomy to be MORE associated with Intentional Harm\n        # So Odds Ratio > 1\n        odds_ratio, p_value = stats.fisher_exact(table_for_stats, alternative='greater')\n        \n        print(f\"\\n--- Statistical Results ---\")\n        print(f\"Odds Ratio: {odds_ratio:.4f}\")\n        print(f\"P-Value (one-sided 'greater'): {p_value:.4f}\")\n        \n        # Calculate percentages for clearer interpretation\n        pct_low_intent = (low_intent / (low_intent + low_unintent)) * 100\n        pct_high_intent = (high_intent / (high_intent + high_unintent)) * 100\n        \n        print(f\"\\nInterpretation:\")\n        print(f\"% of Low Autonomy incidents that were Intentional: {pct_low_intent:.1f}%\")\n        print(f\"% of High Autonomy incidents that were Intentional: {pct_high_intent:.1f}%\")\n        \n        if p_value < 0.05:\n            print(\"\\nResult: Statistically Significant. The hypothesis is supported.\")\n        else:\n            print(\"\\nResult: Not Statistically Significant.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total AIID Incidents: 1362\nRecords available for analysis: 177\n\nContingency Table (Autonomy vs Intentionality):\nintent_bin    Intentional  Unintentional\nautonomy_bin                            \nHigh                    3             71\nLow                     5             98\n\nMatrix for Fisher's Test:\n [[np.int64(5), np.int64(98)], [np.int64(3), np.int64(71)]]\n\n--- Statistical Results ---\nOdds Ratio: 1.2075\nP-Value (one-sided 'greater'): 0.5524\n\nInterpretation:\n% of Low Autonomy incidents that were Intentional: 4.9%\n% of High Autonomy incidents that were Intentional: 4.1%\n\nResult: Not Statistically Significant.\n",
+  "created_at": "2026-02-22T10:10:25.602985+00:00",
+  "creation_idx": 194,
+  "experiment_id": "node_4_52",
+  "experiment_plan": {
+    "deliverables": "Odds ratio indicating the association between low autonomy and intentional misuse.",
+    "objective": "Explore the relationship between system autonomy and the intentionality of the incident.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `aiid_incidents`.\n2. Map `Autonomy Level` to binary: 'Low' (Assistive/Partial) vs 'High' (Autonomous).\n3. Use `Intentional Harm` column (Boolean/Binary).\n4. Perform a Fisher's Exact Test or Chi-square test on Autonomy vs. Intentionality."
+  },
+  "hypothesis": "Autonomy-Intent Paradox: Incidents involving 'Low Autonomy' systems are significantly more likely to be triggered by 'Intentional' malicious acts compared to 'High Autonomy' systems, which are more prone to 'Unintentional' failures.",
+  "id_in_run": 193,
+  "is_surprising": true,
+  "parent_id": "node_3_4",
+  "posterior": 0.41208791208791207,
+  "posterior_belief": {
+    "_empirical_mean": 0.24166666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 2.0,
+    "definitely_true": 0.0,
+    "maybe_false": 58.0,
+    "maybe_true": 0.0,
+    "mean": 0.41208791208791207,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented. The programmer correctly identified the need to adjust the data mapping logic for 'Autonomy Level' (mapping 'Autonomy1' to Low and 'Autonomy2/3' to High) and 'Intentional Harm' (parsing long-form text responses) after an initial failed attempt. The statistical test (Fisher's Exact Test) was appropriate for the sample size (n=177) and the binary nature of the variables.",
+  "rich_outputs": null,
+  "runtime_ms": 181580.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.3958170861396668
+}

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully validated the 'Code Sovereignty' hypothesis. Analyzing 781 records from the EO 13960 dataset, the study found a striking disparity in source code availability based on the development model. Agencies retain code access for 90.5% of systems developed in-house, compared to only 33.8% for systems developed by contractors. The Chi-Square test confirmed this difference is highly statistically significant (p=1.74e-59). These findings highlight a critical governance gap: when the US government outsources AI development, it loses direct access to the source code in nearly two-thirds of cases, potentially impeding auditability and long-term maintenance.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport re\nimport sys\n\ndef load_data():\n    try:\n        df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        try:\n            df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n        except FileNotFoundError:\n            print(\"Dataset not found.\")\n            sys.exit(1)\n    return df\n\ndef classify_code_access(val):\n    if not isinstance(val, str):\n        return np.nan\n    val_lower = val.lower()\n    \n    # Negative indicators\n    # Use word boundaries for 'no' to avoid matching inside words like 'innovation'\n    # 'proprietary' and 'restricted' are distinctive enough\n    is_negative = False\n    if re.search(r'\\bno\\b', val_lower) or 'restricted' in val_lower or 'proprietary' in val_lower:\n        is_negative = True\n        \n    # Positive indicators\n    is_positive = False\n    if re.search(r'\\byes\\b', val_lower) or 'open' in val_lower:\n        is_positive = True\n        \n    # Classification Logic\n    if is_positive and not is_negative:\n        return 1\n    elif is_negative and not is_positive:\n        return 0\n    elif is_positive and is_negative:\n        # Conflict: usually 'No, but...' or 'Yes, however restricted...'\n        # In context of 'Code Sovereignty', restrictions usually mean lack of full sovereignty.\n        return 0\n    else:\n        return np.nan\n\ndef main():\n    print(\"Loading dataset...\")\n    df = load_data()\n    \n    # Filter for EO 13960 Scored subset\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"EO 13960 subset size: {len(df_eo)}\")\n    \n    # Map Development Method\n    if '22_dev_method' not in df_eo.columns:\n        print(\"Error: Column '22_dev_method' not found.\")\n        return\n        \n    dev_map = {\n        'Developed with contracting resources.': 'Contracted',\n        'Developed in-house.': 'In-House'\n    }\n    df_eo['dev_model'] = df_eo['22_dev_method'].map(dev_map)\n    \n    # Filter valid development models\n    df_analysis = df_eo.dropna(subset=['dev_model']).copy()\n    print(f\"Records with valid Development Method: {len(df_analysis)}\")\n    \n    # Process Code Access\n    col_access = '38_code_access'\n    if col_access not in df_analysis.columns:\n        print(f\"Error: Column '{col_access}' not found.\")\n        return\n        \n    df_analysis['access_binary'] = df_analysis[col_access].apply(classify_code_access)\n    \n    # Filter valid access scores\n    df_clean = df_analysis.dropna(subset=['access_binary'])\n    print(f\"Records with valid Code Access data: {len(df_clean)}\")\n    \n    # Calculate Statistics\n    summary = df_clean.groupby('dev_model')['access_binary'].agg(['count', 'mean'])\n    summary['percent'] = summary['mean'] * 100\n    \n    print(\"\\nSummary Statistics (Code Access Rates):\")\n    print(summary)\n    \n    # Chi-Square Test\n    contingency = pd.crosstab(df_clean['dev_model'], df_clean['access_binary'])\n    print(\"\\nContingency Table (0=No Access, 1=Access):\")\n    print(contingency)\n    \n    chi2, p, dof, expected = stats.chi2_contingency(contingency)\n    print(f\"\\nChi-Square Test Results:\")\n    print(f\"Chi-Square Statistic: {chi2:.4f}\")\n    print(f\"P-Value: {p:.4e}\")\n    \n    if p < 0.05:\n        print(\"Conclusion: Significant relationship between development model and code access.\")\n    else:\n        print(\"Conclusion: No significant relationship detected.\")\n        \n    # Visualization\n    plt.figure(figsize=(8, 6))\n    colors = ['#ff9999', '#66b3ff']\n    ax = summary['percent'].plot(kind='bar', color=colors, edgecolor='black', rot=0)\n    \n    plt.title('Code Access Rates by Development Model')\n    plt.ylabel('Percentage with Code Access (%)')\n    plt.xlabel('Development Model')\n    plt.ylim(0, 105)\n    \n    # Annotate bars\n    for p in ax.patches:\n        ax.annotate(f'{p.get_height():.1f}%', \n                    (p.get_x() + p.get_width() / 2., p.get_height()), \n                    ha='center', va='bottom', fontsize=12, fontweight='bold')\n                    \n    plt.tight_layout()\n    plt.show()\n\nif __name__ == \"__main__\":\n    main()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset...\nEO 13960 subset size: 1757\nRecords with valid Development Method: 920\nRecords with valid Code Access data: 781\n\nSummary Statistics (Code Access Rates):\n            count      mean    percent\ndev_model                             \nContracted    390  0.338462  33.846154\nIn-House      391  0.905371  90.537084\n\nContingency Table (0=No Access, 1=Access):\naccess_binary  0.0  1.0\ndev_model              \nContracted     258  132\nIn-House        37  354\n\nChi-Square Test Results:\nChi-Square Statistic: 264.5628\nP-Value: 1.7376e-59\nConclusion: Significant relationship between development model and code access.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Vertical Bar Plot (or Bar Chart).\n*   **Purpose:** The plot is designed to compare the percentage of code access between two distinct categorical groups: \"Contracted\" and \"In-House\" development models.\n\n**2. Axes**\n*   **X-Axis (Horizontal):**\n    *   **Label:** \"Development Model\"\n    *   **Categories:** The axis displays two discrete categories: \"Contracted\" and \"In-House\".\n*   **Y-Axis (Vertical):**\n    *   **Label:** \"Percentage with Code Access (%)\"\n    *   **Range:** The scale ranges from 0 to roughly 105, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).\n    *   **Units:** Percentage (%).\n\n**3. Data Trends**\n*   **Tallest Bar:** The \"In-House\" category represents the highest value, reaching near the top of the y-axis scale.\n*   **Shortest Bar:** The \"Contracted\" category is significantly lower, reaching only about one-third of the height of the y-axis.\n*   **Pattern:** There is a stark disparity between the two models. The plot visualizes a massive gap in code access, showing that In-House development is associated with significantly higher access rates compared to Contracted development.\n\n**4. Annotations and Legends**\n*   **Data Labels:** Specific percentage values are annotated directly on top of each bar in bold text to provide precise measurements:\n    *   **Contracted:** 33.8%\n    *   **In-House:** 90.5%\n*   **Color Coding:**\n    *   The \"Contracted\" bar is colored light red/salmon.\n    *   The \"In-House\" bar is colored light blue.\n*   **Title:** The chart is titled \"Code Access Rates by Development Model\".\n\n**5. Statistical Insights**\n*   **Significant Disparity:** There is a 56.7 percentage point difference between the two groups ($90.5\\% - 33.8\\% = 56.7\\%$).\n*   **Relative Comparison:** Code access is nearly **2.7 times more prevalent** in In-House development models compared to Contracted models.\n*   **Operational Implication:** The data suggests a strong operational or security tendency where internal teams are granted almost ubiquitous access to codebases, whereas external contractors are frequently restricted, likely due to security protocols or intellectual property concerns.\n==================================================",
+  "created_at": "2026-02-22T12:10:52.202392+00:00",
+  "creation_idx": 238,
+  "experiment_id": "node_6_50",
+  "experiment_plan": {
+    "deliverables": "Bar chart of Code Access Rates by Development Model; Chi-Square test results.",
+    "objective": "Determine if the development method (Outsourced vs. In-House) predicts the availability of code access.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `eo13960_scored`.\n2. Create a grouping variable `dev_model` from `22_dev_method`: 'Contracted' vs 'In-House' (exclude others).\n3. Clean the `38_code_access` column into a binary variable: 'Yes' (contains 'Yes' or 'Open') vs 'No' (contains 'No', 'Restricted', 'Proprietary').\n4. Calculate the percentage of systems with code access for each group.\n5. Perform a Chi-Square test of independence."
+  },
+  "hypothesis": "The 'Code Sovereignty' Gap: AI systems developed by external contractors are significantly less likely to grant government agencies full access to source code compared to systems developed in-house, creating a 'black box' maintenance risk.",
+  "id_in_run": 237,
+  "is_surprising": false,
+  "parent_id": "node_5_1",
+  "posterior": 0.9945054945054945,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9945054945054945,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully validated the 'Code Sovereignty' hypothesis. Analyzing 781 records from the EO 13960 dataset, the study found a striking disparity in source code availability based on the development model. Agencies retain code access for 90.5% of systems developed in-house, compared to only 33.8% for systems developed by contractors. The Chi-Square test confirmed this difference is highly statistically significant (p=1.74e-59). These findings highlight a critical governance gap: when the US government outsources AI development, it loses direct access to the source code in nearly two-thirds of cases, potentially impeding auditability and long-term maintenance.",
+  "rich_outputs": null,
+  "runtime_ms": 201800.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.012761432116270831
+}

@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: === Contingency Table (Rows=Bundle, Cols=Control Presence) ===
+has_control             0  1
+bundle                      
+Integration Readiness  20  3
+Trust Readiness        19  0
+
+
+=== Descriptive Statistics ===
+                       count  sum      mean  percentage
+bundle                                                 
+Integration Readiness     23    3  0.130435   13.043478
+Trust Readiness           19    0  0.000000    0.000000
+
+
+=== Fisher's Exact Test Results ===
+Odds Ratio: 0.0000
+P-value: 0.2387
+Result: Not Statistically Significant (p >= 0.05)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** To compare the percentage prevalence of a specific control mechanism ("Human-in-the-Loop Approval Gates") across distinct categories ("Competency Bundles").
+
+**2. Axes**
+*   **X-axis:**
+    *   **Title:** "Competency Bundle"
+    *   **Categories:** Two distinct categories are displayed: "Integration Readiness" and "Trust Readiness."
+*   **Y-axis:**
+    *   **Title:** "Percentage of Requirements with Control (%)"
+    *   **Range:** The scale ranges from 0 to 100, marked in increments of 20 (0, 20, 40, 60, 80, 100).
+
+**3. Data Trends**
+*   **Tallest Bar:** The "Integration Readiness" bundle represents the highest value.
+*   **Shortest Bar:** The "Trust Readiness" bundle represents the lowest value.
+*   **Pattern:** There is a significant disparity between the two categories. While one bundle shows a measurable presence of the control, the other shows a complete absence.
+
+**4. Annotations and Legends**
+*   **Chart Title:** "Prevalence of 'Human-in-the-Loop Approval Gates' by Bundle" appears at the top.
+*   **Data Labels:** Exact percentage values are annotated directly above each bar to provide precise readings:
+    *   Integration Readiness: **13.0%**
+    *   Trust Readiness: **0.0%**
+*   **Styling:** The bars are filled with a light blue color and outlined in black.
+
+**5. Statistical Insights**
+*   **Prevalence in Integration:** 13.0% of the requirements within the "Integration Readiness" bundle include 'Human-in-the-Loop Approval Gates.' This suggests that human oversight is a minority but notable component of integration procedures.
+*   **Absence in Trust:** 0.0% of the requirements within the "Trust Readiness" bundle utilize these approval gates. This indicates that human manual approval is currently not a factor in the requirements defined for Trust Readiness in this dataset.
+*   **Comparative Insight:** Use of human approval gates is exclusively associated with Integration Readiness in this comparison, implying distinct operational or compliance standards between the two competency bundles.
+==================================================

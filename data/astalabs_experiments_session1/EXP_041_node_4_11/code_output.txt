@@ -1,0 +1,52 @@
+exitcode: 0 (execution succeeded)
+Code output: === Temporal Analysis of Attack Complexity ===
+File loaded: step3_enrichments.json
+Number of incidents analyzed: 52
+Date Range: 2016-03-23 to 2026-02-03
+
+--- Correlation Results ---
+Pearson Correlation (r): 0.3768 (p-value: 0.0059)
+Spearman Correlation (rho): 0.4350 (p-value: 0.0013)
+
+Conclusion: There is a weak positive correlation which is statistically significant.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Scatter Plot with an overlaid Linear Regression Trend Line.
+*   **Purpose:** The plot visualizes individual AI incidents over time to identify correlations between the date of the incident and its complexity (measured by the count of techniques involved). The trend line helps to visualize the general direction of this relationship over the sampled period.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Incident Date"
+    *   **Range:** The axis spans from **2016 to roughly mid-2026**.
+    *   **Units:** Time (Years).
+*   **Y-Axis:**
+    *   **Title:** "Technique Count (Complexity)"
+    *   **Range:** The vertical axis displays values from **0 to 16** (with grid lines marked every 2 units).
+    *   **Units:** Count (integer number of techniques).
+
+### 3. Data Trends
+*   **Overall Trend:** There is a clear **positive correlation** between time and incident complexity. As time progresses from 2016 to 2026, the complexity of AI incidents generally increases.
+*   **Data Density/Clustering:**
+    *   **Sparse Early Data:** There is very little data plotted between 2016 and 2019, with only a single data point visible in 2016.
+    *   **Increasing Frequency:** There is a noticeable increase in the density of data points starting around 2020, with the densest cluster of incidents occurring between **2023 and 2026**. This suggests either an increase in the frequency of AI incidents or an improvement in the tracking/reporting of these events in later years.
+*   **Variance:** The spread (variance) of the data increases over time. In the earlier years, points are few. By 2025-2026, the technique counts vary widely, ranging from as low as **1** to as high as **15-16**.
+*   **Outliers:**
+    *   **High Values:** The highest complexity recorded is **16** (occurring around late 2023) and **15** (occurring in 2026).
+    *   **Low Values:** A notable low outlier occurs in mid-2025 with a technique count of just **1**.
+
+### 4. Annotations and Legends
+*   **Legend (Top Right):**
+    *   **"Incident" (Blue Circle):** Identifies the individual data points representing specific AI incidents. The points are semi-transparent, allowing the viewer to see areas where data points overlap (indicating multiple incidents with the same date and complexity).
+    *   **"Trend (slope=1.27e-03)" (Red Dashed Line):** Identifies the line of best fit.
+*   **Slope Annotation:** The slope is explicitly noted as **1.27e-03** ($0.00127$).
+    *   *Note on Slope:* Given the visual rise of the line (rising roughly 5 units over 10 years), this slope value is likely calculated based on a daily timestamp unit (approx. $0.00127 \times 365 \text{ days} \approx 0.46$ increase in technique count per year).
+
+### 5. Statistical Insights
+*   **Rising Complexity:** The linear regression model indicates a steady rise in the average complexity of AI incidents. The trend line starts at a technique count of roughly **4.2 in 2016** and rises to approximately **9 in 2026**.
+*   **Heteroscedasticity:** The data exhibits heteroscedasticity, meaning the variability of the "Technique Count" is not constant; it increases as time goes on. While the average complexity is rising, the range of possible complexities is expanding, indicating that while we are seeing much more complex incidents, simple incidents are still occurring.
+*   **Incident Acceleration:** The visual clustering suggests a sharp acceleration in the number of reported incidents roughly after 2023, highlighting a period of increased activity or scrutiny in the AI domain.
+==================================================

@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Records for analysis: 1710
+System Source Distribution:
+ system_source
+Custom/Federal    1357
+Commercial         353
+Name: count, dtype: int64
+Monitoring Status Distribution:
+ has_monitoring
+No     1568
+Yes     142
+Name: count, dtype: int64
+
+Contingency Table (Source vs Monitoring):
+has_monitoring    No  Yes
+system_source            
+Commercial       311   42
+Custom/Federal  1257  100
+
+Chi-Square Statistic: 6.9624
+P-value: 8.3239e-03
+
+Monitoring Rates (%):
+has_monitoring         No        Yes
+system_source                       
+Commercial      88.101983  11.898017
+Custom/Federal  92.630803   7.369197
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot compares the percentages of reported post-deployment monitoring for two distinct categories of AI system sources: "Commercial" and "Custom/Federal."
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "System Source"
+    *   **Labels:** The axis represents categorical data with two groups: "Commercial" and "Custom/Federal."
+*   **Y-axis:**
+    *   **Title:** "Reported Monitoring (%)"
+    *   **Units:** Percentage (%).
+    *   **Range:** The axis scale ranges from **0 to 14**, with major tick marks at intervals of 2.
+
+### 3. Data Trends
+*   **Tallest Bar:** The orange bar representing **Commercial** systems is the tallest, indicating a higher rate of reported monitoring.
+*   **Shortest Bar:** The blue bar representing **Custom/Federal** systems is the shortest.
+*   **Pattern:** There is a clear disparity between the two sources. AI systems sourced commercially are reported to be monitored post-deployment at a higher frequency than those developed via custom or federal channels.
+
+### 4. Annotations and Legends
+*   **Title:** "Post-Deployment Monitoring Rates: Commercial vs Custom AI" provides the main context for the visualization.
+*   **Value Labels:** Exact percentage values are annotated above each bar for precision:
+    *   Commercial: **11.9%**
+    *   Custom/Federal: **7.4%**
+*   **Gridlines:** Horizontal dashed gridlines are included to assist in visual estimation of bar heights relative to the Y-axis.
+*   **Colors:** The bars are color-coded (Orange for Commercial, Blue for Custom/Federal) to visually distinguish the categories.
+
+### 5. Statistical Insights
+*   **Absolute Difference:** There is a **4.5 percentage point gap** between the two categories ($11.9\% - 7.4\% = 4.5\%$).
+*   **Relative Comparison:** Commercial AI systems have a reported monitoring rate approximately **1.6 times higher** than Custom/Federal systems.
+*   **Implication:** The data suggests that commercial vendors may have more established protocols or requirements for post-deployment monitoring compared to custom or federally developed solutions. Alternatively, this could indicate a gap in reporting standards where federal/custom projects are less likely to disclose monitoring activities even if they occur.
+==================================================

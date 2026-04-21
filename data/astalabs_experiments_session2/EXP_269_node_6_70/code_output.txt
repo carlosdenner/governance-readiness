@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded ATLAS cases: 52 rows
+Using columns: Tactics='tactics', Type='type'
+
+--- Cohort Analysis: Kill-Chain Complexity ---
+attack_category
+Evasion         21
+Exfiltration    15
+Name: count, dtype: int64
+                 count  mean  std  min  25%  50%  75%  max
+attack_category                                           
+Evasion           21.0   1.0  0.0  1.0  1.0  1.0  1.0  1.0
+Exfiltration      15.0   1.0  0.0  1.0  1.0  1.0  1.0  1.0
+
+Independent T-Test Results:
+T-statistic: nan
+P-value: nan
+Result: No statistically significant difference detected.
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.
+  res = hypotest_fun_out(*samples, **kwds)
+<ipython-input-1-78c9057f4166>:96: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.violinplot(x='attack_category', y='tactic_count', data=cohorts, palette='muted', inner='stick')
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot** (specifically, a degenerate box plot where the distribution has collapsed into a single value).
+*   **Purpose:** The plot aims to compare the distribution of the "Number of Unique Tactics Used" across two different categories of adversarial behavior: "Evasion" and "Exfiltration." Box plots are typically used to show statistical distribution (minimum, first quartile, median, third quartile, and maximum), but here they indicate a lack of variance in the data.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Attack Category"
+    *   **Labels:** Two categorical variables: "Evasion" and "Exfiltration."
+*   **Y-axis:**
+    *   **Title:** "Number of Unique Tactics Used"
+    *   **Range:** The visible scale ranges from approximately **0.95 to 1.05**, with tick marks at 0.96, 0.98, 1.00, 1.02, and 1.04.
+    *   **Note on Units:** While the axis displays decimal values due to auto-scaling, the metric "Number of Unique Tactics" implies integer data. The lines are situated exactly at the integer value of **1.00**.
+
+### 3. Data Trends
+*   **Evasion:** Represented by a single horizontal line at the Y-value of **1.00**. This indicates that for every data point in the "Evasion" category, the number of unique tactics used was exactly 1. There is no spread, variance, or outliers visible.
+*   **Exfiltration:** Similarly, this category is represented by a single horizontal line at the Y-value of **1.00**. Like the Evasion category, the data is constant at 1.
+*   **Comparison:** There is no difference between the two categories. Both show identical behavior regarding this metric.
+
+### 4. Annotations and Legends
+*   **Title:** The chart is titled **"Adversarial Kill-Chain Complexity: Exfiltration vs Evasion"**. This sets the context of the analysis within cybersecurity, specifically looking at the complexity of attack phases.
+*   **Legend:** There is no legend, as the categories are self-explanatory via the X-axis labels.
+
+### 5. Statistical Insights
+*   **Zero Variance:** The most significant statistical insight is that there is **zero variance** in the dataset for this specific metric. In every observed instance of Evasion and Exfiltration, the adversary (or simulation) utilized exactly **one** unique tactic.
+*   **Low Complexity:** In the context of "Kill-Chain Complexity," a value of 1 suggests the lowest possible complexity. The attacks did not employ a diverse range of tactics within these phases; they relied on a single method for evasion and a single method for exfiltration.
+*   **Uniformity:** The data suggests a highly uniform or standardized attack pattern, potentially indicative of automated scripts or a very specific, repetitive attack scenario where the methodology does not deviate.
+==================================================

@@ -1,0 +1,64 @@
+exitcode: 0 (execution succeeded)
+Code output: Data points for analysis: 166
+Distribution:
+Autonomy_Cat       Harm_Cat  
+High (Autonomous)  Intangible    20
+                   Physical      28
+Low (Augmented)    Intangible    54
+                   Physical      64
+dtype: int64
+
+--- Contingency Table ---
+Harm_Cat           Intangible  Physical
+Autonomy_Cat                           
+High (Autonomous)          20        28
+Low (Augmented)            54        64
+
+--- Statistical Test Results ---
+Chi-Square: 0.0956
+P-Value: 7.5721e-01
+Cramer's V: 0.0240
+
+Result: Fail to reject Null Hypothesis. No significant association.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart is used to compare the relative percentage distribution of two categorical variables ("Intangible" vs. "Physical" harm) across distinct groups ("High" vs. "Low" autonomy levels). It visualizes how the composition of harm types changes depending on the level of autonomy.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Labels:** Two categorical groups are presented: "High (Autonomous)" and "Low (Augmented)". The labels are oriented vertically (90 degrees).
+*   **Y-axis:**
+    *   **Title:** "Percentage"
+    *   **Range:** The scale runs from 0 to 100.
+    *   **Units:** Percent (%).
+
+### 3. Data Trends
+*   **General Pattern:** In both autonomy levels, "Physical" harm constitutes the majority (over 50%) of the distribution, while "Intangible" harm constitutes the minority.
+*   **High (Autonomous) Level:**
+    *   **Physical Harm (Blue):** Comprises the larger portion at **58.3%**.
+    *   **Intangible Harm (Pink):** Comprises the smaller portion at **41.7%**.
+*   **Low (Augmented) Level:**
+    *   **Physical Harm (Blue):** Comprises **54.2%**.
+    *   **Intangible Harm (Pink):** Comprises **45.8%**.
+*   **Comparison:** As the autonomy level shifts from High (Autonomous) to Low (Augmented), the proportion of Physical harm decreases slightly, while the proportion of Intangible harm increases.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Harm Type Distribution by Autonomy Level" appears at the top center.
+*   **Legend:** Located on the right side, titled "Harm Type". It indicates:
+    *   **Pink/Light Red:** Represents "Intangible" harm.
+    *   **Light Blue:** Represents "Physical" harm.
+*   **Data Labels:** Specific percentage values are annotated directly inside each bar segment (e.g., "58.3%", "41.7%"), providing precise data points without needing to estimate from the Y-axis.
+
+### 5. Statistical Insights
+*   **dominance of Physical Harm:** Regardless of whether the system is fully autonomous or augmented (low autonomy), physical harm is the primary concern, consistently accounting for more than half of the recorded harm types.
+*   **Shift in Harm Composition:** There is a notable, albeit small, shift in the distribution based on autonomy.
+    *   **High Autonomy** is associated with a higher likelihood of Physical harm (58.3%) compared to Low Autonomy (54.2%).
+    *   **Low Autonomy (Augmented)** shows a higher relative incidence of Intangible harm (45.8%) compared to High Autonomy (41.7%).
+*   **Conclusion:** While physical risks remain paramount in both scenarios, the data suggests that as human involvement increases (shifting from Autonomous to Augmented), the relative share of intangible harms (potentially psychological, financial, or societal) rises by approximately 4.1 percentage points.
+==================================================

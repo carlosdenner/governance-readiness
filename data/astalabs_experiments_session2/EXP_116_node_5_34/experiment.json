@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully re-evaluated the 'High-Stakes Transparency' Gap using corrected parsing logic for the '59_ai_notice' column. By properly categorizing descriptive responses (e.g., 'Email', 'In-person', 'Online') as valid notice indicators versus explicit negatives (e.g., 'None of the above', 'N/A'), the analysis revealed a distinct trend. Contrary to the hypothesis that high-stakes systems would not show higher transparency, the data indicates that **High Impact systems are significantly more likely** to provide public notice (16.88%) compared to Low Impact systems (3.63%). The Chi-square test (p < 0.001) confirms this difference is statistically significant. While this refutes the hypothesis of 'no difference,' the finding is sobering: even among high-stakes 'Rights' and 'Safety' impacting systems, over 83% fail to provide public notice.",
+  "child_ids": [
+    "node_6_13",
+    "node_6_65"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\nimport os\nimport sys\n\n# Load data\nfile_paths = ['../astalabs_discovery_all_data.csv', 'astalabs_discovery_all_data.csv']\ndf = None\nfor fp in file_paths:\n    if os.path.exists(fp):\n        print(f\"Loading dataset from {fp}...\")\n        df = pd.read_csv(fp, low_memory=False)\n        break\n\nif df is None:\n    print(\"Error: Dataset not found.\")\n    sys.exit(1)\n\n# Filter for EO13960\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Total EO 13960 records: {len(eo_df)}\")\n\n# 1. Define High Impact\n# Column: 17_impact_type\n# Logic: contains 'rights' or 'safety' (case insensitive)\n# Convert to string to handle NaNs safely\neo_df['17_impact_type_str'] = eo_df['17_impact_type'].fillna('').astype(str).str.lower()\neo_df['is_high_impact'] = eo_df['17_impact_type_str'].apply(lambda x: 1 if ('rights' in x or 'safety' in x) else 0)\n\n# 2. Define Has Notice\n# Column: 59_ai_notice\n# Logic from prompt: Map to 0 if NaN, 'None of the above', or 'N/A'. Map to 1 otherwise.\ndef parse_notice(val):\n    if pd.isna(val) or val == '':\n        return 0\n    s = str(val).lower().strip()\n    if s == 'nan':\n        return 0\n    if 'none' in s:\n        return 0\n    if 'n/a' in s:\n        return 0\n    # If it's not None, not N/A, and not missing, we assume it describes a notice method\n    return 1\n\neo_df['has_notice'] = eo_df['59_ai_notice'].apply(parse_notice)\n\n# Debugging: show what values mapped to what\nprint(\"\\nMapping check (Sample of values -> Result):\")\nsample_mapping = eo_df[['59_ai_notice', 'has_notice']].drop_duplicates().head(10)\nprint(sample_mapping)\n\n# 3. Contingency Table\ncontingency = pd.crosstab(eo_df['is_high_impact'], eo_df['has_notice'])\ncontingency.index = ['Low Impact', 'High Impact']\ncontingency.columns = ['No Notice', 'Has Notice']\n\nprint(\"\\nContingency Table:\")\nprint(contingency)\n\n# 4. Rates\nlow_stats = contingency.loc['Low Impact']\nhigh_stats = contingency.loc['High Impact']\n\nlow_n = low_stats.sum()\nhigh_n = high_stats.sum()\n\nlow_rate = low_stats['Has Notice'] / low_n if low_n > 0 else 0\nhigh_rate = high_stats['Has Notice'] / high_n if high_n > 0 else 0\n\nprint(f\"\\nLow Impact Notice Rate:  {low_rate:.2%} ({low_stats['Has Notice']}/{low_n})\")\nprint(f\"High Impact Notice Rate: {high_rate:.2%} ({high_stats['Has Notice']}/{high_n})\")\n\n# 5. Chi-square Test\nchi2, p, dof, expected = chi2_contingency(contingency)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\nif p < 0.05:\n    print(\"Conclusion: Significant difference in notice rates.\")\nelse:\n    print(\"Conclusion: No significant difference in notice rates.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nTotal EO 13960 records: 1757\n\nMapping check (Sample of values -> Result):\n                                          59_ai_notice  has_notice\n0                                                  NaN           0\n49   Online - in the terms or instructions for the ...           1\n53                                     In-person,Other           1\n58   Online - in the terms or instructions for the ...           1\n107  N/A - individuals are not interacting with the...           0\n108                                  None of the above           0\n113                                          In-person           1\n213                                             Other            1\n222                                              Email           1\n243                                             Email            1\n\nContingency Table:\n             No Notice  Has Notice\nLow Impact        1619          61\nHigh Impact         64          13\n\nLow Impact Notice Rate:  3.63% (61/1680)\nHigh Impact Notice Rate: 16.88% (13/77)\n\nChi-Square Statistic: 28.8494\nP-value: 7.8229e-08\nConclusion: Significant difference in notice rates.\n",
+  "created_at": "2026-02-22T06:33:11.557181+00:00",
+  "creation_idx": 117,
+  "experiment_id": "node_5_34",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table of Impact Status vs. Public Notice.\n2. Calculated Notice Rates for High Impact and Low Impact groups.\n3. Chi-square statistic and p-value.",
+    "objective": "Quantify the transparency gap by correctly parsing categorical notice data in the EO 13960 inventory.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for rows where 'source_table' is 'eo13960_scored'.\n2. Create a 'High_Impact' binary variable based on column '17_impact_type': assign 1 if the text contains 'rights' or 'safety' (case-insensitive), else 0.\n3. Create a 'Has_Notice' binary variable based on column '59_ai_notice'. Parse the categorical text: Map to 0 if the value is NaN, contains 'None of the above', or contains 'N/A' (indicating no interaction). Map to 1 if the value indicates a notice method (e.g., 'Online', 'Email', 'In-person', 'Other').\n4. Calculate the percentage of 'Has_Notice' for High Impact vs. Low Impact systems.\n5. Perform a Chi-square test of independence to determine if the difference is statistically significant."
+  },
+  "hypothesis": "The 'High-Stakes Transparency' Gap: AI systems classified as 'Rights-Impacting' or 'Safety-Impacting' do not exhibit statistically higher rates of 'Public Notice' compared to low-impact administrative systems.",
+  "id_in_run": 116,
+  "is_surprising": true,
+  "parent_id": "node_4_32",
+  "posterior": 0.25274725274725274,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25274725274725274,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully re-evaluated the 'High-Stakes Transparency' Gap hypothesis with corrected data parsing logic. \n\n**Hypothesis Status:** Refuted.\n\n**Execution Summary:**\n1. **Data Parsing:** The code correctly identified 'High Impact' systems (n=77) vs. 'Low Impact' systems (n=1,680). Crucially, it fixed the previous error by correctly mapping descriptive notice methods (e.g., 'Email', 'Online', 'In-person') to a positive 'Has Notice' status, while treating 'None of the above', 'N/A', and missing values as negative.\n\n**Findings:**\n- **Rates:** High Impact systems demonstrated a **16.88%** notice rate (13/77), compared to a **3.63%** rate (61/1,680) for Low Impact systems.\n- **Significance:** The Chi-square test yielded a p-value of 7.82e-08, confirming the difference is statistically significant.\n\n**Interpretation:**\nContrary to the hypothesis that high-stakes systems would fail to outperform administrative ones, the data shows they are significantly *more* likely to provide public notice. However, the finding is nuanced: while the relative performance is better, the absolute compliance is critically low, with over 83% of Rights- and Safety-impacting systems still lacking a recorded public notice mechanism.",
+  "rich_outputs": null,
+  "runtime_ms": 241960.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.587025877348458
+}

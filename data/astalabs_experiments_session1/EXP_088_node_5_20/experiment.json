@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully analyzed the 'risk entropy' of sub-competencies using 'step3_coverage_map.csv'.\n\n**Descriptive Statistics:**\n- **Trust Readiness (n=8):** Mean = 1.50 distinct harm types (Std Dev = 1.20).\n- **Integration Readiness (n=8):** Mean = 1.88 distinct harm types (Std Dev = 1.36).\n\n**Statistical Inference:**\n- **Method:** Welch's t-test.\n- **Result:** t-statistic = -0.5867, p-value = 0.5669.\n- **Conclusion:** The hypothesis is **rejected**. Contrary to the prediction that Trust competencies would cover a broader range of harms, the data shows that 'Integration Readiness' sub-competencies actually have a slightly higher (though statistically insignificant) mean count of distinct harm types. The high p-value indicates that there is no significant difference in the breadth of risk scope between the two bundles; both are similarly varied in the number of harm types they address.\n\n**Visualization:**\nThe strip plot confirms substantial overlap between the two groups, with the 'Integration' mean line slightly above the 'Trust' mean line, visually reinforcing the rejection of the hypothesis.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport numpy as np\nimport os\nimport sys\n\n# Define the file name\nfilename = 'step3_coverage_map.csv'\n\n# Try to locate the file\nfile_path = None\npossible_paths = [filename, os.path.join('..', filename)]\n\nfor path in possible_paths:\n    if os.path.exists(path):\n        file_path = path\n        break\n\nif file_path is None:\n    print(f\"Error: Could not find {filename} in current or parent directory.\")\n    print(f\"Current working directory: {os.getcwd()}\")\n    sys.exit(1)\n\nprint(f\"Loading dataset from: {file_path}\")\ndf = pd.read_csv(file_path)\n\n# Function to count distinct harms\ndef count_harms(val):\n    if pd.isna(val) or str(val).strip() == '':\n        return 0\n    # Split by semicolon\n    parts = str(val).split(';')\n    # Filter empty strings\n    parts = [p.strip() for p in parts if p.strip()]\n    return len(parts)\n\n# Apply counting\ndf['distinct_harm_count'] = df['primary_harm_types'].apply(count_harms)\n\n# Filter for relevant bundles\nvalid_bundles = ['Trust Readiness', 'Integration Readiness']\ndf_filtered = df[df['bundle'].isin(valid_bundles)].copy()\n\n# Group data\ntrust_data = df_filtered[df_filtered['bundle'] == 'Trust Readiness']['distinct_harm_count']\nintegration_data = df_filtered[df_filtered['bundle'] == 'Integration Readiness']['distinct_harm_count']\n\n# Descriptive Statistics\nprint(\"\\n=== Descriptive Statistics: Distinct Harm Count by Bundle ===\")\nprint(f\"Trust Readiness (n={len(trust_data)}): Mean={trust_data.mean():.2f}, Std={trust_data.std():.2f}\")\nprint(f\"Integration Readiness (n={len(integration_data)}): Mean={integration_data.mean():.2f}, Std={integration_data.std():.2f}\")\n\n# T-Test (Welch's)\nt_stat, p_val = stats.ttest_ind(trust_data, integration_data, equal_var=False)\nprint(\"\\n=== Welch's T-Test Results ===\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\n\n# Jitter for strip plot\njitter_trust = np.random.normal(0, 0.05, size=len(trust_data))\njitter_integ = np.random.normal(0, 0.05, size=len(integration_data))\n\nplt.scatter(np.zeros_like(trust_data) + jitter_trust, trust_data, \n            label='Trust Readiness', alpha=0.7, s=100, color='skyblue', edgecolors='black')\nplt.scatter(np.ones_like(integration_data) + jitter_integ, integration_data, \n            label='Integration Readiness', alpha=0.7, s=100, color='salmon', edgecolors='black')\n\n# Plot Means\nplt.plot([-0.2, 0.2], [trust_data.mean(), trust_data.mean()], color='blue', lw=3, linestyle='--', label='Mean Trust')\nplt.plot([0.8, 1.2], [integration_data.mean(), integration_data.mean()], color='red', lw=3, linestyle='--', label='Mean Integration')\n\nplt.xticks([0, 1], ['Trust Readiness', 'Integration Readiness'])\nplt.ylabel('Count of Distinct Harm Types')\nplt.title('Risk Scope: Distinct Harms per Sub-Competency')\nplt.legend()\nplt.grid(axis='y', linestyle=':', alpha=0.6)\n\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step3_coverage_map.csv\n\n=== Descriptive Statistics: Distinct Harm Count by Bundle ===\nTrust Readiness (n=8): Mean=1.50, Std=1.20\nIntegration Readiness (n=8): Mean=1.88, Std=1.36\n\n=== Welch's T-Test Results ===\nT-statistic: -0.5867\nP-value: 0.5669\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Categorical Scatter Plot (also known as a Strip Plot or Jitter Plot) with overlaying mean lines.\n*   **Purpose:** The plot compares the distribution of a count variable (\"Distinct Harm Types\") across two different categories (\"Trust Readiness\" and \"Integration Readiness\"). The jittering (horizontal displacement of dots) prevents data points with the same value from overlapping completely, allowing the viewer to estimate the density of data at each value.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title/Labels:** Categorical labels representing two groups: **\"Trust Readiness\"** and **\"Integration Readiness\"**.\n    *   **Range:** Two discrete categories.\n*   **Y-Axis:**\n    *   **Title:** **\"Count of Distinct Harm Types\"**.\n    *   **Units:** Integer counts (distinct types of harm).\n    *   **Range:** The axis is marked from **0.0 to 3.0**, with grid lines at 0.5 intervals. The data points fall strictly on integer values (0, 1, 2, 3).\n\n### 3. Data Trends\n*   **Trust Readiness (Blue Circles):**\n    *   **Distribution:** The data points appear very evenly distributed across the entire range. There are pairs of data points visible at each integer level: 0, 1, 2, and 3.\n    *   **Pattern:** This suggests a uniform distribution where low, medium, and high counts of distinct harms are equally likely within this sample.\n*   **Integration Readiness (Salmon Circles):**\n    *   **Distribution:** The data appears less uniform than the Trust group. There is a cluster of points at the maximum value (3) and a cluster at the minimum value (0), with fewer points in the middle (values 1 and 2).\n    *   **Pattern:** This suggests a somewhat bimodal distribution where \"Integration Readiness\" scenarios tend to result in either a high number of distinct harms or none at all, rather than a moderate amount.\n\n### 4. Annotations and Legends\n*   **Plot Title:** \"Risk Scope: Distinct Harms per Sub-Competency\".\n*   **Legend:** Located on the right side, defining four elements:\n    *   **Light Blue Circle:** Represents individual data points for \"Trust Readiness\".\n    *   **Salmon Circle:** Represents individual data points for \"Integration Readiness\".\n    *   **Blue Dashed Line:** Represents the \"Mean Trust\" score.\n    *   **Red Dashed Line:** Represents the \"Mean Integration\" score.\n*   **Grid:** Horizontal dotted lines aid in reading the specific Y-values of the points.\n\n### 5. Statistical Insights\n*   **Comparison of Means:**\n    *   The **Mean Trust** (blue dashed line) sits exactly at **1.5**. This is consistent with the visual observation of an evenly distributed dataset across 0, 1, 2, and 3.\n    *   The **Mean Integration** (red dashed line) is higher, sitting just below **2.0** (approximately 1.9).\n*   **Risk Assessment:**\n    *   **Higher Average Risk:** \"Integration Readiness\" has a higher average count of distinct harm types compared to \"Trust Readiness,\" indicating it may be a riskier area on average regarding the scope of harms.\n    *   **Consistency vs. Volatility:** \"Trust Readiness\" shows consistent variability (uniform spread). \"Integration Readiness\" shows a tendency toward extremes—mostly clustering at the highest harm count (3), despite having several zero-harm instances pulling the average down.\n==================================================",
+  "created_at": "2026-02-21T00:22:12.189604+00:00",
+  "creation_idx": 89,
+  "experiment_id": "node_5_20",
+  "experiment_plan": {
+    "deliverables": "1. Descriptive statistics table showing mean harm counts and standard deviations by bundle.\n2. T-test results (t-statistic and p-value).\n3. A visualization (strip plot or box plot) comparing the breadth of harm types.",
+    "objective": "Analyze the 'risk entropy' or breadth of scope for sub-competencies in each bundle by comparing the count of distinct harm types addressed.",
+    "steps": "1. Load the dataset 'step3_coverage_map.csv'.\n2. Create a new variable 'distinct_harm_count' by parsing the 'primary_harm_types' column. This column contains semicolon-separated values (e.g., 'security(16); privacy(2)'). Count the number of distinct items separated by semicolons for each row. If the field is empty or NaN, the count is 0.\n3. Group the data by the 'bundle' column ('Trust Readiness' vs. 'Integration Readiness').\n4. Calculate descriptive statistics (mean, standard deviation, count) for 'distinct_harm_count' for each bundle.\n5. Perform a Welch's t-test (independent samples, unequal variance) to compare the mean distinct harm counts between the two bundles.\n6. Generate a strip plot or box plot to visualize the distribution of harm counts for each bundle."
+  },
+  "hypothesis": "Sub-competencies within the 'Trust Readiness' bundle cover a significantly broader range of distinct harm types per competency than 'Integration Readiness' sub-competencies, which tend to address specific, narrower risk vectors.",
+  "id_in_run": 88,
+  "is_surprising": true,
+  "parent_id": "node_4_0",
+  "posterior": 0.22863247863247863,
+  "posterior_belief": {
+    "_empirical_mean": 0.075,
+    "_type": "boolean_cat",
+    "definitely_false": 63.0,
+    "definitely_true": 0.0,
+    "maybe_false": 27.0,
+    "maybe_true": 0.0,
+    "mean": 0.22863247863247863,
+    "n": 90.0,
+    "prior_params": [
+      20.0,
+      7.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7407407407407407,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 26.0,
+    "mean": 0.7407407407407407,
+    "n": 26.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully executed. The code successfully loaded the dataset, parsed the harm types, and performed the required statistical comparison. The results contradict the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 266720.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5943507097961854
+}

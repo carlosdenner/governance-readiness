@@ -1,0 +1,57 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1757 records from EO 13960 source.
+
+--- Group Counts ---
+system_type
+Legacy (Reused)    600
+New (Custom)       479
+Name: count, dtype: int64
+
+--- Contingency Table ---
+appeal_status    Has Appeal Process  No Appeal Process
+system_type                                           
+Legacy (Reused)                  43                557
+New (Custom)                     31                448
+
+--- Implementation Rates (% with Appeal Process) ---
+system_type
+Legacy (Reused)    7.166667
+New (Custom)       6.471816
+Name: Has Appeal Process, dtype: float64
+
+Chi-Square Statistic: 0.1072
+P-value: 7.4331e-01
+Result: No Statistically Significant Difference (Fail to Reject Null Hypothesis)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (Vertical Bar Chart).
+*   **Purpose:** The plot is designed to compare the prevalence (percentage) of appeal process implementation across two distinct categories of system origins: Legacy (Reused) systems and New (Custom) systems.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "System Origin"
+    *   **Labels:** Two categorical variables: "Legacy (Reused)" and "New (Custom)".
+*   **Y-Axis:**
+    *   **Title:** "Percentage with Appeal Process (%)"
+    *   **Value Range:** The axis ranges from 0.0 to 20.0.
+    *   **Units:** Percentage (%).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Legacy (Reused)" category is the highest, represented by an orange bar reaching **7.2%**.
+*   **Shortest Bar:** The "New (Custom)" category is the lowest, represented by a light blue bar reaching **6.5%**.
+*   **Pattern:** There is a slight disparity between the two categories, but the values are relatively close to one another. Both categories show that the implementation of an appeal process is a minority occurrence (both under 10%).
+
+### 4. Annotations and Legends
+*   **Title:** "Appeal Process Implementation by System Origin" appears at the top center.
+*   **Bar Annotations:** Specific percentage values are annotated directly above each bar ("7.2%" and "6.5%"), allowing for precise reading of the data without relying solely on the y-axis grid lines.
+*   **Color Coding:** The plot uses orange for "Legacy (Reused)" and light blue for "New (Custom)" to visually distinguish the categories, though a separate legend box is not provided (nor necessary, given the x-axis labels).
+
+### 5. Statistical Insights
+*   **Low Adoption Rates:** The most significant insight is that the implementation of appeal processes is rare across the board. Regardless of whether a system is Legacy or New, fewer than 8% of them include an appeal process.
+*   **Legacy Advantage:** Legacy (Reused) systems are slightly more likely (by a margin of 0.7%) to have an appeal process implemented compared to New (Custom) systems. This could suggest that older, established systems have had more time to mature and incorporate governance or recourse mechanisms, or that reused components inherit these processes from previous iterations.
+*   **Marginal Difference:** The difference between 7.2% and 6.5% is statistically small, suggesting that the origin of the system (New vs. Legacy) is not a strong predictor for the presence of an appeal process.
+==================================================

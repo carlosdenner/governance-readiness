@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment was successfully executed but revealed that the dataset lacks sufficient variance to support the hypothesis. Out of 52 total incidents, only 6 were classified as purely 'trust-dominant' (n=2) or 'integration-dominant' (n=4), as the vast majority (n=46) were classified as 'both'. Furthermore, within this small subset of 6 incidents, 100% were classified as 'Prevention' failures. Due to the absence of 'Post-Prevention' failures in the filtered group (a column of zeros in the contingency table), the Fisher's Exact Test yielded a p-value of 1.0 and an undefined odds ratio. Consequently, no statistical relationship could be established between the dominant competency bundle and the failure mode.",
+  "child_ids": [],
+  "code": "import pandas as pd\nfrom scipy.stats import fisher_exact\nimport os\n\n# 1. Load 'step3_incident_coding.csv'\nfile_path = '../step3_incident_coding.csv'\nif not os.path.exists(file_path):\n    # Fallback for local testing if needed\n    file_path = 'step3_incident_coding.csv'\n\ntry:\n    df = pd.read_csv(file_path)\n    print(\"Dataset loaded successfully.\")\nexcept FileNotFoundError:\n    print(f\"File not found: {file_path}\")\n    exit(1)\n\n# 2. Filter for rows where 'trust_integration_split' is 'trust-dominant' or 'integration-dominant'\ntarget_splits = ['trust-dominant', 'integration-dominant']\nfiltered_df = df[df['trust_integration_split'].isin(target_splits)].copy()\n\nprint(f\"\\nTotal incidents: {len(df)}\")\nprint(f\"Filtered incidents (excluding 'both'): {len(filtered_df)}\")\nprint(f\"Counts by split in filtered data:\\n{filtered_df['trust_integration_split'].value_counts()}\")\n\n# 3. Create simplified failure mode variable: 'Prevention' vs 'Post-Prevention'\ndef simplify_failure(mode):\n    if pd.isna(mode):\n        return \"Unknown\"\n    mode = str(mode).lower()\n    if 'prevention' in mode:\n        return 'Prevention'\n    elif 'detection' in mode or 'response' in mode:\n        return 'Post-Prevention'\n    else:\n        return 'Other'\n\nfiltered_df['failure_category'] = filtered_df['failure_mode'].apply(simplify_failure)\n\n# 4. Create a contingency table of Failure Mode vs. Split\n# We ensure the table structure is fixed for the test (2x2)\n# Rows: integration-dominant, trust-dominant\n# Cols: Prevention, Post-Prevention\n\nexpected_rows = ['integration-dominant', 'trust-dominant']\nexpected_cols = ['Prevention', 'Post-Prevention']\n\n# Initialize matrix with zeros\ntest_matrix = pd.DataFrame(0, index=expected_rows, columns=expected_cols)\n\n# Fill with actual counts\ncontingency = pd.crosstab(filtered_df['trust_integration_split'], filtered_df['failure_category'])\n\nfor r in expected_rows:\n    for c in expected_cols:\n        if r in contingency.index and c in contingency.columns:\n            test_matrix.loc[r, c] = contingency.loc[r, c]\n\nprint(\"\\nContingency Table (for Fisher's Exact Test):\")\nprint(test_matrix)\n\n# 5. Perform Fisher's Exact Test\n# Note: If the sample size is very small or one category is empty, this handles it.\ntotal_observations = test_matrix.sum().sum()\nif total_observations < 2:\n    print(\"\\nInsufficient data to perform Fisher's Exact Test.\")\nelse:\n    odds_ratio, p_value = fisher_exact(test_matrix.to_numpy())\n    print(\"\\nFisher's Exact Test Results:\")\n    print(f\"Odds Ratio: {odds_ratio}\")\n    print(f\"P-value: {p_value}\")\n    \n    if p_value < 0.05:\n        print(\"Result: Statistically significant association.\")\n    else:\n        print(\"Result: No statistically significant association found (null hypothesis retained).\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Dataset loaded successfully.\n\nTotal incidents: 52\nFiltered incidents (excluding 'both'): 6\nCounts by split in filtered data:\ntrust_integration_split\nintegration-dominant    4\ntrust-dominant          2\nName: count, dtype: int64\n\nContingency Table (for Fisher's Exact Test):\n                      Prevention  Post-Prevention\nintegration-dominant           4                0\ntrust-dominant                 2                0\n\nFisher's Exact Test Results:\nOdds Ratio: nan\nP-value: 1.0\nResult: No statistically significant association found (null hypothesis retained).\n",
+  "created_at": "2026-02-21T00:09:19.696910+00:00",
+  "creation_idx": 83,
+  "experiment_id": "node_4_27",
+  "experiment_plan": {
+    "deliverables": "Contingency table and Fisher's Exact Test results.",
+    "objective": "Investigate the relationship between the mode of failure and the type of competency gap.",
+    "steps": "1. Load 'step3_incident_coding.csv'.\n2. Filter for rows where 'trust_integration_split' is 'trust-dominant' or 'integration-dominant'.\n3. Create a simplified failure mode variable: 'Prevention' vs 'Post-Prevention' (grouping Detection and Response).\n4. Create a contingency table of Failure Mode vs. Split.\n5. Perform a Fisher's Exact Test."
+  },
+  "hypothesis": "'Prevention Failures' are disproportionately represented in 'Integration-dominant' incidents, while 'Detection' and 'Response' failures are disproportionately represented in 'Trust-dominant' incidents, suggesting that technical controls are the primary gatekeepers while governance is responsible for oversight and reaction.",
+  "id_in_run": 82,
+  "is_surprising": true,
+  "parent_id": "node_3_8",
+  "posterior": 0.5771276595744681,
+  "posterior_belief": {
+    "_empirical_mean": 0.5,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.5771276595744681,
+    "n": 63.0,
+    "prior_params": [
+      22.75,
+      8.25
+    ],
+    "uncertain": 63.0
+  },
+  "prior": 0.7338709677419355,
+  "prior_belief": {
+    "_empirical_mean": 0.7416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.7338709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "Hypothesis: 'Prevention Failures' are disproportionately represented in 'Integration-dominant' incidents, while 'Detection' and 'Response' failures are disproportionately represented in 'Trust-dominant' incidents. \n\nResults: The experiment was successfully executed on the 'step3_incident_coding.csv' dataset. However, the data revealed extreme skewness that prevented meaningful statistical testing. Out of 52 total incidents, 46 were classified as 'both', leaving only 6 incidents for the specific comparison (4 'integration-dominant', 2 'trust-dominant'). Furthermore, within this small subset, 100% of the incidents were 'Prevention' failures; there were zero 'Detection' or 'Response' failures.\n\nFindings: Fisher's Exact Test resulted in a p-value of 1.0 and an undefined odds ratio due to the empty 'Post-Prevention' column in the contingency table. Consequently, the hypothesis could not be supported. The analysis highlights two major characteristics of the dataset: 1) Failure modes are almost exclusively prevention-based, and 2) The majority of incidents require both Trust and Integration competencies, making the 'dominant' classification a rare edge case.",
+  "rich_outputs": null,
+  "runtime_ms": 164540.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.1819156287024362
+}

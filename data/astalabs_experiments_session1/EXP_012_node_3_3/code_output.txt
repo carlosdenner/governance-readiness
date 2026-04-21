@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: === Loading and Preprocessing Data ===
+Dataset loaded: step3_incident_coding.csv
+Shape: (52, 22)
+
+--- Distribution of Prompt Injection ---
+has_prompt_injection
+False    32
+True     20
+Name: count, dtype: int64
+
+[Debug] First 5 'techniques_used' entries:
+['AML.T0000.001; AML.T0002.000; AML.T0005; AML.T0015; AML.T0042; AML.T0043.003', 'AML.T0000; AML.T0002; AML.T0015; AML.T0017.000; AML.T0042; AML.T0043.001', 'AML.T0010.002; AML.T0016.000; AML.T0020; AML.T0043', 'AML.T0000; AML.T0015; AML.T0017.000; AML.T0043.003; AML.T0047; AML.T0063', 'AML.T0008.001; AML.T0015; AML.T0016.000; AML.T0016.001; AML.T0021; AML.T0047; AML.T0048.000; AML.T0087']
+
+--- Failure Category Distribution ---
+failure_category
+Prevention            51
+Detection/Response     1
+Name: count, dtype: int64
+
+--- Contingency Table (Observed) ---
+failure_category      Prevention  Detection/Response
+has_prompt_injection                                
+False                         31                   1
+True                          20                   0
+
+=== Statistical Test Results (Fisher's Exact Test) ===
+Odds Ratio: 0.0
+P-value: 1.0000
+Conclusion: NO statistically significant association found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (or Clustered Bar Chart).
+*   **Purpose:** This chart compares the frequency of specific failure categories ("Prevention" and "Detection/Response") across two different conditions regarding the presence of prompt injection ("No" and "Yes"). It allows for easy comparison of categorical data distributions.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Has Prompt Injection"
+    *   **Categories:** Two categorical values: "No" and "Yes".
+*   **Y-Axis:**
+    *   **Label:** "Count of Incidents"
+    *   **Range:** The axis ranges from 0 to roughly 32, with grid lines marked at intervals of 5 (0, 5, 10, 15, 20, 25, 30).
+    *   **Units:** Integer counts of incidents.
+
+### 3. Data Trends
+*   **Dominant Category:** The "Prevention" failure category (blue bars) is significantly higher than "Detection/Response" (orange bars) in both scenarios.
+*   **"No" Prompt Injection Group:**
+    *   This group has the highest single bar on the chart. The "Prevention" count is slightly above the 30 grid line (estimated at **31**).
+    *   The "Detection/Response" count is very low (estimated at **1**).
+*   **"Yes" Prompt Injection Group:**
+    *   The "Prevention" count is exactly on the **20** grid line.
+    *   The "Detection/Response" bar is not visible, implying a count of **0**.
+*   **Overall Volume:** There appear to be more total incidents recorded for cases without prompt injection (approx. 32) compared to cases with prompt injection (20).
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Failure Mode Distribution by Presence of Prompt Injection" – situated at the top center.
+*   **Legend:** Located in the top right corner with the title "Failure Category".
+    *   **Blue:** Represents "Prevention".
+    *   **Orange:** Represents "Detection/Response".
+*   **Grid:** Horizontal dashed grid lines are present to assist with estimating the height of the bars.
+
+### 5. Statistical Insights
+*   **Imbalance in Failure Modes:** The data suggests a massive imbalance in failure modes. "Prevention" failures account for nearly 100% of the incidents shown (approx. 51 out of 52 total incidents). This indicates that the system struggles primarily with preventing issues rather than detecting or responding to them—or, alternatively, that detection/response mechanisms are rarely tested or logged as failures in this dataset.
+*   **Counter-intuitive Volume:** One might expect "Prompt Injection" scenarios to generate more failures, but the data shows higher incident counts when prompt injection is *not* present (approx. 32 vs. 20).
+*   **Absence of Detection Failures in Injection Scenarios:** The fact that there are zero "Detection/Response" failures when prompt injection is present ("Yes") is notable. This could mean detection was perfect (no failures), or perhaps more likely, that the focus of these specific incidents was entirely on the prevention layer, rendering detection metrics moot.
+==================================================

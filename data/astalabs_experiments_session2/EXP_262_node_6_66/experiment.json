@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment was successfully executed, though the analysis was heavily constrained by data quality issues within the AIID dataset. Specifically, 1,161 of the 1,362 incidents (85%) lacked a defined 'sector_of_deployment', drastically reducing the effective sample size to 122 incidents for this comparison. \n\nThe observed data showed a strong directional trend supporting the hypothesis: 15.96% (15/94) of incidents in 'Tech/Info' sectors involved Generative AI, whereas 0% (0/28) of incidents in 'Safety-Critical' sectors did. \n\nHowever, the Chi-square test resulted in a p-value of 0.0537. Since this is slightly above the standard alpha of 0.05, the difference is not statistically significant at the 95% confidence level. Therefore, while there is a visible concentration of Generative AI incidents in the technology sector compared to safety-critical ones (where no GenAI incidents were recorded in this subset), the null hypothesis cannot be strictly rejected due to the insufficient sample size caused by missing metadata.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load the dataset\nfile_path = '../astalabs_discovery_all_data.csv'\ntry:\n    # Reading with low_memory=False to handle mixed types warning from previous steps\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    # Fallback if file is in current directory\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\nprint(f\"Total AIID incidents: {len(aiid_df)}\")\n\n# Identify relevant columns based on previous metadata\n# 84_known_ai_technology and 78_sector_of_deployment\n# Normalize column names to be safe\naiid_df.columns = [c.strip().lower().replace(' ', '_').replace(':', '') for c in aiid_df.columns]\n\n# Find the specific columns\ntech_col = next((c for c in aiid_df.columns if 'known_ai_technology' in c), None)\nsector_col = next((c for c in aiid_df.columns if 'sector_of_deployment' in c), None)\n\nif not tech_col or not sector_col:\n    print(\"Could not identify required columns. Available columns:\")\n    print(aiid_df.columns.tolist())\n    exit()\n\nprint(f\"Using technology column: {tech_col}\")\nprint(f\"Using sector column: {sector_col}\")\n\n# Fill NaNs\naiid_df[tech_col] = aiid_df[tech_col].fillna('')\naiid_df[sector_col] = aiid_df[sector_col].fillna('')\n\n# Define GenAI keywords\ngenai_keywords = ['generative', 'language model', 'llm', 'gpt', 'diffusion', 'chatbot', 'transformer', 'foundation model']\n\n# Create is_genai flag\naiid_df['is_genai'] = aiid_df[tech_col].apply(lambda x: any(k in str(x).lower() for k in genai_keywords))\n\n# Define Sector Groups\n# Tech/Info vs Safety-Critical\n# Let's inspect unique sectors first to ensure correct mapping\nunique_sectors = aiid_df[sector_col].unique()\nprint(f\"\\nTop 10 Sectors found:\\n{aiid_df[sector_col].value_counts().head(10)}\")\n\ndef map_sector(sector_str):\n    s = str(sector_str).lower()\n    if any(x in s for x in ['technology', 'media', 'information', 'internet', 'software', 'telecom', 'entertainment']):\n        return 'Tech/Info'\n    elif any(x in s for x in ['healthcare', 'transportation', 'energy', 'automotive', 'aviation', 'medical', 'hospital', 'utility', 'defense', 'military']):\n        return 'Safety-Critical'\n    return 'Other'\n\naiid_df['sector_group'] = aiid_df[sector_col].apply(map_sector)\n\n# Filter for only the two groups of interest\nanalysis_df = aiid_df[aiid_df['sector_group'].isin(['Tech/Info', 'Safety-Critical'])].copy()\n\nprint(f\"\\nAnalysis set size (filtered for relevant sectors): {len(analysis_df)}\")\n\n# Contingency Table\ncontingency_table = pd.crosstab(analysis_df['is_genai'], analysis_df['sector_group'])\nprint(\"\\nContingency Table (Count):\")\nprint(contingency_table)\n\n# Calculate Proportions\nprop_table = pd.crosstab(analysis_df['is_genai'], analysis_df['sector_group'], normalize='columns')\nprint(\"\\nContingency Table (Proportions):\")\nprint(prop_table)\n\n# Chi-Square Test\nchi2, p, dof, expected = chi2_contingency(contingency_table)\n\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"p-value: {p:.4e}\")\n\n# Interpretation\ngenai_tech_rate = prop_table.loc[True, 'Tech/Info'] if True in prop_table.index else 0\ngenai_safety_rate = prop_table.loc[True, 'Safety-Critical'] if True in prop_table.index else 0\n\nprint(f\"\\nGenAI Incidence Rate in Tech/Info: {genai_tech_rate:.2%}\")\nprint(f\"GenAI Incidence Rate in Safety-Critical: {genai_safety_rate:.2%}\")\n\nif p < 0.05:\n    print(\"Result: Statistically Significant Difference.\")\n    if genai_tech_rate > genai_safety_rate:\n        print(\"Hypothesis Supported: GenAI is more concentrated in Tech/Info sectors.\")\n    else:\n        print(\"Hypothesis Refuted: GenAI is more concentrated in Safety-Critical sectors.\")\nelse:\n    print(\"Result: No Statistically Significant Difference found.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total AIID incidents: 1362\nUsing technology column: known_ai_technology\nUsing sector column: sector_of_deployment\n\nTop 10 Sectors found:\nsector_of_deployment\n                                                                     1161\ninformation and communication                                          44\ntransportation and storage                                             21\nArts, entertainment and recreation, information and communication      14\nwholesale and retail trade                                             11\nhuman health and social work activities                                10\nArts, entertainment and recreation                                      9\nlaw enforcement                                                         9\ninformation and communication, Arts, entertainment and recreation       9\nEducation                                                               7\nName: count, dtype: int64\n\nAnalysis set size (filtered for relevant sectors): 122\n\nContingency Table (Count):\nsector_group  Safety-Critical  Tech/Info\nis_genai                                \nFalse                      28         79\nTrue                        0         15\n\nContingency Table (Proportions):\nsector_group  Safety-Critical  Tech/Info\nis_genai                                \nFalse                     1.0   0.840426\nTrue                      0.0   0.159574\n\nChi-Square Statistic: 3.7221\np-value: 5.3697e-02\n\nGenAI Incidence Rate in Tech/Info: 15.96%\nGenAI Incidence Rate in Safety-Critical: 0.00%\nResult: No Statistically Significant Difference found.\n",
+  "created_at": "2026-02-22T13:29:24.675741+00:00",
+  "creation_idx": 263,
+  "experiment_id": "node_6_66",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistics, and sectoral proportions for Generative AI.",
+    "objective": "Compare the sector distribution of Generative AI incidents versus other AI technologies.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table` = 'aiid_incidents'.\n2. Define `is_genai`: Search `84_known_ai_technology` (or similar) for 'Generative', 'Language Model', 'LLM', 'GPT', 'Diffusion'.\n3. Define `sector_type`: Map `78_sector_of_deployment` to 'Tech/Info' (e.g., Technology, Media, Information) vs 'Safety-Critical' (e.g., Healthcare, Transportation, Energy).\n4. Create a contingency table of GenAI Status vs. Sector Type.\n5. Perform a Chi-square test.\n6. Compare the proportion of GenAI cases in Tech/Info vs. Safety-Critical sectors."
+  },
+  "hypothesis": "Generative Sector Bias: 'Generative AI' incidents in the AIID dataset are disproportionately concentrated in the 'Technology' and 'Information' sectors compared to 'Healthcare' or 'Transportation', where discriminative models prevail.",
+  "id_in_run": 262,
+  "is_surprising": false,
+  "parent_id": "node_5_87",
+  "posterior": 0.760989010989011,
+  "posterior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 60.0,
+    "mean": 0.760989010989011,
+    "n": 60.0,
+    "prior_params": [
+      24.25,
+      6.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.782258064516129,
+  "prior_belief": {
+    "_empirical_mean": 0.7916666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 5.0,
+    "maybe_false": 0.0,
+    "maybe_true": 25.0,
+    "mean": 0.782258064516129,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully implemented the analysis plan. The analysis faced a significant data quality limitation: 85% of AIID incidents (1,161/1,362) lacked sector metadata, drastically reducing the effective sample size to 122 cases. Despite this, the analysis revealed a strong directional trend: 15.96% of incidents in 'Tech/Info' sectors involved Generative AI, compared to 0.00% in 'Safety-Critical' sectors. The Chi-square test yielded a p-value of 0.0537, which is marginally above the standard 0.05 significance threshold. Consequently, while the data strongly suggests Generative AI is concentrated in information sectors rather than safety-critical ones, the result is not statistically significant at the 95% confidence level due to the low sample count.",
+  "rich_outputs": null,
+  "runtime_ms": 161140.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.025522864232541662
+}

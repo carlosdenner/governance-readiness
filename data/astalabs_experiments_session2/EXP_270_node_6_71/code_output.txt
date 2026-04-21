@@ -1,0 +1,51 @@
+exitcode: 0 (execution succeeded)
+Code output: Data filtered. Rows: 77
+Counts by group:
+impact_group
+Rights-Related    59
+Safety-Only       18
+Name: count, dtype: int64
+
+Summary Statistics (Heuristic Parsing):
+                Total  Mitigation_Yes      Rate
+impact_group                                   
+Rights-Related     59              14  0.237288
+Safety-Only        18               0  0.000000
+
+Z-test Results (Safety-Only vs Rights-Related):
+Z-statistic: -2.2848
+P-value: 2.2324e-02
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot image, here are the details:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot (or Column Chart).
+*   **Purpose:** The plot is designed to compare the proportion of instances showing evidence of "Disparity Mitigation" across two distinct categories: "Rights-Related" and "Safety-Only".
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Labels:** Categorical labels representing two groups: "Rights-Related" and "Safety-Only".
+    *   **Range:** Two discrete categories.
+*   **Y-Axis:**
+    *   **Title:** "Proportion with Disparity Mitigation".
+    *   **Units:** The axis uses decimal notation representing proportions (0.0 to 1.0), which corresponds to percentages (0% to 100%).
+    *   **Range:** The scale runs from 0.0 to 1.0, with grid marks every 0.2 units. The visual axis extends slightly beyond 1.0 to approximately 1.1.
+
+**3. Data Trends**
+*   **Tallest Bar:** The "Rights-Related" category is the tallest (and only visible) bar, reaching a value of roughly 0.24 on the y-axis.
+*   **Shortest Bar:** The "Safety-Only" category effectively has no height, representing a value of 0.
+*   **Pattern:** There is a stark contrast between the two categories. While nearly a quarter of "Rights-Related" cases show evidence of disparity mitigation, there is absolutely zero evidence found in the "Safety-Only" cases.
+
+**4. Annotations and Legends**
+*   **Annotations:**
+    *   **"23.7%"**: Located directly above the "Rights-Related" bar, indicating the exact percentage value for that category.
+    *   **"0.0%"**: Located just above the baseline for the "Safety-Only" category, indicating a null value.
+*   **Title:** "Disparity Mitigation Evidence: Safety-Only vs Rights-Related" clearly defines the scope of the comparison.
+
+**5. Statistical Insights**
+*   **Exclusive Association:** The plot suggests a strong conditional relationship where evidence of disparity mitigation is exclusively found in the "Rights-Related" category (23.7%) within this dataset.
+*   **Complete Absence in Safety-Only:** The 0.0% finding for "Safety-Only" implies that when an issue is categorized purely as a safety concern, mitigation regarding disparity (unequal outcomes among groups) is either not performed or not documented at all.
+*   **Conclusion:** This data indicates that "Rights-Related" issues are significantly more likely to trigger or be associated with efforts to mitigate disparity than issues viewed solely through a "Safety" lens.
+==================================================

@@ -1,0 +1,64 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Public Accountability Gap analysis (Attempt 2)...
+Loaded EO 13960 data: 1757 records
+
+Distribution of 'is_public':
+is_public
+False    1692
+True       65
+Name: count, dtype: int64
+
+Distribution of 'has_appeal':
+has_appeal
+False    1681
+True       76
+Name: count, dtype: int64
+
+--- Contingency Table ---
+                No Appeal Process  Has Appeal Process
+Internal/Admin               1626                  66
+Public-Facing                  55                  10
+
+--- Compliance Rates ---
+                Total Systems  With Appeal  Proportion
+Internal/Admin           1692           66    0.039007
+Public-Facing              65           10    0.153846
+
+Chi-Square Statistic: 17.2688
+P-value: 3.2446e-05
+Odds Ratio: 4.4793
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot compares the proportion of two distinct categories of Federal AI systems ("Internal/Admin" versus "Public-Facing") that feature an availability of appeal processes. It aims to highlight the disparity, termed the "Public Accountability Gap," between these two system types.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** Categorical variables representing the type of AI system: **"Internal/Admin"** and **"Public-Facing"**.
+    *   **Range:** N/A (Categorical).
+*   **Y-Axis:**
+    *   **Label:** **"Proportion with Appeal Process"**.
+    *   **Range:** The axis spans from **0.000 to 0.200** (representing 0% to 20%).
+
+### 3. Data Trends
+*   **Comparison of Heights:** There is a substantial difference in bar height. The "Public-Facing" bar is approximately four times taller than the "Internal/Admin" bar.
+*   **Tallest Bar:** The **"Public-Facing"** category has the highest proportion of appeal processes at **15.4%**.
+*   **Shortest Bar:** The **"Internal/Admin"** category has the lowest proportion at **3.9%**.
+*   **Pattern:** The data indicates that AI systems designed for public interaction are significantly more likely to have an appeal process in place compared to those used for internal or administrative purposes.
+
+### 4. Annotations and Legends
+*   **Bar Annotations (Data Labels):**
+    *   **Internal/Admin:** Labeled with "3.9% (n=66/1692)". This indicates that out of a sample size of 1,692 internal systems, only 66 had appeal processes.
+    *   **Public-Facing:** Labeled with "15.4% (n=10/65)". This indicates that out of a much smaller sample size of 65 public-facing systems, 10 had appeal processes.
+*   **Statistical Annotation:** A box centered at the top of the chart displays **"p-value: 3.2446e-05 (Significant)"**. This indicates the result of a hypothesis test comparing the two proportions.
+*   **Title:** The title "Public Accountability Gap: Availability of Appeal Processes (Public-Facing vs. Internal Federal AI Systems)" sets the context for the analysis.
+
+### 5. Statistical Insights
+*   **Statistical Significance:** The reported p-value ($3.2446 \times 10^{-5}$) is extremely small (well below standard thresholds like 0.05 or 0.01). This confirms that the observed difference in appeal process availability between internal and public-facing systems is **statistically significant** and highly unlikely to be due to random chance.
+*   **Sample Size Disparity:** There is a massive disparity in sample sizes ($n=1692$ vs. $n=65$). Despite the Public-Facing group being a much smaller cohort, the proportion difference was strong enough to yield high statistical significance.
+*   **The "Gap":** The plot effectively visualizes the "Accountability Gap" mentioned in the title. While the vast majority of AI systems in this dataset are Internal/Admin (1692 total), they are severely lacking in appeal mechanisms (3.9%) compared to the minority of Public-Facing systems (15.4%). However, it is worth noting that even in the "better" category (Public-Facing), an 84.6% lack of appeal processes suggests low accountability across the board.
+==================================================

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment tested the hypothesis that 'Integration Readiness' competency statements are more verbose than 'Trust Readiness' statements due to technical nuance. The analysis of `step2_competency_statements.csv` (n=42) measured the word count of each statement. The results showed nearly identical means: 'Integration Readiness' statements averaged 26.65 words (SD=4.14), while 'Trust Readiness' statements averaged 26.63 words (SD=3.83). An independent t-test yielded a p-value of 0.9868, indicating no statistically significant difference. The boxplot visualization confirms similar distributions, though 'Integration Readiness' had one outlier (39 words). Consequently, the hypothesis is rejected. The uniformity in sentence length suggests the agentic pipeline utilized a standardized drafting template or style guide when generating competency statements, regardless of the domain (governance vs. engineering).",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nfrom scipy import stats\n\n# Load the dataset\nfile_path = '../step2_competency_statements.csv'\ntry:\n    df = pd.read_csv(file_path)\n    print(f\"Successfully loaded {file_path}\")\nexcept FileNotFoundError:\n    # Fallback if running in a different environment structure, though instruction said one level up\n    try:\n        df = pd.read_csv('step2_competency_statements.csv')\n        print(\"Loaded from current directory\")\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        exit(1)\n\n# Calculate word count for each competency statement\n# Using simple whitespace splitting for word count\ndf['word_count'] = df['competency_statement'].fillna('').astype(str).apply(lambda x: len(x.split()))\n\n# Group data by bundle\nintegration_group = df[df['bundle'] == 'Integration Readiness']['word_count']\ntrust_group = df[df['bundle'] == 'Trust Readiness']['word_count']\n\n# Calculate descriptive statistics\nstats_summary = df.groupby('bundle')['word_count'].describe()\nprint(\"\\n=== Descriptive Statistics (Word Count) ===\")\nprint(stats_summary)\n\n# Perform Independent T-test (Welch's t-test, assuming unequal variances)\nt_stat, p_val = stats.ttest_ind(integration_group, trust_group, equal_var=False)\n\nprint(\"\\n=== Statistical Test Results ===\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\nif p_val < 0.05:\n    print(\"Result: Significant difference in word counts between bundles.\")\nelse:\n    print(\"Result: No significant difference in word counts between bundles.\")\n\n# Visualization\nplt.figure(figsize=(10, 6))\nplt.boxplot([integration_group, trust_group], labels=['Integration Readiness', 'Trust Readiness'])\nplt.title('Distribution of Competency Statement Word Counts by Bundle')\nplt.ylabel('Word Count')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loaded from current directory\n\n=== Descriptive Statistics (Word Count) ===\n                       count       mean       std   min   25%   50%   75%   max\nbundle                                                                         \nIntegration Readiness   23.0  26.652174  4.140802  22.0  23.0  27.0  29.0  39.0\nTrust Readiness         19.0  26.631579  3.832761  21.0  24.0  25.0  28.5  34.0\n\n=== Statistical Test Results ===\nT-statistic: 0.0167\nP-value: 0.9868\nResult: No significant difference in word counts between bundles.\n\nSTDERR:\n<ipython-input-1-914408a2830f>:48: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot([integration_group, trust_group], labels=['Integration Readiness', 'Trust Readiness'])\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is a detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).\n*   **Purpose:** The plot visualizes the distribution of quantitative data (\"Word Count\") across categorical groups (\"Bundles\"). It displays statistical summaries such as the median, quartiles (interquartile range), minimum/maximum values, and outliers, allowing for a comparison of central tendency and variability between the two groups.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** Represents the Categories of Bundles.\n    *   **Values:** \"Integration Readiness\" and \"Trust Readiness\".\n*   **Y-Axis:**\n    *   **Label:** \"Word Count\" (Number of words).\n    *   **Range:** The axis ticks range from roughly **21 to 39** (visual scale shows grid lines from 22.5 to 37.5).\n    *   **Units:** Count (integer values representing the number of words).\n\n### 3. Data Trends\n*   **Integration Readiness (Left Box):**\n    *   **Median:** The orange line is situated at approximately **27 words**.\n    *   **Interquartile Range (IQR):** The middle 50% of the data spans from approximately **23 to 29 words**.\n    *   **Whiskers:** The lower whisker extends to **22**, and the upper whisker extends to **32**.\n    *   **Outliers:** There is a distinct outlier plotted as a circle at approximately **39 words**, indicating one specific statement was significantly longer than the rest of the group.\n*   **Trust Readiness (Right Box):**\n    *   **Median:** The orange line is lower than the other group, sitting at exactly **25 words**.\n    *   **Interquartile Range (IQR):** The middle 50% spans from approximately **24 to 28.5 words**.\n    *   **Whiskers:** This group shows a wider total range (excluding outliers) with the bottom whisker at roughly **21** and the top whisker extending up to **34**.\n    *   **Outliers:** No outliers are visible for this category.\n\n### 4. Annotations and Legends\n*   **Title:** \"Distribution of Competency Statement Word Counts by Bundle\" clearly defines the dataset context.\n*   **Grid Lines:** Horizontal dashed grid lines appear every 2.5 units (22.5, 25.0, 27.5, etc.) to assist in estimating specific Y-values.\n*   **Box Components:**\n    *   **Orange horizontal line:** Represents the median.\n    *   **Box boundaries:** Represent the 1st Quartile (25th percentile) and 3rd Quartile (75th percentile).\n    *   **Whiskers (T-bars):** Represent the minimum and maximum values (excluding outliers).\n    *   **Circle:** Represents an outlier (a data point more than 1.5 times the IQR past the box).\n\n### 5. Statistical Insights\n*   **Central Tendency:** \"Integration Readiness\" statements are, on average (median), slightly longer (27 words) than \"Trust Readiness\" statements (25 words).\n*   **Variability:** While \"Trust Readiness\" has a broader range within its whiskers (spanning ~13 words from min to max), the \"Integration Readiness\" has a slightly larger Interquartile Range (height of the box), suggesting that the \"middle 50%\" of Integration statements are more variable in length than the middle 50% of Trust statements.\n*   **Skewness:**\n    *   The \"Trust Readiness\" box shows a positive skew (the upper whisker is much longer than the lower whisker, and the median is closer to the bottom of the box). This means there is a tendency toward longer word counts in the upper range of this group.\n    *   The \"Integration Readiness\" distribution is heavily influenced by the single extreme outlier at 39 words. Without the outlier, the data appears reasonably symmetric but slightly clustered toward the lower end of its box (median 27 vs Q1 23).\n==================================================",
+  "created_at": "2026-02-20T23:50:03.062535+00:00",
+  "creation_idx": 73,
+  "experiment_id": "node_6_6",
+  "experiment_plan": {
+    "deliverables": "Boxplot of Word Counts by Bundle, T-Test Results.",
+    "objective": "Analyze the linguistic complexity/verbosity of competency statements across bundles.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Calculate the word count for each 'competency_statement'.\n3. Group by 'bundle'.\n4. Perform a t-test to compare the mean word counts.\n5. Visualize the word count distributions."
+  },
+  "hypothesis": "'Integration Readiness' competency statements require more verbose definitions (higher word count) to capture technical nuance compared to 'Trust Readiness' statements.",
+  "id_in_run": 72,
+  "is_surprising": true,
+  "parent_id": "node_5_8",
+  "posterior": 0.12396694214876033,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.12396694214876033,
+    "n": 90.0,
+    "prior_params": [
+      15.0,
+      16.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.4838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 0.48333333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 14.0,
+    "maybe_true": 12.0,
+    "mean": 0.4838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 4.0
+  },
+  "review": "The experiment tested the hypothesis that 'Integration Readiness' competency statements require more verbose definitions than 'Trust Readiness' statements due to higher technical nuance. The analysis of 42 competency statements from 'step2_competency_statements.csv' revealed that the word counts for both bundles are nearly identical. 'Integration Readiness' statements had a mean length of 26.65 words (SD=4.14), while 'Trust Readiness' statements had a mean length of 26.63 words (SD=3.83). An independent samples t-test yielded a p-value of 0.9868, indicating no statistically significant difference between the groups. Consequently, the hypothesis is rejected. The boxplot visualization further confirms the similarity in distributions, with a single outlier in the Integration group. The findings suggest that the agentic pipeline employed a standardized stylistic template or length constraint when generating competency statements, regardless of the underlying domain (governance vs. engineering).",
+  "rich_outputs": null,
+  "runtime_ms": 228570.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.41770310869264343
+}

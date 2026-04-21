@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Public Scrutiny Effect' hypothesis. After correcting for text-based data representation in the 'AI Notice' and 'Public Service' columns (which previously caused debug failures), the analysis classified 1,757 federal AI systems into Public-Facing (n=255) and Internal-Only (n=1,502) groups.\n\n**Findings:**\n1. **Compliance Rates:** Public-facing systems demonstrated a significantly higher rate of AI Notice compliance (10.20%, 26/255) compared to internal systems (3.00%, 45/1,502).\n2. **Statistical Significance:** A Chi-Square test confirmed this difference is highly significant (Chi2 = 27.32, p < 0.0001).\n\n**Conclusion:**\nThe hypothesis is **supported**. Systems interacting with the public are over 3 times more likely to provide AI transparency notices than internal administrative systems, suggesting that external visibility acts as a strong driver for transparency compliance.",
+  "child_ids": [
+    "node_6_14"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\nimport os\n\n# Load dataset\nfile_path = \"astalabs_discovery_all_data.csv\"\nif not os.path.exists(file_path):\n    file_path = \"../astalabs_discovery_all_data.csv\"\n\ndf = pd.read_csv(file_path, low_memory=False)\n\n# Filter for relevant source table\nsubset = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Subset size: {len(subset)}\")\n\n# --- Logic for 'is_public' ---\n# Column 26: Public Service (Descriptive text = Yes, 'No'/Empty = No)\ndef map_public_service(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).strip()\n    if len(s) < 2:  # Filters out empty strings, single chars like ' '\n        return 0\n    if s.lower() in ['no', 'none', 'n/a']:\n        return 0\n    return 1  # Contains description of service\n\n# Column 27: Public Info (Explicit 'Yes')\ndef map_public_info(val):\n    if pd.isna(val):\n        return 0\n    if str(val).strip().lower() == 'yes':\n        return 1\n    return 0\n\nsubset['public_service_flag'] = subset['26_public_service'].apply(map_public_service)\nsubset['public_info_flag'] = subset['27_public_info'].apply(map_public_info)\nsubset['is_public'] = ((subset['public_service_flag'] == 1) | (subset['public_info_flag'] == 1)).astype(int)\n\n# --- Logic for 'has_notice' ---\n# Column 59: AI Notice\n# Positives: 'Online', 'In-person', 'Email', 'Other', 'Telephone'\n# Negatives: NaN, 'None of the above', 'N/A', 'Waived', 'Not safety'\ndef map_notice(val):\n    if pd.isna(val):\n        return 0\n    s = str(val).strip().lower()\n    # Negative keywords\n    negatives = ['none of the above', 'n/a', 'waived', 'not safety', 'nan']\n    if any(neg in s for neg in negatives):\n        return 0\n    # If it's not negative and has content, assume positive notice info\n    if len(s) > 2:\n        return 1\n    return 0\n\nsubset['has_notice'] = subset['59_ai_notice'].apply(map_notice)\n\n# --- Analysis ---\nprint(\"\\n--- Value Counts ---\")\nprint(f\"Public Systems (is_public=1): {subset['is_public'].sum()}\")\nprint(f\"Internal Systems (is_public=0): {len(subset) - subset['is_public'].sum()}\")\nprint(f\"Systems with Notice (has_notice=1): {subset['has_notice'].sum()}\")\n\n# Generate Contingency Table with reindexing to ensure 2x2\ncontingency_table = pd.crosstab(subset['is_public'], subset['has_notice'])\n# Reindex to ensure all categories exist (0 and 1)\ncontingency_table = contingency_table.reindex(index=[0, 1], columns=[0, 1], fill_value=0)\n\ncontingency_table.index = ['Internal', 'Public']\ncontingency_table.columns = ['No Notice', 'Has Notice']\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Percentages\ninternal_total = contingency_table.loc['Internal'].sum()\npublic_total = contingency_table.loc['Public'].sum()\n\ninternal_compliance = (contingency_table.loc['Internal', 'Has Notice'] / internal_total * 100) if internal_total > 0 else 0\npublic_compliance = (contingency_table.loc['Public', 'Has Notice'] / public_total * 100) if public_total > 0 else 0\n\nprint(f\"\\nInternal Compliance: {internal_compliance:.2f}% (n={internal_total})\")\nprint(f\"Public Compliance:   {public_compliance:.2f}% (n={public_total})\")\n\n# Statistical Test\nif internal_total > 0 and public_total > 0:\n    chi2, p, dof, expected = chi2_contingency(contingency_table)\n    print(\"\\n--- Chi-Square Test Results ---\")\n    print(f\"Chi2: {chi2:.4f}\")\n    print(f\"p-value: {p:.4e}\")\n    \n    if p < 0.05:\n        print(\"Result: Significant difference found.\")\n        if public_compliance > internal_compliance:\n            print(\"Hypothesis Supported: Public systems are more likely to have notice.\")\n        else:\n            print(\"Hypothesis Refuted: Public systems are LESS likely to have notice.\")\n    else:\n        print(\"Result: No significant difference.\")\nelse:\n    print(\"Insufficient data for test.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Subset size: 1757\n\n--- Value Counts ---\nPublic Systems (is_public=1): 255\nInternal Systems (is_public=0): 1502\nSystems with Notice (has_notice=1): 71\n\n--- Contingency Table ---\n          No Notice  Has Notice\nInternal       1457          45\nPublic          229          26\n\nInternal Compliance: 3.00% (n=1502)\nPublic Compliance:   10.20% (n=255)\n\n--- Chi-Square Test Results ---\nChi2: 27.3161\np-value: 1.7276e-07\nResult: Significant difference found.\nHypothesis Supported: Public systems are more likely to have notice.\n",
+  "created_at": "2026-02-22T05:09:36.353863+00:00",
+  "creation_idx": 86,
+  "experiment_id": "node_5_12",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistics (p-value), and compliance percentages for public vs. internal systems.",
+    "objective": "Compare the rate of 'AI Notice' compliance between public-facing and internal-only AI systems in the federal inventory.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `eo13960_scored`.\n2. Create a binary variable `is_public` based on columns `26_public_service` and `27_public_info`. If either is 'Yes'/'True', set to 1, else 0.\n3. Create a binary variable `has_notice` based on column `59_ai_notice` (convert 'Yes' to 1, others to 0).\n4. Generate a contingency table of `is_public` vs. `has_notice`.\n5. Perform a Chi-square test of independence.\n6. Calculate and compare the percentage of notice compliance for both groups."
+  },
+  "hypothesis": "The Public Scrutiny Effect: AI systems designated as 'Publicly Accessible' (providing public information or services) are significantly more likely to comply with 'AI Notice' requirements compared to internal-facing systems, driven by external transparency pressures.",
+  "id_in_run": 85,
+  "is_surprising": true,
+  "parent_id": "node_4_21",
+  "posterior": 0.9120879120879121,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9120879120879121,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully implemented the analysis plan. After correcting for text-based data representation in the 'AI Notice' and 'Public Service' columns (which previously caused debug failures), the analysis successfully classified 1,757 federal AI systems into Public-Facing (n=255) and Internal-Only (n=1,502) groups.\n\n**Hypothesis:** The Public Scrutiny Effect (Public-facing systems are more likely to provide AI Notice).\n\n**Findings:**\n1.  **Compliance Rates:** Public-facing systems demonstrated a significantly higher rate of AI Notice compliance (10.20%, 26/255) compared to internal systems (3.00%, 45/1,502).\n2.  **Statistical Test:** A Chi-Square test confirmed this difference is highly significant (Chi2 = 27.32, p < 0.0001).\n\n**Conclusion:**\nThe hypothesis is **supported**. Systems interacting with the public are over 3 times more likely to provide AI transparency notices than internal administrative systems, suggesting that external visibility acts as a strong driver for transparency compliance.",
+  "rich_outputs": null,
+  "runtime_ms": 217130.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.20418291386033316
+}

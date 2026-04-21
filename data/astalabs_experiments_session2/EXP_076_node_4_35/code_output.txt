@@ -1,0 +1,57 @@
+exitcode: 0 (execution succeeded)
+Code output: Incidents analyzed: 73
+
+Contingency Table (Domain vs Harm Nature):
+Harm_Category    Intangible / Other  Tangible Harm (Physical)
+Domain                                                       
+Digital-Domain                   17                         9
+Physical-Domain                  17                        30
+
+Row Percentages:
+Harm_Category    Intangible / Other  Tangible Harm (Physical)
+Domain                                                       
+Digital-Domain                65.38                     34.62
+Physical-Domain               36.17                     63.83
+
+Chi-Square Test Results:
+Chi2 Statistic: 4.6277
+p-value: 3.1460e-02
+Result: Statistically significant relationship between Sector Domain and Harm Nature.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% Stacked Bar Chart).
+*   **Purpose:** The plot compares the relative proportions of two categories of harm ("Intangible / Other" vs. "Tangible Harm") across two distinct sector domains ("Digital-Domain" and "Physical-Domain"). It illustrates the composition of incidents within each sector.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Sector Domain"
+    *   **Categories:** The axis displays two discrete categories: "Digital-Domain" and "Physical-Domain".
+*   **Y-Axis:**
+    *   **Label:** "Percentage of Incidents"
+    *   **Range:** 0 to 100.
+    *   **Units:** Percentage (%).
+
+### 3. Data Trends
+*   **Digital-Domain Sector:**
+    *   The majority of incidents are categorized as **Intangible / Other** (represented by the grey bar), comprising approximately **65%** of the total incidents.
+    *   **Tangible Harm (Physical)** accounts for the remaining minority, approximately **35%**.
+*   **Physical-Domain Sector:**
+    *   The trend reverses here. The majority of incidents involve **Tangible Harm (Physical)** (red bar), comprising approximately **64%** of the total.
+    *   **Intangible / Other** harms make up the smaller portion, approximately **36%**.
+*   **Pattern:** There is a clear inverse relationship. The Digital-Domain is dominated by intangible harms, while the Physical-Domain is dominated by tangible physical harms.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "The Physical-Digital Harm Divide: Tangible Harm Rates by Sector" — This title sets the context for the comparison.
+*   **Legend:** Located in the upper right corner with the title "Harm Category".
+    *   **Grey Square:** Represents "Intangible / Other".
+    *   **Salmon/Red Square:** Represents "Tangible Harm (Physical)".
+
+### 5. Statistical Insights
+*   **The "Divide":** The plot statistically confirms the "Harm Divide" mentioned in the title. Moving from the Digital domain to the Physical domain results in a near-inversion of harm types.
+*   **Risk Profile:** In physical sectors, the risk of actual physical (tangible) harm is nearly double that of digital sectors (jumping from ~35% to ~64%).
+*   **Nature of Incidents:** While digital sectors are not immune to tangible harm (accounting for over a third of incidents), they are primarily characterized by non-physical issues (likely data breaches, financial loss, or reputation damage). Conversely, when systems operate in the physical domain, the primary outcome of incidents shifts significantly toward physical damage.
+==================================================

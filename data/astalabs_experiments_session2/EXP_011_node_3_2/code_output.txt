@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO13960 subset size: 1757 rows
+Valid records for analysis (after cleaning): 834
+
+--- Contingency Table (Counts) ---
+has_catalog   No  Yes
+has_pii              
+No           194  486
+Yes           52  102
+
+Chi-Square Statistic: 1.4136
+P-value: 2.3446e-01
+
+Counts used for OR: PII_Yes/Cat_Yes=102, PII_Yes/Cat_No=52, PII_No/Cat_Yes=486, PII_No/Cat_No=194
+Odds Ratio: 0.7830
+
+Result: NO statistically significant association found.
+
+Plot Data Preview:
+  has_pii has_catalog  count  total_in_group    percent
+0      No          No    194             680  28.529412
+1      No         Yes    486             680  71.470588
+2     Yes          No     52             154  33.766234
+3     Yes         Yes    102             154  66.233766
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (Clustered Bar Chart).
+*   **Purpose:** The plot compares the implementation status of Data Catalogs across two distinct groups of systems: those that process Personally Identifiable Information (PII) and those that do not. It visualizes the relative percentage distribution within each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "System Processes PII?"
+    *   **Labels:** "No" and "Yes". These categories represent whether the system handles sensitive PII data.
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Systems within Group (%)"
+    *   **Range:** 0 to 100.
+    *   **Units:** Percentages (indicated by the % symbol in the title and the values on the bars).
+
+### 3. Data Trends
+*   **Overall Pattern:** Across both groups (systems that process PII and those that don't), the majority of systems **have** a data catalog implemented (indicated by the green bars).
+*   **Group "No" (Systems that do not process PII):**
+    *   **Tallest Bar:** "Yes" (Has Data Catalog) at **71.5%**.
+    *   **Shortest Bar:** "No" (No Data Catalog) at **28.5%**.
+*   **Group "Yes" (Systems that process PII):**
+    *   **Tallest Bar:** "Yes" (Has Data Catalog) at **66.2%**.
+    *   **Shortest Bar:** "No" (No Data Catalog) at **33.8%**.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Data Catalog Implementation by PII Status (EO13960)". This references Executive Order 13960, suggesting this data relates to federal agency compliance regarding AI or data usage.
+*   **Legend:** Located in the top right corner with the header "Has Data Catalog".
+    *   **Dark Blue/Slate:** Represents "No" (Data Catalog not present).
+    *   **Green:** Represents "Yes" (Data Catalog present).
+*   **Data Labels:** Specific percentage values are annotated directly on top of each bar (28.5%, 71.5%, 33.8%, 66.2%) for precise reading.
+
+### 5. Statistical Insights
+*   **Majority Adoption:** In both categories, over two-thirds of the systems have implemented a data catalog.
+*   **Inverse Correlation with Sensitivity:** Surprisingly, systems that **do not** process PII have a higher rate of data catalog implementation (**71.5%**) compared to systems that **do** process PII (**66.2%**). One might typically expect systems handling sensitive PII to have higher governance and documentation standards.
+*   **Gap Analysis:** There is a notable gap in coverage. Specifically, **33.8%** of systems that handle PII currently lack a data catalog. This represents a potential risk area for data governance and privacy compliance.
+*   **Consistency:** The difference between the two groups is relatively small (approx. 5.3%), indicating that PII status is not a drastic differentiator in whether a catalog exists, though the trend leans slightly toward non-PII systems having better coverage.
+==================================================

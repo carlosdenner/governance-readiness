@@ -1,0 +1,51 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Total EO 13960 records: 1757
+Records with valid implementation dates (1990-2025): 606
+
+--- Comparative Analysis (Cutoff: 2021) ---
+Pre-2021 Systems (Legacy): n=123
+  Bias Mitigation Compliance: 16 (13.01%)
+Post-2021 Systems (Modern): n=483
+  Bias Mitigation Compliance: 55 (11.39%)
+
+Z-Test Results:
+  Z-statistic: 0.4990
+  P-value: 6.1776e-01
+  Conclusion: No Statistically Significant Difference.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Line plot with markers (specifically a time series plot).
+*   **Purpose:** The plot visualizes the change in the adoption rate of bias mitigation controls in systems over a period of approximately 9 years. It allows for the observation of trends, volatility, and the potential impact of specific events over time.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Year Implemented"
+    *   **Range:** The axis ticks are labeled from 2016 to 2024, but data points appear to span from **2015 to 2024**.
+    *   **Units:** Years.
+*   **Y-Axis:**
+    *   **Title:** "Proportion of Systems with Controls"
+    *   **Range:** The visible scale ranges from **-0.05 to 0.40**.
+    *   **Units:** Proportion (decimal value representing a percentage, e.g., 0.20 = 20%).
+
+### 3. Data Trends
+*   **Initial Volatility and Peak (2015–2017):** The trend begins at a proportion of **0.20 (20%)** in 2015. The line then rises sharply, exceeding the upper limit of the graph (0.40) somewhere around 2017, indicating a period of very high adoption or a potential outlier year where the proportion was significantly higher than the rest of the timeline.
+*   **Decline (2018–2020):** By 2018, the proportion drops back down to approximately **0.14**. It continues a downward trend, reaching its global minimum in **2020**, where the proportion falls to roughly **0.03 (3%)**.
+*   **Recovery and Stabilization (2021–2024):** Following the 2020 low, there is a sharp rebound in 2021 to approximately **0.15**. The trend then stabilizes somewhat, hovering between **0.10 and 0.15** for the years 2021 through 2024.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner, identifying:
+    *   **"Mitigation Rate" (Blue line with circle markers):** Represents the primary data series.
+    *   **"EO 13960 Era (2021+)" (Red dashed line):** Indicates a specific event or time marker.
+*   **Vertical Marker:** A red dashed vertical line is placed at the year **2021**. This corresponds to the "EO 13960 Era" mentioned in the legend, likely marking the implementation or effect of Executive Order 13960.
+*   **Grid:** A light grid is present to facilitate reading specific x and y values.
+
+### 5. Statistical Insights
+*   **Impact of Executive Order 13960:** There is a strong temporal correlation between the start of the "EO 13960 Era" (2021) and a significant recovery in bias mitigation adoption. The rate jumped from a historical low of ~3% in 2020 to ~15% in 2021, suggesting the Executive Order may have driven compliance or awareness.
+*   **Inconsistency in Adoption:** The data shows high instability. Early adoption (pre-2018) was erratic and reached highs not seen since. The period leading up to 2020 saw a collapse in mitigation controls, suggesting a lapse in industry standards or focus during that specific window.
+*   **Current State:** While the rate has recovered from the 2020 trough, the proportion of systems with controls in 2024 (~11%) remains lower than the initial levels recorded in 2015 (~20%) and significantly lower than the implied peak of 2017. This suggests that despite regulatory intervention, adoption rates have not fully returned to their historical highs.
+==================================================

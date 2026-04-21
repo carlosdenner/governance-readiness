@@ -1,0 +1,57 @@
+exitcode: 0 (execution succeeded)
+Code output: === Descriptive Statistics: Technique Count by Domain Complexity ===
+                   count      mean       std  min  25%  50%   75%   max
+domain_complexity                                                      
+Multi-Domain        46.0  7.565217  3.052519  1.0  6.0  7.0  9.00  16.0
+Single-Domain        6.0  7.333333  1.966384  5.0  6.0  7.0  8.75  10.0
+
+
+=== Welch's T-Test Results ===
+T-statistic: 0.2520
+P-value:     0.8070
+Conclusion: The difference is NOT statistically significant (Fail to Reject H0).
+
+STDERR:
+<ipython-input-1-c0d461a861aa>:59: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([group_multi, group_single], labels=['Multi-Domain', 'Single-Domain'], patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot is designed to display and compare the distribution of numerical data ("Count of ATLAS Techniques Used") across different categorical groups ("Multi-Domain" vs. "Single-Domain"). It effectively visualizes the central tendency (median), data spread (interquartile range), and the presence of outliers.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Competency Domain Gap"
+    *   **Labels:** Categorical variables representing two groups: "Multi-Domain" and "Single-Domain".
+*   **Y-Axis:**
+    *   **Title:** "Count of ATLAS Techniques Used"
+    *   **Units:** Count (integer values representing the number of techniques).
+    *   **Value Range:** The axis ticks range from 2 to 16, though the data points extend from approximately 1 to 16.
+
+### 3. Data Trends
+*   **Multi-Domain (Left Box):**
+    *   **Median:** The orange line sits at **7**, indicating the median number of techniques used is 7.
+    *   **Spread:** The interquartile range (IQR)—represented by the blue box—spans from **6** (25th percentile) to **9** (75th percentile).
+    *   **Range:** The whiskers extend from a lower bound of **3** to an upper bound of **12**.
+    *   **Outliers:** There is significant outlier activity in this category. There is a low outlier at **1** and several high outliers at **14, 15, and 16**. This suggests high variability in this group.
+
+*   **Single-Domain (Right Box):**
+    *   **Median:** The median is also located at **7**, matching the Multi-Domain group.
+    *   **Spread:** The IQR is slightly tighter, ranging from **6** to roughly **8.5 or 9**.
+    *   **Range:** The whiskers indicate a much more contained overall range, spanning from a minimum of **5** to a maximum of **10**.
+    *   **Outliers:** There are **no outliers** visible for this group.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Attack Technique Counts by Competency Gap Complexity" sits at the top, clearly defining the scope of the analysis.
+*   **Grid Lines:** Horizontal dashed grid lines appear at intervals of 2 (2, 4, 6... 16) to aid in estimating Y-axis values.
+*   **Color Coding:** The boxes are filled with light blue, and the median is marked with an orange line. Outliers are depicted as hollow circles.
+
+### 5. Statistical Insights
+*   **Similar Central Tendency:** Both the "Multi-Domain" and "Single-Domain" groups share the same median count of techniques (7). This implies that in a typical scenario, the complexity in terms of the number of techniques used is similar regardless of the domain gap type.
+*   **Difference in Variance:** The primary difference between the groups lies in predictability and variance. The "Single-Domain" group is highly consistent; technique counts never drop below 5 or exceed 10.
+*   **Complexity "Long Tail":** The "Multi-Domain" group exhibits a "long tail" of complexity. While the median is the same, the existence of outliers up to 16 indicates that multi-domain gaps have the potential to spiral into significantly more complex scenarios requiring a much higher number of ATLAS techniques than single-domain gaps ever do. Conversely, they also occasionally require very few techniques (outlier at 1), suggesting a wider spectrum of possible scenarios.
+==================================================

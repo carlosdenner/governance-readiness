@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Commercial Opacity' hypothesis using the EO 13960 dataset (n=950). By using `37_custom_code` as a proxy for procurement type (where 'No' indicates COTS/Commercial and 'Yes' indicates Custom/In-house), the analysis revealed a stark contrast in transparency. \n\n1. **Descriptive Stats**: Only 2.5% (6/237) of Commercial systems had accessible source code, compared to 12.6% (90/713) of Custom/In-house systems.\n2. **Statistical Test**: The Chi-square test yielded a highly significant p-value (1.42e-05), rejecting the null hypothesis of independence.\n3. **Effect Size**: The Odds Ratio for opacity (lack of code access) was approximately 5.56. This indicates that government AI systems procured commercially are over 5 times more likely to lack source code access compared to those developed with custom code.\n\nThe hypothesis is strongly supported: there is a significant transparency trade-off in commercial AI procurement.",
+  "child_ids": [
+    "node_5_18"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 data\nsubset = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Define column names\ncol_custom = '37_custom_code'\ncol_access = '38_code_access'\n\n# Debug: Print unique values to define mapping logic\nprint(f\"Unique values in '{col_custom}': {subset[col_custom].unique()}\")\nprint(f\"Unique values in '{col_access}': {subset[col_access].unique()}\")\n\n# Cleaning functions\ndef clean_commercial_proxy(val):\n    # If 'custom code' is NO, we treat it as Commercial/COTS (Is Commercial = 1)\n    # If 'custom code' is YES, we treat it as In-House/Custom (Is Commercial = 0)\n    s = str(val).strip().lower()\n    if 'no' in s:  # No custom code -> Commercial\n        return 1\n    elif 'yes' in s: # Yes custom code -> Non-Commercial\n        return 0\n    return np.nan\n\ndef clean_access(val):\n    s = str(val).strip().lower()\n    if 'no' in s: \n        return 0\n    elif 'yes' in s:\n        return 1\n    return np.nan\n\n# Apply cleaning\nsubset['is_commercial'] = subset[col_custom].apply(clean_commercial_proxy)\nsubset['has_code_access'] = subset[col_access].apply(clean_access)\n\n# Drop NaNs for analysis\nanalysis_df = subset.dropna(subset=['is_commercial', 'has_code_access'])\n\nprint(f\"\\nData points after cleaning: {len(analysis_df)}\")\n\nif len(analysis_df) > 0:\n    # Create Contingency Table\n    # Rows: Commercial Status (0=Custom, 1=Commercial)\n    # Cols: Code Access (0=No, 1=Yes)\n    ct = pd.crosstab(analysis_df['is_commercial'], analysis_df['has_code_access'])\n    print(\"\\nContingency Table (Rows: Commercial [0=Custom, 1=Comm], Cols: Access [0=No, 1=Yes]):\")\n    print(ct)\n    \n    # Statistics\n    chi2, p, dof, ex = stats.chi2_contingency(ct)\n    \n    # Calculate Odds Ratio manually for 2x2: (a*d)/(b*c)\n    # Table layout:\n    #           Access=0   Access=1\n    # Comm=0 (a)         (b)\n    # Comm=1 (c)         (d)\n    # OR of Access given Commercial? \n    # Let's calculate odds of *No Access* (Opacity) for Commercial vs Custom.\n    # Opacity = Access 0.\n    # Odds(Opacity | Commercial) = Count(Comm=1, Acc=0) / Count(Comm=1, Acc=1)\n    # Odds(Opacity | Custom)     = Count(Comm=0, Acc=0) / Count(Comm=0, Acc=1)\n    # OR = Odds(Comm) / Odds(Custom)\n    \n    try:\n        # c = Comm=1, Acc=0; d = Comm=1, Acc=1\n        # a = Comm=0, Acc=0; b = Comm=0, Acc=1\n        c = ct.loc[1, 0] if 0 in ct.columns and 1 in ct.index else 0\n        d = ct.loc[1, 1] if 1 in ct.columns and 1 in ct.index else 0\n        a = ct.loc[0, 0] if 0 in ct.columns and 0 in ct.index else 0\n        b = ct.loc[0, 1] if 1 in ct.columns and 0 in ct.index else 0\n        \n        odds_commercial_opacity = c / d if d > 0 else np.inf\n        odds_custom_opacity = a / b if b > 0 else np.inf\n        or_opacity = odds_commercial_opacity / odds_custom_opacity\n        \n        print(f\"\\nChi-Square p-value: {p:.4e}\")\n        print(f\"Odds Ratio (Likelihood of Opacity for Commercial vs Custom): {or_opacity:.4f}\")\n        \n        if p < 0.05:\n            print(\"Significant result.\")\n            if or_opacity > 1:\n                print(\"Commercial systems are significantly more opaque (less code access).\")\n            else:\n                print(\"Commercial systems are significantly less opaque.\")\n        else:\n            print(\"No significant difference found.\")\n            \n    except Exception as e:\n        print(f\"Error calculating odds ratio: {e}\")\n        \nelse:\n    print(\"No valid data points.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Unique values in '37_custom_code': <StringArray>\n['No', 'Yes', nan, ' ']\nLength: 4, dtype: str\nUnique values in '38_code_access': <StringArray>\n[             'No – agency does not have access to source code.',\n                                                             nan,\n 'Yes – agency has access to source code, but it is not public.',\n                      'Yes – source code is publicly available.',\n                                                           'Yes',\n                                                           'YES',\n                                                             ' ']\nLength: 7, dtype: str\n\nData points after cleaning: 950\n\nContingency Table (Rows: Commercial [0=Custom, 1=Comm], Cols: Access [0=No, 1=Yes]):\nhas_code_access  0.0  1.0\nis_commercial            \n0.0              623   90\n1.0              231    6\n\nChi-Square p-value: 1.4187e-05\nOdds Ratio (Likelihood of Opacity for Commercial vs Custom): 5.5618\nSignificant result.\nCommercial systems are significantly more opaque (less code access).\n",
+  "created_at": "2026-02-22T02:26:39.601221+00:00",
+  "creation_idx": 30,
+  "experiment_id": "node_4_6",
+  "experiment_plan": {
+    "deliverables": "Contingency table, p-value, and odds ratio.",
+    "objective": "Assess the transparency gap between commercial and custom government AI systems.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `eo13960_scored`.\n2. Clean `10_commercial_ai` to binary (Yes/No) and `38_code_access` to binary (Yes/No).\n3. Create a contingency table of Commercial Status vs. Code Access.\n4. Perform a Chi-square test (or Fisher's Exact Test if counts are low) to check for independence.\n5. Calculate the odds ratio to quantify the likelihood of code opacity in commercial systems."
+  },
+  "hypothesis": "Commercial Opacity: Government AI systems procured from commercial vendors are significantly less likely to have accessible code compared to systems developed in-house, indicating a transparency trade-off in procurement.",
+  "id_in_run": 29,
+  "is_surprising": false,
+  "parent_id": "node_3_4",
+  "posterior": 0.9945054945054945,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9945054945054945,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the analysis is sound. The initial issue with column selection was correctly identified and resolved by using `37_custom_code` as a robust proxy for commercial vs. in-house development. The statistical methods (Chi-square and Odds Ratio) were appropriate for the binary categorical data, and the sample size (n=950) was sufficient to draw significant conclusions.",
+  "rich_outputs": null,
+  "runtime_ms": 217170.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.012761432116270831
+}

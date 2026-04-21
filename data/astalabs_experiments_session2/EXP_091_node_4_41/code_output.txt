@@ -1,0 +1,71 @@
+exitcode: 0 (execution succeeded)
+Code output: EO13960 Subset Shape: (1757, 196)
+
+Unique values in '17_impact_type':
+<StringArray>
+['Neither', 'Rights-Impacting\n', 'Safety-Impacting', 'Both',
+ 'Safety-impacting']
+Length: 5, dtype: str
+
+Unique values in '55_independent_eval':
+<StringArray>
+[                                                                                    'Yes – by the CAIO',
+                                                                                'Planned or in-progress',
+ 'Yes – by another appropriate agency office that was not directly involved in the system’s development',
+               'Yes – by an agency AI oversight board not directly involved in the system’s development',
+                                       'Does not apply, use case is neither safety or rights impacting.',
+                         'Agency CAIO has waived this minimum practice and reported such waiver to OMB.',
+                                                                 'AI is not safety or rights-impacting.',
+                                                                                                  'TRUE']
+Length: 8, dtype: str
+
+Contingency Table (Counts):
+eval_status       Evaluated  Not Evaluated
+risk_group                                
+Other                    20           1528
+Rights-Impacting         23            186
+
+Chi-Square Test Results:
+Statistic: 68.7495
+P-value: 0.0000
+Result: Significant difference in evaluation rates found (Null Hypothesis Rejected).
+
+Evaluation Rates (%):
+eval_status       Evaluated  Not Evaluated
+risk_group                                
+Other              1.291990      98.708010
+Rights-Impacting  11.004785      88.995215
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot is designed to compare a quantitative variable (percentage of independent evaluation) across two distinct categorical groups ("Other" vs. "Rights-Impacting" AI systems).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Risk Classification"
+    *   **Categories:** The axis displays two distinct categories: "Other" and "Rights-Impacting".
+*   **Y-Axis:**
+    *   **Label:** "% Independently Evaluated"
+    *   **Range:** The scale runs from 0 to 100, representing percentage points.
+    *   **Increments:** Major gridlines are placed at intervals of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Rights-Impacting" category corresponds to the tallest bar (red), reaching a value of 11.0%.
+*   **Shortest Bar:** The "Other" category corresponds to the shortest bar (blue), reaching a value of only 1.3%.
+*   **Pattern:** There is a notable disparity between the two categories. While the overall percentage of independent evaluation is low for both groups, the rate for "Rights-Impacting" systems is significantly higher relative to the "Other" category.
+
+### 4. Annotations and Legends
+*   **Data Labels:** Specific percentage values are annotated in bold directly on top of each bar (**1.3%** and **11.0%**), allowing for precise reading of the data without relying solely on the y-axis grid.
+*   **Title:** The chart is titled "Percentage of AI Systems with Independent Evaluation by Risk Group," clearly defining the scope of the data.
+*   **Color Coding:** The bars are color-coded (Blue for "Other" and Red for "Rights-Impacting"), likely to visually distinguish the risk levels, with red often semantically associated with higher risk or importance.
+*   **Gridlines:** Horizontal dashed gridlines are included to aid in visual estimation of bar heights relative to the y-axis.
+
+### 5. Statistical Insights
+*   **Low Overall Adherence:** The most immediate insight is that independent evaluation is extremely rare across the board. Even for the higher-priority category, nearly 89% of systems do *not* undergo independent evaluation.
+*   **Relative Risk Prioritization:** Despite the low overall numbers, there is a clear correlation between risk classification and evaluation frequency. AI systems classified as "Rights-Impacting" are approximately **8.5 times more likely** (11.0% vs 1.3%) to undergo independent evaluation than those classified as "Other."
+*   **Gap in Governance:** The data suggests a significant gap in AI governance. While rights-impacting systems are receiving more scrutiny than lower-risk systems, the vast majority of these high-stakes systems still lack independent evaluation.
+==================================================

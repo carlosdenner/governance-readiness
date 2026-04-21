@@ -1,0 +1,75 @@
+exitcode: 0 (execution succeeded)
+Code output: Attempting to load data from: context_crosswalk_evidence.json
+Data loaded. Shape: (42, 4)
+Unique Bundles found: <StringArray>
+['Trust Readiness', 'Integration Readiness']
+Length: 2, dtype: str
+Refining domains based on statement content...
+
+Group counts for analysis:
+analysis_group
+Other             34
+Security           4
+Explainability     2
+Fairness           2
+Name: count, dtype: int64
+
+--- Statistical Analysis ---
+Kruskal-Wallis Test across all groups: H=4.2731, p-value=0.2334
+
+Mann-Whitney U Test: Security vs Fairness
+  U-statistic: 5.00, p-value: 0.7237
+  Mean Controls: Security=2.25, Fairness=2.00
+
+Mann-Whitney U Test: Security vs Explainability
+  U-statistic: 3.00, p-value: 0.7799
+  Mean Controls: Security=2.25, Explainability=2.50
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a box-and-whisker plot).
+*   **Purpose:** This plot visualizes the distribution of numerical data ("Number of Mapped Controls") across different categorical groups ("Trust Domains"). It displays the median, quartiles, and potential outliers to compare the central tendency and variability of each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Trust Domain"
+    *   **Labels:** The categories presented are "Explainability," "Fairness," "Other," and "Security." The labels are rotated at a 45-degree angle for readability.
+*   **Y-Axis:**
+    *   **Title:** "Number of Mapped Controls"
+    *   **Value Range:** The visible scale ranges from 1.00 to 3.00, with tick marks at 0.25 intervals.
+    *   **Units:** Count (numerical quantity of controls).
+
+### 3. Data Trends
+*   **Explainability:**
+    *   This category has the **highest median** value (green line), situated at 2.5.
+    *   The interquartile range (the blue box) spans from 2.25 to 2.75.
+    *   The whiskers indicate a full range of data from 2.0 to 3.0. The distribution appears relatively symmetric.
+*   **Fairness:**
+    *   This plot is collapsed into a single line at the value of 2.0.
+    *   This indicates **zero variance** in the data provided for this category; essentially, all data points for "Fairness" are equal to 2.
+*   **Other:**
+    *   The median is at 2.0.
+    *   The box spans from 1.0 to 2.0, meaning the bottom 25% to 50% of the data falls within this range.
+    *   There is a long upper whisker extending to 3.0, indicating a spread towards higher values despite a lower median.
+*   **Security:**
+    *   The median is at 2.0.
+    *   The box is very compressed, ranging only from 2.0 to 2.25.
+    *   There is a visible **outlier** (represented by a circle) at the value of 3.0.
+
+### 4. Annotations and Legends
+*   **Title:** "Architectural Control Density by Trust Domain" is clearly displayed at the top.
+*   **Grid:** A standard grid is overlaid on the plot to assist in reading specific Y-axis values.
+*   **Box Components (Implicit Legend):**
+    *   **Green Line:** Represents the median of the data.
+    *   **Blue Box:** Represents the Interquartile Range (IQR), containing the middle 50% of the data.
+    *   **Black Whiskers:** Extend to the minimum and maximum values (excluding outliers).
+    *   **Circle:** Represents an outlier point.
+
+### 5. Statistical Insights
+*   **Variability differences:** "Explainability" and "Other" show the most variability in the number of mapped controls. In contrast, "Fairness" is completely static, and "Security" has very low variability aside from a single outlier case.
+*   **Central Tendency:** "Explainability" is the only domain with a median higher than 2.0. The other three domains ("Fairness," "Other," and "Security") all share a median of 2.0.
+*   **Interpretation:** Generally, the "Explainability" domain requires or maps to a higher density of architectural controls (averaging 2.5) compared to the other trust domains. "Fairness" appears to be rigidly defined with exactly 2 controls in this dataset.
+==================================================

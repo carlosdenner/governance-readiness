@@ -1,0 +1,38 @@
+exitcode: 1 (execution failed)
+Code output: Starting Experiment: Vendor-Governance Gap Analysis (Revised)
+Total EO13960 Records: 1757
+Records with valid Source AND Impact Assessment data: 122
+source_type
+Contractor (COTS/Vendor)    62
+In-House (GOTS)             60
+Name: count, dtype: int64
+
+Compliance Rates by Source Type:
+                              mean  count  sum  percentage
+source_type                                               
+Contractor (COTS/Vendor)  0.338710     62   21   33.870968
+In-House (GOTS)           0.483333     60   29   48.333333
+
+Contingency Table (0=No/Planned, 1=Yes):
+has_impact_assessment      0   1
+source_type                     
+Contractor (COTS/Vendor)  41  21
+In-House (GOTS)           31  29
+
+Chi-Square Test Results:
+Statistic: 2.0728
+P-Value: 0.1499
+[31m---------------------------------------------------------------------------[39m
+[31mIndexError[39m                                Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[1][39m[32m, line 99[39m
+[32m     96[39m [38;5;28;01mfor[39;00m bar [38;5;129;01min[39;00m bars:
+[32m     97[39m     height = bar.get_height()
+[32m     98[39m     plt.text(bar.get_x() + bar.get_width()/[32m2.[39m, height + [32m1[39m,
+[32m---> [39m[32m99[39m              [33mf[39m[33m'[39m[38;5;132;01m{[39;00mheight[38;5;132;01m:[39;00m[33m.1f[39m[38;5;132;01m}[39;00m[33m% (n=[39m[38;5;132;01m{[39;00m[38;5;28mint[39m([43mcompliance_rates[49m[43m.[49m[43mloc[49m[43m[[49m[43mcompliance_rates[49m[43m[[49m[33;43m"[39;49m[33;43mpercentage[39;49m[33;43m"[39;49m[43m][49m[38;5;250;43m [39;49m[43m==[49m[38;5;250;43m [39;49m[43mheight[49m[43m*[49m[32;43m10[39;49m[43m][49m[43m[[49m[33;43m"[39;49m[33;43mcount[39;49m[33;43m"[39;49m[43m][49m[43m.[49m[43mvalues[49m[43m[[49m[32;43m0[39;49m[43m][49m)[38;5;250m [39m[38;5;28;01mif[39;00m[38;5;250m [39m[38;5;129;01mnot[39;00m[38;5;250m [39mcompliance_rates[compliance_rates[[33m"[39m[33mpercentage[39m[33m"[39m][38;5;250m [39m==[38;5;250m [39mheight].empty[38;5;250m [39m[38;5;28;01melse[39;00m[38;5;250m [39m[33m"[39m[33m"[39m[38;5;132;01m}[39;00m[33m)[39m[33m'[39m,
+[32m    100[39m              ha=[33m'[39m[33mcenter[39m[33m'[39m, va=[33m'[39m[33mbottom[39m[33m'[39m)
+[32m    102[39m plt.tight_layout()
+[32m    103[39m plt.show()
+
+[31mIndexError[39m: index 0 is out of bounds for axis 0 with size 0
+
+ERROR: {'type': 'IndexError', 'message': 'index 0 is out of bounds for axis 0 with size 0', 'traceback': 'Traceback (most recent call last):\n  File "/usr/local/lib/python3.13/site-packages/IPython/core/interactiveshell.py", line 3701, in run_code\n    exec(code_obj, self.user_global_ns, self.user_ns)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "<ipython-input-1-1e775944e685>", line 99, in <module>\n    f\'{height:.1f}% (n={int(compliance_rates.loc[compliance_rates["percentage"] == height*10]["count"].values[0]) if not compliance_rates[compliance_rates["percentage"] == height].empty else ""})\',\n                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^\nIndexError: index 0 is out of bounds for axis 0 with size 0\n'}

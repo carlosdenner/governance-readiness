@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Inspection ---
+
+Rows valid for analysis: 159
+Autonomy counts:
+ Autonomy_Bin
+Low Autonomy     115
+High Autonomy     44
+Name: count, dtype: int64
+Harm counts:
+ Harm_Bin
+Tangible/Safety        92
+Intangible/Societal    67
+Name: count, dtype: int64
+
+--- Contingency Table ---
+Harm_Bin       Intangible/Societal  Tangible/Safety
+Autonomy_Bin                                       
+High Autonomy                   16               28
+Low Autonomy                    51               64
+
+Chi-Square Statistic: 0.5368
+P-value: 0.4638
+Fisher's Exact P-value: 0.3768
+Odds Ratio: 0.7171
+
+Conditional Probabilities:
+P(Tangible Harm | High Autonomy) = 28/44 (63.64%)
+P(Tangible Harm | Low Autonomy) = 64/115 (55.65%)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically a Confusion Matrix or Contingency Table visualization).
+*   **Purpose:** The plot visualizes the frequency distribution or relationship between two categorical variables: "Autonomy Level" and "Harm Category." The color intensity represents the count of occurrences for each combination of categories.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Harm Category"
+    *   **Labels:** The axis contains two categorical labels: "Intangible/Societal" and "Tangible/Safety".
+*   **Y-Axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Labels:** The axis contains two categorical labels: "High Autonomy" and "Low Autonomy".
+*   **Color Scale (Z-Axis equivalent):**
+    *   **Range:** The color bar on the right indicates a numerical scale ranging from approximately 15 (lightest blue) to 65 (darkest blue). The values represent counts.
+
+### 3. Data Trends
+*   **Highest Value (Darkest Blue):** The intersection of **"Low Autonomy"** and **"Tangible/Safety"** contains the highest count at **64**. This indicates that incidents or data points involving low autonomy systems resulting in tangible safety harms are the most frequent in this dataset.
+*   **Lowest Value (Lightest Blue):** The intersection of **"High Autonomy"** and **"Intangible/Societal"** contains the lowest count at **16**.
+*   **General Pattern:**
+    *   **Autonomy:** There is a significantly higher number of counts associated with "Low Autonomy" compared to "High Autonomy" across both harm categories.
+    *   **Harm Type:** "Tangible/Safety" harms are consistently more frequent than "Intangible/Societal" harms, regardless of the autonomy level.
+
+### 4. Annotations and Legends
+*   **Title:** "Autonomy Level vs. Harm Type" appears at the top, clearly defining the subject of the chart.
+*   **Cell Annotations:** Each of the four cells contains a numerical label (16, 28, 51, 64) providing the exact count for that specific intersection, eliminating the need to estimate from the color bar.
+*   **Color Bar:** Located on the right side, it provides a visual legend mapping the shade of blue to the numerical count, with ticks at 20, 30, 40, 50, and 60.
+
+### 5. Statistical Insights
+*   **Dominance of Low Autonomy:** "Low Autonomy" accounts for the majority of the data points ($51 + 64 = 115$), representing approximately **72%** of the total counts ($115/159$).
+*   **Prevalence of Tangible Harms:** "Tangible/Safety" harms ($28 + 64 = 92$) are more common than "Intangible/Societal" harms ($16 + 51 = 67$), comprising roughly **58%** of the total.
+*   **Interaction:** The dataset suggests that tangible safety issues in low-autonomy systems are the primary driver of the data, being four times more frequent ($64$) than intangible societal issues in high-autonomy systems ($16$).
+==================================================

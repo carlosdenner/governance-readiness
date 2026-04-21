@@ -1,0 +1,52 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Filtered Dataset Shape: (618, 197)
+Counts per category:
+Agency_Category
+Science     384
+Security    234
+Name: count, dtype: int64
+
+--- Results ---
+Science Agencies (n=384) Mean Governance Score: 0.16
+Security Agencies (n=234) Mean Governance Score: 0.19
+Mann-Whitney U Statistic: 45388.0, p-value: 0.66026
+Result: No statistically significant difference.
+
+STDERR:
+<ipython-input-1-4be68390d342>:125: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the visual analysis of the provided image, here are the details:
+
+### 1. Plot Type
+*   **Type:** This is a **box plot** (also known as a box-and-whisker plot), though it presents in a collapsed form due to the nature of the data distribution.
+*   **Purpose:** The plot is designed to compare the statistical distribution of "Governance Readiness Scores" between two distinct categories of government agencies ("Science" vs. "Security").
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Labels:** Two categorical groups:
+        1.  **Science** (which includes NASA, DOE, NSF, HHS).
+        2.  **Security** (which includes DHS, DOD, DOJ, STATE).
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Composite Governance Score (0-5)".
+    *   **Range:** The visual axis ranges from **0.0 to 3.0**. While the label implies a potential scale up to 5, the plotted data only reaches 3.
+    *   **Intervals:** There are horizontal dashed grid lines at 0.5 intervals.
+
+### 3. Data Trends
+*   **Medians/Interquartile Range (The "Box"):** For both the Science and Security agencies, there is a flat red line at the **0.0** mark. In a box plot, this indicates that the median score is 0. Furthermore, because there is no visible "box" height, the 25th and 75th percentiles are likely also 0 (or very close to it), indicating that the vast majority of agencies in both groups have a score of 0.
+*   **Outliers/Data Points:** Both categories display circles at integers **1.0, 2.0, and 3.0**. In the context of a box plot with a median of 0, these are considered outliers or distinct positive data points.
+*   **Pattern:** Both groups exhibit an identical visual pattern: a heavy concentration at 0 with identical spread into the higher scores of 1, 2, and 3.
+
+### 4. Annotations and Legends
+*   **Main Title:** "Governance Readiness Scores by Agency Type".
+*   **Statistical Annotation:** A box at the top center contains the text **"p=0.6603"**. This represents the p-value resulting from a statistical hypothesis test comparing the two groups.
+*   **Gridlines:** Horizontal dashed lines run across the plot to assist in estimating the y-values of the data points.
+
+### 5. Statistical Insights
+*   **No Significant Difference:** The p-value of **0.6603** is well above the standard significance threshold (typically 0.05). This indicates that there is **no statistically significant difference** in Governance Readiness Scores between Science agencies and Security agencies. The data does not support the idea that one type of agency is more "ready" than the other.
+*   **Low Overall Readiness:** The fact that the median is 0 and the maximum observed score is 3 (on a scale that goes up to 5) suggests that, in general, governance readiness is low across all surveyed agencies regardless of type.
+*   **Identical Distributions:** Visually and statistically, the two groups appear remarkably similar, with a "floor effect" where most data points are bottomed out at zero.
+==================================================

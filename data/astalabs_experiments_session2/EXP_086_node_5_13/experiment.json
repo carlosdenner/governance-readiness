@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment was successfully executed and produced valid statistical results. The code corrected the previous data parsing issue by implementing a robust text-analysis function (`map_docs`) that correctly classified verbose descriptions (e.g., 'Documentation is complete') into binary categories. \n\n**Hypothesis Test Results:**\n1.  **Data Distribution:** \n    - **Development Phase:** 581 systems analyzed. 262 Complete (45.09%), 319 Incomplete.\n    - **Operation Phase:** 498 systems analyzed. 289 Complete (58.03%), 209 Incomplete.\n\n2.  **Statistical Test:**\n    - **Chi-Square Statistic:** 17.45\n    - **P-value:** 0.0000 (Highly significant)\n    - **Odds Ratio:** 1.68 (Operational systems are ~1.7x more likely to have complete documentation).\n\n3.  **Conclusion:**\n    The analysis reveals a statistically significant difference, but in the **opposite direction** of the hypothesis. Operational systems are significantly *more* likely to have complete documentation compared to those in development. The hypothesis that operational systems suffer from higher 'documentation debt' is **rejected**. This likely reflects the U.S. federal 'Authority to Operate' (ATO) process, where documentation is a gatekeeping requirement for deployment.",
+  "child_ids": [
+    "node_6_6",
+    "node_6_44"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport os\n\ndef run_experiment():\n    print(\"Starting experiment: Lifecycle Documentation Debt (Attempt 2)...\")\n    \n    # 1. Load Data\n    filename = 'astalabs_discovery_all_data.csv'\n    if os.path.exists(filename):\n        filepath = filename\n    elif os.path.exists(os.path.join('..', filename)):\n        filepath = os.path.join('..', filename)\n    else:\n        print(f\"Error: {filename} not found.\")\n        return\n\n    try:\n        df = pd.read_csv(filepath, low_memory=False)\n    except Exception as e:\n        print(f\"Failed to load CSV: {e}\")\n        return\n\n    # 2. Filter for EO13960\n    if 'source_table' not in df.columns:\n        print(\"Column 'source_table' not found.\")\n        return\n        \n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"EO 13960 Scored rows: {len(df_eo)}\")\n\n    # 3. Identify Columns (Dynamic Search)\n    cols = df_eo.columns\n    dev_col = next((c for c in cols if 'dev_stage' in c), None)\n    doc_col = next((c for c in cols if 'data_docs' in c), None)\n    \n    if not dev_col or not doc_col:\n        print(f\"Critical columns missing. Found dev: {dev_col}, doc: {doc_col}\")\n        return\n\n    print(f\"Using Dev Stage Column: '{dev_col}'\")\n    print(f\"Using Documentation Column: '{doc_col}'\")\n\n    # 4. Map Lifecycle Stage\n    # Operation: 'Operation', 'Maintenance', 'In production', 'In mission'\n    # Development: 'Acquisition', 'Development', 'Initiated', 'Implementation', 'Planned'\n    def map_lifecycle(val):\n        if pd.isna(val): return np.nan\n        s = str(val).lower()\n        if any(x in s for x in ['operation', 'maintenance', 'in production', 'in mission']):\n            return 'Operation'\n        if any(x in s for x in ['development', 'acquisition', 'initiated', 'implementation', 'planned']):\n            return 'Development'\n        return np.nan # Exclude Retired or unclear\n\n    df_eo['lifecycle_group'] = df_eo[dev_col].apply(map_lifecycle)\n    \n    # 5. Map Documentation Status (Parsing Descriptions)\n    # Hypothesis specifies \"complete\" documentation.\n    # We will map \"Complete\" and \"Widely available\" to 1.\n    # We will map \"Missing\", \"Not available\", and \"Partially\" to 0 (Incomplete/Debt).\n    def map_docs(val):\n        if pd.isna(val): return np.nan\n        s = str(val).lower()\n        if 'complete' in s or 'widely available' in s:\n            # Check for partial negation\n            if 'partially' in s:\n                return 0\n            return 1\n        if 'missing' in s or 'not available' in s or 'partially' in s:\n            return 0\n        return 0 # Default to 0 if unclear but text exists\n\n    df_eo['has_complete_docs'] = df_eo[doc_col].apply(map_docs)\n\n    # 6. Prepare Analysis DataFrame\n    # Drop NaNs in either target column to analyze only valid comparisons\n    df_analysis = df_eo.dropna(subset=['lifecycle_group', 'has_complete_docs'])\n    \n    print(f\"\\nTotal rows for analysis (valid stage & doc status): {len(df_analysis)}\")\n    \n    # 7. Generate Contingency Table\n    ct = pd.crosstab(df_analysis['lifecycle_group'], df_analysis['has_complete_docs'])\n    # Ensure shape\n    for i in [0, 1]:\n        if i not in ct.columns: ct[i] = 0\n    \n    # Sort columns to [0, 1] -> [Incomplete, Complete]\n    ct = ct[[0, 1]]\n    ct.columns = ['Incomplete Docs', 'Complete Docs']\n    \n    print(\"\\n--- Contingency Table ---\")\n    print(ct)\n    \n    # 8. Statistical Tests\n    chi2, p, dof, ex = stats.chi2_contingency(ct)\n    print(f\"\\nChi-Square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4f}\")\n    \n    # Odds Ratio\n    # OR = (Op_Complete * Dev_Incomplete) / (Op_Incomplete * Dev_Complete)\n    # Logic: Odds of being Complete in Operation vs Development\n    \n    op_comp = ct.loc['Operation', 'Complete Docs']\n    op_inc = ct.loc['Operation', 'Incomplete Docs']\n    dev_comp = ct.loc['Development', 'Complete Docs']\n    dev_inc = ct.loc['Development', 'Incomplete Docs']\n    \n    if op_inc * dev_comp == 0:\n        odds_ratio = np.inf \n    else:\n        odds_ratio = (op_comp * dev_inc) / (op_inc * dev_comp)\n        \n    print(f\"Odds Ratio (Complete Docs given Operation): {odds_ratio:.4f}\")\n    \n    # Calculate Percentages\n    op_rate = op_comp / (op_comp + op_inc) if (op_comp + op_inc) > 0 else 0\n    dev_rate = dev_comp / (dev_comp + dev_inc) if (dev_comp + dev_inc) > 0 else 0\n    \n    print(f\"\\nDocumentation Completion Rate (Operation): {op_rate:.2%}\")\n    print(f\"Documentation Completion Rate (Development): {dev_rate:.2%}\")\n    \n    # 9. Conclusion\n    print(\"\\n--- Conclusion ---\")\n    if p < 0.05:\n        print(\"Result: Statistically Significant.\")\n        if op_rate < dev_rate:\n            print(\"Hypothesis SUPPORTED: Operational systems are significantly less likely to have complete documentation.\")\n        else:\n            print(\"Hypothesis REJECTED: Operational systems are significantly MORE likely to have complete documentation.\")\n    else:\n        print(\"Result: Not Statistically Significant.\")\n        print(\"Hypothesis REJECTED due to lack of significance.\")\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting experiment: Lifecycle Documentation Debt (Attempt 2)...\nEO 13960 Scored rows: 1757\nUsing Dev Stage Column: '16_dev_stage'\nUsing Documentation Column: '34_data_docs'\n\nTotal rows for analysis (valid stage & doc status): 1079\n\n--- Contingency Table ---\n                 Incomplete Docs  Complete Docs\nlifecycle_group                                \nDevelopment                  319            262\nOperation                    209            289\n\nChi-Square Statistic: 17.4474\nP-value: 0.0000\nOdds Ratio (Complete Docs given Operation): 1.6836\n\nDocumentation Completion Rate (Operation): 58.03%\nDocumentation Completion Rate (Development): 45.09%\n\n--- Conclusion ---\nResult: Statistically Significant.\nHypothesis REJECTED: Operational systems are significantly MORE likely to have complete documentation.\n",
+  "created_at": "2026-02-22T05:09:36.355126+00:00",
+  "creation_idx": 87,
+  "experiment_id": "node_5_13",
+  "experiment_plan": {
+    "deliverables": "Contingency table and statistical comparison of documentation readiness by lifecycle stage.",
+    "objective": "Test for 'documentation debt' where operational systems lack the documentation rigor of active development projects.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table` = 'eo13960_scored'.\n2. Create groups based on `16_dev_stage` ('Operation' vs 'Development').\n3. Create a binary `has_data_docs` from `27_data_docs` (or `31_data_catalog` depending on availability) mapping 'Yes' to 1.\n4. Perform a Chi-square test to see if Operational systems have significantly lower documentation rates.\n5. Calculate the Odds Ratio."
+  },
+  "hypothesis": "Lifecycle Documentation Debt: AI systems in the 'Operation/Maintenance' phase are *less* likely to have complete 'Data Documentation' compared to systems in the 'Development' phase, contrary to the expectation that documentation is finalized before deployment.",
+  "id_in_run": 86,
+  "is_surprising": true,
+  "parent_id": "node_4_10",
+  "posterior": 0.25274725274725274,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25274725274725274,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and produced valid, statistically significant results. The code in the second attempt correctly addressed the data parsing issues identified in the first attempt by implementing a robust text-analysis heuristic to classify documentation status from verbose descriptions (e.g., distinguishing 'complete' from 'partially completed'). The statistical analysis (Chi-Square test) was appropriate for the categorical data, and the interpretation of the results—rejecting the hypothesis because the relationship was significant in the *opposite* direction—was sound.",
+  "rich_outputs": null,
+  "runtime_ms": 250500.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.587025877348458
+}

@@ -1,0 +1,25 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Mission Culture (HHS vs DHS) Disparity Mitigation
+Filtered dataset size: 454 rows
+target_agency
+HHS    271
+DHS    183
+Name: count, dtype: int64
+
+--- Contingency Table (Agency vs Disparity Mitigation) ---
+               No Mitigation  Has Mitigation
+target_agency                               
+DHS                      169              14
+HHS                      271               0
+
+--- Mitigation Rates (% of Agency Systems) ---
+               No Mitigation  Has Mitigation
+target_agency                               
+DHS                92.349727        7.650273
+HHS               100.000000        0.000000
+
+--- Statistical Test Results ---
+Chi-Square Statistic: 18.9087
+P-value: 0.0000
+Result: Statistically Significant Difference
+Odds Ratio (HHS relative to DHS): 0.0000

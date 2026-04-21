@@ -1,0 +1,67 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+AIID Incidents loaded: 1362 rows
+Identified Columns:
+  Tech: Known AI Technology
+  Harm Type: harm_type
+  Primary Harm: primary_harm_types
+  Reports/Desc: reports / description / summary
+
+--- Analysis Summary ---
+Total AIID Incidents: 1362
+Categorized Incidents: 57
+Generative Count: 14
+Discriminative Count: 43
+
+--- Contingency Table ---
+Harm_Category   Economic/Physical/Opportunity  Reputational/Psychological
+Tech_Class                                                               
+Discriminative                             25                          18
+Generative                                  2                          12
+
+Chi-square Statistic: 6.4830
+P-value: 1.0891e-02
+
+--- Proportions (%) ---
+Harm_Category   Economic/Physical/Opportunity  Reputational/Psychological
+Tech_Class                                                               
+Discriminative                      58.139535                   41.860465
+Generative                          14.285714                   85.714286
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This plot is designed to compare the relative proportions (percentage distribution) of two specific categories of harm across two different types of AI technologies. It allows for a direct comparison of the composition of harms rather than the absolute volume of harms.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Label:** "AI Technology"
+    *   **Categories:** "Discriminative" and "Generative".
+*   **Y-Axis:**
+    *   **Label:** "Percentage"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Linear, marked in increments of 20 (0, 20, 40, 60, 80, 100).
+
+**3. Data Trends**
+*   **Discriminative AI:**
+    *   The majority of harms (visually estimated at approximately **58-60%**) fall into the "Economic/Physical/Opportunity" category (Maroon).
+    *   The remaining portion (approximately **40-42%**) consists of "Reputational/Psychological" harms (Navy Blue).
+*   **Generative AI:**
+    *   This trend is inverted. The vast majority of harms (visually estimated at approximately **85%**) are "Reputational/Psychological" (Navy Blue).
+    *   A small minority (visually estimated at approximately **15%**) falls into the "Economic/Physical/Opportunity" category (Maroon).
+*   **Pattern:** There is a distinct inverse relationship between the technology type and the dominant harm category. As the technology shifts from Discriminative to Generative, the prevalence of tangible harms (Economic/Physical) decreases sharply, while intangible harms (Reputational/Psychological) increase dramatically.
+
+**4. Annotations and Legends**
+*   **Chart Title:** "Harm Category Distribution by AI Technology" located at the top center.
+*   **Legend:** Located to the right of the plot under the title "Harm Category".
+    *   **Maroon/Dark Red:** Represents "Economic/Physical/Opportunity".
+    *   **Navy/Dark Blue:** Represents "Reputational/Psychological".
+
+**5. Statistical Insights**
+*   **Shift in Risk Profile:** The data suggests a fundamental shift in the risk landscape between these two AI paradigms. Discriminative AI (often used for classification, ranking, or decision-making) poses higher risks regarding tangible outcomes like financial loss or lost opportunities. Conversely, Generative AI (used to create content) is overwhelmingly associated with harms regarding human perception, mental well-being, and social standing.
+*   **Dominance of Psychological Harm in Generative AI:** The "Reputational/Psychological" segment for Generative AI is the largest single segment in the chart, indicating that this specific category is the primary concern for that technology class by a wide margin.
+*   **Balanced vs. Skewed:** The distribution of harm in Discriminative AI is somewhat more balanced (roughly a 60/40 split), whereas Generative AI shows a highly skewed distribution (roughly 15/85).
+==================================================

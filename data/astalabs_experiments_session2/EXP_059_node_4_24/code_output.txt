@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO13960 subset shape: (1757, 196)
+
+--- Raw Lifecycle Stages ---
+16_dev_stage
+Operation and Maintenance         627
+Acquisition and/or Development    351
+Initiated                         329
+Implementation and Assessment     275
+Retired                           133
+Planned                            20
+In production                      14
+In mission                          4
+NaN                                 4
+Name: count, dtype: int64
+
+--- Analysis Groups ---
+lifecycle_group
+Development    646
+Operational    627
+Name: count, dtype: int64
+
+--- Raw Testing Values ---
+53_real_world_testing
+NaN                                                                                                                                                                                                                                                                                                                                                                                                              1147
+Performance evaluation in operational environment: The AI use case has been tested in an operational environment before being fully implemented as a solution, or has been tested in simulated or controlled environment using operational or synthetic data.                                                                                                                                                      49
+Benchmark evaluation: Testing of the AI model has involved the use of benchmarks (either publicly available or internally created) to estimate performance in real-world settings, but has not been tested in an operational environment.                                                                                                                                                                          24
+Yes                                                                                                                                                                                                                                                                                                                                                                                                                22
+Impact evaluation in operational environment: The AI use case has been tested in an operational environment before being fully implemented as a solution and has utilized randomized experiments with a control group or other counterfactual, social systems analysis, or other rigorous research methodologies to evaluate impact and identify potential harm to users as well as broader groups of people.      15
+No testing: No testing of the model to simulate performance in an operational environment has been conducted thus far.                                                                                                                                                                                                                                                                                             15
+Agency CAIO has waived this minimum practice and reported such waiver to OMB.                                                                                                                                                                                                                                                                                                                                       1
+Name: count, dtype: int64
+
+--- Testing Documentation Rates ---
+                 count  sum      mean       pct
+lifecycle_group                                
+Development        646    0  0.000000  0.000000
+Operational        627   22  0.035088  3.508772
+
+--- Contingency Table (0=No Evidence, 1=Yes Evidence) ---
+has_evidence       0   1
+lifecycle_group         
+Development      646   0
+Operational      605  22
+
+Chi-Square Statistic: 21.0455
+P-Value: 4.4850e-06
+
+Operational Rate: 3.51%
+Development Rate: 0.00%
+Result: Statistically significant difference.
+Hypothesis REJECTED: Operational systems do not have lower rates (direction inverted).

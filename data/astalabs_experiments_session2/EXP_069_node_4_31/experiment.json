@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Autonomy-Redress Compensatory Mechanism' hypothesis using Fisher's Exact Test due to the small sample size of high-autonomy systems. \n\nThe results **do not support** the hypothesis that high-autonomy systems are more likely to have formal appeal processes. \n\n1. **Directionality**: Contrary to the hypothesis, 'High' autonomy systems showed a *lower* rate of established appeal processes (40.0%, n=2/5) compared to 'Low' autonomy systems (56.1%, n=74/132). \n\n2. **Statistical Significance**: The difference was not statistically significant (Fisher's Exact Test p=0.656), indicating that autonomy level is not a strong predictor of redress availability in this dataset. \n\n3. **limitations**: The analysis is heavily constrained by the extreme scarcity of high-autonomy systems in the federal inventory (only 5 valid cases vs 132 low-autonomy cases), making the 40% figure statistically fragile.",
+  "child_ids": [
+    "node_5_54",
+    "node_5_94"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\n\n# 1. Load data\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    eo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n    \n    # 2. Map Autonomy Level\n    # High: Fully automated or immediate intervention not practicable\n    high_autonomy_markers = [\n        'Yes - All individual decisions or actions are automated',\n        'Other – Immediate human intervention is not practicable'\n    ]\n    low_autonomy_markers = [\n        'No - Some individual decisions or actions require direct human oversight'\n    ]\n    \n    def map_autonomy(val):\n        if pd.isna(val):\n            return None\n        val_str = str(val)\n        if any(marker in val_str for marker in high_autonomy_markers):\n            return 'High'\n        if any(marker in val_str for marker in low_autonomy_markers):\n            return 'Low'\n        return None\n\n    eo_df['autonomy_level'] = eo_df['57_autonomous_impact'].apply(map_autonomy)\n\n    # 3. Map Appeal Process\n    # Yes: Explicitly 'Yes'\n    # No: Explicit denials or waivers\n    def map_appeal(val):\n        if pd.isna(val):\n            return None\n        val_str = str(val)\n        if val_str.strip() == 'Yes':\n            return 'Yes'\n        if 'No –' in val_str or 'waived' in val_str:\n            return 'No'\n        return None\n\n    eo_df['has_appeal'] = eo_df['65_appeal_process'].apply(map_appeal)\n\n    # 4. Filter for valid data\n    valid_df = eo_df.dropna(subset=['autonomy_level', 'has_appeal'])\n    \n    print(f\"Data points after filtering: {len(valid_df)}\")\n    \n    # 5. Create Contingency Table\n    # We want rows to be Autonomy (High/Low) and columns to be Appeal (Yes/No)\n    contingency = pd.crosstab(valid_df['autonomy_level'], valid_df['has_appeal'])\n    \n    # Ensure both rows/cols exist even if counts are 0\n    for level in ['High', 'Low']:\n        if level not in contingency.index:\n            contingency.loc[level] = [0, 0]\n    for response in ['Yes', 'No']:\n        if response not in contingency.columns:\n            contingency[response] = 0\n            \n    # Reorder for consistency: Rows=[High, Low], Cols=[Yes, No]\n    contingency = contingency.loc[['High', 'Low'], ['Yes', 'No']]\n    \n    print(\"\\n--- Contingency Table (Autonomy vs Appeal) ---\")\n    print(contingency)\n    \n    # 6. Statistical Test (Fisher's Exact Test due to small sample sizes)\n    odds_ratio, p_value = stats.fisher_exact(contingency)\n    \n    print(\"\\n--- Statistical Results ---\")\n    print(f\"Fisher's Exact Test p-value: {p_value:.4f}\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\n    \n    # Calculate percentages for plotting\n    rates = contingency.div(contingency.sum(axis=1), axis=0)['Yes'] * 100\n    \n    print(\"\\n--- Appeal Process Rates ---\")\n    print(rates)\n\n    # 7. Visualization\n    plt.figure(figsize=(8, 6))\n    bars = plt.bar(rates.index, rates.values, color=['#d62728', '#1f77b4'], alpha=0.7)\n    plt.title('Availability of Appeal Process by System Autonomy Level')\n    plt.ylabel('Percentage with Formal Appeal Process (%)')\n    plt.xlabel('Autonomy Level')\n    plt.ylim(0, 100)\n    \n    # Add counts to bars\n    for bar, label in zip(bars, rates.index):\n        height = bar.get_height()\n        n_total = contingency.loc[label].sum()\n        n_yes = contingency.loc[label, 'Yes']\n        plt.text(bar.get_x() + bar.get_width()/2., height + 1,\n                 f'n={n_yes}/{n_total}\\n({height:.1f}%)',\n                 ha='center', va='bottom')\n    \n    plt.tight_layout()\n    plt.show()\n\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Data points after filtering: 137\n\n--- Contingency Table (Autonomy vs Appeal) ---\nhas_appeal      Yes  No\nautonomy_level         \nHigh              2   3\nLow              74  58\n\n--- Statistical Results ---\nFisher's Exact Test p-value: 0.6556\nOdds Ratio: 0.5225\n\n--- Appeal Process Rates ---\nautonomy_level\nHigh    40.000000\nLow     56.060606\nName: Yes, dtype: float64\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot (Vertical Bar Chart).\n*   **Purpose:** The plot compares the prevalence (percentage) of a formal appeal process across two distinct categories of system autonomy (\"High\" and \"Low\").\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Autonomy Level\"\n    *   **Categories:** Two discrete categories labeled \"High\" and \"Low\".\n*   **Y-Axis:**\n    *   **Title:** \"Percentage with Formal Appeal Process (%)\"\n    *   **Range:** 0 to 100.\n    *   **Scale:** Linear scale with major tick marks every 20 units (0, 20, 40, 60, 80, 100).\n\n### 3. Data Trends\n*   **Comparison:** The bar representing \"Low\" autonomy is taller than the bar representing \"High\" autonomy.\n*   **Tallest Bar:** The \"Low\" autonomy category shows that 56.1% of the systems have a formal appeal process.\n*   **Shortest Bar:** The \"High\" autonomy category shows that 40.0% of the systems have a formal appeal process.\n*   **Visual Pattern:** There is an apparent inverse relationship in this dataset where systems with lower autonomy levels are more likely to have a formal appeal process than those with high autonomy.\n\n### 4. Annotations and Legends\n*   **Text Annotations (Above Bars):**\n    *   **High Autonomy Bar:** \"n=2/5 (40.0%)\". This indicates that out of a total sample size of 5 systems classified as high autonomy, 2 possessed a formal appeal process.\n    *   **Low Autonomy Bar:** \"n=74/132 (56.1%)\". This indicates that out of a total sample size of 132 systems classified as low autonomy, 74 possessed a formal appeal process.\n*   **Color Coding:** The bars are distinct in color (Red/Pink for High, Blue for Low) to visually separate the categories, though no separate legend box is required as the x-axis labels serve this purpose.\n\n### 5. Statistical Insights\n*   **Prevalence of Appeals:** A formal appeal process is more common in low autonomy systems (56.1%) compared to high autonomy systems (40.0%).\n*   **Sample Size Disparity:** There is a massive disparity in sample sizes between the two groups. The \"High\" autonomy group has a very small sample size ($n=5$), whereas the \"Low\" autonomy group has a much more robust sample size ($n=132$).\n*   **Reliability:** Due to the extremely small sample size for the \"High\" category ($n=5$), the 40% figure is statistically fragile. A change in the status of just one system in that group would swing the percentage by 20%. Therefore, while the chart suggests High Autonomy systems are less likely to have appeal processes, this conclusion should be treated with caution until more data on high autonomy systems is collected.\n==================================================",
+  "created_at": "2026-02-22T04:19:46.468408+00:00",
+  "creation_idx": 70,
+  "experiment_id": "node_4_31",
+  "experiment_plan": {
+    "deliverables": "Contingency table; Fisher's Exact Test p-value; Bar plot comparing appeal process rates by autonomy level.",
+    "objective": "Test if higher autonomy correlates with the presence of formal appeal mechanisms using Fisher's Exact Test due to small sample sizes.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table == 'eo13960_scored'`.\n2. Create `autonomy_bin`: Map 'Yes - All individual...' and 'Other – Immediate...' to 'High'; Map 'No - Some individual...' to 'Low'. Drop others.\n3. Create `appeal_bin`: Map 'Yes' to 1; Map 'No – it is not operationally...' and 'No – Law...' to 0. Drop others.\n4. Drop rows with NaN in either new column.\n5. Generate a contingency table (Autonomy x Appeal).\n6. Perform Fisher's Exact Test to determine statistical significance.\n7. Calculate proportions of Appeal=1 for High vs Low autonomy groups."
+  },
+  "hypothesis": "Autonomy-Redress Compensatory Mechanism: High-autonomy systems are significantly more likely to have formal 'Appeal Processes' established than low-autonomy systems, suggesting agencies use human-in-the-loop as a substitute for formal redress.",
+  "id_in_run": 69,
+  "is_surprising": false,
+  "parent_id": "node_3_19",
+  "posterior": 0.24175824175824176,
+  "posterior_belief": {
+    "_empirical_mean": 0.23333333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 4.0,
+    "definitely_true": 0.0,
+    "maybe_false": 56.0,
+    "maybe_true": 0.0,
+    "mean": 0.24175824175824176,
+    "n": 60.0,
+    "prior_params": [
+      8.0,
+      23.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.25806451612903225,
+  "prior_belief": {
+    "_empirical_mean": 0.25,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 30.0,
+    "maybe_true": 0.0,
+    "mean": 0.25806451612903225,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was executed faithfully according to the plan. The programmer correctly handled the sparse data issues identified in the debug phase by implementing robust text mapping for 'Autonomy Level' and 'Appeal Process' and utilizing Fisher's Exact Test to accommodate the small sample size of high-autonomy systems (n=5). \n\n**Findings:**\nThe results **reject** the hypothesis that high-autonomy systems are more likely to have formal appeal processes. \n1.  **Inverse Trend:** High-autonomy systems actually demonstrated a *lower* rate of appeal process availability (40.0%, n=2/5) compared to low-autonomy systems (56.1%, n=74/132).\n2.  **No Statistical Significance:** The difference was not statistically significant (Fisher's Exact Test p=0.66), indicating that autonomy level is not currently a predictor of redress governance in the federal inventory.\n3.  **Conclusion:** The data does not support the existence of a 'compensatory mechanism' where agencies bolster high-automation systems with stronger appeal rights. Instead, the higher prevalence of appeals in low-autonomy systems suggests that standard, human-supervised workflows are currently more mature in their procedural rights infrastructure.",
+  "rich_outputs": null,
+  "runtime_ms": 255090.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.01956752924494859
+}

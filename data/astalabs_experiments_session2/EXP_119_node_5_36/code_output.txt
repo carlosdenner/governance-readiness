@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment...
+Loaded 1362 incidents from AIID.
+
+--- Analysis Groups ---@
+Harm_Group
+Intangible    94
+Physical      86
+Name: count, dtype: int64
+
+--- Contingency Table (0=No Tech Cause, 1=Has Tech Cause) ---
+Has_Technical_Cause   0   1
+Harm_Group                 
+Intangible           33  61
+Physical             30  56
+
+Chi-Square Test Results:
+  Chi2 Statistic: 0.0000
+  P-value: 1.00000
+
+--- Attribution Rates (Proportion with Known Cause) ---
+Harm_Group
+Intangible    0.648936
+Physical      0.651163
+Name: Has_Technical_Cause, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot compares two categorical variables ("Intangible" and "Physical" harm types) against a quantitative measure (Proportion of incidents where a technical failure was identified). It is designed to show the similarity or disparity in technical attribution between these two categories.
+
+**2. Axes**
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Incidents with Identified Technical Failure".
+    *   **Range:** The axis is scaled from 0.0 to approximately 0.8 (with visible ticks marking intervals of 0.1 up to 0.7).
+    *   **Units:** Proportions (0.0 to 1.0), which are also interpreted as percentages in the annotations.
+*   **X-Axis:**
+    *   **Label:** Implicitly represents "Harm Type".
+    *   **Categories:** The axis displays two distinct categories: "Intangible" and "Physical".
+
+**3. Data Trends**
+*   **Pattern:** The data shows a remarkable consistency between the two categories. There is almost no significant difference in the height of the bars.
+*   **Tallest Bar:** The "Physical" category is marginally higher, representing a proportion of roughly 0.651.
+*   **Shortest Bar:** The "Intangible" category is slightly lower, representing a proportion of roughly 0.649.
+*   **Comparison:** The visual trend indicates parity; the likelihood of attributing a technical failure is essentially the same regardless of whether the harm type is physical or intangible.
+
+**4. Annotations and Legends**
+*   **Chart Title:** "Causal Clarity": Technical Attribution by Harm Type.
+*   **Bar Annotations:** Specific percentage values are placed directly above each bar for precision:
+    *   Intangible: **64.9%**
+    *   Physical: **65.1%**
+*   **Gridlines:** Horizontal dashed gridlines are included at 0.1 intervals to assist in visual estimation of the bar heights.
+
+**5. Statistical Insights**
+*   **Uniformity of Attribution:** The most significant insight is that the rate of identified technical failure is nearly identical across both harm types (a difference of only 0.2%). This suggests that the nature of the harm (whether it touches the physical world or remains intangible/digital) does not impact the likelihood of a technical root cause being identified.
+*   **High Attribution Rate:** For both categories, nearly two-thirds of incidents (approx. 65%) are attributed to identified technical failures. This indicates a relatively high level of "Causal Clarity" in the dataset being analyzed.
+==================================================

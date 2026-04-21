@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: Total EO 13960 records: 1757
+
+Sourcing Category Distribution:
+sourcing_category
+Unknown       650
+Contractor    481
+In-House      439
+Hybrid        187
+Name: count, dtype: int64
+
+Monitoring Status Distribution:
+monitoring_status
+Unknown          1611
+Monitored         107
+Not Monitored      39
+Name: count, dtype: int64
+
+Records with valid Sourcing AND Monitoring data: 116
+
+In-House Monitoring Rate: 85.71% (n=63)
+Contractor Monitoring Rate: 60.38% (n=53)
+
+Contingency Table:
+monitoring_status  Monitored  Not Monitored
+sourcing_category                          
+Contractor                32             21
+In-House                  54              9
+
+Chi-Square Test: p-value = 0.00383
+Result: Statistically Significant Difference
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** This plot is designed to compare a quantitative variable ("Proportion Monitored") across two distinct categorical groups ("In-House" and "Contractor"). It facilitates a direct comparison of AI monitoring rates based on the sourcing method used.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Labels:** The axis represents categorical data with two specific groups: "In-House" and "Contractor".
+    *   **Title:** While there is no explicit label (e.g., "Sourcing Type"), the category names clearly define the variable.
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Proportion Monitored".
+    *   **Range:** The axis ticks range from **0.0 to 1.0**, representing a standard proportion scale (equivalent to 0% to 100%). The plot view extends slightly to 1.1 to accommodate the bar annotations.
+    *   **Units:** Decimal proportion (though the annotations convert this to percentages).
+
+### 3. Data Trends
+*   **Tallest Bar:** The **In-House** category (represented by the green bar) is the highest, indicating it has the leading rate of monitoring.
+*   **Shortest Bar:** The **Contractor** category (represented by the orange bar) is significantly shorter.
+*   **Pattern:** There is a clear descending trend from internal sourcing to external contracting. The visual disparity suggests that AI projects sourced internally are subject to significantly higher oversight rates than those outsourced to contractors.
+
+### 4. Annotations and Legends
+*   **Title:** The chart is titled "AI Monitoring Rates by Sourcing Method".
+*   **Bar Annotations:** Specific percentage values are placed directly above each bar to provide exact data points:
+    *   **In-House:** Annotated with **85.7%**.
+    *   **Contractor:** Annotated with **60.4%**.
+*   **Colors:** The plot uses distinct colors to differentiate the categories: Green for "In-House" and Orange for "Contractor". There is no separate legend, as the x-axis labels suffice.
+
+### 5. Statistical Insights
+*   **Significant Discrepancy:** There is a substantial gap of **25.3 percentage points** between the monitoring rates of in-house AI and contractor-sourced AI.
+*   **High Internal Oversight:** In-house teams have a very high monitoring compliance rate (over 85%), suggesting robust internal governance protocols.
+*   **External Governance Gap:** The monitoring rate drops to roughly 60% for contractors. This suggests a potential risk area where external vendors or outsourced solutions may not be subject to the same rigorous ongoing evaluation or observability standards as internal projects.
+==================================================

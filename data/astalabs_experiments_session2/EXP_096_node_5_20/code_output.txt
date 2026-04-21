@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+--- Analysis Dataset (n=920) ---
+
+--- Contingency Table ---
+mitigation_status  Documented  No/Unknown
+dev_source                               
+Commercial/Vendor          26         455
+Internal/Gov               26         413
+
+--- Proportions ---
+mitigation_status  Documented  No/Unknown
+dev_source                               
+Commercial/Vendor    0.054054    0.945946
+Internal/Gov         0.059226    0.940774
+
+Chi-Square Test Results:
+Chi2 Statistic: 0.0386
+P-value: 8.4433e-01
+Degrees of Freedom: 1
+Result: No significant difference found.
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Plot (specifically, a 100% stacked bar chart).
+*   **Purpose:** The plot compares the distribution of disparity mitigation documentation (Documented vs. No/Unknown) across two different sources of system development (Commercial/Vendor vs. Internal/Gov). It visualizes the proportion of systems within each category that have evidence of mitigation strategies.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Development Source"
+    *   **Categories:** "Commercial/Vendor" and "Internal/Gov".
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Systems"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** Intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Dominant Category:** In both development sources, the vast majority of systems fall into the "No/Unknown" category (represented by the red bars). This section takes up nearly the entire height of the plot.
+*   **Minority Category:** The "Documented" category (green bars) represents a very small fraction of the systems in both cases.
+*   **Consistency:** The distribution is remarkably similar between the two groups. Both "Commercial/Vendor" and "Internal/Gov" sources show almost identical proportions of documented versus undocumented systems.
+*   **Visual vs. Label Discrepancy:** The text annotations label the red sections as "0.9%" and the green sections as "0.1%". However, the Y-axis is a proportion from 0 to 1. Given that the bars fill the entire height (summing to 1.0), it is highly likely the labels represent the proportions **0.9 (90%)** and **0.1 (10%)**, and the percentage sign `%` is a typographical error. If read literally as 0.9%, the bars would not fill the chart. Visually, the green bar sits slightly below the 0.1 tick mark, suggesting the documentation rate is roughly 5-10%.
+
+### 4. Annotations and Legends
+*   **Title:** "Disparity Mitigation Documentation by Dev Source"
+*   **Legend:** Located at the top right, labeled "Mitigation Evidence".
+    *   **Green:** "Documented"
+    *   **Red:** "No/Unknown"
+*   **Bar Annotations:**
+    *   White text inside the red bars reads **"0.9%"**.
+    *   White text inside the green bars reads **"0.1%"**.
+
+### 5. Statistical Insights
+*   **Lack of Documentation:** The primary insight is a systemic lack of documentation regarding disparity mitigation. Regardless of whether a system is developed commercially or internally by the government, roughly 90% (assuming 0.9 proportion) of systems lack evidence of mitigation.
+*   **No Source Advantage:** There is no discernible advantage in documentation practices between commercial vendors and internal government developers; both perform equally poorly according to this metric.
+*   **Transparency Gap:** The data suggests a significant transparency gap in the field, with "Documented" systems being the extreme exception rather than the norm.
+==================================================

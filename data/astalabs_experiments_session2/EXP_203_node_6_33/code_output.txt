@@ -1,0 +1,68 @@
+exitcode: 0 (execution succeeded)
+Code output: Unique Agency Abbreviations found: <StringArray>
+[  'DHS',   'DOC',   'DOE',   'DOI',   'DOL',   'EPA',   'GSA',   'HHS',
+   'HUD',  'NASA',   'NSF',   'OPM',   'SSA', 'STATE', 'TREAS', 'USAID',
+  'USDA',  'CFPB',  'CFTC',   'EAC',  'EEOC',  'FDIC',  'FERC',  'FHFA',
+   'FRB',   'FTC',  'NARA',  'NTSB',  'PBGC',   'PRC',    'PT',   'SEC',
+ 'USAGM', 'USCCR', 'USTDA',    'VA',   'TVA']
+Length: 37, dtype: str
+
+Rows after filtering for target agencies: 793
+agency_type
+Safety-Critical    683
+Administrative     110
+Name: count, dtype: int64
+
+Unique values in 52_impact_assessment: <StringArray>
+[nan, 'Planned or in-progress.', 'Yes', 'No']
+Length: 4, dtype: str
+NaNs in impact_bool after mapping: 729
+
+Contingency Table (0=No, 1=Yes):
+impact_bool      0.0  1.0
+agency_type              
+Administrative   104    6
+Safety-Critical  655   28
+
+Chi-Square Test Results:
+Statistic: 0.1580, p-value: 6.9102e-01
+
+Impact Assessment Adoption Rates:
+agency_type
+Administrative     0.054545
+Safety-Critical    0.040996
+Name: impact_bool, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot compares the adoption rates (proportions) of impact assessments for AI systems across two distinct categories of agency missions: "Administrative" and "Safety-Critical."
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Agency Mission Type"
+    *   **Labels:** Two categorical labels are displayed vertically: "Administrative" and "Safety-Critical."
+*   **Y-Axis:**
+    *   **Title:** "Proportion of AI Systems with Impact Assessment"
+    *   **Range:** The axis scales from **0.0 to 1.0**, representing a probability or percentage range from 0% to 100%.
+    *   **Units:** The axis uses decimal proportions (0.2, 0.4, etc.), though the bar annotations convert these to percentages.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Administrative" category has the taller bar, indicating a slightly higher proportion of adoption.
+*   **Shortest Bar:** The "Safety-Critical" category has the shorter bar.
+*   **Overall Pattern:** Both bars are extremely short relative to the total scale of the Y-axis (which goes up to 1.0). This indicates that the vast majority of AI systems in both categories do *not* have impact assessments. The visual gap between the top of the bars and the top of the chart is significant.
+
+### 4. Annotations and Legends
+*   **Bar Annotations:** Specific percentage values are annotated directly above each bar in bold text:
+    *   Administrative: **5.5%**
+    *   Safety-Critical: **4.1%**
+*   **Color Coding:** The bars are colored differently for visual distinction—sky blue for "Administrative" and salmon/light red for "Safety-Critical"—though no separate legend is provided (or necessary, given the x-axis labels).
+
+### 5. Statistical Insights
+*   **Extremely Low Adoption Rates:** The most significant insight is the overall scarcity of impact assessments. With adoption rates of only 5.5% and 4.1%, it appears that over 94% of AI systems in these agencies lack formal impact assessments.
+*   **Counter-Intuitive Finding regarding Safety:** One might expect "Safety-Critical" systems to have a higher rate of impact assessment due to the higher stakes involved in their operation. However, the data shows the opposite: Safety-Critical systems have a lower adoption rate (4.1%) compared to Administrative systems (5.5%).
+*   **Minimal Disparity:** While Administrative agencies are performing slightly better, the absolute difference between the two groups is very small (1.4 percentage points). Both sectors are performing at a similarly low level of compliance or adoption.
+==================================================

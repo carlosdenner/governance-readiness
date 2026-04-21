@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis that 'Trust Readiness' (governance) competency statements are more verbose than 'Integration Readiness' (engineering) statements. The analysis of 42 competency statements revealed virtually identical linguistic complexity between the two bundles. Trust Readiness statements had a mean word count of 26.63 (SD=3.83), while Integration Readiness statements had a mean word count of 26.65 (SD=4.14). An Independent Samples T-test (Welch's) yielded a t-statistic of -0.0167 and a p-value of 0.9868, indicating no statistically significant difference. The histogram visualization confirms this finding, showing largely overlapping distributions with similar central tendencies, though Integration Readiness displayed slightly higher variance with a long tail of outliers. Consequently, the hypothesis is rejected; in this dataset, policy-oriented governance requirements are not inherently more verbose than technical architecture controls.",
+  "child_ids": [
+    "node_7_0"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nfrom scipy import stats\nimport os\n\n# Define file path based on the note provided\nfile_path = '../step2_competency_statements.csv'\n\n# Fallback to current directory if not found (handling potential environment inconsistencies)\nif not os.path.exists(file_path):\n    file_path = 'step2_competency_statements.csv'\n\ntry:\n    # 1. Load the dataset\n    print(f\"Loading dataset from: {file_path}\")\n    df = pd.read_csv(file_path)\n\n    # 2. Calculate word count for each 'competency_statement'\n    # Using simple whitespace splitting\n    df['word_count'] = df['competency_statement'].apply(lambda x: len(str(x).split()))\n\n    # 3. Group by 'bundle'\n    trust_data = df[df['bundle'] == 'Trust Readiness']['word_count']\n    integration_data = df[df['bundle'] == 'Integration Readiness']['word_count']\n\n    # 4. Descriptive Statistics\n    trust_desc = trust_data.describe()\n    integration_desc = integration_data.describe()\n\n    print(\"\\n=== Descriptive Statistics (Word Count) ===\")\n    print(f\"Trust Readiness (n={int(trust_desc['count'])})\")\n    print(f\"  Mean: {trust_desc['mean']:.2f}\")\n    print(f\"  Median: {trust_desc['50%']:.2f}\")\n    print(f\"  Std Dev: {trust_desc['std']:.2f}\")\n    \n    print(f\"\\nIntegration Readiness (n={int(integration_desc['count'])})\")\n    print(f\"  Mean: {integration_desc['mean']:.2f}\")\n    print(f\"  Median: {integration_desc['50%']:.2f}\")\n    print(f\"  Std Dev: {integration_desc['std']:.2f}\")\n\n    # 5. Independent Samples T-test (Welch's t-test for unequal variances/sample sizes)\n    t_stat, p_val = stats.ttest_ind(trust_data, integration_data, equal_var=False)\n\n    print(\"\\n=== Independent Samples T-test (Welch's) ===\")\n    print(f\"T-statistic: {t_stat:.4f}\")\n    print(f\"P-value: {p_val:.4f}\")\n    \n    if p_val < 0.05:\n        print(\"Conclusion: Reject null hypothesis. There is a significant difference in word counts.\")\n    else:\n        print(\"Conclusion: Fail to reject null hypothesis. No significant difference in word counts.\")\n\n    # 6. Visualization\n    plt.figure(figsize=(10, 6))\n    \n    # Plotting histograms with density to compare shapes despite unequal sample sizes\n    plt.hist(trust_data, bins=10, alpha=0.6, label='Trust Readiness', density=True, color='blue', edgecolor='black')\n    plt.hist(integration_data, bins=10, alpha=0.6, label='Integration Readiness', density=True, color='orange', edgecolor='black')\n    \n    # Add vertical lines for means\n    plt.axvline(trust_data.mean(), color='blue', linestyle='dashed', linewidth=1, label=f'Trust Mean ({trust_data.mean():.1f})')\n    plt.axvline(integration_data.mean(), color='orange', linestyle='dashed', linewidth=1, label=f'Integration Mean ({integration_data.mean():.1f})')\n\n    plt.title('Word Count Distribution: Trust vs. Integration Competencies')\n    plt.xlabel('Word Count')\n    plt.ylabel('Density')\n    plt.legend()\n    plt.grid(axis='y', alpha=0.3)\n    \n    plt.show()\n\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_competency_statements.csv\n\n=== Descriptive Statistics (Word Count) ===\nTrust Readiness (n=19)\n  Mean: 26.63\n  Median: 25.00\n  Std Dev: 3.83\n\nIntegration Readiness (n=23)\n  Mean: 26.65\n  Median: 27.00\n  Std Dev: 4.14\n\n=== Independent Samples T-test (Welch's) ===\nT-statistic: -0.0167\nP-value: 0.9868\nConclusion: Fail to reject null hypothesis. No significant difference in word counts.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Overlapping Density Histogram.\n*   **Purpose:** This plot compares the frequency distributions of word counts for two distinct categories: \"Trust Readiness\" and \"Integration Readiness.\" By using density on the Y-axis rather than raw count, it allows for a direct comparison of the distribution shapes even if the total number of samples in each category differs.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Word Count\"\n    *   **Range:** The axis ticks range from roughly **21 to 39**. (Major ticks are marked at 22.5, 25.0, 27.5, 30.0, 32.5, 35.0, 37.5).\n*   **Y-Axis:**\n    *   **Label:** \"Density\" (indicating probability density).\n    *   **Range:** The values range from **0.000 to approximately 0.210**. (Major ticks are marked every 0.025 units).\n\n### 3. Data Trends\n*   **Trust Readiness (Blue Bars):**\n    *   **Peak:** The highest density occurs in the bin centered around **25–26 words** (density ~0.200).\n    *   **Secondary Peak:** There is a notable secondary cluster around **33–34 words**.\n    *   **Spread:** The distribution is relatively contained between 21 and 34 words.\n*   **Integration Readiness (Orange Bars):**\n    *   **Peak:** The highest density is in the lower range, around **22–24 words** (density ~0.205).\n    *   **Spread & Outliers:** This distribution is more spread out than the Trust dataset. It includes a noticeable outlier (or small cluster) on the far right, between **37.5 and 39 words**.\n    *   **Shape:** It appears slightly right-skewed, with a heavy concentration on the lower end but a long tail extending to the right.\n\n### 4. Annotations and Legends\n*   **Legend (Top Right):**\n    *   **Blue Square:** Represents the \"Trust Readiness\" histogram data.\n    *   **Orange Square:** Represents the \"Integration Readiness\" histogram data.\n    *   **Blue Dashed Line:** Indicates the mean word count for Trust Readiness, calculated at **26.6**.\n    *   **Orange Dashed Line:** Indicates the mean word count for Integration Readiness, calculated at **26.7**.\n*   **Vertical Lines:** Two dashed vertical lines appear on the plot corresponding to the means. Because the values (26.6 and 26.7) are nearly identical, the lines appear almost as a single, overlapping line.\n\n### 5. Statistical Insights\n*   **Identical Averages:** Despite the differences in the shape of the distributions, the mean word counts for both categories are virtually identical (26.6 vs. 26.7). This indicates that, on average, the length of text describing both competencies is the same.\n*   **Variance in Distribution:**\n    *   **Integration Readiness** shows higher variance. It has the shortest descriptions (high density at 22-24) but also the longest descriptions (the bar near 38).\n    *   **Trust Readiness** appears somewhat bimodal, with descriptions clustering heavily in the mid-20s and another distinct group in the low-30s, but lacking the extreme length seen in the Integration data.\n*   **Implication:** While the \"center of gravity\" for both topics is the same, \"Integration Readiness\" descriptions are more likely to be brief, balanced out by a few unusually long descriptions, whereas \"Trust Readiness\" descriptions are more consistently clustered around specific mid-range lengths.\n==================================================",
+  "created_at": "2026-02-20T23:07:04.771209+00:00",
+  "creation_idx": 51,
+  "experiment_id": "node_6_1",
+  "experiment_plan": {
+    "deliverables": "Descriptive statistics (mean word count), T-test results, and distribution plot.",
+    "objective": "Analyze the linguistic characteristics of the competency bundles.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Calculate the word count for each 'competency_statement'.\n3. Group the word counts by 'bundle'.\n4. Perform an Independent Samples T-test on the word counts.\n5. Generate a histogram or density plot of word counts for each bundle."
+  },
+  "hypothesis": "Competency statements classified as 'Trust Readiness' are linguistically more complex (higher word count) than 'Integration Readiness' statements, reflecting the verbosity of policy language vs. engineering brevity.",
+  "id_in_run": 50,
+  "is_surprising": true,
+  "parent_id": "node_5_1",
+  "posterior": 0.18801652892561985,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.18801652892561985,
+    "n": 90.0,
+    "prior_params": [
+      22.75,
+      8.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7338709677419355,
+  "prior_belief": {
+    "_empirical_mean": 0.7416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.7338709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment successfully tested the linguistic complexity hypothesis by analyzing word counts of 42 competency statements from 'step2_competency_statements.csv'. The analysis revealed virtually identical lengths between the two groups: 'Trust Readiness' (governance) statements had a mean word count of 26.63 (SD=3.83), while 'Integration Readiness' (engineering) statements had a mean of 26.65 (SD=4.14). An Independent Samples T-test (Welch's) confirmed no statistically significant difference (t=-0.0167, p=0.9868). The histogram visualization further illustrated the overlapping distributions, showing that policy-oriented statements are not inherently more verbose than technical controls in this dataset. Consequently, the hypothesis is rejected.",
+  "rich_outputs": null,
+  "runtime_ms": 175850.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6335163815171759
+}

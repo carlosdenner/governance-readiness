@@ -1,0 +1,64 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+EO 13960 records loaded: 1757
+
+Classifying mitigation text...
+Classification Check (Sample):
+                               62_disparity_mitigation  is_compliant
+49   The threshold for the biometric matching was t...             1
+50   The threshold for the biometric matching was t...             1
+51   The threshold for the biometric matching was t...             1
+53   The threshold for the biometric matching was t...             1
+58   The threshold for the biometric matching was t...             1
+59   The threshold for the biometric matching was t...             1
+107  It is reevaluated and retrained on an annual b...             1
+108  None for liveness detection using Google ML Ki...             0
+113  There are two outputs related to using ISAP Bi...             1
+132  The program follows the Test & Evaluation proc...             1
+Total Compliant: 43 / 1191
+
+Cohort Statistics:
+                     Total Systems  Compliant Systems  Compliance Rate
+cohort                                                                
+Post-2020 (Post-EO)            887                 26         0.029312
+Pre-2021 (Legacy)              304                 17         0.055921
+
+Z-test Results (Post > Pre):
+Z-statistic: -2.1462
+P-value: 9.8407e-01
+Result: Not Statistically Significant.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (Vertical).
+*   **Purpose:** The plot is designed to compare the proportion of systems that have implemented bias mitigation techniques across two distinct time periods/categories defined by the implementation of Executive Order (EO) 13960.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** The axis categorizes the data into "Post-2020 (Post-EO)" and "Pre-2021 (Legacy)".
+    *   **Value Range:** N/A (Categorical).
+*   **Y-Axis:**
+    *   **Title:** "Proportion of Systems with Bias Mitigation".
+    *   **Units:** The axis uses decimal proportions ranging from 0.00 to roughly 0.065.
+    *   **Tick Marks:** Values are marked at intervals of 0.01 (0.00, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06).
+
+### 3. Data Trends
+*   **Tallest Bar:** The orange bar representing "Pre-2021 (Legacy)" systems is the tallest, reaching a value of approximately 0.056.
+*   **Shortest Bar:** The blue bar representing "Post-2020 (Post-EO)" systems is the shortest, reaching a value of approximately 0.029.
+*   **Pattern:** There is a distinct downward trend in the proportion of systems with bias mitigation when moving from the Legacy (Pre-2021) group to the Post-EO (Post-2020) group. The Legacy group has nearly double the proportion of the Post-EO group.
+
+### 4. Annotations and Legends
+*   **Annotations:**
+    *   **"2.9%"**: Located above the blue bar, explicitly stating the percentage value for the "Post-2020 (Post-EO)" category.
+    *   **"5.6%"**: Located above the orange bar, explicitly stating the percentage value for the "Pre-2021 (Legacy)" category.
+*   **Title:** "Impact of EO 13960 on Bias Mitigation Compliance" sets the context for the comparison.
+*   **Legend:** There is no separate legend box; the categories are distinguished by color (Blue vs. Orange) and labeled directly on the x-axis.
+
+### 5. Statistical Insights
+*   **Comparative Drop:** The data indicates a counter-intuitive outcome regarding the Executive Order. While the "Legacy" systems (Pre-2021) show a 5.6% rate of systems with bias mitigation, the systems developed or cataloged after the Executive Order (Post-2020) show a significantly lower rate of 2.9%.
+*   **Magnitude of Difference:** The proportion of legacy systems with bias mitigation is roughly **1.93 times higher** (nearly double) than that of the post-EO systems.
+*   **Implication:** This suggests that despite the introduction of EO 13960 (which presumably aims to regulate or improve AI trustworthiness), the recorded prevalence of bias mitigation in newer systems is lower than in older, legacy systems. This could be due to various factors, such as stricter reporting definitions in the post-EO era, a larger volume of low-risk systems entering the dataset post-2020, or a lag in compliance adoption.
+==================================================

@@ -1,0 +1,54 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+Unified rows: 3171
+AIID rows: 1362
+Classifying domains based on text analysis...
+Mapping severity scores...
+Physical Safety N=33
+Bias & Discrimination N=41
+Performing Mann-Whitney U Test...
+Mann-Whitney U statistic: 864.0
+P-value (Physical > Bias): 0.00498
+Median Severity (Physical): 0.0
+Median Severity (Bias): 0.0
+
+STDERR:
+<ipython-input-1-9a3d3101b171>:88: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data, labels=['Physical Safety', 'Bias & Discrimination'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Box Plot (Box-and-Whisker Plot).
+*   **Purpose:** To compare the distribution of severity levels between two different categories of AI harm ("Physical Safety" and "Bias & Discrimination"). It visualizes the median, interquartile range (IQR), and outliers for each category.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Severity Level (0=None, 1=Issue, 2=Near-Miss, 3=Event)".
+    *   **Units:** An ordinal scale mapped to integers 0 through 3.
+    *   **Range:** The axis spans four discrete levels: "None/Unclear", "Issue", "Near-Miss", and "Event".
+*   **X-Axis (Horizontal):**
+    *   **Label:** None explicitly (implied categories).
+    *   **Categories:** "Physical Safety" and "Bias & Discrimination".
+
+### 3. Data Trends
+*   **Physical Safety (Left Box):**
+    *   **Distribution:** This category shows a very wide Interquartile Range (IQR). The "box" extends from the baseline ("None/Unclear") all the way to the top ("Event").
+    *   **Median:** The orange line (median) sits at the "None/Unclear" level.
+    *   **Pattern:** This suggests a polarized or high-variance distribution. While the median incident is low severity, the upper quartile (the top of the box) hits the maximum severity level ("Event"). This implies that a significant portion (at least the top 25%) of physical safety incidents are classified as major events.
+*   **Bias & Discrimination (Right Box):**
+    *   **Distribution:** The distribution is heavily compressed at the bottom. The box is flattened at the "None/Unclear" line, indicating that the 1st Quartile (Q1), Median, and 3rd Quartile (Q3) are likely all situated at 0.
+    *   **Outliers:** There are distinct circular markers (outliers) visible at the "Issue," "Near-Miss," and "Event" levels. This indicates that while the vast majority of bias incidents are low severity (or unclear), there are sporadic instances of high severity.
+
+### 4. Annotations and Legends
+*   **Title:** "AI Harm Severity: Physical vs Bias Incidents".
+*   **Grid:** Horizontal dashed gray lines are provided at each severity level to assist in reading the discrete values.
+*   **Outlier Markers:** Small circles ($\circ$) represent data points that fall statistically outside the typical range for the "Bias & Discrimination" category.
+
+### 5. Statistical Insights
+*   **Severity Disparity:** Physical Safety incidents in this dataset have a much higher ceiling for severity compared to Bias & Discrimination incidents. The Physical Safety data indicates that when things go wrong, they often result in a full "Event," whereas Bias incidents rarely escalate to that level.
+*   **Commonality of Low Severity:** For both categories, the median is "None/Unclear." This suggests that the most common outcome for both Physical and Bias reports in this dataset is either no harm or an unclear result.
+*   **Predictability:** The "Bias & Discrimination" data is more consistent (clustered at low severity) with occasional exceptions. The "Physical Safety" data is highly variable, making it statistically "riskier" in terms of potential maximum harm, as a significant percentage of its distribution reaches the highest possible severity rating.
+==================================================

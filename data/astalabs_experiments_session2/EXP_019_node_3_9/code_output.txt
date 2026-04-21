@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+AIID Incidents loaded: 1362 rows
+
+Data points for analysis: 70
+Distribution by Tech Type:
+Tech_Type
+Traditional AI    67
+Generative AI      3
+Name: count, dtype: int64
+
+Distribution by Harm Type:
+Harm_Type
+Intangible    46
+Tangible      24
+Name: count, dtype: int64
+
+Contingency Table (Observed):
+Harm_Type       Intangible  Tangible
+Tech_Type                           
+Generative AI            3         0
+Traditional AI          43        24
+
+Chi-Square Statistic: 0.4319
+P-value: 5.1108e-01
+Result: No significant association found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The plot compares the relative composition of two categories ("Tangible" vs. "Intangible" harms) across two different groups ("Generative AI" and "Traditional AI"). It is designed to visualize how the distribution of harm types differs between these two AI technologies.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "AI Technology Type"
+    *   **Labels:** "Generative AI" and "Traditional AI"
+*   **Y-Axis:**
+    *   **Title:** "Percentage"
+    *   **Range:** 0 to 100
+    *   **Units:** Percent (%)
+
+### 3. Data Trends
+*   **Generative AI:** The bar is monochromatic, indicating a uniform distribution. The data suggests that **100%** of the harms associated with Generative AI in this dataset are classified as **Intangible**. There is a 0.0% share of Tangible harms.
+*   **Traditional AI:** The bar shows a mixed distribution. While **Intangible** harms still constitute the majority at **64.2%**, there is a significant portion of **Tangible** harms at **35.8%**.
+*   **Overall Pattern:** Intangible harms are the dominant category for both technologies, but Traditional AI demonstrates a notable presence of tangible risks that is entirely absent in the Generative AI data shown.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Proportion of Tangible vs Intangible Harms by AI Technology" positioned at the top center.
+*   **Legend:** Located on the right side, titled "Harm Type".
+    *   **Light Blue:** Represents "Intangible" harms.
+    *   **Salmon/Red:** Represents "Tangible" harms.
+*   **Annotations:** Specific percentage values are labeled directly onto the bar segments:
+    *   Generative AI: 100.0% (Intangible), 0.0% (Tangible).
+    *   Traditional AI: 64.2% (Intangible), 35.8% (Tangible).
+
+### 5. Statistical Insights
+*   **Nature of Risks:** The plot indicates a distinct dichotomy in the nature of risks posed by these technologies. Generative AI appears to be exclusively associated with non-physical or indirect harms (intangible), such as misinformation, bias, or privacy violations. In contrast, Traditional AI retains a significant component of physical or direct asset damage (tangible).
+*   **Prevalence of Intangible Harm:** Regardless of the technology type, "Intangible" harms are the primary concern, accounting for the majority of incidents in both categories.
+*   **Risk Profile Shift:** Moving from Traditional to Generative AI shifts the risk profile completely away from tangible consequences to purely intangible ones, according to this specific dataset.
+==================================================

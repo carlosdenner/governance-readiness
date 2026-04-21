@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded from current directory
+
+=== Descriptive Statistics (Word Count) ===
+                       count       mean       std   min   25%   50%   75%   max
+bundle                                                                         
+Integration Readiness   23.0  26.652174  4.140802  22.0  23.0  27.0  29.0  39.0
+Trust Readiness         19.0  26.631579  3.832761  21.0  24.0  25.0  28.5  34.0
+
+=== Statistical Test Results ===
+T-statistic: 0.0167
+P-value: 0.9868
+Result: No significant difference in word counts between bundles.
+
+STDERR:
+<ipython-input-1-914408a2830f>:48: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([integration_group, trust_group], labels=['Integration Readiness', 'Trust Readiness'])
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** The plot visualizes the distribution of quantitative data ("Word Count") across categorical groups ("Bundles"). It displays statistical summaries such as the median, quartiles (interquartile range), minimum/maximum values, and outliers, allowing for a comparison of central tendency and variability between the two groups.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Represents the Categories of Bundles.
+    *   **Values:** "Integration Readiness" and "Trust Readiness".
+*   **Y-Axis:**
+    *   **Label:** "Word Count" (Number of words).
+    *   **Range:** The axis ticks range from roughly **21 to 39** (visual scale shows grid lines from 22.5 to 37.5).
+    *   **Units:** Count (integer values representing the number of words).
+
+### 3. Data Trends
+*   **Integration Readiness (Left Box):**
+    *   **Median:** The orange line is situated at approximately **27 words**.
+    *   **Interquartile Range (IQR):** The middle 50% of the data spans from approximately **23 to 29 words**.
+    *   **Whiskers:** The lower whisker extends to **22**, and the upper whisker extends to **32**.
+    *   **Outliers:** There is a distinct outlier plotted as a circle at approximately **39 words**, indicating one specific statement was significantly longer than the rest of the group.
+*   **Trust Readiness (Right Box):**
+    *   **Median:** The orange line is lower than the other group, sitting at exactly **25 words**.
+    *   **Interquartile Range (IQR):** The middle 50% spans from approximately **24 to 28.5 words**.
+    *   **Whiskers:** This group shows a wider total range (excluding outliers) with the bottom whisker at roughly **21** and the top whisker extending up to **34**.
+    *   **Outliers:** No outliers are visible for this category.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Competency Statement Word Counts by Bundle" clearly defines the dataset context.
+*   **Grid Lines:** Horizontal dashed grid lines appear every 2.5 units (22.5, 25.0, 27.5, etc.) to assist in estimating specific Y-values.
+*   **Box Components:**
+    *   **Orange horizontal line:** Represents the median.
+    *   **Box boundaries:** Represent the 1st Quartile (25th percentile) and 3rd Quartile (75th percentile).
+    *   **Whiskers (T-bars):** Represent the minimum and maximum values (excluding outliers).
+    *   **Circle:** Represents an outlier (a data point more than 1.5 times the IQR past the box).
+
+### 5. Statistical Insights
+*   **Central Tendency:** "Integration Readiness" statements are, on average (median), slightly longer (27 words) than "Trust Readiness" statements (25 words).
+*   **Variability:** While "Trust Readiness" has a broader range within its whiskers (spanning ~13 words from min to max), the "Integration Readiness" has a slightly larger Interquartile Range (height of the box), suggesting that the "middle 50%" of Integration statements are more variable in length than the middle 50% of Trust statements.
+*   **Skewness:**
+    *   The "Trust Readiness" box shows a positive skew (the upper whisker is much longer than the lower whisker, and the median is closer to the bottom of the box). This means there is a tendency toward longer word counts in the upper range of this group.
+    *   The "Integration Readiness" distribution is heavily influenced by the single extreme outlier at 39 words. Without the outlier, the data appears reasonably symmetric but slightly clustered toward the lower end of its box (median 27 vs Q1 23).
+==================================================

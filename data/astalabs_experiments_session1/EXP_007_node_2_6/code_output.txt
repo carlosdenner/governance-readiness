@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded dataset with 52 records.
+Unique values in 'trust_integration_split': <StringArray>
+['both', 'trust-dominant', 'integration-dominant']
+Length: 3, dtype: str
+
+Sample sizes:
+Trust-Dominant: 2
+Integration-Dominant: 4
+
+=== Summary Statistics ===
+               Group  Count  Mean  Median      Std
+      Trust-Dominant      2  5.50     5.5 0.707107
+Integration-Dominant      4  8.25     8.5 1.707825
+
+=== Statistical Test Results (Mann-Whitney U) ===
+U-statistic: 0.5
+P-value: 0.1588
+Result: No statistically significant difference (p >= 0.05)
+
+STDERR:
+<ipython-input-1-6c8b60d0efdb>:85: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot visualizes the distribution, central tendency (median), and variability of numerical data ("Technique Count") across different categorical groups ("Competency Split"). It allows for easy comparison between the groups.
+
+### 2. Axes
+*   **Title:**
+    *   **Main Title:** "Distribution of Technique Counts by Competency Split"
+*   **Y-Axis:**
+    *   **Label:** "Technique Count"
+    *   **Range:** The axis ticks range from **5 to 10**.
+*   **X-Axis:**
+    *   **Label:** None explicitly named, but the categories represent the "Competency Split".
+    *   **Categories:** "Trust-Dominant" and "Integration-Dominant".
+
+### 3. Data Trends
+*   **Trust-Dominant Group:**
+    *   **Median:** The median line (orange) is at **5.5**.
+    *   **Spread:** The distribution is very tight and low. The entire range (whiskers) spans only from **5 to 6**.
+    *   **Interquartile Range (IQR):** The box (representing the middle 50% of data) spans roughly from **5.25 to 5.75**.
+*   **Integration-Dominant Group:**
+    *   **Median:** The median is significantly higher, at **8.5**.
+    *   **Spread:** The distribution is much wider. The range (whiskers) spans from **6 to 10**.
+    *   **Interquartile Range (IQR):** The box spans from **7.5 to roughly 9.25**, indicating a larger variance in technique counts compared to the first group.
+
+### 4. Annotations and Legends
+*   **Sample Size (n):** The x-axis labels include critical sample size annotations:
+    *   Trust-Dominant: **(n=2)**
+    *   Integration-Dominant: **(n=4)**
+*   **Grid Lines:** Horizontal dashed grid lines are present at integer intervals (5, 6, 7, etc.) to aid in reading the specific values of the box plot elements.
+
+### 5. Statistical Insights
+*   **Significant Difference in Volume:** The "Integration-Dominant" group generally utilizes a higher number of techniques than the "Trust-Dominant" group. The lowest value in the Integration group (6) is equal to the highest value in the Trust group.
+*   **Variability Discrepancy:** The Integration-Dominant group shows much higher variability (a range of 4 units) compared to the Trust-Dominant group (a range of 1 unit). This suggests that integration-focused competencies might allow for or require a more flexible/varied number of techniques compared to trust-focused ones.
+*   **Sample Size Limitation:** It is crucial to note the extremely small sample sizes (n=2 and n=4). While the visual trend suggests a clear difference, statistical power is very low. The "box" for the n=2 group is essentially constructed from just two data points, making it an unreliable representation of a broader population distribution. Conclusions drawn from this data should be treated as preliminary or illustrative rather than definitive.
+==================================================

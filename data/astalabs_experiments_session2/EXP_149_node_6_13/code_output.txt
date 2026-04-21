@@ -1,0 +1,28 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting 'Opaque Shield' Experiment...
+
+EO 13960 Dataset Loaded. Rows: 1757
+
+Agency Categorization Counts:
+agency_category
+Civilian/Service    1067
+Defense/Security     463
+Name: count, dtype: int64
+
+--- Analysis of Public Transparency (Notice) by Agency Type ---
+                  count  sum      mean   percent
+agency_category                                 
+Civilian/Service   1067   46  0.043112  4.311153
+Defense/Security    463   18  0.038877  3.887689
+
+Contingency Table (0=No Notice, 1=Has Notice):
+has_notice           0   1
+agency_category           
+Civilian/Service  1021  46
+Defense/Security   445  18
+
+Chi-Square Statistic: 0.0581
+P-value: 8.0948e-01
+
+--- Conclusion ---
+Hypothesis NOT SUPPORTED: No significant difference found.

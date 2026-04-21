@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment was successfully executed using `37_custom_code` as a robust proxy for the Commercial vs. Custom distinction (yielding 967 analyzable cases). \n\n**Findings:**\n\n1.  **Code Access (Strongly Supported):** The 'Black Box' effect is undeniable regarding technical transparency. Commercial systems are approximately **33 times less likely** (Odds Ratio: 0.03) to provide source code access compared to custom/in-house systems. This difference is statistically significant (Chi-Square: 367.6, p < 1e-80).\n\n2.  **Impact Assessments (Not Supported):** The hypothesis that commercial procurement hinders impact assessment compliance was **not** supported. While commercial systems had a slightly lower assessment rate (4.5%) compared to custom systems (6.6%), the difference was **not statistically significant** (p = 0.29). \n\n**Conclusion:** The 'Vendor Black Box' paradox effectively blocks technical auditability (Code Access) but does not appear to be the primary driver for the lack of Impact Assessments. Instead, the data reveals a systemic failure across *both* procurement types, with over 93% of all systems lacking completed impact assessments regardless of their origin.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\nimport sys\nimport os\n\n# --- Step 1: Load the dataset ---\nfile_name = 'astalabs_discovery_all_data.csv'\nfile_path = file_name\nif not os.path.exists(file_path):\n    file_path = f'../{file_name}'\n    if not os.path.exists(file_path):\n        print(f\"Error: File {file_name} not found.\")\n        sys.exit(1)\n\nprint(f\"Loading dataset from {file_path}...\")\ndf = pd.read_csv(file_path, low_memory=False)\n\n# Filter for the relevant source table\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Loaded {len(df_eo)} rows from EO 13960 subset.\")\n\n# --- Step 2: Data Cleaning ---\n\n# Independent Variable: Commercial vs Custom (Proxy: 37_custom_code)\n# 'No' -> No custom code -> Commercial/COTS\n# 'Yes' -> Custom code -> Custom/In-house\ndef clean_commercial_proxy(val):\n    s = str(val).strip().lower()\n    if s == 'no':\n        return 'Commercial'\n    elif s == 'yes':\n        return 'Custom/In-house'\n    return None\n\n# Dependent Variable 1: Code Access (38_code_access)\n# 'Yes...' -> Yes, 'No...' -> No\ndef clean_code_access(val):\n    s = str(val).strip().lower()\n    if s.startswith('yes'):\n        return 'Yes'\n    # Treat No, nan, blank, or other descriptions as 'No'\n    return 'No'\n\n# Dependent Variable 2: Impact Assessment (52_impact_assessment)\n# 'Yes' -> Yes, 'No' or 'Planned' -> No\ndef clean_impact_assessment(val):\n    s = str(val).strip().lower()\n    if s == 'yes':\n        return 'Yes'\n    # 'planned or in-progress' counts as No for \"completed\" assessment\n    return 'No'\n\n# Apply cleaning\ndf_eo['Commercial_Status'] = df_eo['37_custom_code'].apply(clean_commercial_proxy)\ndf_eo['Has_Code_Access'] = df_eo['38_code_access'].apply(clean_code_access)\ndf_eo['Has_Impact_Assessment'] = df_eo['52_impact_assessment'].apply(clean_impact_assessment)\n\n# Filter to valid groups\ndf_clean = df_eo.dropna(subset=['Commercial_Status'])\n\nprint(f\"Analyzable use cases after cleaning: {len(df_clean)}\")\nprint(\"Group Distribution:\")\nprint(df_clean['Commercial_Status'].value_counts())\n\n# --- Step 3: Analysis - Commercial vs Code Access ---\nprint(\"\\n=======================================================\")\nprint(\"TEST 1: Commercial Status vs. Code Access\")\nprint(\"=======================================================\")\n\nct_code = pd.crosstab(df_clean['Commercial_Status'], df_clean['Has_Code_Access'])\nprint(\"Contingency Table (Code Access):\")\nprint(ct_code)\n\nchi2_code, p_code, dof_code, ex_code = chi2_contingency(ct_code)\nprint(f\"\\nChi-Square Statistic: {chi2_code:.4f}\")\nprint(f\"P-Value: {p_code:.4e}\")\n\n# Calculate Odds Ratio (Odds of Commercial having Access / Odds of Custom having Access)\ntry:\n    # Add small smoothing to avoid div by zero if necessary\n    smoothing = 0.5 if (ct_code == 0).any().any() else 0\n    \n    n_comm_yes = ct_code.loc['Commercial', 'Yes'] + smoothing\n    n_comm_no = ct_code.loc['Commercial', 'No'] + smoothing\n    n_cust_yes = ct_code.loc['Custom/In-house', 'Yes'] + smoothing\n    n_cust_no = ct_code.loc['Custom/In-house', 'No'] + smoothing\n    \n    odds_comm = n_comm_yes / n_comm_no\n    odds_cust = n_cust_yes / n_cust_no\n    \n    or_code = odds_comm / odds_cust\n    print(f\"Odds Ratio (Commercial vs Custom): {or_code:.4f}\")\n    if or_code < 1:\n        print(f\"Interpretation: Commercial systems are {1/or_code:.2f}x LESS likely to have Code Access.\")\nexcept Exception as e:\n    print(f\"Could not calculate Odds Ratio: {e}\")\n\n# --- Step 4: Analysis - Commercial vs Impact Assessment ---\nprint(\"\\n=======================================================\")\nprint(\"TEST 2: Commercial Status vs. Impact Assessment\")\nprint(\"=======================================================\")\n\nct_impact = pd.crosstab(df_clean['Commercial_Status'], df_clean['Has_Impact_Assessment'])\nprint(\"Contingency Table (Impact Assessment):\")\nprint(ct_impact)\n\nchi2_impact, p_impact, dof_impact, ex_impact = chi2_contingency(ct_impact)\nprint(f\"\\nChi-Square Statistic: {chi2_impact:.4f}\")\nprint(f\"P-Value: {p_impact:.4e}\")\n\n# Calculate Odds Ratio\ntry:\n    smoothing = 0.5 if (ct_impact == 0).any().any() else 0\n    \n    n_comm_yes = ct_impact.loc['Commercial', 'Yes'] + smoothing\n    n_comm_no = ct_impact.loc['Commercial', 'No'] + smoothing\n    n_cust_yes = ct_impact.loc['Custom/In-house', 'Yes'] + smoothing\n    n_cust_no = ct_impact.loc['Custom/In-house', 'No'] + smoothing\n    \n    odds_comm = n_comm_yes / n_comm_no\n    odds_cust = n_cust_yes / n_cust_no\n    \n    or_impact = odds_comm / odds_cust\n    print(f\"Odds Ratio (Commercial vs Custom): {or_impact:.4f}\")\n    if or_impact < 1:\n        print(f\"Interpretation: Commercial systems are {1/or_impact:.2f}x LESS likely to have Impact Assessments.\")\nexcept Exception as e:\n    print(f\"Could not calculate Odds Ratio: {e}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from astalabs_discovery_all_data.csv...\nLoaded 1757 rows from EO 13960 subset.\nAnalyzable use cases after cleaning: 967\nGroup Distribution:\nCommercial_Status\nCustom/In-house    722\nCommercial         245\nName: count, dtype: int64\n\n=======================================================\nTEST 1: Commercial Status vs. Code Access\n=======================================================\nContingency Table (Code Access):\nHas_Code_Access     No  Yes\nCommercial_Status          \nCommercial         219   26\nCustom/In-house    147  575\n\nChi-Square Statistic: 367.5988\nP-Value: 6.2376e-82\nOdds Ratio (Commercial vs Custom): 0.0304\nInterpretation: Commercial systems are 32.95x LESS likely to have Code Access.\n\n=======================================================\nTEST 2: Commercial Status vs. Impact Assessment\n=======================================================\nContingency Table (Impact Assessment):\nHas_Impact_Assessment   No  Yes\nCommercial_Status              \nCommercial             234   11\nCustom/In-house        674   48\n\nChi-Square Statistic: 1.1346\nP-Value: 2.8679e-01\nOdds Ratio (Commercial vs Custom): 0.6601\nInterpretation: Commercial systems are 1.51x LESS likely to have Impact Assessments.\n",
+  "created_at": "2026-02-22T13:13:04.804343+00:00",
+  "creation_idx": 258,
+  "experiment_id": "node_6_64",
+  "experiment_plan": {
+    "deliverables": "Two contingency tables; Chi-Square results for both tests; Odds Ratios indicating the likelihood of transparency gaps in commercial systems.",
+    "objective": "Assess the impact of commercial procurement on governance transparency.",
+    "steps": "1. Load the 'eo13960_scored' subset.\n2. Clean '10_commercial_ai' to binary (Commercial vs. Custom/Other).\n3. Clean '38_code_access' to binary (Yes vs. No/Other).\n4. Clean '52_impact_assessment' to binary (Yes vs. No/Other).\n5. Perform two Chi-Square tests: (Commercial vs. Code Access) and (Commercial vs. Impact Assessment).\n6. Compute Odds Ratios to quantify the strength of the negative association."
+  },
+  "hypothesis": "The Vendor 'Black Box' Paradox: Government use cases relying on 'Commercial' AI are statistically less likely to possess 'Code Access' or perform 'Impact Assessments' than 'Custom/In-house' systems, confirming that proprietary procurement hinders critical governance visibility.",
+  "id_in_run": 257,
+  "is_surprising": true,
+  "parent_id": "node_5_14",
+  "posterior": 0.7967032967032966,
+  "posterior_belief": {
+    "_empirical_mean": 0.7,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 48.0,
+    "mean": 0.7967032967032966,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 12.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed after a necessary pivot in the data cleaning strategy. The initial attempt to use '10_commercial_ai' was correctly identified as flawed due to non-binary values. The programmer successfully identified '37_custom_code' as a robust proxy for the Commercial (COTS) vs. Custom (In-house) distinction, allowing for a valid test of the 'Black Box' hypothesis. The analysis was rigorous, using Chi-Square tests and Odds Ratios to quantify the findings.",
+  "rich_outputs": null,
+  "runtime_ms": 406040.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.22460120524636662
+}

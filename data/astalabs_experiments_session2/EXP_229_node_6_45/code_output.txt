@@ -1,0 +1,78 @@
+exitcode: 0 (execution succeeded)
+Code output: Total EO13960 records: 1757
+Analysis Base (Rights vs Safety exclusive): 77 systems
+impact_group
+Rights-Impacting    59
+Safety-Impacting    18
+Name: count, dtype: int64
+------------------------------
+
+HYPOTHESIS TEST 1: Rights-Impacting systems are more likely to have Bias Mitigation.
+
+--- Analysis: Bias Mitigation Compliance ---
+Contingency Table (Count):
+has_bias_mitigation   0   1
+impact_group               
+Rights-Impacting     45  14
+Safety-Impacting     18   0
+
+Compliance Rates:
+impact_group
+Rights-Impacting    0.237288
+Safety-Impacting    0.000000
+Name: has_bias_mitigation, dtype: float64
+
+Chi2: 3.75, p-value: 0.0529
+
+HYPOTHESIS TEST 2: Safety-Impacting systems are more likely to have Real-World Testing.
+
+--- Analysis: Real-World Testing Compliance ---
+Contingency Table (Count):
+has_rw_testing     0   1
+impact_group            
+Rights-Impacting  41  18
+Safety-Impacting  15   3
+
+Compliance Rates:
+impact_group
+Rights-Impacting    0.305085
+Safety-Impacting    0.166667
+Name: has_rw_testing, dtype: float64
+
+Chi2: 0.73, p-value: 0.3942
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart.
+*   **Purpose:** The chart is designed to compare compliance rates across two different governance domains ("Bias Mitigation" and "Real-World Testing") while differentiating between two impact categories ("Rights-Impacting" and "Safety-Impacting").
+
+### 2. Axes
+*   **X-Axis:** Represents the categories of governance actions. The labels are **"Bias Mitigation"** and **"Real-World Testing"**.
+*   **Y-Axis:** Represents the **"Compliance Rate (0-1)"**.
+*   **Range:** The vertical axis ranges from **0.0 to 1.1**, with major tick marks every 0.2 units.
+*   **Units:** The values represent a ratio or probability scale from 0 to 1 (where 1 would be 100% compliance).
+
+### 3. Data Trends
+*   **Overall Low Values:** All visible bars are relatively low on the scale, with the highest value only reaching approximately 0.3. This indicates generally low compliance rates across the board.
+*   **Bias Mitigation:**
+    *   **Rights-Impacting (Blue):** The bar is present with a value of approximately **0.23**.
+    *   **Safety-Impacting (Orange):** There is no visible bar, indicating a value of **0.0** or null for this category.
+*   **Real-World Testing:**
+    *   **Rights-Impacting (Blue):** This is the tallest bar in the plot, reaching approximately **0.31**.
+    *   **Safety-Impacting (Orange):** The bar is present but lower than its counterpart, at approximately **0.17**.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Governance Priorities: Rights vs Safety".
+*   **Legend:** Located in the top right corner, distinguishing the two subgroups:
+    *   **Light Blue:** Rights-Impacting
+    *   **Orange:** Safety-Impacting
+
+### 5. Statistical Insights
+*   **Prioritization of Rights:** "Rights-Impacting" scenarios (blue bars) consistently show higher compliance rates than "Safety-Impacting" scenarios (orange bars) in both categories.
+*   **Absence of Safety Focus in Bias Mitigation:** The most distinct statistical anomaly is the zero-value for "Safety-Impacting" compliance within "Bias Mitigation." This suggests that bias mitigation is treated exclusively as a rights issue rather than a safety issue in this dataset.
+*   **Real-World Testing Compliance:** "Real-World Testing" has higher overall compliance compared to "Bias Mitigation," suggesting it is a slightly higher priority or easier to enforce, though rates for both remain below 0.35.
+*   **Overall Governance Gap:** Given that the scale goes up to 1.0 (representing full compliance), the fact that the highest bar barely exceeds 0.3 highlights a significant gap in governance adherence. The vast majority of the "compliance" space (from 0.4 to 1.0) is empty.
+==================================================

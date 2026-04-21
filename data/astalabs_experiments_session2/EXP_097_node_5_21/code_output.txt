@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Contingency Table (Sector vs. Harm) ---
+Harm_Category  Intangible/Risk  Tangible
+Sector_Group                            
+Private                     93        48
+Public                      29        21
+
+Chi-square statistic: 0.6974
+p-value: 0.4037
+
+Odds of Tangible Harm (Private): 0.5161
+Odds of Tangible Harm (Public): 0.7241
+Odds Ratio (Private vs Public for Tangible Harm): 0.7127
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** This plot is designed to compare the total count of incidents across two different sectors ("Private" and "Public") while simultaneously visualizing the composition of these counts broken down by "Harm_Category" ("Intangible/Risk" vs. "Tangible").
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Sector_Group"
+    *   **Labels:** Two distinct categories: "Private" and "Public".
+*   **Y-axis:**
+    *   **Title:** "Count"
+    *   **Range:** The axis ranges from 0 to approximately 145 (the highest tick mark is 140, but the data extends slightly beyond).
+    *   **Units:** Integer counts representing frequency.
+
+### 3. Data Trends
+*   **Private Sector:**
+    *   This is the **tallest bar**, indicating a significantly higher total count compared to the Public sector.
+    *   The total count appears to be slightly above **140**.
+    *   The "Intangible/Risk" (blue) segment is the dominant component, reaching a count of approximately **90-95**.
+    *   The "Tangible" (orange) segment sits on top, contributing roughly **45-50** to the count.
+*   **Public Sector:**
+    *   This is the **shortest bar**, with a total count significantly lower than the Private sector.
+    *   The total count sits exactly at the **50** mark.
+    *   The "Intangible/Risk" (blue) segment accounts for approximately **30** of the total count.
+    *   The "Tangible" (orange) segment accounts for the remaining **20**.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Harm Category Distribution by Sector" is displayed at the top center.
+*   **Legend:** Located in the top-right corner, titled "Harm_Category".
+    *   **Blue:** Represents "Intangible/Risk".
+    *   **Orange:** Represents "Tangible".
+
+### 5. Statistical Insights
+*   **Sector Disparity:** There is a substantial disparity in volume between the sectors. The Private sector accounts for nearly three times the number of recorded incidents compared to the Public sector (approx. 140 vs. 50).
+*   **Predominance of Intangible Risk:** In both sectors, "Intangible/Risk" harms are more frequent than "Tangible" harms.
+    *   In the **Private sector**, Intangible/Risk comprises roughly **65-70%** of the total.
+    *   In the **Public sector**, Intangible/Risk comprises roughly **60%** of the total (30 out of 50).
+*   **Consistency:** The proportional distribution of harm types is relatively consistent across sectors (with Intangible/Risk being the majority), despite the large difference in absolute volume.
+==================================================

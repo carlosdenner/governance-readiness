@@ -1,0 +1,27 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: step2_crosswalk_matrix.csv
+
+=== Contingency Table (Source Type vs Bundle) ===
+bundle       Integration Readiness  Trust Readiness
+source_type                                        
+Normative                       14               18
+Technical                        9                1
+
+=== Contingency Table (Percentages) ===
+bundle       Integration Readiness  Trust Readiness
+source_type                                        
+Normative                     43.8             56.2
+Technical                     90.0             10.0
+
+=== Chi-Square Test of Independence ===
+Chi2 Statistic: 4.8442
+P-value: 0.0277
+Cramer's V: 0.3396
+
+=== Fisher's Exact Test (2x2) ===
+Odds Ratio: 0.0864
+P-value: 0.0128
+
+=== Interpretation ===
+Result: Statistically Significant Association.
+There is a significant relationship between the source type (Normative vs Technical) and the competency bundle.

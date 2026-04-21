@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between 'GenAIOps / MLOps Lifecycle Governance' and 'Evaluation & Monitoring Infrastructure' using the 'step2_crosswalk_matrix.csv' dataset. The analysis reveals that these two architecture controls do not significantly co-occur. The majority of requirements (57%, 24/42) map to neither control. Among the requirements that do map to 'GenAIOps' (10 total), exactly half (5) also map to 'Evaluation Infrastructure', while the other half do not. The Fisher's Exact Test yielded a p-value of 0.2383, which is well above the significance threshold of 0.05, and the Phi coefficient of 0.2303 indicates a weak correlation. Consequently, the hypothesis that these controls are structurally coupled in governance requirements is rejected; they appear to be applied independently or conditionally rather than as a standard pair.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nfrom sklearn.metrics import matthews_corrcoef\nimport os\n\n# Load the dataset\nfilename = 'step2_crosswalk_matrix.csv'\n\n# Fallback to check parent directory if not found locally, just in case\nif not os.path.exists(filename):\n    filename = '../' + filename\n\ndf = pd.read_csv(filename)\n\n# Define the columns of interest\ncol_ops = 'GenAIOps / MLOps Lifecycle Governance'\ncol_eval = 'Evaluation & Monitoring Infrastructure'\n\n# Preprocess: Convert 'X' to 1, others to 0\ndf['Ops_Binary'] = df[col_ops].apply(lambda x: 1 if str(x).strip() == 'X' else 0)\ndf['Eval_Binary'] = df[col_eval].apply(lambda x: 1 if str(x).strip() == 'X' else 0)\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(df['Ops_Binary'], df['Eval_Binary'])\n\n# Rename index/columns for clarity (0=No, 1=Yes)\ncontingency_table.index = ['No Ops Gov', 'Has Ops Gov']\ncontingency_table.columns = ['No Eval Infra', 'Has Eval Infra']\n\n# Calculate Statistics\n# 1. Chi-square test (correction=False for raw chi2)\nchi2, p_value, dof, expected = stats.chi2_contingency(contingency_table, correction=False)\n\n# 2. Fisher's Exact Test\nodds_ratio, p_value_fisher = stats.fisher_exact(contingency_table)\n\n# 3. Phi Coefficient\nphi_coeff = matthews_corrcoef(df['Ops_Binary'], df['Eval_Binary'])\n\nprint(\"=== Co-occurrence Analysis ===\")\nprint(f\"File Loaded: {filename}\")\nprint(f\"Dataset shape: {df.shape}\")\nprint(f\"\\nContingency Table:\\n{contingency_table}\")\nprint(f\"\\nChi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value (Chi-square): {p_value:.4f}\")\nprint(f\"P-value (Fisher's Exact): {p_value_fisher:.4f}\")\nprint(f\"Phi Coefficient: {phi_coeff:.4f}\")\n\n# Interpretation\nalpha = 0.05\nif p_value_fisher < alpha:\n    print(\"\\nResult: Statistically significant co-occurrence detected.\")\nelse:\n    print(\"\\nResult: No statistically significant co-occurrence detected (Null hypothesis not rejected).\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\nsns.heatmap(contingency_table, annot=True, fmt='d', cmap='Blues', cbar=False)\nplt.title(f'Co-occurrence of GenAIOps and Eval Infrastructure')\nplt.xlabel('Evaluation & Monitoring Infrastructure')\nplt.ylabel('GenAIOps / MLOps Lifecycle Governance')\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: === Co-occurrence Analysis ===\nFile Loaded: step2_crosswalk_matrix.csv\nDataset shape: (42, 26)\n\nContingency Table:\n             No Eval Infra  Has Eval Infra\nNo Ops Gov              24               8\nHas Ops Gov              5               5\n\nChi-square Statistic: 2.2281\nP-value (Chi-square): 0.1355\nP-value (Fisher's Exact): 0.2383\nPhi Coefficient: 0.2303\n\nResult: No statistically significant co-occurrence detected (Null hypothesis not rejected).\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** This is a **Heatmap** representing a **Contingency Table** (or Cross-tabulation).\n*   **Purpose:** It visualizes the co-occurrence frequency between two categorical variables: the presence of GenAIOps/MLOps Lifecycle Governance and the presence of Evaluation & Monitoring Infrastructure. The color intensity represents the magnitude of the count in each category intersection.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Evaluation & Monitoring Infrastructure\"\n    *   **Categories:** \"No Eval Infra\" (Left) and \"Has Eval Infra\" (Right).\n*   **Y-Axis:**\n    *   **Label:** \"GenAIOps / MLOps Lifecycle Governance\"\n    *   **Categories:** \"No Ops Gov\" (Top) and \"Has Ops Gov\" (Bottom).\n*   **Value Ranges:** The axes represent binary categories (No vs. Has). The numerical values within the cells range from **5 to 24**.\n\n### 3. Data Trends\n*   **Highest Value (Darkest Blue):** The intersection of **\"No Ops Gov\"** and **\"No Eval Infra\"** contains the highest count (**24**). This indicates that the majority of the sample lacks both governance and evaluation infrastructure.\n*   **Lowest Value (Lightest Color):** Two intersections share the lowest count of **5**:\n    *   \"Has Ops Gov\" and \"No Eval Infra\"\n    *   \"Has Ops Gov\" and \"Has Eval Infra\"\n*   **Secondary Cluster:** The intersection of \"No Ops Gov\" and \"Has Eval Infra\" has a count of **8**, showing that some entities possess evaluation infrastructure despite lacking lifecycle governance.\n\n### 4. Annotations and Legends\n*   **Title:** \"Co-occurrence of GenAIOps and Eval Infrastructure\" clearly defines the scope of the comparison.\n*   **Cell Annotations:** Each cell contains a numerical annotation (24, 8, 5, 5) indicating the exact count of observations for that specific overlap.\n*   **Color Coding:** A sequential blue color palette is used, where dark navy blue represents the highest frequency and white/pale blue represents the lowest frequency.\n\n### 5. Statistical Insights\n*   **Low Maturity Dominance:** A significant majority of the dataset (**57%**, calculated as 24/42) falls into the \"No Ops Gov / No Eval Infra\" category, suggesting that most systems or organizations surveyed are at a low level of maturity regarding both GenAI operations and evaluation.\n*   **Governance Scarcity:** Only **10 out of 42** respondents (approx. 24%) have \"GenAIOps / MLOps Lifecycle Governance\" (combining the bottom row: 5 + 5).\n*   **Evaluation vs. Governance:**\n    *   It appears slightly more common to have Evaluation Infrastructure without Governance (8 counts) than to have Governance without Evaluation Infrastructure (5 counts).\n    *   Only **12%** (5/42) of the sample possesses **both** capabilities (\"Has Ops Gov\" and \"Has Eval Infra\"), indicating that a fully mature setup is currently rare in this dataset.\n==================================================",
+  "created_at": "2026-02-20T23:27:28.397302+00:00",
+  "creation_idx": 63,
+  "experiment_id": "node_6_3",
+  "experiment_plan": {
+    "deliverables": "Heatmap of co-occurrence, contingency table, and statistical test results.",
+    "objective": "Identify structural clustering between operational governance and evaluation infrastructure controls.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Extract columns for 'GenAIOps / MLOps Lifecycle Governance' and 'Evaluation & Monitoring Infrastructure'.\n3. Convert 'X' markers to binary (1/0).\n4. Create a contingency table (00, 01, 10, 11) and perform a Chi-square test of independence or calculate the Phi coefficient."
+  },
+  "hypothesis": "The architecture controls 'GenAIOps / MLOps Lifecycle Governance' and 'Evaluation & Monitoring Infrastructure' co-occur in governance requirements significantly more often than expected by chance, indicating a coupled engineering capability.",
+  "id_in_run": 62,
+  "is_surprising": true,
+  "parent_id": "node_5_7",
+  "posterior": 0.2128099173553719,
+  "posterior_belief": {
+    "_empirical_mean": 0.008333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 87.0,
+    "definitely_true": 0.0,
+    "maybe_false": 3.0,
+    "maybe_true": 0.0,
+    "mean": 0.2128099173553719,
+    "n": 90.0,
+    "prior_params": [
+      25.0,
+      6.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8064516129032258,
+  "prior_belief": {
+    "_empirical_mean": 0.8166666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 8.0,
+    "maybe_false": 0.0,
+    "maybe_true": 22.0,
+    "mean": 0.8064516129032258,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis that 'GenAIOps / MLOps Lifecycle Governance' and 'Evaluation & Monitoring Infrastructure' co-occur significantly in governance requirements. Using the `step2_crosswalk_matrix.csv` dataset, the analysis produced a contingency table showing that the majority of requirements (24/42) map to neither control. Of the 10 requirements mapping to GenAIOps, only 5 also mapped to Evaluation Infrastructure. The Fisher's Exact Test yielded a p-value of 0.2383, and the Phi coefficient was 0.2303, indicating a weak and statistically insignificant correlation. Therefore, the hypothesis is rejected; the data suggests these architecture controls are not structurally coupled in the current governance framework.",
+  "rich_outputs": null,
+  "runtime_ms": 259720.00000000003,
+  "status": "SUCCEEDED",
+  "surprise": -0.6889780720602545
+}

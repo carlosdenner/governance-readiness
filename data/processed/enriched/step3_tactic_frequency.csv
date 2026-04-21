@@ -1,0 +1,17 @@
+tactic_id,tactic_name,incident_count,bundle,sub_competency_id,competency_domain
+AML.TA0003,Resource Development,77,Integration Readiness,IR-6,Resource & Supply Chain Controls
+AML.TA0011,Impact,47,Trust Readiness,TR-6,Impact Containment & Recovery
+AML.TA0004,Initial Access,41,Integration Readiness,IR-2,Access Boundary & Initial Access Controls
+AML.TA0005,Execution,37,Integration Readiness,IR-1,Execution Controls & Sandboxing
+AML.TA0007,Defense Evasion,34,Trust Readiness,TR-3,Defense Evasion Detection
+AML.TA0001,AI Attack Staging,33,Integration Readiness,IR-2,AI Attack Staging Defense
+AML.TA0000,AI Model Access,24,Trust Readiness,TR-1,Model Access Governance
+AML.TA0002,Reconnaissance,22,Trust Readiness,TR-2,Threat Intelligence & Reconnaissance Defense
+AML.TA0008,Discovery,17,Trust Readiness,TR-2,Discovery & Enumeration Controls
+AML.TA0006,Persistence,15,Trust Readiness,TR-3,Persistence Detection & Monitoring
+AML.TA0010,Exfiltration,15,Trust Readiness,TR-4,Data Exfiltration Controls
+AML.TA0013,Credential Access,12,Trust Readiness,TR-4,Credential & Secret Management
+AML.TA0009,Collection,11,Trust Readiness,TR-4,Data Collection & Exfiltration Prevention
+AML.TA0012,Privilege Escalation,10,Integration Readiness,IR-2,Privilege & Identity Management
+AML.TA0014,Command and Control,4,Integration Readiness,IR-8,C2 Detection & Network Controls
+AML.TA0015,Lateral Movement,2,Integration Readiness,IR-2,Lateral Movement Prevention

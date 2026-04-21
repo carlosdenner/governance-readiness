@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Experiment: Autonomy-Risk Escalation Analysis (Corrected Mappings)...
+AIID Incidents found: 1362
+Records available for analysis after cleaning: 155
+
+--- Contingency Table ---
+Harm_Bin       Intangible Harm  Tangible Harm
+Autonomy_Bin                                 
+High Autonomy               33             31
+Low Autonomy                57             34
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 1.4652
+P-value: 0.2261
+Result: No statistically significant association found (Fail to reject H0)
+
+--- Row Percentages ---
+Harm_Bin       Intangible Harm  Tangible Harm
+Autonomy_Bin                                 
+High Autonomy        51.562500      48.437500
+Low Autonomy         62.637363      37.362637
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The plot is designed to compare the relative distribution (percentage) of two distinct categories of harm ("Intangible" vs. "Tangible") across two different groups defined by AI autonomy levels ("High Autonomy" and "Low Autonomy"). By normalizing the bars to 100%, it focuses on the proportion of each harm type within each autonomy setting rather than the absolute number of incidents.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Autonomy Level"
+    *   **Categories:** The axis displays two categorical groups: "High Autonomy" and "Low Autonomy."
+*   **Y-Axis:**
+    *   **Label:** "Percentage of Incidents"
+    *   **Range:** The scale runs from 0 to 100.
+    *   **Units:** Percentage (%), indicated by the values reaching 100 and the percent signs within the data labels.
+
+### 3. Data Trends
+*   **Dominant Category:** In both autonomy levels, "Intangible Harm" (blue) constitutes the majority of incidents (>50%).
+*   **High Autonomy:**
+    *   The distribution is fairly balanced but leans slightly toward "Intangible Harm" at **51.6%**, while "Tangible Harm" accounts for **48.4%**.
+*   **Low Autonomy:**
+    *   There is a more pronounced skew. "Intangible Harm" rises significantly to **62.6%**, whereas "Tangible Harm" drops to **37.4%**.
+*   **Comparison Pattern:** As the level of autonomy decreases (moving from High to Low), the proportion of intangible harms increases by 11 percentage points, while the proportion of tangible harms decreases correspondingly.
+
+### 4. Annotations and Legends
+*   **Legend:** A box in the upper right corner titled "Harm Category" defines the color coding:
+    *   **Light Blue:** Represents "Intangible Harm."
+    *   **Light Red/Pink:** Represents "Tangible Harm."
+*   **Data Labels:** Numerical percentage values are annotated directly inside each bar segment to provide precise data points (e.g., "48.4%" and "51.6%" for High Autonomy; "37.4%" and "62.6%" for Low Autonomy).
+*   **Title:** The chart is titled "Distribution of Harm Types by AI Autonomy Level," clearly stating the subject of the analysis.
+
+### 5. Statistical Insights
+*   **Shift in Risk Profile:** The data suggests a correlation between the level of AI autonomy and the nature of the harm produced. Higher autonomy in AI systems is associated with a greater relative risk of **Tangible Harm** (physical or concrete damage) compared to low autonomy systems.
+*   **Prevalence of Intangible Harm:** Regardless of autonomy level, **Intangible Harm** (likely referring to reputational, psychological, or societal damage) remains the primary mode of failure, accounting for the majority of incidents in both scenarios.
+*   **Implication:** This visualization implies that while increasing AI autonomy introduces more tangible risks, the reduction of autonomy does not eliminate harm; rather, it shifts the distribution heavily toward intangible issues.
+==================================================

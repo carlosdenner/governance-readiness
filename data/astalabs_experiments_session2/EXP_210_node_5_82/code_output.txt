@@ -1,0 +1,116 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded. Filtering for EO13960...
+EO13960 rows: 1757
+
+--- Raw Value Inspection ---
+Code Access sample values: <StringArray>
+[             'No – agency does not have access to source code.',
+                                                             nan,
+ 'Yes – agency has access to source code, but it is not public.',
+                      'Yes – source code is publicly available.',
+                                                           'Yes',
+                                                           'YES',
+                                                             ' ']
+Length: 7, dtype: str
+Appeal Process sample values: <StringArray>
+[                                                                                                                  nan,
+                                                                                                                 'Yes',
+                                                               'No – it is not operationally practical to offer this.',
+                         'N/A; COTS tool used for code conversion, no individual's information is input into a model.',
+ 'No – Law, operational limitations, or governmentwide guidance precludes an opportunity for an individual to appeal.',
+                                       'Agency CAIO has waived this minimum practice and reported such waiver to OMB.']
+Length: 6, dtype: str
+
+--- Descriptive Statistics ---
+Code Access Distribution:
+ code_access
+0    1155
+1     602
+Name: count, dtype: int64
+Appeal Process Distribution:
+ appeal_process
+0    1681
+1      76
+Name: count, dtype: int64
+
+Contingency Table (Row Normalized - Probability of Appeal given Code Access):
+appeal_process         0         1
+code_access                       
+0               0.974026  0.025974
+1               0.923588  0.076412
+
+--- Logistic Regression Analysis ---
+                           Logit Regression Results                           
+==============================================================================
+Dep. Variable:         appeal_process   No. Observations:                 1757
+Model:                          Logit   Df Residuals:                     1751
+Method:                           MLE   Df Model:                            5
+Date:                Sun, 22 Feb 2026   Pseudo R-squ.:                  0.2149
+Time:                        10:48:38   Log-Likelihood:                -245.76
+converged:                      False   LL-Null:                       -313.02
+Covariance Type:            nonrobust   LLR p-value:                 2.614e-27
+==========================================================================================================================
+                                                             coef    std err          z      P>|z|      [0.025      0.975]
+--------------------------------------------------------------------------------------------------------------------------
+Intercept                                                 -5.1186      0.735     -6.961      0.000      -6.560      -3.677
+C(topic)[T.Health & Medical]                              -0.1947      1.008     -0.193      0.847      -2.171       1.782
+C(topic)[T.Mission-Enabling]                              -0.2665      0.844     -0.316      0.752      -1.920       1.387
+C(topic)[T.Mission-Enabling (internal agency support)]   -14.2414    709.195     -0.020      0.984   -1404.238    1375.756
+C(topic)[T.Other]                                          2.4482      0.727      3.368      0.001       1.024       3.873
+code_access                                                1.3675      0.251      5.452      0.000       0.876       1.859
+==========================================================================================================================
+
+Possibly complete quasi-separation: A fraction 0.15 of observations can be
+perfectly predicted. This might indicate that there is complete
+quasi-separation. In this case some parameters will not be identified.
+
+--- Odds Ratios (Exp(Coef)) ---
+                                                        2.5%  ...            OR
+Intercept                                           0.001416  ...  5.984179e-03
+C(topic)[T.Health & Medical]                        0.114041  ...  8.230522e-01
+C(topic)[T.Mission-Enabling]                        0.146536  ...  7.660298e-01
+C(topic)[T.Mission-Enabling (internal agency su...  0.000000  ...  6.531823e-07
+C(topic)[T.Other]                                   2.783086  ...  1.156792e+01
+code_access                                         2.400908  ...  3.925443e+00
+
+[6 rows x 3 columns]
+
+Key Finding: Odds Ratio for Code Access = 3.9254
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/statsmodels/base/model.py:607: ConvergenceWarning: Maximum Likelihood optimization failed to converge. Check mle_retvals
+  warnings.warn("Maximum Likelihood optimization failed to "
+/usr/local/lib/python3.13/site-packages/pandas/core/internals/blocks.py:347: RuntimeWarning: overflow encountered in exp
+  result = func(self.values, **kwargs)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot image, here are the details:
+
+**1. Plot Type**
+*   **Type:** Bar Plot.
+*   **Purpose:** This plot compares a categorical variable (Code Access Transparency) against a numerical proportion to illustrate the relationship between system transparency and the existence of an accountability mechanism (Appeal Process).
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Label:** "Has Code Access?"
+    *   **Categories:** Two categories are presented: "No (Black Box)" and "Yes (Transparent)."
+*   **Y-Axis:**
+    *   **Label:** "Proportion with Appeal Process."
+    *   **Range:** The scale ranges from **0.0 to 1.0**, representing a proportion from 0% to 100%.
+
+**3. Data Trends**
+*   **"No (Black Box)" Category:** Represented by a red/salmon-colored bar. This bar is very short, indicating a very low prevalence of appeal processes in systems without code access.
+*   **"Yes (Transparent)" Category:** Represented by a light blue bar. This bar is visibly taller than the red bar, indicating a higher prevalence of appeal processes in transparent systems.
+*   **Comparison:** The bar for transparent systems is noticeably taller than the bar for black-box systems, suggesting a positive correlation between the two variables, although the absolute height of both bars remains low relative to the maximum Y-axis value of 1.0.
+
+**4. Annotations and Legends**
+*   **Title:** "Link Between Transparency (Code Access) and Accountability (Appeal Process)" — clarifies the specific definitions of transparency and accountability used in this context.
+*   **Value Labels:** Specific percentages are annotated directly above each bar to provide precise data points:
+    *   Above the "No" bar: **2.6%**
+    *   Above the "Yes" bar: **7.6%**
+
+**5. Statistical Insights**
+*   **Relative Increase:** There is a significant relative difference between the two groups. Systems with code access (Transparent) are nearly **three times (approx. 2.9x)** more likely to have an appeal process compared to "Black Box" systems ($7.6\% / 2.6\%$).
+*   **Low Overall Adoption:** Despite the relative increase associated with transparency, the absolute values are quite low. Even among transparent systems, less than **8%** possess an appeal process. This indicates that while transparency is linked to better accountability, the vast majority of systems in this dataset—regardless of transparency—lack an appeal process.
+==================================================

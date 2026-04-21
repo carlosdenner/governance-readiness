@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully loaded 'step2_crosswalk_matrix.csv' and analyzed the relationship between the source of a governance requirement and its bundle classification. To address previous string matching errors, the analysis normalized the 'source' column and identified 'EU AI Act (2024/1689)' and 'OWASP Top 10 LLM' as the target groups. \n\nThe resulting contingency table showed a clear directional trend:\n- **OWASP Top 10 LLM**: 90% 'Integration Readiness' (9/10), 10% 'Trust Readiness' (1/10).\n- **EU AI Act**: ~44% 'Integration Readiness' (4/9), ~56% 'Trust Readiness' (5/9).\n\nFisher's Exact Test yielded a p-value of **0.0573**. While this result is marginally above the standard significance threshold of 0.05, it indicates a strong trend suggesting that OWASP requirements are indeed more technical/integration-focused, whereas the EU AI Act is more balanced or policy-oriented. Strictly speaking, however, the null hypothesis cannot be rejected at the 95% confidence level.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport numpy as np\n\n# Load the dataset\nfilename = 'step2_crosswalk_matrix.csv'\ndf = pd.read_csv(filename)\n\n# Inspect and clean the 'source' column\n# We normalize by stripping whitespace to handle potential formatting issues\ndf['source'] = df['source'].astype(str).str.strip()\n\n# Define the target groups using robust string matching\n# This handles cases where the string might be 'EU AI Act ' or similar variants\ndef classify_source(s):\n    if 'OWASP' in s:\n        return 'OWASP Top 10 LLM'\n    elif 'EU AI' in s:\n        return 'EU AI Act'\n    else:\n        return None\n\n# Apply classification\ndf['target_source'] = df['source'].apply(classify_source)\n\n# Filter for only the relevant rows\nsub_df = df[df['target_source'].notna()].copy()\n\nprint(\"--- Data Inspection ---\")\nprint(f\"Unique sources found in raw data: {df['source'].unique()}\")\nprint(f\"Filtered dataset shape: {sub_df.shape}\")\nprint(\"Counts per target source:\")\nprint(sub_df['target_source'].value_counts())\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(sub_df['target_source'], sub_df['bundle'])\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Perform Statistical Test\n# We use Fisher's Exact Test if the table is 2x2, as sample sizes are likely small\nif contingency_table.shape == (2, 2):\n    test_name = \"Fisher's Exact Test\"\n    # fisher_exact returns (odds_ratio, p_value)\n    statistic, p_value = stats.fisher_exact(contingency_table)\n    stat_label = \"Odds Ratio\"\nelse:\n    test_name = \"Chi-Square Test\"\n    chi2, p_value, dof, expected = stats.chi2_contingency(contingency_table)\n    statistic = chi2\n    stat_label = \"Chi-Square Statistic\"\n\nprint(f\"\\n--- Statistical Analysis ({test_name}) ---\")\nprint(f\"{stat_label}: {statistic:.4f}\")\nprint(f\"P-Value: {p_value:.4f}\")\n\n# Interpretation\nalpha = 0.05\nprint(\"\\n--- Interpretation ---\")\nif p_value < alpha:\n    print(f\"Result: Significant (p < {alpha}). The source framework predicts the readiness bundle.\")\nelse:\n    print(f\"Result: Not Significant (p >= {alpha}). No statistical evidence that source predicts bundle.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- Data Inspection ---\nUnique sources found in raw data: <StringArray>\n[      'NIST AI RMF 1.0',    'NIST GenAI Profile', 'EU AI Act (2024/1689)',\n      'OWASP Top 10 LLM']\nLength: 4, dtype: str\nFiltered dataset shape: (19, 25)\nCounts per target source:\ntarget_source\nOWASP Top 10 LLM    10\nEU AI Act            9\nName: count, dtype: int64\n\n--- Contingency Table ---\nbundle            Integration Readiness  Trust Readiness\ntarget_source                                           \nEU AI Act                             4                5\nOWASP Top 10 LLM                      9                1\n\n--- Statistical Analysis (Fisher's Exact Test) ---\nOdds Ratio: 0.0889\nP-Value: 0.0573\n\n--- Interpretation ---\nResult: Not Significant (p >= 0.05). No statistical evidence that source predicts bundle.\n",
+  "created_at": "2026-02-20T23:37:51.375872+00:00",
+  "creation_idx": 66,
+  "experiment_id": "node_6_5",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistic, and p-value.",
+    "objective": "Determine if there is a statistically significant association between the source of a governance requirement and its capability bundle classification.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Filter the dataset to include only rows where 'source' is 'OWASP Top 10 LLM' or 'EU AI Act'.\n3. Create a contingency table of 'source' vs. 'bundle'.\n4. Perform a Chi-square test of independence (or Fisher's Exact Test if counts are low) to assess the relationship."
+  },
+  "hypothesis": "Governance requirements sourced from the 'OWASP Top 10 LLM' are significantly more likely to be classified as 'Integration Readiness' compared to requirements from the 'EU AI Act', reflecting the distinct technical vs. policy focus of these normative frameworks.",
+  "id_in_run": 65,
+  "is_surprising": false,
+  "parent_id": "node_5_5",
+  "posterior": 0.7479338842975206,
+  "posterior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 90.0,
+    "mean": 0.7479338842975206,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the analysis is methodologically sound. The third attempt correctly handled the string matching issues for the 'EU AI Act' source, allowing for a valid comparison. The hypothesis posited a significant difference in bundle classification between 'OWASP Top 10 LLM' and 'EU AI Act'. The data revealed a strong directional trend: OWASP requirements were 90% 'Integration Readiness' (9/10), whereas EU AI Act requirements were only 44% 'Integration Readiness' (4/9). However, Fisher's Exact Test yielded a p-value of 0.0573, which is marginally above the standard significance threshold of 0.05. Consequently, while the distinct technical focus of OWASP is observable in the proportions, the hypothesis of a *statistically significant* difference is strictly rejected at the 95% confidence level, likely due to the small sample size (n=19).",
+  "rich_outputs": null,
+  "runtime_ms": 198390.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.006961718478210659
+}

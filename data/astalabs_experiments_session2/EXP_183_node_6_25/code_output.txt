@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Contingency Table: Period vs. Generative AI ---
+           Non-GenAI  GenAI
+period                     
+Post-2022        639    202
+Pre-2023         466     55
+
+
+--- Proportions ---
+           Non-GenAI  GenAI  Total  GenAI_Rate
+period                                        
+Post-2022        639    202    841    0.240190
+Pre-2023         466     55    521    0.105566
+
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 37.2113
+P-value: 1.0600e-09
+Degrees of Freedom: 1
+Result: Statistically Significant Shift detected.
+Fold Increase (Post / Pre): 2.28x
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot (or Bar Chart).
+*   **Purpose:** The plot is designed to compare the prevalence (frequency) of incidents involving Generative AI across two distinct time categories: "Post-2022" and "Pre-2023".
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Label/Categories:** Represents time periods divided into two categories: "Post-2022" and "Pre-2023".
+    *   **Units:** Categorical (Time).
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Percentage of Incidents involving GenAI (%)".
+    *   **Units:** Percentage (%).
+    *   **Range:** The axis is marked in increments of 5, ranging from **0 to 25**. The visual space extends slightly above 25, implying a maximum plot range around 30.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Post-2022" bar (colored light blue) is the tallest, reaching a value of **24.0%**.
+*   **Shortest Bar:** The "Pre-2023" bar (colored salmon/light red) is the shortest, reaching a value of **10.6%**.
+*   **Pattern:** There is a distinct and sharp increase in the percentage of incidents involving Generative AI in the period following 2022 compared to the period prior to 2023.
+
+### 4. Annotations and Legends
+*   **Title:** "Prevalence of Generative AI in Incidents (Pre-2023 vs Post-2022)" clearly defines the scope of the comparison.
+*   **Data Labels:** The exact percentage values are annotated directly above each bar ("24.0%" and "10.6%"), eliminating the need to estimate values based on the y-axis ticks.
+*   **Color Coding:** The bars are distinct in color (Blue for Post-2022, Red for Pre-2023) to visually differentiate the two time periods, though a specific legend box is not present (nor necessary given the x-axis labels).
+
+### 5. Statistical Insights
+*   **Significant Increase:** The data indicates a substantial rise in incidents involving Generative AI. The prevalence jumped from **10.6%** in the Pre-2023 era to **24.0%** in the Post-2022 era.
+*   **Rate of Growth:** This represents a **13.4 percentage point increase**.
+*   **Relative Growth:** In relative terms, the frequency of GenAI incidents has **more than doubled** (approximately a **126% increase**) after 2022.
+*   **Context:** This trend likely correlates with the widespread public release and adoption of major Generative AI tools (such as ChatGPT) in late 2022, suggesting that the accessibility of these tools has significantly impacted the landscape of reported incidents.
+==================================================

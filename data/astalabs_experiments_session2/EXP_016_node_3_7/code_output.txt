@@ -1,0 +1,73 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded AIID incidents: 1362 rows
+
+--- Entropy Scores (Higher = More Distributed) ---
+Harm_Type
+Physical         3.701888
+Psychological    3.220246
+dtype: float64
+
+--- Top 5 Sectors by Harm Type ---
+
+Physical Harm Top Sectors:
+Sector of Deployment
+transportation and storage                 0.173333
+information and communication              0.153333
+wholesale and retail trade                 0.100000
+law enforcement                            0.080000
+human health and social work activities    0.073333
+Name: Physical, dtype: float64
+
+Psychological Harm Top Sectors:
+Sector of Deployment
+information and communication    0.331361
+Arts                             0.124260
+entertainment and recreation     0.124260
+law enforcement                  0.071006
+public administration            0.065089
+Name: Psychological, dtype: float64
+
+--- Raw Counts for Validation ---
+Sector of Deployment  law enforcement  ...  Arts
+Harm_Type                              ...      
+Physical                           12  ...    10
+Psychological                      12  ...    21
+
+[2 rows x 8 columns]
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Plot (also known as a Clustered Bar Chart).
+*   **Purpose:** The plot is designed to compare the relative frequency (proportion) of two specific categories of harm—**Physical** and **Psychological**—across various industry sectors. By grouping the bars side-by-side, it allows for direct comparison of the prevalence of each harm type within a specific sector, as well as comparisons across different sectors.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Sector"
+    *   **Labels:** Categorical labels representing different industries (e.g., "Arts," "information and communication," "law enforcement"). The labels are rotated approximately 45 degrees to improve readability.
+*   **Y-Axis:**
+    *   **Title:** "Proportion of Incidents"
+    *   **Units:** The values represent a ratio or probability (0 to 1 scale), indicated as decimals.
+    *   **Range:** The axis ticks range from **0.00 to 0.30**, though the data extends slightly above the 0.30 mark (approx. 0.33).
+
+### 3. Data Trends
+*   **Dominant Psychological Harm:** The most striking feature of the plot is the **"information and communication"** sector. It exhibits the highest proportion of psychological harm incidents (orange bar), reaching approximately **0.33**. This is the tallest bar in the entire chart, significantly outpacing physical harm in that same sector (approx. 0.15).
+*   **Dominant Physical Harm:** The **"transportation and storage"** sector shows the highest dominance of physical harm relative to psychological harm. The physical harm proportion (blue bar) is around **0.17**, while psychological harm is extremely low (the lowest on the chart, appearing to be < 0.02).
+*   **Sector Similarities:** The sectors **"Arts"** and **"entertainment and recreation"** appear to have nearly identical distributions, with psychological harm (approx. 0.12) being roughly double the proportion of physical harm (approx. 0.06).
+*   **Inversion of Risk:**
+    *   Sectors like "Arts," "entertainment," and "information and communication" show a trend where **Psychological > Physical**.
+    *   Sectors like "human health and social work," "law enforcement," "transportation," and "wholesale/retail" show a trend where **Physical > Psychological**.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner, titled **"Harm Type."** It distinguishes the data series:
+    *   **Blue:** Physical
+    *   **Orange:** Psychological
+*   **Title:** "Sector Distribution of Physical vs. Psychological Harms (Top Sectors)" clearly defines the scope of the analysis.
+
+### 5. Statistical Insights
+*   **Sector-Specific Risk Profiles:** The data suggests that the nature of occupational hazards is highly dependent on the industry. The "information and communication" sector, likely involving more office-based or digital interactions, is prone to psychological stressors (perhaps harassment or burnout), whereas "transportation and storage," involving heavy machinery and logistics, presents primarily physical risks.
+*   **Highest Aggregate Risk:** Based on visual summation, the "information and communication" sector accounts for the highest total proportion of incidents among the groups shown (summing the blue and orange bars implies a total proportion near ~0.48 of the relevant subset), largely driven by the psychological component.
+*   **Disparity in "Transportation":** The "transportation and storage" sector exhibits the largest disparity between harm types. While physical risks are significant, psychological harm is negligible in this dataset, suggesting interventions here should focus almost exclusively on physical safety measures.
+==================================================

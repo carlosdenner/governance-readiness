@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Opaque Shield' hypothesis by comparing public transparency rates between Defense/Security agencies and Civilian/Service agencies.\n\n**Hypothesis Status:** Not Supported (No Significant Difference).\n\n**Execution Summary:**\n1.  **Categorization:** The code successfully segmented the EO 13960 inventory into 'Civilian/Service' (n=1,067) and 'Defense/Security' (n=463) groups based on agency abbreviations and names.\n2.  **Metric:** A binary 'Has Notice' variable was derived from the `59_ai_notice` column, treating descriptive methods (e.g., 'Online', 'In-person') as positive and explicit negatives/nones as negative.\n\n**Findings:**\n-   **Transparency Rates:** Both sectors exhibited very low public transparency rates. Civilian agencies had a rate of **4.31%** (46/1067), while Defense agencies had a rate of **3.89%** (18/463).\n-   **Significance:** The Chi-square test yielded a p-value of **0.8095**, indicating no statistically significant difference between the two groups.\n\n**Interpretation:**\nThe data does not support the existence of a unique 'Opaque Shield' for defense agencies regarding public notice. Instead, the results suggest a **universal lack of transparency** across the federal government, with >95% of AI systems in both civilian and defense sectors failing to provide documented public notice.",
+  "child_ids": [
+    "node_7_10"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# [debug] import matplotlib.pyplot as plt\n\nprint(\"Starting 'Opaque Shield' Experiment...\\n\")\n\n# 1. Load Data\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# 2. Filter for EO 13960\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"EO 13960 Dataset Loaded. Rows: {len(eo_df)}\")\n\n# 3. Categorize Agencies\n# Defense/Security List per prompt: DOD, DHS, DOJ, VA, STATE (implied context of security/diplomacy/defense bundle)\n# Civilian/Service List: HHS, ED, HUD, DOT, USDA, DOL, DOE, DOC, DOI, TREAS, SSA, EPA, GSA, NASA, NSF, NRC, OPM, SBA, USAID\n\ndefense_security_abbr = ['DOD', 'DHS', 'DOJ', 'VA', 'STATE']\ncivilian_service_abbr = ['HHS', 'ED', 'HUD', 'DOT', 'USDA', 'DOL', 'DOE', 'DOC', 'DOI', 'TREAS', 'SSA', 'EPA', 'GSA', 'NASA', 'NSF', 'NRC', 'OPM', 'SBA', 'USAID']\n\ndef categorize_agency(row):\n    abr = str(row['3_abr']).upper().strip()\n    agency = str(row['3_agency']).upper().strip()\n    \n    # Check exact abbreviation match first\n    if abr in defense_security_abbr:\n        return 'Defense/Security'\n    if abr in civilian_service_abbr:\n        return 'Civilian/Service'\n        \n    # Fallback to name keywords\n    if any(x in agency for x in ['DEFENSE', 'HOMELAND', 'JUSTICE', 'VETERAN', 'STATE DEPARTMENT']):\n        return 'Defense/Security'\n    if any(x in agency for x in ['HEALTH', 'EDUCATION', 'HOUSING', 'TRANSPORTATION', 'AGRICULTURE', 'LABOR', 'ENERGY', 'COMMERCE', 'INTERIOR', 'TREASURY', 'SOCIAL SECURITY', 'ENVIRONMENTAL', 'AERONAUTICS', 'SCIENCE FOUNDATION']):\n        return 'Civilian/Service'\n    \n    return 'Other/Unknown'\n\neo_df['agency_category'] = eo_df.apply(categorize_agency, axis=1)\n\n# Filter for analysis\nanalysis_df = eo_df[eo_df['agency_category'] != 'Other/Unknown'].copy()\n\nprint(\"\\nAgency Categorization Counts:\")\nprint(analysis_df['agency_category'].value_counts())\n\n# 4. Define Has_Notice\n# Target: '59_ai_notice'. Parse categorical text.\n# Positive: 'Online', 'Email', 'In-person', 'Yes', 'Physical', 'Mailed', 'Other'\n# Negative: 'None', 'N/A', 'No', nan\n\ndef parse_notice(val):\n    if pd.isna(val):\n        return 0\n    val_str = str(val).lower().strip()\n    \n    # Explicit negatives\n    if 'none' in val_str or 'n/a' in val_str or val_str == 'no':\n        return 0\n        \n    # Explicit positives or descriptive text indicating method\n    positive_keywords = ['online', 'email', 'person', 'yes', 'physical', 'mail', 'other']\n    if any(kw in val_str for kw in positive_keywords):\n        return 1\n        \n    return 0\n\nanalysis_df['has_notice'] = analysis_df['59_ai_notice'].apply(parse_notice)\n\n# 5. Analysis\ngroup_stats = analysis_df.groupby('agency_category')['has_notice'].agg(['count', 'sum', 'mean'])\ngroup_stats['percent'] = group_stats['mean'] * 100\n\ncontingency_table = pd.crosstab(analysis_df['agency_category'], analysis_df['has_notice'])\n\nchi2, p, dof, expected = chi2_contingency(contingency_table)\n\n# 6. Deliverables\nprint(\"\\n--- Analysis of Public Transparency (Notice) by Agency Type ---\")\nprint(group_stats)\nprint(\"\\nContingency Table (0=No Notice, 1=Has Notice):\")\nprint(contingency_table)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Hypothesis Check\ndef_rate = group_stats.loc['Defense/Security', 'mean']\nciv_rate = group_stats.loc['Civilian/Service', 'mean']\n\nprint(\"\\n--- Conclusion ---\")\nif p < 0.05:\n    if def_rate < civ_rate:\n        print(\"Hypothesis SUPPORTED: Defense/Security agencies have significantly LOWER transparency rates.\")\n    else:\n        print(\"Hypothesis REFUTED: Defense/Security agencies have significantly HIGHER transparency rates.\")\nelse:\n    print(\"Hypothesis NOT SUPPORTED: No significant difference found.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting 'Opaque Shield' Experiment...\n\nEO 13960 Dataset Loaded. Rows: 1757\n\nAgency Categorization Counts:\nagency_category\nCivilian/Service    1067\nDefense/Security     463\nName: count, dtype: int64\n\n--- Analysis of Public Transparency (Notice) by Agency Type ---\n                  count  sum      mean   percent\nagency_category                                 \nCivilian/Service   1067   46  0.043112  4.311153\nDefense/Security    463   18  0.038877  3.887689\n\nContingency Table (0=No Notice, 1=Has Notice):\nhas_notice           0   1\nagency_category           \nCivilian/Service  1021  46\nDefense/Security   445  18\n\nChi-Square Statistic: 0.0581\nP-value: 8.0948e-01\n\n--- Conclusion ---\nHypothesis NOT SUPPORTED: No significant difference found.\n",
+  "created_at": "2026-02-22T08:05:36.436791+00:00",
+  "creation_idx": 150,
+  "experiment_id": "node_6_13",
+  "experiment_plan": {
+    "deliverables": "Transparency rates by Agency Type; Statistical significance of the difference.",
+    "objective": "Assess if security agencies utilize a 'secrecy shield' that bypasses standard transparency mandates.",
+    "steps": "1. Filter for 'eo13960_scored'.\n2. Categorize `3_agency` into 'Defense/Security' (e.g., DOD, DHS, DOJ, CIA, VA - check context) vs. 'Civilian/Service' (e.g., HHS, ED, HUD, DOT, USDA).\n3. Analyze `59_ai_notice`: Create a binary 'Has_Notice' variable (parse 'Yes'/'Online'/'In-person' as 1, 'No'/'None' as 0).\n4. Compare 'Has_Notice' rates between the two agency groups using a Chi-square test."
+  },
+  "hypothesis": "The 'Opaque Shield' of Defense: Defense and Security agencies exhibit significantly lower 'Public Transparency' rates (Public Notice) than Civilian Social Service agencies, despite the high-stakes nature of security AI.",
+  "id_in_run": 149,
+  "is_surprising": true,
+  "parent_id": "node_5_34",
+  "posterior": 0.3269230769230769,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.3269230769230769,
+    "n": 60.0,
+    "prior_params": [
+      29.75,
+      1.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9596774193548387,
+  "prior_belief": {
+    "_empirical_mean": 0.975,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 27.0,
+    "maybe_false": 0.0,
+    "maybe_true": 3.0,
+    "mean": 0.9596774193548387,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Opaque Shield' hypothesis by comparing public transparency rates between Defense/Security agencies and Civilian/Service agencies.\n\n**Hypothesis Status:** Not Supported (No Significant Difference).\n\n**Execution Summary:**\n1.  **Categorization:** The code successfully segmented the EO 13960 inventory into 'Civilian/Service' (n=1,067) and 'Defense/Security' (n=463) groups based on agency abbreviations and names.\n2.  **Metric:** A binary 'Has Notice' variable was derived from the `59_ai_notice` column, treating descriptive methods (e.g., 'Online', 'In-person') as positive and explicit negatives/nones as negative.\n\n**Findings:**\n-   **Transparency Rates:** Both sectors exhibited very low public transparency rates. Civilian agencies had a rate of **4.31%** (46/1067), while Defense agencies had a rate of **3.89%** (18/463).\n-   **Significance:** The Chi-square test yielded a p-value of **0.8095**, indicating no statistically significant difference between the two groups.\n\n**Interpretation:**\nThe data does not support the existence of a unique 'Opaque Shield' for defense agencies regarding public notice. Instead, the results suggest a **universal lack of transparency** across the federal government, with >95% of AI systems in both civilian and defense sectors failing to provide documented public notice.",
+  "rich_outputs": null,
+  "runtime_ms": 172600.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.7593052109181142
+}

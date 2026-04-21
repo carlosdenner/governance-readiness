@@ -1,0 +1,64 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Loading ---
+EO 13960 Records: 1757
+
+--- Unique Values in '55_independent_eval' ---
+<StringArray>
+[                                                                                                    nan,
+                                                                                     'Yes – by the CAIO',
+                                                                                'Planned or in-progress',
+ 'Yes – by another appropriate agency office that was not directly involved in the system’s development',
+               'Yes – by an agency AI oversight board not directly involved in the system’s development',
+                                       'Does not apply, use case is neither safety or rights impacting.',
+                         'Agency CAIO has waived this minimum practice and reported such waiver to OMB.',
+                                                                 'AI is not safety or rights-impacting.',
+                                                                                                  'TRUE']
+Length: 9, dtype: str
+
+--- Independent Evaluation Statistics ---
+               count  sum      mean  mean_pct
+stage_group                                  
+Operation        920   39  0.042391  4.239130
+Pre-Operation    700   13  0.018571  1.857143
+
+--- Contingency Table (Yes, No) ---
+Operation:     39, 881
+Pre-Operation: 13, 687
+
+Chi-Square Statistic: 6.5134
+P-Value: 1.0706e-02
+Result: Statistically significant difference between stages.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** This chart compares the rate (percentage) of independent evaluations across two distinct categorical stages of a lifecycle ("Operation" and "Pre-Operation").
+
+**2. Axes**
+*   **X-axis:**
+    *   **Title:** "Lifecycle Stage"
+    *   **Categories:** Two categories are displayed: "Operation" and "Pre-Operation".
+*   **Y-axis:**
+    *   **Title:** "Percentage with Independent Eval (%)"
+    *   **Units:** Percentage points.
+    *   **Range:** The scale ranges from 0 to 5, with increments of 1 unit.
+
+**3. Data Trends**
+*   **Tallest Bar:** The "Operation" stage (green bar) is the tallest, indicating a higher frequency of independent evaluations.
+*   **Shortest Bar:** The "Pre-Operation" stage (blue bar) is the shortest, indicating a lower frequency of independent evaluations.
+*   **Pattern:** There is a significant drop-off in the evaluation rate when moving from the Operation stage to the Pre-Operation stage.
+
+**4. Annotations and Legends**
+*   **Data Labels:** Both bars are annotated with specific percentage values in bold text positioned directly above the bars:
+    *   Operation: **4.2%**
+    *   Pre-Operation: **1.9%**
+*   **Color Coding:** Although there is no separate legend box, the bars are distinct by color: Green for Operation and Blue for Pre-Operation.
+
+**5. Statistical Insights**
+*   **Significant Disparity:** The rate of independent evaluation is significantly higher during the "Operation" stage compared to the "Pre-Operation" stage.
+*   **Relative Comparison:** The evaluation rate for "Operation" (4.2%) is more than double the rate for "Pre-Operation" (1.9%). Specifically, it is approximately **2.2 times higher**.
+*   **Absolute Difference:** There is a **2.3 percentage point difference** between the two stages (4.2% - 1.9%). This suggests that once a project or entity moves into the operational phase, the likelihood or requirement for independent evaluation increases substantially.
+==================================================

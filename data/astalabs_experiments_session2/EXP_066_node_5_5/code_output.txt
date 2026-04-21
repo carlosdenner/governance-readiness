@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Governance Bundling experiment...
+Loaded EO 13960 subset: 1757 rows
+
+--- Contingency Table ---
+Real-World Testing     0   1
+Bias Mitigation             
+0                   1640  81
+1                      3  33
+
+--- Statistical Results ---
+Chi-square statistic: 425.2782
+P-value: 1.7322e-94
+Phi Coefficient: 0.4920
+Interpretation: Significant correlation found. Moderate association.
+
+Likelihood of Testing if Bias Mitigation exists: 91.67%
+Likelihood of Testing if Bias Mitigation is ABSENT: 4.71%
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap (specifically representing a 2x2 Contingency Table or Confusion Matrix).
+*   **Purpose:** To visualize the frequency distribution and relationship between two binary categorical variables: whether "Bias Mitigation" was implemented and whether "Real-World Testing" was implemented. The color intensity correlates with the magnitude of the count in each cell.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Bias Mitigation Implemented"
+    *   **Categories:** "No" (Top row) and "Yes" (Bottom row).
+*   **X-Axis:**
+    *   **Label:** "Real-World Testing Implemented"
+    *   **Categories:** "No" (Left column) and "Yes" (Right column).
+*   **Value Ranges:** The axes represent binary categories. The numerical values inside the matrix represent counts (frequency), ranging from a low of 3 to a high of 1640.
+
+### 3. Data Trends
+*   **Highest Value (Darkest Blue):** The vast majority of the data falls into the top-left quadrant (1640), representing cases where **neither** Bias Mitigation nor Real-World Testing was implemented.
+*   **Lowest Value:** The bottom-left quadrant contains the lowest count (3), representing cases where Bias Mitigation was implemented, but Real-World Testing was not.
+*   **Secondary Clusters:**
+    *   There are 81 cases where Real-World Testing was done without Bias Mitigation.
+    *   There are 33 cases where **both** measures were implemented.
+
+### 4. Annotations and Legends
+*   **Title:** "Governance Bundling: Bias Mitigation vs. Real-World Testing". This indicates the chart is investigating if these two governance practices are "bundled" or implemented together.
+*   **Cell Annotations:** Each of the four quadrants is explicitly labeled with the exact count (1640, 81, 3, 33).
+*   **Color Encoding:** A sequential blue color palette is used. Dark navy blue indicates a very high count, while very pale blue/white indicates a low count.
+
+### 5. Statistical Insights
+*   **Low Adoption Rates:** The most significant insight is that the overwhelming majority of the sample (1640 out of a total 1757, or ~93.3%) has implemented **neither** governance strategy.
+*   **Evidence of Bundling:** The data supports the "Bundling" hypothesis suggested in the title, particularly regarding Bias Mitigation.
+    *   If an entity implements Bias Mitigation (Total = 36), they are highly likely to also implement Real-World Testing (33 out of 36, or ~91.7%).
+    *   It is extremely rare to find Bias Mitigation implemented in isolation (only 3 cases).
+*   **Asymmetry:** The relationship is not perfectly symmetrical. While Bias Mitigation almost implies Real-World Testing, the reverse is not true. Of those who implemented Real-World Testing (Total = 114), only a minority (33, or ~29%) also implemented Bias Mitigation.
+==================================================

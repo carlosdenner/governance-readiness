@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: AIID Incidents loaded: 1362
+Records after keyword classification and filtering: 214
+
+Distribution by Sector:
+predicted_sector
+Transportation    179
+Healthcare         35
+Name: count, dtype: int64
+
+Distribution by Harm:
+predicted_harm
+Safety/Performance    160
+Equity/Allocative      54
+Name: count, dtype: int64
+
+--- Contingency Table ---
+predicted_harm    Equity/Allocative  Safety/Performance
+predicted_sector                                       
+Healthcare                       11                  24
+Transportation                   43                 136
+
+Chi-Square Statistic: 0.5039
+P-value: 4.7781e-01
+Odds Ratio (Healthcare Equity / Transport Equity): 1.4496
+Healthcare Equity Proportion: 31.43%
+Transportation Equity Proportion: 24.02%
+
+CONCLUSION: No significant difference found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** This plot compares the total count of incidents across two different sectors (Healthcare and Transportation) while simultaneously displaying the composition of those incidents based on the predicted type of harm (Equity/Allocative vs. Safety/Performance).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** `predicted_sector`
+    *   **Labels:** Two categorical variables: "Healthcare" and "Transportation".
+*   **Y-Axis:**
+    *   **Title:** "Incident Count"
+    *   **Range:** The axis is marked numerically from 0 to 175, with grid increments of 25. The data extends slightly above the 175 mark.
+
+### 3. Data Trends
+*   **Volume Comparison:** The "Transportation" bar is significantly taller than the "Healthcare" bar, indicating a much higher total number of recorded incidents for the Transportation sector in this dataset.
+*   **Dominant Harm Type:** In both sectors, the orange segment ("Safety/Performance") constitutes the majority of the bar, indicating that safety and performance issues are more frequently classified than equity/allocative issues.
+*   **Healthcare Distribution:** The total incident count is relatively low (approximately 35). The split appears to be roughly 30% "Equity/Allocative" and 70% "Safety/Performance."
+*   **Transportation Distribution:** The total incident count is high (close to 180). While "Safety/Performance" makes up the vast bulk of the column, the absolute number of "Equity/Allocative" incidents (represented by the blue base) is numerically higher than the *total* number of incidents in the Healthcare sector.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Harm Distribution: Healthcare vs Transportation (Keyword Classified)"
+*   **Legend:** Located in the top-left corner, titled `predicted_harm`. It distinguishes the stacked segments:
+    *   **Blue:** Equity/Allocative
+    *   **Orange:** Safety/Performance
+
+### 5. Statistical Insights
+*   **Sector Disparity:** There is a stark imbalance in the dataset volume; Transportation incidents outnumber Healthcare incidents by a factor of roughly 5 to 1 (approx. 178 vs. 35).
+*   **Prevalence of Safety Concerns:** "Safety/Performance" is the primary driver of harm in both sectors. This is particularly pronounced in Transportation, where safety concerns appear to account for over 75% of the total cases.
+*   **Absolute vs. Relative Equity Harm:** While Healthcare has a smaller total volume, the proportion of "Equity/Allocative" harms appears slightly higher relative to its total size compared to Transportation. However, in terms of raw counts, there are more Equity-related incidents in Transportation (approx. 40-45) than in Healthcare (approx. 10-12).
+==================================================

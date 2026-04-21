@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Total records with PII: 171
+
+Counts by Group:
+group
+Benefits/Services           84
+Law Enforcement/Security    33
+Name: count, dtype: int64
+
+Bypass Statistics:
+                          bypassed  total      rate
+group                                              
+Benefits/Services               37     84  0.440476
+Law Enforcement/Security         7     33  0.212121
+
+LE Bypass Rate: 21.21%
+Benefits Bypass Rate: 44.05%
+
+Z-test Statistic (LE > Benefits): -2.2946
+P-value: 9.8912e-01
+Result: Not Significant (Fail to Reject Null)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot is designed to compare the rates of privacy oversight evasion (specifically, bypassing the SAOP review) across two distinct functional categories: "Benefits/Services" and "Law Enforcement/Security."
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Title:** "Rate of SAOP Review Bypass (No/Missing)"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** The axis is marked at 0.2 intervals (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+*   **X-Axis:**
+    *   **Labels:** The axis represents two categories: "Benefits/Services" and "Law Enforcement/Security."
+
+### 3. Data Trends
+*   **Highest Value:** The "Benefits/Services" category (left bar, light blue) has the highest rate of review bypass.
+*   **Lowest Value:** The "Law Enforcement/Security" category (right bar, salmon/light red) has the lowest rate.
+*   **Comparison:** The bar representing "Benefits/Services" is visibly more than twice the height of the "Law Enforcement/Security" bar, indicating a significant disparity in how often these two groups bypass privacy reviews.
+
+### 4. Annotations and Legends
+*   **Plot Title:** "Privacy Oversight Evasion: Law Enforcement vs Benefits"
+*   **Value Annotations:** Specific percentage values are placed directly above each bar for precision:
+    *   **44.0%** above the Benefits/Services bar.
+    *   **21.2%** above the Law Enforcement/Security bar.
+*   **Color Coding:** The plot uses distinct colors to differentiate the categories (Blue for Benefits, Salmon/Red for Law Enforcement), though the labels on the x-axis serve as the primary identifier.
+
+### 5. Statistical Insights
+*   **Significant Discrepancy:** There is a 22.8 percentage point difference between the two categories.
+*   **Relative Risk:** Systems or processes related to "Benefits/Services" are more than twice as likely (approx. 2.07 times) to bypass the SAOP (Senior Agency Official for Privacy) review compared to those in "Law Enforcement/Security."
+*   **Implication:** This suggests that while Law Enforcement/Security sectors generally have a higher compliance rate (only ~1 in 5 bypass review), the Benefits/Services sector struggles significantly with oversight compliance, with nearly half (44%) of instances missing the required review.
+==================================================

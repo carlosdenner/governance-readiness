@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+Contingency Table (Stage vs Timely Resources):
+               No/Unknown  Yes (Confirmed)
+Stage_Group                               
+Operation/Use         431              329
+Pilot/Planned         156              215
+
+Resource Confirmation Rates:
+Stage_Group
+Operation/Use    0.432895
+Pilot/Planned    0.579515
+Name: Has_Resources, dtype: float64
+
+Chi-square Test Results:
+Statistic: 20.8851
+P-value: 4.8767e-06
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot (Bar Chart).
+*   **Purpose:** The plot compares the proportion of AI systems that have confirmed "Timely Resources" across two distinct groups based on their lifecycle stage. It allows for a direct visual comparison of resource availability between systems in operation and those in planning/pilot phases.
+
+### 2. Axes
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Lifecycle Stage Group".
+    *   **Labels:** The axis features categorical labels representing two groups: "Operation/Use" and "Pilot/Planned". The text is rotated vertically for readability.
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Proportion (Yes / Total)".
+    *   **Units:** The values represent a ratio or probability, ranging from 0 to 1 (equivalent to 0% to 100%).
+    *   **Range:** The axis ticks range from 0.0 to 1.0, with an extended upper bound around 1.1 to accommodate labels. Major grid lines appear every 0.2 units.
+
+### 3. Data Trends
+*   **Comparison of Groups:** There is a notable disparity between the two lifecycle stages.
+    *   **Tallest Bar:** The **"Pilot/Planned"** group (represented in light blue) shows a higher proportion, reaching approximately **0.58**.
+    *   **Shortest Bar:** The **"Operation/Use"** group (represented in light red/pink) shows a lower proportion, reaching approximately **0.43**.
+*   **Pattern:** AI systems that are still in the preliminary stages (Pilot or Planned) are reported to have "Timely Resources" at a significantly higher rate than systems that are already in the "Operation/Use" stage.
+
+### 4. Annotations and Legends
+*   **Plot Title:** "Proportion of AI Systems with Confirmed 'Timely Resources' by Stage" – clearly defines the metric and grouping variable.
+*   **Bar Annotations:** Each bar is topped with precise statistical labels containing two key pieces of information:
+    *   **Percentage:** The proportion expressed as a percentage (e.g., **43.3%** and **58.0%**).
+    *   **Sample Size (n):** The raw counts formatted as `(n = successes / total sample)`.
+        *   For "Operation/Use": **(n=329/760)**.
+        *   For "Pilot/Planned": **(n=215/371)**.
+*   **Grid Lines:** Horizontal dashed grey lines serve as a visual aid to estimate bar height against the Y-axis.
+
+### 5. Statistical Insights
+*   **Resource Gap:** There is a **14.7 percentage point gap** between the two groups. Systems in the "Pilot/Planned" stage are 1.34 times more likely to report having timely resources confirmed compared to those in "Operation/Use".
+*   **Sample Size Context:** While the "Operation/Use" group has a lower success rate (43.3%), it represents a much larger sample size (760 total systems) compared to the "Pilot/Planned" group (371 total systems). This suggests the data for operational systems is more robust, though the trend of lower resource confirmation is significant.
+*   **Operational Reality vs. Planning Optimism:** The data suggests a potential "optimism bias" or resource bottleneck. It appears easier to confirm or allocate timely resources during the planning and pilot phases. However, once systems scale to full operation ("Operation/Use"), maintaining or confirming those timely resources becomes more difficult, dropping from nearly 6 in 10 systems to roughly 4 in 10.
+==================================================

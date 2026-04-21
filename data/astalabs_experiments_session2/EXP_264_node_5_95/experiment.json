@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully analyzed 177 incidents from the AIID dataset where both 'Autonomy Level' and 'Intentional Harm' data were available. The data cleaning logic correctly mapped 'Autonomy1' to 'Low' (n=103) and 'Autonomy2'/'Autonomy3' to 'High/Medium' (n=74). \n\nThe contingency table revealed that 'Intentional' harm is rare across both groups:\n- **High/Medium Autonomy**: 3 Intentional (4.1%), 71 Unintentional.\n- **Low Autonomy**: 5 Intentional (4.9%), 98 Unintentional.\n\nA Chi-square test yielded a statistic of 0.0000 and a p-value of 1.0000 (likely due to Yates' correction on the small sample size of intentional incidents). Consequently, the null hypothesis could not be rejected. The analysis finds **no significant association** between the level of AI autonomy and the intentionality of harm; incidents in this dataset are overwhelmingly classified as unintentional regardless of autonomy level.",
+  "child_ids": [
+    "node_6_81"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load the dataset\nprint(\"Loading dataset...\")\ndf = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid = df[df['source_table'] == 'aiid_incidents'].copy()\nprint(f\"AIID Incidents loaded: {len(aiid)} rows\")\n\n# Define target columns\ncol_autonomy = 'Autonomy Level'\ncol_intent = 'Intentional Harm'\n\n# Check for missing data in target columns\nsubset = aiid[[col_autonomy, col_intent]].dropna()\nprint(f\"Rows with complete data: {len(subset)}\")\n\n# Mapping functions based on observed values\ndef clean_autonomy(val):\n    s = str(val).strip()\n    if s == 'Autonomy1':\n        return 'Low'\n    elif s in ['Autonomy2', 'Autonomy3']:\n        return 'High/Medium'\n    return None  # Exclude 'unclear' or others\n\ndef clean_intent(val):\n    s = str(val).strip()\n    if s.startswith('Yes'):\n        return 'Intentional'\n    elif s.startswith('No'):\n        return 'Unintentional'\n    return None  # Exclude 'unclear' or others\n\n# Apply mapping\nsubset['Autonomy_Bin'] = subset[col_autonomy].apply(clean_autonomy)\nsubset['Intent_Bin'] = subset[col_intent].apply(clean_intent)\n\n# Drop unmapped rows\nfinal_df = subset.dropna(subset=['Autonomy_Bin', 'Intent_Bin'])\nprint(f\"Final analysis set: {len(final_df)} rows\")\n\n# Generate Contingency Table\n# Hypothesis: Intentional -> Low Autonomy; Unintentional -> High Autonomy\ncontingency_table = pd.crosstab(final_df['Autonomy_Bin'], final_df['Intent_Bin'])\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Perform Chi-square test\nif contingency_table.size > 0 and contingency_table.sum().sum() > 0:\n    chi2, p, dof, expected = chi2_contingency(contingency_table)\n\n    print(\"\\n--- Chi-square Test Results ---\")\n    print(f\"Chi-square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n    print(f\"Degrees of Freedom: {dof}\")\n    \n    print(\"\\n--- Expected Frequencies ---\")\n    print(pd.DataFrame(expected, index=contingency_table.index, columns=contingency_table.columns))\n\n    # Interpretation\n    alpha = 0.05\n    if p < alpha:\n        print(\"\\nResult: Significant association found (reject H0).\")\n        # Check directionality by comparing observed vs expected\n        # Specifically checking if Intentional is higher in Low Autonomy than expected\n        obs_low_intent = contingency_table.loc['Low', 'Intentional'] if 'Low' in contingency_table.index and 'Intentional' in contingency_table.columns else 0\n        exp_low_intent = expected[contingency_table.index.get_loc('Low'), contingency_table.columns.get_loc('Intentional')] if 'Low' in contingency_table.index and 'Intentional' in contingency_table.columns else 0\n        \n        if obs_low_intent > exp_low_intent:\n            print(\"Direction: Low Autonomy is associated with Intentional Harm.\")\n        else:\n            print(\"Direction: Association exists but direction differs from hypothesis.\")\n            \n    else:\n        print(\"\\nResult: No significant association found (fail to reject H0).\")\nelse:\n    print(\"Contingency table is empty or invalid. Cannot perform Chi-square test.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset...\nAIID Incidents loaded: 1362 rows\nRows with complete data: 199\nFinal analysis set: 177 rows\n\n--- Contingency Table ---\nIntent_Bin    Intentional  Unintentional\nAutonomy_Bin                            \nHigh/Medium             3             71\nLow                     5             98\n\n--- Chi-square Test Results ---\nChi-square Statistic: 0.0000\nP-value: 1.0000e+00\nDegrees of Freedom: 1\n\n--- Expected Frequencies ---\nIntent_Bin    Intentional  Unintentional\nAutonomy_Bin                            \nHigh/Medium      3.344633      70.655367\nLow              4.655367      98.344633\n\nResult: No significant association found (fail to reject H0).\n",
+  "created_at": "2026-02-22T13:32:30.881334+00:00",
+  "creation_idx": 265,
+  "experiment_id": "node_5_95",
+  "experiment_plan": {
+    "deliverables": "Contingency table; Chi-square statistics.",
+    "objective": "Investigate the relationship between system autonomy and the intentionality of harm.",
+    "steps": "1. Load 'aiid_incidents'.\n2. Clean 'Autonomy Level' (Low vs High/Medium) and 'Intentional Harm' (Yes/True vs No/False).\n3. Create a contingency table.\n4. Perform a Chi-square test to see if Low Autonomy correlates with Intentional Harm."
+  },
+  "hypothesis": "Autonomy-Intent Inversion: Incidents involving 'Intentional' harm (malicious use) are strongly associated with lower levels of AI autonomy, whereas 'Unintentional' accidents are associated with higher autonomy.",
+  "id_in_run": 264,
+  "is_surprising": true,
+  "parent_id": "node_4_50",
+  "posterior": 0.42032967032967034,
+  "posterior_belief": {
+    "_empirical_mean": 0.23333333333333334,
+    "_type": "boolean_cat",
+    "definitely_false": 4.0,
+    "definitely_true": 0.0,
+    "maybe_false": 56.0,
+    "maybe_true": 0.0,
+    "mean": 0.42032967032967034,
+    "n": 60.0,
+    "prior_params": [
+      24.25,
+      6.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.782258064516129,
+  "prior_belief": {
+    "_empirical_mean": 0.7916666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 5.0,
+    "maybe_false": 0.0,
+    "maybe_true": 25.0,
+    "mean": 0.782258064516129,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "Hypothesis: The 'Autonomy-Intent Inversion' hypothesis posited that incidents involving 'Intentional' harm (malicious use) are associated with lower levels of AI autonomy, while 'Unintentional' accidents are associated with higher autonomy.\n\nExperiment Results: The experiment successfully analyzed 177 fully labeled incidents from the AIID dataset. The data cleaning process mapped 'Autonomy1' to 'Low' and 'Autonomy2/3' to 'High/Medium', and classified intent based on descriptive fields. The resulting contingency table showed that intentional harm is rare in the dataset (n=8 total) and distributed nearly evenly across autonomy levels: 4.1% of High/Medium autonomy cases (3/74) and 4.9% of Low autonomy cases (5/103) involved intentional harm.\n\nFindings: A Chi-square test yielded a p-value of 1.0000, indicating absolutely no statistically significant association between autonomy level and the intentionality of harm in this dataset. Consequently, the hypothesis is not supported; the data suggests that in the recorded incidents, the likelihood of harm being intentional is independent of the system's autonomy level.",
+  "rich_outputs": null,
+  "runtime_ms": 246900.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.43431407302375036
+}

@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was successfully executed using the '22_dev_method' column to distinguish between Commercial (Vendor-developed) and Custom (In-house) systems, identifying 92 valid cases with non-null evaluation data. \n\n1. **Findings**: The analysis revealed nearly identical rates of Independent Evaluation between the two groups. Commercial systems had a compliance rate of **46.0%** (23/50), while Custom systems had a rate of **50.0%** (21/42).\n\n2. **Statistical Significance**: The Chi-Square test yielded a statistic of 0.0300 and a **p-value of 0.8626**, which is well above the 0.05 threshold. \n\n3. **Conclusion (Hypothesis Rejected)**: The results **falsify** the 'Vendor Opacity' hypothesis. There is no statistically significant evidence that commercial/COTS systems are less likely to undergo independent evaluation than custom in-house systems. Instead, the data suggests that governance rigor (or lack thereof) is uniform across procurement types, with both groups hovering around a 50% evaluation rate for the subset of reported cases.",
+  "child_ids": [
+    "node_8_3"
+  ],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nfrom scipy.stats import chi2_contingency\nimport sys\n\n# Load dataset\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Define Columns based on debug findings\ncol_method = '22_dev_method'  # Proxy for Commercial vs Custom\ncol_eval = '55_independent_eval'\n\n# Filter for rows where both relevant columns are not null (per instructions)\ndf_analysis = df_eo.dropna(subset=[col_method, col_eval]).copy()\n\n# Define Categories for Procurement Method\n# Mapping 'Developed with contracting resources' -> Commercial\n# Mapping 'Developed in-house' -> Custom\n# Excluding 'Both' to ensure distinct groups for the hypothesis\ntarget_methods = ['Developed with contracting resources.', 'Developed in-house.']\ndf_analysis = df_analysis[df_analysis[col_method].isin(target_methods)].copy()\n\ndf_analysis['Procurement_Type'] = df_analysis[col_method].map({\n    'Developed with contracting resources.': 'Commercial',\n    'Developed in-house.': 'Custom'\n})\n\n# Define Binary Target for Evaluation\n# 'Yes...' and 'TRUE' -> 1\n# 'Planned', 'Waived', 'Does not apply', etc. -> 0\ndef is_evaluated(val):\n    s = str(val).strip()\n    if s.upper() == 'TRUE':\n        return 1\n    if s.startswith('Yes'):\n        return 1\n    return 0\n\ndf_analysis['Has_Eval'] = df_analysis[col_eval].apply(is_evaluated)\n\n# Generate Contingency Table\ncontingency = pd.crosstab(df_analysis['Procurement_Type'], df_analysis['Has_Eval'])\n\n# Check if data remains\nif contingency.empty:\n    print(\"No valid data intersection found between Development Method and Independent Evaluation.\")\n    sys.exit(0)\n\n# Ensure columns exist (0 and 1)\nif 0 not in contingency.columns: contingency[0] = 0\nif 1 not in contingency.columns: contingency[1] = 0\ncontingency = contingency[[0, 1]]\ncontingency.columns = ['No Eval', 'Has Eval']\n\n# Statistics\nrates = df_analysis.groupby('Procurement_Type')['Has_Eval'].mean()\ncounts = df_analysis['Procurement_Type'].value_counts()\nchi2, p, dof, expected = chi2_contingency(contingency)\n\n# Output\nprint(\"--- EXPERIMENT RESULTS: Vendor Opacity Effect ---\")\nprint(f\"Data Source: EO 13960 Scored (Filtered for non-null responses)\")\nprint(f\"Total valid cases analyzed: {len(df_analysis)}\")\n\nprint(\"\\nCounts by Procurement Type:\")\nprint(counts)\n\nprint(\"\\nContingency Table (Eval Status):\")\nprint(contingency)\n\nprint(\"\\nEvaluation Rates:\")\nfor pt in ['Custom', 'Commercial']:\n    if pt in rates:\n        print(f\"  {pt}: {rates[pt]:.2%} ({contingency.loc[pt, 'Has Eval']}/{counts[pt]}) evaluated\")\n\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-Value: {p:.4e}\")\n\nresult_text = \"SIGNIFICANT\" if p < 0.05 else \"NOT SIGNIFICANT\"\nprint(f\"\\nResult: {result_text}\")\n\n# Plot\nplt.figure(figsize=(8, 6))\nbars = plt.bar(rates.index, rates.values, color=['skyblue', 'orange'])\nplt.title(f'Independent Evaluation Rates: Commercial (Vendor) vs Custom (In-House)\\n(p={p:.4e})')\nplt.ylabel('Proportion with Independent Evaluation')\nplt.ylim(0, 1.0)\n\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 0.02, \n             f'{height:.1%}', \n             ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: --- EXPERIMENT RESULTS: Vendor Opacity Effect ---\nData Source: EO 13960 Scored (Filtered for non-null responses)\nTotal valid cases analyzed: 92\n\nCounts by Procurement Type:\nProcurement_Type\nCommercial    50\nCustom        42\nName: count, dtype: int64\n\nContingency Table (Eval Status):\n                  No Eval  Has Eval\nProcurement_Type                   \nCommercial             27        23\nCustom                 21        21\n\nEvaluation Rates:\n  Custom: 50.00% (21/42) evaluated\n  Commercial: 46.00% (23/50) evaluated\n\nChi-Square Statistic: 0.0300\nP-Value: 8.6260e-01\n\nResult: NOT SIGNIFICANT\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot (or Bar Chart).\n*   **Purpose:** The plot compares categorical data (types of software or systems: Commercial vs. Custom) against a numerical variable (Proportion with Independent Evaluation). It is designed to visualize the difference in evaluation rates between the two distinct groups.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label/Categories:** Represents the two groups being compared: **\"Commercial\"** (left) and **\"Custom\"** (right).\n*   **Y-Axis:**\n    *   **Title:** \"Proportion with Independent Evaluation\".\n    *   **Range:** The axis spans from **0.0 to 1.0**.\n    *   **Units:** The values represent proportions (decimals), which are equivalent to percentages (0.0 = 0%, 1.0 = 100%).\n\n### 3. Data Trends\n*   **Comparison:**\n    *   **Commercial (Vendor):** This group is represented by the light blue bar. It has a slightly lower value, annotated at **46.0%**.\n    *   **Custom (In-House):** This group is represented by the orange bar. It is the taller of the two bars, annotated at **50.0%**.\n*   **Pattern:** The values are relatively close to each other, with both groups hovering near the 50% mark. The \"Custom\" group has a slightly higher rate of independent evaluation compared to the \"Commercial\" group (a difference of 4 percentage points).\n\n### 4. Annotations and Legends\n*   **Main Title:** \"Independent Evaluation Rates: Commercial (Vendor) vs Custom (In-House)\". This clearly defines the subject of the comparison.\n*   **Statistical Annotation (in Title):** **\"(p=8.6260e-01)\"**. This indicates the p-value resulting from a statistical test (likely a Chi-square test or T-test) comparing the two proportions.\n*   **Bar Labels:**\n    *   Above the blue bar: **\"46.0%\"**\n    *   Above the orange bar: **\"50.0%\"**\n*   **Colors:** Light blue is used for Commercial, and Orange is used for Custom.\n\n### 5. Statistical Insights\n*   **No Statistically Significant Difference:** The most critical insight comes from the p-value in the title ($p = 8.6260 \\times 10^{-1}$ or **0.8626**).\n    *   In scientific research, a p-value less than 0.05 is typically required to claim statistical significance.\n    *   Since 0.8626 is much greater than 0.05, the observed difference between 46.0% and 50.0% is **not statistically significant**.\n*   **Conclusion:** While the \"Custom\" bar is visually taller, statistically speaking, there is no evidence to suggest that Custom (In-House) solutions are independently evaluated at a different rate than Commercial (Vendor) solutions. The observed difference is likely due to random sampling variability.\n==================================================",
+  "created_at": "2026-02-22T07:19:18.315991+00:00",
+  "creation_idx": 134,
+  "experiment_id": "node_7_0",
+  "experiment_plan": {
+    "deliverables": "Contingency table; Chi-Square statistic and p-value; Bar chart of Independent Evaluation rates by procurement type.",
+    "objective": "Compare independent evaluation rates between Commercial and Custom AI systems.",
+    "steps": "1. Load the 'eo13960_scored' dataset. 2. Filter for rows where '10_commercial_ai' and '55_independent_eval' are not null. 3. Categorize '10_commercial_ai' into 'Commercial' (Yes) and 'Custom' (No). 4. Convert '55_independent_eval' to binary (Yes=1, No=0). 5. Perform a Chi-Square test of independence. 6. Visualize the evaluation rates with a bar chart."
+  },
+  "hypothesis": "The 'Vendor Opacity' Effect: Commercial-off-the-shelf (COTS) AI systems acquired by federal agencies are significantly less likely to undergo 'Independent Evaluation' compared to Custom-developed systems, creating a governance blind spot for purchased technology.",
+  "id_in_run": 133,
+  "is_surprising": true,
+  "parent_id": "node_6_5",
+  "posterior": 0.28296703296703296,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.28296703296703296,
+    "n": 60.0,
+    "prior_params": [
+      25.75,
+      5.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8306451612903226,
+  "prior_belief": {
+    "_empirical_mean": 0.8416666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 11.0,
+    "maybe_false": 0.0,
+    "maybe_true": 19.0,
+    "mean": 0.8306451612903226,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code correctly adapted to data limitations by selecting a more robust proxy variable ('22_dev_method') for the cohort analysis when the original variable ('10_commercial_ai') proved insufficient. The statistical analysis was rigorous, and the interpretation of the results is sound.\n\n**Hypothesis:** The 'Vendor Opacity' hypothesis—that Commercial/COTS systems are less likely to undergo independent evaluation than Custom systems—was **rejected**.\n\n**Experiment Results:**\n1. **Cohorts:** Using 'Development Method' as the differentiator, the analysis identified 92 cases with reported evaluation status, split between Commercial/Contractor-developed (n=50) and Custom/In-House (n=42).\n2. **Evaluation Rates:** The rates of independent evaluation were statistically indistinguishable: 46.0% for Commercial systems (23/50) versus 50.0% for Custom systems (21/42).\n3. **Significance:** The Chi-Square test yielded a p-value of 0.8626, indicating no statistically significant difference.\n\n**Findings:** Contrary to the expectation that vendor-acquired technology might bypass governance scrutiny ('opacity'), the data suggests that federal agencies apply independent evaluation protocols (or fail to apply them) at uniform rates regardless of whether the system is built in-house or procured from vendors.",
+  "rich_outputs": null,
+  "runtime_ms": 347560.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6572137539879476
+}

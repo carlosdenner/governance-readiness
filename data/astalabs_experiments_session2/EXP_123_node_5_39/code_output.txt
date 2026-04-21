@@ -1,0 +1,14 @@
+exitcode: 0 (execution succeeded)
+Code output: Processing 1757 records from EO 13960 subset.
+Valid records after cleaning: 102
+
+Contingency Table (Rows: Notice, Cols: Appeal):
+Appeal_Clean  Yes  No
+Notice_Clean         
+Yes            22  18
+No             31  31
+
+Chi-Square Statistic: 0.0844
+P-value: 7.7143e-01
+Rate of Appeal Process when Notice is provided: 55.0% (22/40)
+Rate of Appeal Process when Notice is NOT provided: 50.0% (31/62)

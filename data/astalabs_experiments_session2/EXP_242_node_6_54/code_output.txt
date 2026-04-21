@@ -1,0 +1,98 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+AIID Incidents loaded: 1362
+Using Sector Column: Sector of Deployment
+Using Text Column for Harm Classification: description
+
+Classified Data Points: 57
+Sector Counts:
+ mapped_sector
+Public Sector     19
+Transportation    14
+Healthcare        10
+Financial         10
+Technology         4
+Name: count, dtype: int64
+Harm Counts:
+ derived_harm
+Physical        27
+Social/Civil    24
+Economic         6
+Name: count, dtype: int64
+
+--- Contingency Table ---
+derived_harm    Economic  Physical  Social/Civil
+mapped_sector                                   
+Financial              4         5             1
+Healthcare             0         9             1
+Public Sector          2         1            16
+Technology             0         0             4
+Transportation         0        12             2
+
+Chi-square Statistic: 47.0567
+P-value: 1.4957e-07
+
+--- Standardized Residuals ---
+derived_harm    Economic  Physical  Social/Civil
+mapped_sector                                   
+Financial       2.872739  0.120913     -1.564617
+Healthcare     -1.025978  1.958786     -1.564617
+Public Sector   0.000000 -2.666667      2.828427
+Technology     -0.648886 -1.376494      1.784436
+Transportation -1.213954  2.084674     -1.604153
+
+--- Hypothesis Verification ---
+Financial -> Economic Residual: 2.87
+Public Sector -> Social/Civil Residual: 2.83
+Result: STRONG SUPPORT. Both sectors match the hypothesized harm profile significantly.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Heatmap.
+*   **Purpose:** This plot visualizes the association between two categorical variables—"Sector" and "Derived Harm Type"—using standardized residuals. It highlights which combinations of sector and harm type occur more frequently (positive values) or less frequently (negative values) than would be expected if the variables were independent.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Sector"
+    *   **Categories:** Financial, Healthcare, Public Sector, Technology, Transportation.
+*   **X-Axis:**
+    *   **Label:** "Derived Harm Type"
+    *   **Categories:** Economic, Physical, Social/Civil.
+*   **Color Scale (Z-Axis equivalent):**
+    *   **Label:** The scale represents Standardized Residuals.
+    *   **Range:** The color bar indicates a range approximately from **-2.8** (dark blue) to **+2.8** (dark red), with **0** (white) representing no deviation from expected values.
+
+### 3. Data Trends
+*   **High Positive Associations (Dark Red):**
+    *   **Financial & Economic (2.87):** This is the strongest positive association on the chart, indicating that "Financial" sector incidents are disproportionately linked to "Economic" harm.
+    *   **Public Sector & Social/Civil (2.83):** There is a very strong over-representation of "Social/Civil" harm within the "Public Sector."
+    *   **Transportation & Physical (2.08):** "Transportation" is strongly linked to "Physical" harm.
+    *   **Healthcare & Physical (1.96):** "Healthcare" also shows a significant link to "Physical" harm.
+
+*   **Strong Negative Associations (Dark Blue):**
+    *   **Public Sector & Physical (-2.67):** This is the strongest negative association, suggesting that "Physical" harm occurs much less frequently in the "Public Sector" than expected statistically.
+    *   **Transportation & Social/Civil (-1.60):** "Transportation" is under-represented in "Social/Civil" harm categories.
+    *   **Financial & Social/Civil (-1.56):** "Financial" incidents rarely result in "Social/Civil" harm compared to the average.
+
+*   **Neutral/Expected Values (White):**
+    *   **Public Sector & Economic (0.00):** This relationship is exactly as expected by random chance (neutral).
+    *   **Financial & Physical (0.12):** This value is very close to zero, indicating no significant deviation from expected frequencies.
+
+### 4. Annotations and Legends
+*   **Title:** "Standardized Residuals: Sector vs Derived Harm Type (Based on text analysis of 'description')" – This clarifies the source of the data classification.
+*   **Cell Annotations:** Each cell contains the exact numerical standardized residual value (e.g., -1.03, 2.87, etc.) to allow for precise reading beyond the color gradient.
+*   **Color Bar:** Located on the right, providing a visual legend where Red indicates a positive residual (more observed than expected), Blue indicates a negative residual (fewer observed than expected), and White indicates the mean/expected value.
+
+### 5. Statistical Insights
+*   **Distinct Risk Profiles:** The sectors exhibit very specific risk profiles.
+    *   The **Financial** sector is almost exclusively characterized by **Economic** harm concerns.
+    *   The **Public Sector** and **Technology** sectors lean heavily toward **Social/Civil** harms (likely issues regarding bias, privacy, or civil rights), while being less prone to Physical harms.
+    *   Conversely, **Healthcare** and **Transportation** are the primary drivers of **Physical** harm risks in this dataset.
+*   **Significance:** In statistical analysis of residuals, values greater than +2 or less than -2 are generally considered significant (roughly corresponding to a p-value < 0.05).
+    *   Significant **Over-representations**: Financial/Economic, Public Sector/Social-Civil, and Transportation/Physical.
+    *   Significant **Under-representation**: Public Sector/Physical.
+*   **Technology Sector:** While Technology has a positive association with Social/Civil harm (1.78), it is slightly under-represented in Physical (-1.38) and Economic (-0.65) harms relative to the other sectors.
+==================================================

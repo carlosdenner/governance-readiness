@@ -1,0 +1,33 @@
+exitcode: 1 (execution failed)
+Code output: Loading astalabs_discovery_all_data.csv...
+AIID Incidents subset size: 1362
+Selected Autonomy Column: 'Autonomy Level'
+Selected Harm Column: 'Harm Domain'
+
+--- Autonomy Value Counts ---
+Autonomy Level
+Autonomy1    105
+Autonomy3     53
+Autonomy2     27
+unclear       16
+Name: count, dtype: int64
+
+--- Harm Value Counts ---
+Harm Domain
+yes      159
+no        29
+maybe     13
+Name: count, dtype: int64
+
+Rows available for analysis: 0
+No data after mapping. Please check the value counts above and adjust mapping logic.
+An exception has occurred, use %tb to see the full traceback.
+
+[31mSystemExit[39m[31m:[39m 0
+
+
+STDERR:
+/usr/local/lib/python3.13/site-packages/IPython/core/interactiveshell.py:3709: UserWarning: To exit: use 'exit', 'quit', or Ctrl-D.
+  warn("To exit: use 'exit', 'quit', or Ctrl-D.", stacklevel=1)
+
+ERROR: {'type': 'SystemExit', 'message': '0', 'traceback': 'Traceback (most recent call last):\n  File "/usr/local/lib/python3.13/site-packages/IPython/core/interactiveshell.py", line 3701, in run_code\n    exec(code_obj, self.user_global_ns, self.user_ns)\n    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "<ipython-input-1-7bc8e19c2415>", line 97, in <module>\n    sys.exit(0)\n    ~~~~~~~~^^^\nSystemExit: 0\n'}

@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: AIID Incidents loaded: 1362
+Using columns: 'Tangible Harm' and 'Known AI Technical Failure'
+
+Rows available for analysis after filtering: 166
+harm_category
+Intangible    94
+Tangible      72
+Name: count, dtype: int64
+
+--- Contingency Table ---
+               No Diagnosis  Diagnosis Present
+harm_category                                 
+Intangible               33                 61
+Tangible                 25                 47
+
+Chi-square statistic: 0.0000
+p-value: 1.0000e+00
+
+--- Diagnosis Rates ---
+harm_category
+Intangible    0.648936
+Tangible      0.652778
+Name: has_diagnosis, dtype: float64
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The plot is designed to compare the proportion of cases where a technical failure was identified across two distinct categories of harm: "Intangible" and "Tangible."
+
+### 2. Axes
+*   **X-axis (Horizontal):**
+    *   **Title:** "Harm Type"
+    *   **Labels:** Two categorical labels: "Intangible" and "Tangible".
+*   **Y-axis (Vertical):**
+    *   **Title:** "Proportion with Identified Technical Failure"
+    *   **Range:** The axis scales from **0.0 to 1.0**.
+    *   **Grid:** Horizontal dashed grid lines appear at intervals of 0.2 (0.2, 0.4, 0.6, 0.8) to assist in reading the bar heights.
+
+### 3. Data Trends
+*   **Comparison of Heights:** The two bars are nearly identical in height, indicating a very similar diagnosis rate between the two categories.
+*   **Tallest Bar:** The **Tangible** harm category (blue bar) is the tallest, reaching a value of **65.3%** (or 0.653).
+*   **Shortest Bar:** The **Intangible** harm category (salmon/light red bar) is slightly shorter, reaching a value of **64.9%** (or 0.649).
+*   **Visual Pattern:** Visually, the difference between the two categories is negligible. Both bars extend slightly past the 0.6 grid line, settling around the mid-60% range.
+
+### 4. Annotations and Legends
+*   **Bar Labels:** Exact percentage values are annotated in bold text directly above each bar:
+    *   Above the Intangible bar: **64.9%**
+    *   Above the Tangible bar: **65.3%**
+*   **Colors:** The plot uses distinct colors to differentiate the categories visually:
+    *   **Intangible:** Represented by a light red or salmon color.
+    *   **Tangible:** Represented by a light blue color.
+*   **Title:** The chart is titled "**Technical Failure Diagnosis Rate: Tangible vs Intangible Harm**".
+
+### 5. Statistical Insights
+*   **Parity in Diagnosis Rates:** The most significant insight from this plot is the lack of a substantial difference between the two groups. The difference in the rate of identified technical failures between Tangible (65.3%) and Intangible (64.9%) harm is only **0.4%**.
+*   **Implication:** This suggests that the nature of the harm (whether it is tangible, like physical damage, or intangible, like reputational damage) has little to no correlation with the likelihood of a technical failure being diagnosed in this dataset. The diagnosis process appears to be consistent regardless of the harm classification.
+*   **Overall Prevalence:** In approximately two-thirds (roughly 65%) of cases for both harm types, a technical failure is identified.
+==================================================

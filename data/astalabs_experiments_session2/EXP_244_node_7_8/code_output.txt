@@ -1,0 +1,48 @@
+exitcode: 0 (execution succeeded)
+Code output: Total rows in subset: 52
+Relevant rows for hypothesis: 24
+
+Contingency Table (Tactic -> Gap Presence):
+                  Robustness Gap | Access/Logging Gap
+Evasion Only      5              | 9                 
+Exfiltration Only 5              | 12                
+
+Fisher's Exact Test p-value: 1.00000
+Odds Ratio: 1.33333
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (or Clustered Bar Chart).
+*   **Purpose:** This chart is designed to compare the frequency ("Count of Incidents") of two different categories of governance gaps ("Robustness Gap" and "Access/Logging Gap") across two specific tactic types ("Evasion Tactic" and "Exfiltration Tactic"). It allows for side-by-side comparison of the gap types within each tactic.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** Represents the **Tactic Type**.
+    *   **Categories:** "Evasion Tactic" and "Exfiltration Tactic".
+*   **Y-axis:**
+    *   **Label:** "Count of Incidents".
+    *   **Range:** The scale runs from **0 to 12**.
+    *   **Units:** Integer counts (incidents).
+
+### 3. Data Trends
+*   **Tallest Bar:** The tallest bar represents the **Access/Logging Gap** within the **Exfiltration Tactic** category, with a count of **12**.
+*   **Shortest Bars:** The shortest bars are tied. Both **Robustness Gap** bars (for both Evasion and Exfiltration tactics) have a count of **5**.
+*   **Patterns:**
+    *   For both tactic types, the "Access/Logging Gap" (Orange) is significantly higher than the "Robustness Gap" (Blue).
+    *   The "Robustness Gap" shows a constant value (5 incidents) across both tactic types, indicating no variation based on the tactic.
+    *   The "Access/Logging Gap" increases from the Evasion Tactic (9 incidents) to the Exfiltration Tactic (12 incidents).
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Association: Tactic Type vs Governance Gap" – clearly states the relationship being visualized.
+*   **Legend:** Located in the top-left corner, it distinguishes the data series:
+    *   **Blue Box:** Represents "Robustness Gap".
+    *   **Orange Box:** Represents "Access/Logging Gap".
+
+### 5. Statistical Insights
+*   **Dominance of Access/Logging Issues:** Across both tactic types shown, incidents related to Access/Logging Gaps are more prevalent than Robustness Gaps. This suggests that monitoring access and logging is a more significant vulnerability or area of failure than system robustness for these specific tactics.
+*   **Uniformity of Robustness Issues:** The data suggests that the Robustness Gap is static regardless of whether the tactic is evasion or exfiltration. This implies a consistent baseline of 5 incidents, perhaps pointing to a systemic robustness issue that is not specific to the attacker's method.
+*   **Tactic Severity:** The Exfiltration Tactic is associated with a higher total number of incidents (5 + 12 = 17) compared to the Evasion Tactic (5 + 9 = 14), driven entirely by the increase in Access/Logging gaps. This indicates that exfiltration attempts are more frequently linked to logging failures than evasion attempts are.
+==================================================

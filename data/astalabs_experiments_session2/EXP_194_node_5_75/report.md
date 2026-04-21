@@ -1,0 +1,293 @@
+# Experiment 194: node_5_75
+
+| Property | Value |
+|---|---|
+| **Experiment ID** | `node_5_75` |
+| **ID in Run** | 194 |
+| **Status** | SUCCEEDED |
+| **Created** | 2026-02-22T10:10:25.604632+00:00 |
+| **Runtime** | 215.9s |
+| **Parent** | `node_4_42` |
+| **Children** | None |
+| **Creation Index** | 195 |
+
+---
+
+## Hypothesis
+
+> Generative AI Attack Simplicity: Adversarial cases involving Generative AI
+systems utilize significantly fewer unique 'Techniques' per case compared to
+Traditional AI systems, reflecting the current reliance on prompt injection (a
+single technique) rather than complex multi-stage intrusions.
+
+## Belief Shift
+
+| Metric | Value |
+|---|---|
+| **Prior** | 0.7500 (Likely True) |
+| **Posterior** | 0.3599 (Maybe False) |
+| **Surprise** | -0.4681 |
+| **Surprise Interpretation** | Strong Negative (hypothesis contradicted) |
+| **Is Surprising?** | Yes |
+
+### Prior Belief Distribution
+| Category | Count |
+|---|---|
+| Definitely True | 1.0 |
+| Maybe True | 29.0 |
+| Uncertain | 0.0 |
+| Maybe False | 0.0 |
+| Definitely False | 0.0 |
+
+### Posterior Belief Distribution
+| Category | Count |
+|---|---|
+| Definitely True | 0.0 |
+| Maybe True | 0.0 |
+| Uncertain | 0.0 |
+| Maybe False | 38.0 |
+| Definitely False | 22.0 |
+
+---
+
+## Experiment Plan
+
+**Objective:** Compare the sophistication (technique count) of attacks against GenAI vs. Traditional AI.
+
+### Steps
+- 1. Load 'astalabs_discovery_all_data.csv' and filter for 'atlas_cases'.
+- 2. Text-mine 'summary'/'name' to classify cases as 'GenAI' (keywords: LLM, GPT, GenAI, Diffusion) vs 'Traditional'.
+- 3. Parse 'techniques' to count the number of unique technique IDs per case.
+- 4. Perform a two-sample t-test comparing the mean technique count of GenAI cases vs Traditional cases.
+
+### Deliverables
+- Mean technique counts, t-test results, and a violin plot comparison.
+
+---
+
+## Analysis
+
+The experiment successfully analyzed the sophistication of adversarial attacks
+by comparing technique counts between Generative AI and Traditional AI systems
+in the ATLAS dataset (n=52).
+
+1. **Data Classification**: Using keyword text-mining, the code identified 20
+cases as 'Generative AI' and 32 cases as 'Traditional AI'.
+2. **Descriptive Statistics**: The analysis revealed nearly identical complexity
+levels between the groups. Generative AI cases averaged 7.40 unique techniques
+per case (SD=2.96), while Traditional AI cases averaged 7.62 techniques
+(SD=2.96).
+3. **Hypothesis Testing**: A Welch's t-test produced a t-statistic of -0.2665
+and a p-value of 0.7912. This result is far above the significance threshold
+(0.05), indicating no statistically significant difference between the two
+groups.
+4. **Conclusion**: The hypothesis that Generative AI attacks are significantly
+simpler (involving fewer techniques) than Traditional AI attacks is **not
+supported** by this dataset. The evidence suggests that current attacks against
+Generative AI systems exhibit a level of tactical complexity comparable to
+attacks against traditional predictive models.
+
+---
+
+## Review
+
+The experiment successfully analyzed the sophistication of adversarial attacks
+by comparing technique counts between Generative AI and Traditional AI systems
+in the ATLAS dataset (n=52).
+
+1. **Data Classification**: Using keyword text-mining, the code identified 20
+cases as "Generative AI" and 32 cases as "Traditional AI".
+2. **Descriptive Statistics**: The analysis revealed nearly identical complexity
+levels between the groups. Generative AI cases averaged 7.40 unique techniques
+per case (SD=2.96), while Traditional AI cases averaged 7.62 techniques
+(SD=2.96).
+3. **Hypothesis Testing**: A Welch's t-test produced a t-statistic of -0.2665
+and a p-value of 0.7912. This result is far above the significance threshold
+(0.05), indicating no statistically significant difference between the two
+groups.
+4. **Conclusion**: The hypothesis that Generative AI attacks are significantly
+simpler (involving fewer techniques) than Traditional AI attacks is **not
+supported** by this dataset. The evidence suggests that current attacks against
+Generative AI systems exhibit a level of tactical complexity comparable to
+attacks against traditional predictive models.
+
+---
+
+## Code
+
+```python
+import pandas as pd
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+import re
+import os
+
+# Attempt to load the dataset from the parent directory as instructed, falling back to current.
+try:
+    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)
+except FileNotFoundError:
+    try:
+        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)
+    except FileNotFoundError:
+        print("Error: Dataset 'astalabs_discovery_all_data.csv' not found in ../ or ./.")
+        exit(1)
+
+# Filter for ATLAS cases
+atlas_df = df[df['source_table'] == 'atlas_cases'].copy()
+
+# Keywords to identify Generative AI systems
+genai_keywords = [
+    'llm', 'gpt', 'generative', 'diffusion', 'chatbot', 'chat', 
+    'transformer', 'bert', 'dall-e', 'midjourney', 'stable diffusion', 
+    'openai', 'anthropic', 'bard', 'bing', 'copilot', 'gemini', 'llama',
+    'genai'
+]
+
+def classify_genai(row):
+    # Combine name and summary for keyword search
+    name = str(row['name']) if pd.notna(row['name']) else ''
+    summary = str(row['summary']) if pd.notna(row['summary']) else ''
+    text = (name + " " + summary).lower()
+    return any(kw in text for kw in genai_keywords)
+
+# Apply classification
+atlas_df['is_genai'] = atlas_df.apply(classify_genai, axis=1)
+
+# Function to parse and count techniques
+def count_techniques(val):
+    if pd.isna(val) or str(val).strip() == '':
+        return 0
+    # Handle potential string formats (pipe, comma, or stringified list)
+    val_str = str(val)
+    # Basic cleanup for stringified lists if present
+    val_str = val_str.replace('[', '').replace(']', '').replace("'", "").replace('"', "")
+    # Split by common delimiters
+    parts = re.split(r'[|;,\n]', val_str)
+    # Count unique non-empty items
+    unique_techniques = {p.strip() for p in parts if p.strip()}
+    return len(unique_techniques)
+
+# Calculate technique counts
+atlas_df['technique_count'] = atlas_df['techniques'].apply(count_techniques)
+
+# Split into groups
+genai_group = atlas_df[atlas_df['is_genai']]['technique_count']
+trad_group = atlas_df[~atlas_df['is_genai']]['technique_count']
+
+# Output Statistics
+print("--- Analysis of Attack Sophistication (Technique Count) ---")
+print(f"Total Cases Analyzed: {len(atlas_df)}")
+print(f"Generative AI Cases: {len(genai_group)}")
+print(f"Traditional AI Cases: {len(trad_group)}")
+
+print("\n--- Descriptive Statistics ---")
+print(f"GenAI:       Mean = {genai_group.mean():.2f}, Std = {genai_group.std():.2f}, Median = {genai_group.median()}")
+print(f"Traditional: Mean = {trad_group.mean():.2f}, Std = {trad_group.std():.2f}, Median = {trad_group.median()}")
+
+# Perform Welch's t-test (equal_var=False)
+t_stat, p_val = stats.ttest_ind(genai_group, trad_group, equal_var=False)
+
+print("\n--- Two-Sample T-Test Results ---")
+print(f"T-statistic: {t_stat:.4f}")
+print(f"P-value:     {p_val:.4f}")
+
+if p_val < 0.05:
+    print("Conclusion: Statistically significant difference in technique counts.")
+else:
+    print("Conclusion: No statistically significant difference in technique counts.")
+
+# Visualization: Violin Plot
+plt.figure(figsize=(8, 6))
+dataset = [genai_group, trad_group]
+labels = ['GenAI', 'Traditional AI']
+
+parts = plt.violinplot(dataset, showmeans=True, showmedians=True)
+
+# Customize plot
+plt.xticks([1, 2], labels)
+plt.ylabel('Number of Unique Techniques per Case')
+plt.title('Attack Complexity: GenAI vs Traditional AI')
+plt.grid(axis='y', linestyle='--', alpha=0.6)
+
+# Color styling
+colors = ['#FF9999', '#66B2FF']
+for i, pc in enumerate(parts['bodies']):
+    pc.set_facecolor(colors[i % len(colors)])
+    pc.set_edgecolor('black')
+    pc.set_alpha(0.7)
+
+plt.tight_layout()
+plt.show()
+```
+
+## Code Output
+
+```
+exitcode: 0 (execution succeeded)
+Code output: --- Analysis of Attack Sophistication (Technique Count) ---
+Total Cases Analyzed: 52
+Generative AI Cases: 20
+Traditional AI Cases: 32
+
+--- Descriptive Statistics ---
+GenAI:       Mean = 7.40, Std = 2.96, Median = 7.0
+Traditional: Mean = 7.62, Std = 2.96, Median = 8.0
+
+--- Two-Sample T-Test Results ---
+T-statistic: -0.2665
+P-value:     0.7912
+Conclusion: No statistically significant difference in technique counts.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Violin Plot.
+*   **Purpose:** This plot visualizes the distribution of numerical data (number of unique techniques) across different categories (GenAI vs. Traditional AI). It combines features of a box plot and a kernel density plot, showing the probability density of the data at different values. Wider sections represent a higher probability that members of the population will take on the given value.
+
+### 2. Axes
+*   **Title:** "Attack Complexity: GenAI vs Traditional AI"
+*   **Y-Axis:**
+    *   **Label:** "Number of Unique Techniques per Case"
+    *   **Range:** The visible grid marks range from 2 to 16. The actual data points span from approximately **1 to 14** for GenAI and **3 to 16** for Traditional AI.
+*   **X-Axis:**
+    *   **Labels:** Categorical variables representing two types of Artificial Intelligence models involved in the analysis: "**GenAI**" (Generative AI) and "**Traditional AI**".
+
+### 3. Data Trends
+*   **GenAI (Pink Violin - Left):**
+    *   **Distribution:** The shape is wider at the bottom, indicating a concentration of cases with a lower number of techniques. The "bulge" (highest density) is located approximately between **6 and 7** techniques.
+    *   **Range:** It has a longer tail extending downwards to 1, suggesting some GenAI cases involve very few techniques. The maximum reaches around 14.
+    *   **Shape:** It is somewhat bottom-heavy, indicating positive skewness (leaning toward lower complexity).
+*   **Traditional AI (Blue Violin - Right):**
+    *   **Distribution:** The shape is positioned higher on the Y-axis compared to GenAI. The widest part of the violin (highest density) is located approximately between **7 and 9** techniques.
+    *   **Range:** The minimum value is higher, starting around 3, and the maximum extends up to 16.
+    *   **Shape:** The distribution is more centered in the upper-middle range compared to the GenAI plot.
+
+### 4. Annotations and Legends
+*   **Horizontal Lines (Internal):** Inside each violin, there are horizontal lines.
+    *   The top and bottom horizontal lines represent the **extrema** (min and max values).
+    *   The two horizontal lines near the center represent measures of central tendency, likely the **mean** and the **median**.
+*   **Colors:**
+    *   **Pink/Salmon:** Represents the GenAI dataset.
+    *   **Light Blue:** Represents the Traditional AI dataset.
+*   **Grid:** Dashed horizontal grey lines appear every 2 units to assist in estimating Y-axis values.
+
+### 5. Statistical Insights
+*   **Higher Complexity in Traditional AI:** Based on the plot, attacks or cases involving **Traditional AI** tend to be more complex, involving a higher number of unique techniques per case compared to GenAI. Both the range (3-16) and the density concentration are shifted higher than the GenAI category.
+*   **GenAI Variance:** While generally lower in complexity, GenAI shows a significant spread. The fact that the density is highest around 6-7 suggests that while "simple" GenAI attacks exist (1-3 techniques), the average case still involves moderate complexity.
+*   **Central Tendency:** The mean/median (indicated by the central lines) for Traditional AI (approx. 8) is visibly higher than that of GenAI (approx. 7 to 7.5).
+*   **Implication:** This suggests that current "Traditional AI" attack vectors may be more multifaceted, requiring a broader combination of techniques to execute, whereas GenAI attacks might be slightly more streamlined or are perhaps in an earlier stage of evolution where complex multi-technique chains are less common.
+==================================================
+```
+
+---
+
+## Reproducibility Notes
+
+- Raw JSON: `experiment.json`
+- Executable code: `code.py`
+- Original output: `code_output.txt`
+- To reproduce figures locally, run `code.py` with the dataset at
+  `data/astalabs/astalabs_discovery_all_data.csv` in the working directory.

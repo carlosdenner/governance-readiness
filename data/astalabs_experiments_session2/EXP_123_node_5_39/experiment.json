@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully analyzed 102 valid records from the EO 13960 dataset where both 'AI Notice' and 'Appeal Process' fields contained usable data. The analysis revealed that systems providing a public AI Notice had a 55.0% rate of offering an Appeal Process (22/40), while systems without such a Notice had a 50.0% rate (31/62). The Chi-Square test resulted in a p-value of 0.77, which is far above the threshold for statistical significance (p < 0.05). Consequently, the hypothesis is rejected: there is no evidence in this dataset that transparency (AI Notice) acts as a predictor for accountability (Appeal Process). The high rate of data attrition (only 102 usable records out of 1,757) suggests significant missingness or inconsistent reporting for these specific governance controls.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\n\n# Load dataset\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    # Fallback for local testing if needed, though strictly we use the provided filename\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 Scored data\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n\n# Define columns\ncol_notice = '59_ai_notice'\ncol_appeal = '65_appeal_process'\n\nprint(f\"Processing {len(df_eo)} records from EO 13960 subset.\")\n\n# 1. Clean '59_ai_notice'\n# Logic: 'Online', 'In-person', 'Yes' -> Yes. 'N/A', 'No' -> No.\ndef clean_notice(val):\n    if pd.isna(val):\n        return np.nan\n    s = str(val).lower().strip()\n    \n    # Positive indicators\n    if any(x in s for x in ['online', 'in-person', 'yes', 'public']):\n        return 'Yes'\n    # Negative indicators\n    if any(x in s for x in ['n/a', 'no', 'none', 'not applicable']):\n        return 'No'\n    return np.nan\n\n# 2. Clean '65_appeal_process'\n# Logic: Starts with 'Yes' -> Yes. Starts with 'No', 'N/A' -> No.\ndef clean_appeal(val):\n    if pd.isna(val):\n        return np.nan\n    s = str(val).lower().strip()\n    \n    if s.startswith('yes'):\n        return 'Yes'\n    if s.startswith('no') or s.startswith('n/a') or 'not applicable' in s:\n        return 'No'\n    return np.nan\n\n# Apply cleaning\ndf_eo['Notice_Clean'] = df_eo[col_notice].apply(clean_notice)\ndf_eo['Appeal_Clean'] = df_eo[col_appeal].apply(clean_appeal)\n\n# Drop rows where either value is NaN to ensure valid comparison\ndf_analysis = df_eo.dropna(subset=['Notice_Clean', 'Appeal_Clean'])\n\nprint(f\"Valid records after cleaning: {len(df_analysis)}\")\n\nif len(df_analysis) > 0:\n    # Create Contingency Table\n    contingency = pd.crosstab(df_analysis['Notice_Clean'], df_analysis['Appeal_Clean'])\n    \n    # Reindex to ensure consistent order (Yes/No)\n    desired_index = [x for x in ['Yes', 'No'] if x in contingency.index]\n    desired_cols = [x for x in ['Yes', 'No'] if x in contingency.columns]\n    contingency = contingency.loc[desired_index, desired_cols]\n    \n    print(\"\\nContingency Table (Rows: Notice, Cols: Appeal):\")\n    print(contingency)\n    \n    # Chi-Square Test\n    chi2, p, dof, expected = chi2_contingency(contingency)\n    print(f\"\\nChi-Square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n    \n    # Conditional Probabilities\n    # P(Appeal=Yes | Notice=Yes)\n    if 'Yes' in contingency.index and 'Yes' in contingency.columns:\n        n_notice_yes = contingency.loc['Yes'].sum()\n        n_both_yes = contingency.loc['Yes', 'Yes']\n        if n_notice_yes > 0:\n            print(f\"Rate of Appeal Process when Notice is provided: {n_both_yes/n_notice_yes:.1%} ({n_both_yes}/{n_notice_yes})\")\n    \n    # P(Appeal=Yes | Notice=No)\n    if 'No' in contingency.index and 'Yes' in contingency.columns:\n        n_notice_no = contingency.loc['No'].sum()\n        n_appeal_yes_notice_no = contingency.loc['No', 'Yes']\n        if n_notice_no > 0:\n            print(f\"Rate of Appeal Process when Notice is NOT provided: {n_appeal_yes_notice_no/n_notice_no:.1%} ({n_appeal_yes_notice_no}/{n_notice_no})\")\n            \nelse:\n    print(\"No valid records found after cleaning. Check value patterns.\")\n    print(\"Sample Notice values:\", df_eo[col_notice].unique()[:5])\n    print(\"Sample Appeal values:\", df_eo[col_appeal].unique()[:5])",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Processing 1757 records from EO 13960 subset.\nValid records after cleaning: 102\n\nContingency Table (Rows: Notice, Cols: Appeal):\nAppeal_Clean  Yes  No\nNotice_Clean         \nYes            22  18\nNo             31  31\n\nChi-Square Statistic: 0.0844\nP-value: 7.7143e-01\nRate of Appeal Process when Notice is provided: 55.0% (22/40)\nRate of Appeal Process when Notice is NOT provided: 50.0% (31/62)\n",
+  "created_at": "2026-02-22T06:53:52.427338+00:00",
+  "creation_idx": 124,
+  "experiment_id": "node_5_39",
+  "experiment_plan": {
+    "deliverables": "Contingency table of AI Notice vs. Appeal Process; Conditional probabilities (e.g., P(Appeal | Notice)); Chi-Square test results (statistic and p-value).",
+    "objective": "Test the correlation between two distinct transparency/recourse mechanisms: AI Notice and Appeal Process, using robust string matching to handle descriptive survey responses.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for the `eo13960_scored` source table.\n2. Extract columns `59_ai_notice` and `65_appeal_process`.\n3. Clean `59_ai_notice` into a binary variable `has_notice` using keyword matching: Map values containing 'Online', 'In-person', or 'Yes' to 'Yes'; map values containing 'No', 'N/A', or 'None' to 'No'.\n4. Clean `65_appeal_process` into a binary variable `has_appeal` using keyword matching: Map values starting with 'Yes' to 'Yes'; map values starting with 'No' or 'N/A' to 'No'.\n5. Create a contingency table of `has_notice` vs. `has_appeal`.\n6. Calculate the percentage of systems with an appeal process given the presence/absence of an AI notice.\n7. Perform a Chi-Square test to assess statistical significance."
+  },
+  "hypothesis": "Transparency Begets Accountability: AI systems that provide a public 'AI Notice' are significantly more likely to also offer a formal 'Appeal Process' for affected individuals, suggesting a cluster of transparency-oriented controls.",
+  "id_in_run": 123,
+  "is_surprising": true,
+  "parent_id": "node_4_22",
+  "posterior": 0.34615384615384615,
+  "posterior_belief": {
+    "_empirical_mean": 0.14166666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 26.0,
+    "definitely_true": 0.0,
+    "maybe_false": 34.0,
+    "maybe_true": 0.0,
+    "mean": 0.34615384615384615,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was executed faithfully. The code implemented the robust string matching logic requested in the plan to handle the descriptive text in the 'EO 13960' dataset. Although the strict filtering resulted in a high attrition rate (leaving 102 valid records out of 1,757), the analysis correctly interpreted the resulting contingency table. The statistical test (p=0.77) and conditional probabilities (55% vs 50%) support the conclusion to reject the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 234360.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4749379652605459
+}

@@ -1,0 +1,25 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Temporal Severity Escalation Experiment...
+AIID Incidents loaded: 1362
+Records included in analysis: 191
+Distribution of Severity Classes:
+Severity_Class
+Low_Severity     147
+High_Severity     44
+Name: count, dtype: int64
+
+--- Contingency Table ---
+Severity_Class  Low_Severity  High_Severity
+Period                                     
+Pre-2021                 104             36
+Post-2020                 43              8
+
+Chi-Square Statistic: 1.5924
+P-Value: 0.2070
+Result: No statistically significant difference found.
+
+--- Proportions (%) ---
+Severity_Class  High_Severity  Low_Severity
+Period                                     
+Post-2020               15.69         84.31
+Pre-2021                25.71         74.29

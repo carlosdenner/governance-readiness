@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+Loaded 1757 records from EO 13960 inventory.
+
+Records retained for analysis: 869
+Distribution of System Origins:
+System_Origin
+Vendor/Contractor    457
+Agency/In-House      412
+Name: count, dtype: int64
+
+--- Contingency Table ---
+Compliance_Status  Compliant  Non-Compliant
+System_Origin                              
+Agency/In-House          363             49
+Vendor/Contractor        299            158
+
+--- Compliance Rates ---
+Compliance_Status  Compliant  Non-Compliant
+System_Origin                              
+Agency/In-House    88.106796      11.893204
+Vendor/Contractor  65.426696      34.573304
+
+--- Chi-Square Test Results ---
+Chi-Square Statistic: 60.1744
+P-value: 0.0000
+Result: Statistically Significant (Reject Null Hypothesis)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Plot.
+*   **Purpose:** To compare the relative proportions of "Compliant" vs. "Non-Compliant" status across two different sources of AI systems ("Agency/In-House" vs. "Vendor/Contractor"). Since the bars are normalized to a total height of 1.0 (100%), this plot focuses on the percentage distribution rather than absolute counts.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "System Origin"
+    *   **Categories:** Two distinct categories representing the source of the AI system: "Agency/In-House" and "Vendor/Contractor".
+*   **Y-axis:**
+    *   **Label:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** Intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Agency/In-House:**
+    *   **Non-Compliant (Red):** This segment is relatively short, occupying approximately the bottom 0.12 (or 12%) of the bar.
+    *   **Compliant (Green):** This segment is dominant, occupying the remaining ~0.88 (or 88%) of the bar.
+*   **Vendor/Contractor:**
+    *   **Non-Compliant (Red):** This segment is noticeably taller than the Agency counterpart, extending up to approximately 0.35 (or 35%) of the bar.
+    *   **Compliant (Green):** This segment occupies the remaining ~0.65 (or 65%).
+*   **Comparison:** The proportion of non-compliance is visibly significantly higher in the Vendor/Contractor category compared to the Agency/In-House category.
+
+### 4. Annotations and Legends
+*   **Title:** "Data Documentation Compliance: Vendor vs Agency AI" – Located at the top center.
+*   **Legend:** Located to the right of the plot, titled "**Status**".
+    *   **Red Swatch:** Represents "Non-Compliant".
+    *   **Green Swatch:** Represents "Compliant".
+
+### 5. Statistical Insights
+*   **Higher Compliance in In-House Systems:** Agency/In-House AI systems demonstrate a much higher adherence to data documentation standards, with an estimated compliance rate of roughly 88%.
+*   **Compliance Gap:** There is a significant performance gap between the two groups. Vendor/Contractor systems are approximately 3 times more likely to be non-compliant (approx. 35%) compared to Agency/In-House systems (approx. 12%).
+*   **Risk Assessment:** Based on this data, relying on Vendor/Contractor solutions carries a higher risk of data documentation non-compliance, suggesting that stricter oversight or improved contract requirements regarding documentation might be needed for vendor-sourced AI.
+==================================================

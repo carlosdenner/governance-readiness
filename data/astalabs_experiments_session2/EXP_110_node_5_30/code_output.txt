@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+
+Top 5 Known Sectors: ['information and communication', 'transportation and storage', 'Arts, entertainment and recreation, information and communication', 'wholesale and retail trade', 'human health and social work activities']
+
+Contingency Table (Observed):
+                                                    Unintentional  Intentional
+sector_clean                                                                  
+Arts, entertainment and recreation, information...              2           12
+human health and social work activities                         0           10
+information and communication                                   2           42
+transportation and storage                                      0           21
+wholesale and retail trade                                      0           11
+
+--- Chi-Square Results ---
+Chi2 Statistic: 5.6412
+P-Value:        2.2759e-01
+
+--- Malicious Sector Profile (Ranked by Residual) ---
+                                                                   Total  Intentional    Rate Exp_Intent Residual
+sector_clean                                                                                                     
+transportation and storage                                            21           21  100.0%       20.2     0.19
+wholesale and retail trade                                            11           11  100.0%       10.6     0.14
+human health and social work activities                               10           10  100.0%        9.6     0.13
+information and communication                                         44           42   95.5%       42.2    -0.04
+Arts, entertainment and recreation, information and communication     14           12   85.7%       13.4    -0.39
+
+
+=== Plot Analysis (figure 2) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Horizontal 100% Stacked Bar Chart.
+*   **Purpose:** The chart is designed to compare the relative proportions of two specific categories ("Intentional" vs. "Unintentional" harm) across five different categorical groups (sectors). It allows for an easy visual comparison of the composition of harm within each sector.
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Title:** "Sector"
+    *   **Labels:** The axis lists five specific sectors:
+        1.  wholesale and retail trade
+        2.  transportation and storage
+        3.  human health and social work activities
+        4.  information and communication
+        5.  Arts, entertainment and recreation, information and communication
+*   **X-Axis (Horizontal):**
+    *   **Title:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Scale:** Linear, with major grid/tick marks every 0.2 units.
+
+### 3. Data Trends
+*   **Dominant Trend:** Across all five sectors, **Intentional harm** (represented by the red bars) is the overwhelmingly dominant category. In every sector, it accounts for the vast majority of the proportion (over 80%).
+*   **Exclusively Intentional Sectors:** Three sectors appear to have **100% Intentional harm** with no visible "Unintentional" component:
+    *   wholesale and retail trade
+    *   transportation and storage
+    *   human health and social work activities
+*   **Presence of Unintentional Harm:** Only the bottom two sectors display any "Unintentional" harm (light blue bars):
+    *   "Arts, entertainment and recreation, information and communication" has the largest proportion of unintentional harm, appearing to be approximately **0.15 (15%)**.
+    *   "information and communication" has a very small proportion of unintentional harm, appearing to be roughly **0.05 (5%)**.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Proportion of Intentional vs Unintentional Harm by Top 5 Sectors" — sets the context for the data.
+*   **Legend:** Located at the bottom right corner.
+    *   **Light Blue:** Represents "Unintentional".
+    *   **Red:** Represents "Intentional".
+
+### 5. Statistical Insights
+*   **High Risk of Malice:** The data suggests that for these top sectors, harm is rarely accidental. The incidents recorded are primarily driven by malicious or deliberate actions rather than negligence or accidents.
+*   **Sector Vulnerability:** "Wholesale and retail," "Transportation," and "Health/Social work" show a distinct pattern where unintentional harm is negligible or non-existent in this dataset.
+*   **Operational Context:** The sector labeled "Arts, entertainment and recreation, information and communication" shows the highest variability in the type of harm, indicating that while malicious actors are the primary threat, accidental or unintentional issues play a more significant role here than in the other listed industries.
+==================================================

@@ -1,0 +1,36 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded successfully.
+EO 13960 Scored subset shape: (1757, 196)
+
+Unique values in '29_contains_pii': <StringArray>
+['No', 'Yes', nan, ' ']
+Length: 4, dtype: str
+Unique values in '67_opt_out': <StringArray>
+[                                                                                                                                                                                                                                            nan,
+                                                                                                                                                                                                                                           'Yes',
+ 'No – This AI use case is not subject to the opt-out requirement because the AI functionality is solely used for the prevention, detection, and investigation of fraud or cybersecurity incidents, or the conduct of a criminal investigation.',
+                                                                                                                                                                                                                                         'Other',
+                                                                                                                                                        'No – There is law or governmentwide guidance that restricts opt-out for this context. ',
+                                                                                                                                                   'N/A; COTS tool used for code conversion, no individual's information is input into a model.',
+                                                                                                                                                                 'Agency CAIO has waived this minimum practice and reported such waiver to OMB.']
+Length: 7, dtype: str
+
+Systems processing PII: 171 (out of 1757 total EO systems)
+
+--- Privacy-Control Gap Analysis ---
+PII Systems with Opt-Out: 13
+PII Systems MISSING Opt-Out: 158
+Overall Privacy Control Gap: 92.40%
+
+--- Agency-Level Breakdown (Agencies with >= 10 PII Systems) ---
+       Total_PII_Systems  No_Opt_Out  Gap_Percentage
+3_abr                                               
+HHS                   14          14          100.00
+SSA                   19          19          100.00
+VA                    57          54           94.74
+DHS                   43          35           81.40
+
+--- Chi-Square Test for Independence (Agency vs Opt-Out Availability) ---
+Chi2 Statistic: 9.7078
+P-value: 2.1221e-02
+Result: Statistically significant. Opt-out availability depends on the agency.

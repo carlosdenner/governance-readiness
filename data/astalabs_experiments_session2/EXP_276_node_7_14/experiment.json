@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the hypothesis that operational AI systems are less likely to comply with AI Notice requirements than those in development. After cleaning the data to exclude waivers and non-applicable cases, 94 relevant records remained. The analysis revealed a statistically significant difference (Chi-Square p=0.0013). Systems in the 'New/Dev' stage demonstrated a high compliance rate of 94.6% (35/37), whereas 'Operational' systems showed a significantly lower compliance rate of 63.2% (36/57). This 31.4% gap supports the hypothesis, suggesting that while new systems are being designed with transparency in mind, legacy or active systems ('grandfathered' in) lag behind in retroactive compliance.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\n\n# Load dataset\nfile_path = 'astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(file_path, low_memory=False)\nexcept FileNotFoundError:\n    # Fallback to parent directory as per instructions\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO13960 scored data\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\nprint(f\"Total EO13960 records: {len(eo_df)}\")\n\n# 1. Map Development Stage\noperational_list = ['Operation and Maintenance', 'In production', 'In mission']\nnew_dev_list = ['Implementation and Assessment', 'Acquisition and/or Development', 'Initiated', 'Planned']\n\ndef map_stage(x):\n    if pd.isna(x):\n        return None\n    val = str(x).strip()\n    if val in operational_list:\n        return 'Operational'\n    elif val in new_dev_list:\n        return 'New/Dev'\n    return None  # Excludes 'Retired' and others\n\neo_df['stage_group'] = eo_df['16_dev_stage'].apply(map_stage)\n\n# 2. Map AI Notice\n# We define Compliance (Yes) vs Non-Compliance (No).\n# We exclude cases where the requirement is N/A or Waived.\n\n# Based on previous output, specific exclusion strings:\nexclusions = [\n    'N/A - individuals are not interacting with the AI for this use case',\n    'AI is not safety or rights-impacting.',\n    'Agency CAIO has waived this minimum practice and reported such waiver to OMB.'\n]\n\ndef map_notice(x):\n    if pd.isna(x):\n        return None\n    val = str(x).strip()\n    \n    # Check for exclusions\n    if val in exclusions:\n        return None\n    \n    # Check for Non-Compliance\n    if 'None of the above' in val:\n        return 'No'\n    \n    # If it's not N/A and not 'None of the above', it implies some form of notice was selected\n    # (e.g. 'Online', 'Email', 'In-person', 'Other')\n    return 'Yes'\n\neo_df['notice_compliance'] = eo_df['59_ai_notice'].apply(map_notice)\n\n# Create analysis dataframe\nanalysis_df = eo_df.dropna(subset=['stage_group', 'notice_compliance']).copy()\n\nprint(f\"Records available for analysis after cleaning: {len(analysis_df)}\")\n\nif len(analysis_df) < 5:\n    print(\"Insufficient data for analysis.\")\nelse:\n    # Contingency Table\n    contingency = pd.crosstab(analysis_df['stage_group'], analysis_df['notice_compliance'])\n    print(\"\\nContingency Table (Stage vs Notice Compliance):\")\n    print(contingency)\n    \n    # Rates\n    rates = pd.crosstab(analysis_df['stage_group'], analysis_df['notice_compliance'], normalize='index') * 100\n    print(\"\\nCompliance Rates (%):\")\n    print(rates)\n\n    # Chi-Square Test\n    chi2, p, dof, expected = stats.chi2_contingency(contingency)\n    print(f\"\\nChi-Square Test Results:\")\n    print(f\"Chi2 Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4f}\")\n    \n    # Visualize\n    plt.figure(figsize=(8, 6))\n    \n    # Extract 'Yes' rates for plotting\n    if 'Yes' in rates.columns:\n        yes_rates = rates['Yes']\n    else:\n        yes_rates = pd.Series([0, 0], index=['New/Dev', 'Operational'])\n        \n    # Ensure both categories exist in index for plotting consistency\n    for cat in ['New/Dev', 'Operational']:\n        if cat not in yes_rates.index:\n            yes_rates[cat] = 0\n            \n    # Sort for consistent order\n    yes_rates = yes_rates.sort_index()\n    \n    bars = plt.bar(yes_rates.index, yes_rates.values, color=['skyblue', 'salmon'])\n    plt.title('AI Notice Compliance by Development Stage')\n    plt.ylabel('Compliance Rate (%)')\n    plt.ylim(0, 100)\n    \n    for bar in bars:\n        height = bar.get_height()\n        plt.text(bar.get_x() + bar.get_width()/2., height + 1,\n                 f'{height:.1f}%',\n                 ha='center', va='bottom')\n    \n    plt.tight_layout()\n    plt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total EO13960 records: 1757\nRecords available for analysis after cleaning: 94\n\nContingency Table (Stage vs Notice Compliance):\nnotice_compliance  No  Yes\nstage_group               \nNew/Dev             2   35\nOperational        21   36\n\nCompliance Rates (%):\nnotice_compliance         No        Yes\nstage_group                            \nNew/Dev             5.405405  94.594595\nOperational        36.842105  63.157895\n\nChi-Square Test Results:\nChi2 Statistic: 10.3568\nP-value: 0.0013\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Vertical Bar Chart (or Column Chart).\n*   **Purpose:** The plot compares the percentage of compliance regarding \"AI Notice\" across two distinct categories of AI development stages (\"New/Dev\" and \"Operational\").\n\n**2. Axes**\n*   **Y-Axis (Vertical):**\n    *   **Label:** \"Compliance Rate (%)\".\n    *   **Units:** Percentage points.\n    *   **Range:** The scale runs from 0 to 100, with major tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).\n*   **X-Axis (Horizontal):**\n    *   **Label:** Although there is no collective axis title, the categories represent the \"Development Stage.\"\n    *   **Categories:** \"New/Dev\" and \"Operational\".\n\n**3. Data Trends**\n*   **Tallest Bar:** The \"New/Dev\" category (represented by the sky-blue bar) has the highest compliance rate.\n*   **Shortest Bar:** The \"Operational\" category (represented by the salmon/light red bar) has a significantly lower compliance rate.\n*   **Pattern:** There is a notable downward trend in compliance when moving from the development phase to the operational phase.\n\n**4. Annotations and Legends**\n*   **Chart Title:** \"AI Notice Compliance by Development Stage\" appears at the top center.\n*   **Data Labels:** The exact percentage values are annotated directly above each bar:\n    *   New/Dev: **94.6%**\n    *   Operational: **63.2%**\n*   **Color Coding:** The bars use distinct colors to differentiate the categories visually (Blue for New/Dev, Red/Salmon for Operational), though a separate legend is not required as the X-axis labels define the categories.\n\n**5. Statistical Insights**\n*   **High Compliance in Development:** Systems in the \"New/Dev\" stage show a very high compliance rate of **94.6%**, suggesting that new projects are likely being built with current compliance standards in mind (compliance by design).\n*   **Compliance Gap:** There is a significant discrepancy of **31.4 percentage points** between the two stages.\n*   **Operational Risk:** The \"Operational\" stage has a much lower compliance rate of **63.2%**. This suggests that legacy systems or AI models currently in production may not have been updated to meet new notice requirements, or that enforcement/checks are less rigorous after the initial development phase.\n==================================================",
+  "created_at": "2026-02-22T14:06:46.525369+00:00",
+  "creation_idx": 277,
+  "experiment_id": "node_7_14",
+  "experiment_plan": {
+    "deliverables": "Contingency table; Bar chart of Notice compliance by Stage; Statistical test results.",
+    "objective": "Determine if development stage impacts transparency compliance.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'eo13960_scored'.\n2. Group '16_dev_stage' into 'Operational' (Operation and Maintenance) vs 'New/Dev' (Development, Implementation, Planning).\n3. Clean '59_ai_notice' into a binary Yes/No.\n4. Compare AI Notice compliance rates across stages using a Chi-Square test."
+  },
+  "hypothesis": "Operational AI systems (in 'O&M' stage) are significantly less likely to comply with 'AI Notice' requirements compared to systems in 'Implementation' or 'Development' stages, suggesting 'grandfathering' of legacy systems.",
+  "id_in_run": 276,
+  "is_surprising": true,
+  "parent_id": "node_6_9",
+  "posterior": 0.9120879120879121,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9120879120879121,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis regarding the 'grandfathering' of legacy AI systems w.r.t. transparency compliance. \n\n**Methodology Assessment:**\nThe implementation correctly handled the data quality issues identified in the first attempt. By grouping specific text values into 'Operational' vs 'New/Dev' and filtering the 'AI Notice' field to exclude valid exemptions (e.g., 'N/A', 'Waived'), the study isolated the relevant population (n=94) where compliance is expected. \n\n**Findings:**\n- **Statistical Significance:** The Chi-Square test yielded a p-value of 0.0013, indicating a highly significant relationship between development stage and compliance.\n- **Effect Size:** There is a substantial gap in compliance: New/Dev systems achieved 94.6% compliance, while Operational systems lagged significantly at 63.2%.\n\n**Conclusion:**\nThe hypothesis is supported. The data suggests that while new federal AI systems are largely adhering to transparency mandates during development, existing operational systems face a 'compliance debt,' struggling to retroactively implement AI Notice protocols.",
+  "rich_outputs": null,
+  "runtime_ms": 219860.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.20418291386033316
+}

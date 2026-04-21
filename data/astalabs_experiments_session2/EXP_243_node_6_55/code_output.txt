@@ -1,0 +1,45 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+EO 13960 subset shape: (1757, 196)
+
+--- Unique Values Preview (Top 5) before mapping ---
+40_has_ato: <StringArray>
+['No', nan, 'Yes', ' ', ' ']
+Length: 5, dtype: str
+56_monitor_postdeploy: <StringArray>
+[                                                                                                                                                                                                                                                                                                                                                                                         nan,
+                                                      'Intermittent and Manually Updated: A plan for monitoring the AI use case is in place, and requires data science teams to work with DevOps engineers to manually update models at scheduled intervals, and create metrics to detect data distribution shifts between the operational environment and the training data for the model. ',
+                                                                                                                                                                            'No monitoring protocols have been established: Necessary infrastructure needed to perform monitoring of AI systems in production is not available and/or a plan to monitor models has not yet been established.',
+                                                                                                'Automated and Regularly Scheduled Updates: Some aspects of the plan to monitor the AI system post-deployment are automated including re-training of models after detecting drift; however, data science teams are still significantly involved in the monitoring and re-deployment process.',
+ 'Established Process of Machine Learning Operations: Alongside automated testing and drift detection, model re-training and re-deployments are supported by continuous integration pipelines that are managed by machine learning and data engineers on the platform, adapting work done by data science team into repeatable scripts for re-training and re-testing a model once deployed.']
+Length: 5, dtype: str
+59_ai_notice: <StringArray>
+[                                                                     nan,
+ 'Online - in the terms or instructions for the service.,In-person,Other',
+                                                        'In-person,Other',
+                 'Online - in the terms or instructions for the service.',
+    'N/A - individuals are not interacting with the AI for this use case']
+Length: 5, dtype: str
+
+Analysis: ATO vs Monitoring
+Contingency Table:
+monitor_bin     0   1
+has_ato_bin          
+0            1065  56
+1             543  93
+Chi-square: 47.2242
+p-value: 6.3315e-12
+Phi Coefficient: 0.1639
+
+Analysis: ATO vs Notice
+Contingency Table:
+notice_bin      0   1
+has_ato_bin          
+0            1069  52
+1             548  88
+Chi-square: 45.5665
+p-value: 1.4754e-11
+Phi Coefficient: 0.1610
+
+--- Conclusion ---
+Result: Hypothesis SUPPORTED. ATO is more strongly correlated with Monitoring than with Notice.

@@ -1,0 +1,77 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded EO 13960 dataset with 1757 rows.
+
+Distribution of ATO (Security) Compliance:
+has_ato_bin
+0    1121
+1     636
+Name: count, dtype: int64
+
+Distribution of Independent Eval (Safety) Compliance:
+has_eval_bin
+0    1714
+1      43
+Name: count, dtype: int64
+
+--- Contingency Table ---
+         No Indep. Eval  Has Indep. Eval
+No ATO             1107               14
+Has ATO             607               29
+
+--- Statistical Results ---
+Chi-Square Statistic: 17.2701
+P-value: 3.2425e-05
+Phi Coefficient: 0.0991
+Odds Ratio: 3.7777
+
+--- Interpretation ---
+There is a statistically significant relationship between ATO and Independent Evaluation.
+The relationship is POSITIVE: Systems with ATO are more likely to have Independent Evaluation.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Contingency Table visualized as a Heatmap** (often resembling a Confusion Matrix).
+*   **Purpose:** It is used to display the frequency distribution of variables across two categorical dimensions. In this specific case, it compares the overlap between two compliance standards: Security Compliance (measured by ATO - Authority to Operate) and Safety Compliance (measured by Independent Evaluation).
+
+### 2. Axes
+*   **Y-Axis (Vertical):**
+    *   **Label:** "Security Compliance (ATO)"
+    *   **Categories:**
+        *   **Top:** "No ATO" (Systems without Authority to Operate)
+        *   **Bottom:** "Has ATO" (Systems with Authority to Operate)
+*   **X-Axis (Horizontal):**
+    *   **Label:** "Safety Compliance (Independent Eval)"
+    *   **Categories:**
+        *   **Left:** "No Indep. Eval" (Systems without Independent Evaluation)
+        *   **Right:** "Has Indep. Eval" (Systems with Independent Evaluation)
+*   **Value Ranges:** The axes represent categorical groups rather than continuous numerical ranges. The values plotted within the matrix represent counts, ranging from a minimum of **14** to a maximum of **1107**.
+
+### 3. Data Trends
+*   **High Value Area (Darkest Blue):** The upper-left quadrant represents the highest frequency count (**1107**). This indicates that the majority of the entities measured lack both Security Compliance (No ATO) and Safety Compliance (No Indep. Eval).
+*   **Secondary Cluster (Medium Blue):** The bottom-left quadrant is the second most populated (**607**). These represent entities that have Security Compliance (Has ATO) but lack Safety Compliance (No Indep. Eval).
+*   **Low Value Areas (White/Lightest Blue):** The entire right-hand column represents very low values.
+    *   Top-right (**14**): No ATO but Has Independent Eval.
+    *   Bottom-right (**29**): Has ATO and Has Independent Eval.
+*   **Overall Trend:** There is a strong skew toward the absence of "Independent Eval." Regardless of ATO status, the vast majority of items fall into the "No Indep. Eval" column.
+
+### 4. Annotations and Legends
+*   **Title:** "Security (ATO) vs Safety (Independent Eval) Compliance."
+*   **Cell Values:** Each of the four cells contains a numerical annotation representing the exact count of items in that category (1107, 14, 607, 29).
+*   **Color Mapping:** While there is no separate color bar legend, the visualization uses a sequential blue color palette where darker shades of blue represent higher counts and white represents the lowest counts.
+
+### 5. Statistical Insights
+*   **Total Sample Size:** By summing the quadrants ($1107 + 14 + 607 + 29$), the total sample size analyzed is **1,757**.
+*   **Dominance of Non-Compliance:**
+    *   **Safety Compliance is rare:** Only 43 entities ($14 + 29$) have an Independent Evaluation. This is approximately **2.4%** of the total population.
+    *   **Double Negative:** The largest group (1107) lacks both compliance measures, representing roughly **63%** of the total population.
+*   **Security vs. Safety Disparity:**
+    *   Security Compliance (Has ATO) is much more common than Safety Compliance. There are 636 entities with an ATO ($607 + 29$), or roughly **36.2%** of the population.
+*   **Correlation:**
+    *   There appears to be a slight positive relationship between having an ATO and having an Independent Eval.
+    *   Among those with **No ATO**, only ~1.2% have an Independent Eval ($14 / 1121$).
+    *   Among those with **Has ATO**, ~4.6% have an Independent Eval ($29 / 636$).
+    *   While having an ATO increases the likelihood of having an Independent Eval, the overall rate remains extremely low.
+==================================================

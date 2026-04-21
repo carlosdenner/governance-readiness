@@ -1,0 +1,17 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading step3_incident_coding.csv...
+
+=== Contingency Table ===
+Failure_Category  Prevention  Detection/Response
+Harm_Category                                   
+Security                  35                   1
+Other                     16                   0
+
+=== Fisher's Exact Test Results ===
+Odds Ratio: 0.0
+P-value: 1.0
+Result: No significant association (p >= 0.05)
+
+=== Detailed Breakdown of Non-Prevention Failures ===
+   case_study_id harm_type       failure_mode
+42    AML.CS0042  security  detection_failure

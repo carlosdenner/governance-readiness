@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Loading ---
+Total EO 13960 records: 1757
+
+Records after filtering for valid Impact Type: 77
+impact_group
+High Impact    77
+Name: count, dtype: int64
+
+--- Contingency Table ---
+              No Indep. Eval  Has Indep. Eval
+impact_group                                 
+High Impact               61               16
+
+--- Proportions (Audit Rate) ---
+              Proportion  Total N  Count Yes
+impact_group                                
+High Impact     0.207792       77         16
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 0.0000
+P-value: 1.0000e+00
+
+--- Interpretation ---
+Result: Not Statistically Significant.
+There is no statistical evidence that High Impact systems undergo independent evaluation more often than Low/Moderate systems.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Single-Category Bar Plot (Column Chart).
+*   **Purpose:** To display a specific metric (proportion/rate) associated with a categorical variable ("High Impact"). It is designed to visualize a single statistic clearly.
+
+**2. Axes**
+*   **X-Axis:**
+    *   **Label:** "Impact Classification"
+    *   **Categories:** The axis displays a single category labeled "High Impact" (oriented vertically).
+*   **Y-Axis:**
+    *   **Label:** "Proportion with Independent Eval"
+    *   **Range:** The axis runs from **0.00 to 0.25** (representing 0% to 25%).
+    *   **Units:** The values are presented as decimals representing proportions.
+
+**3. Data Trends**
+*   **Bar Characteristics:** There is a single, light blue bar centered in the plot.
+*   **Value:** The bar represents the category "High Impact." Its height corresponds to a value slightly above the 0.20 mark on the Y-axis.
+*   **Comparisons:** As this is a single-variable plot, there are no comparisons (e.g., vs. "Low Impact") or trends across time available to analyze. The data represents a snapshot of a single group.
+
+**4. Annotations and Legends**
+*   **Value Label:** There is a specific numerical annotation placed directly above the bar reading **"20.8%"**. This clarifies the precise height of the bar, converting the Y-axis decimal proportion (~0.208) into a percentage.
+*   **Title:** The chart is titled "Independent Evaluation Rate by System Impact," which defines the context of the data.
+*   **Legend:** There is no separate legend, as the x-axis label suffices for the single category presented.
+
+**5. Statistical Insights**
+*   **Primary Statistic:** Approximately one-fifth (**20.8%**) of the systems classified as "High Impact" include an independent evaluation.
+*   **Inverse Insight:** Consequently, this implies that the vast majority (**79.2%**) of High Impact systems do *not* have an independent evaluation, assuming the data covers the entire population of that category.
+*   **Significance:** Without a baseline or comparison group (such as Low or Medium Impact systems), it is difficult to determine if this rate is relatively high or low; however, in absolute terms, it suggests that independent evaluation is the minority practice for High Impact systems in this dataset.
+==================================================

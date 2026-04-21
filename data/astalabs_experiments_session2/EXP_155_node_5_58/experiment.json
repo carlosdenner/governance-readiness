@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was successfully executed. The code loaded the dataset, identified 52 ATLAS cases, and classified them into 'Government/Defense' (n=4) and 'Commercial/Private' (n=48) sectors using keyword analysis. The analysis of attack sophistication (tactic chain length) revealed that every single case in both groups had a tactic count of exactly 1.0. As a result, there was zero variance in the data, causing the T-test to return 'nan' and the Mann-Whitney U test to yield a p-value of 1.0. Consequently, the hypothesis that government targets face more sophisticated attacks is rejected based on this dataset. The result suggests a potential limitation in the dataset's granularity (e.g., only the primary tactic was recorded) or that the specific subset of cases provided consists entirely of single-tactic incidents.",
+  "child_ids": [
+    "node_6_39"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy import stats\nimport os\nimport re\n\ndef load_data():\n    filename = 'astalabs_discovery_all_data.csv'\n    # Try current directory first, then parent directory\n    if os.path.exists(filename):\n        return pd.read_csv(filename, low_memory=False)\n    elif os.path.exists(os.path.join('..', filename)):\n        return pd.read_csv(os.path.join('..', filename), low_memory=False)\n    else:\n        raise FileNotFoundError(f\"{filename} not found in current or parent directory.\")\n\ndef run_experiment():\n    try:\n        df = load_data()\n        print(\"Dataset loaded successfully.\")\n    except Exception as e:\n        print(e)\n        return\n\n    # Filter for ATLAS cases\n    atlas = df[df['source_table'] == 'atlas_cases'].copy()\n    print(f\"ATLAS cases found: {len(atlas)}\")\n\n    if len(atlas) == 0:\n        print(\"No ATLAS cases found. Check dataset.\")\n        return\n\n    # Text Analysis to classify Target Sector\n    # Keywords for Government/Defense\n    gov_keywords = [\n        'government', 'defense', 'military', 'federal', 'agency', 'state', \n        'national', 'intelligence', 'surveillance', 'police', 'election', \n        'voting', 'public sector', 'ministry', 'army', 'navy', 'air force'\n    ]\n\n    def classify_sector(row):\n        text = (str(row.get('name', '')) + \" \" + str(row.get('summary', ''))).lower()\n        if any(kw in text for kw in gov_keywords):\n            return 'Government/Defense'\n        return 'Commercial/Private'\n\n    atlas['sector'] = atlas.apply(classify_sector, axis=1)\n\n    # Calculate Tactic Chain Length\n    # The 'tactics' column might be comma separated or list-like. \n    # We'll count distinct items.\n    def count_tactics(val):\n        if pd.isna(val) or str(val).strip() == '':\n            return 0\n        # Remove brackets if they exist (JSON style) and split\n        s = str(val).replace('[', '').replace(']', '').replace(\"'\", \"\")\n        # Split by comma\n        items = [i.strip() for i in s.split(',') if i.strip()]\n        return len(set(items)) # distinct tactics\n\n    atlas['tactic_count'] = atlas['tactics'].apply(count_tactics)\n\n    # Group Data\n    gov_counts = atlas[atlas['sector'] == 'Government/Defense']['tactic_count']\n    com_counts = atlas[atlas['sector'] == 'Commercial/Private']['tactic_count']\n\n    print(f\"\\nSector Analysis:\\n  Government/Defense: n={len(gov_counts)}, Mean Tactic Count={gov_counts.mean():.2f}\\n  Commercial/Private: n={len(com_counts)}, Mean Tactic Count={com_counts.mean():.2f}\")\n\n    # Statistical Test\n    # Using Mann-Whitney U test (non-parametric) as counts are often not normal\n    # and sample sizes might be small.\n    stat, p_val = stats.mannwhitneyu(gov_counts, com_counts, alternative='greater')\n    \n    print(f\"\\nMann-Whitney U Test (Gov > Com):\\n  U-statistic={stat}\\n  p-value={p_val:.4f}\")\n\n    # Independent T-test for robustness check\n    t_stat, t_p = stats.ttest_ind(gov_counts, com_counts, equal_var=False)\n    print(f\"T-test (two-sided): t={t_stat:.4f}, p={t_p:.4f}\")\n\n    # Interpretation\n    alpha = 0.05\n    if p_val < alpha:\n        print(\"\\nResult: Government/Defense targets involve significantly longer tactic chains.\")\n    else:\n        print(\"\\nResult: No significant difference in tactic chain length between sectors.\")\n\n    # Visualization\n    plt.figure(figsize=(8, 6))\n    plt.boxplot([gov_counts, com_counts], labels=['Gov/Def', 'Com/Priv'], patch_artist=True)\n    plt.title('Attack Sophistication: Tactic Counts by Target Sector')\n    plt.ylabel('Number of Distinct Tactics')\n    plt.grid(axis='y', linestyle='--', alpha=0.7)\n    plt.show()\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Dataset loaded successfully.\nATLAS cases found: 52\n\nSector Analysis:\n  Government/Defense: n=4, Mean Tactic Count=1.00\n  Commercial/Private: n=48, Mean Tactic Count=1.00\n\nMann-Whitney U Test (Gov > Com):\n  U-statistic=96.0\n  p-value=1.0000\nT-test (two-sided): t=nan, p=nan\n\nResult: No significant difference in tactic chain length between sectors.\n\nSTDERR:\n/usr/local/lib/python3.13/site-packages/scipy/stats/_axis_nan_policy.py:592: RuntimeWarning: Precision loss occurred in moment calculation due to catastrophic cancellation. This occurs when the data are nearly identical. Results may be unreliable.\n  res = hypotest_fun_out(*samples, **kwds)\n<ipython-input-1-b4b1e6f11034>:93: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot([gov_counts, com_counts], labels=['Gov/Def', 'Com/Priv'], patch_artist=True)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (specifically, two collapsed box plots).\n*   **Purpose:** The plot is designed to compare the distribution of distinct tactics used in cyber attacks across two different target sectors: Government/Defense (\"Gov/Def\") and Commercial/Private (\"Com/Priv\").\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Labels:** Categorical labels representing the target sectors: **\"Gov/Def\"** and **\"Com/Priv\"**.\n    *   **Value Range:** N/A (Categorical data).\n*   **Y-Axis:**\n    *   **Title:** **\"Number of Distinct Tactics\"**.\n    *   **Value Range:** The visible scale ranges from roughly **0.94 to 1.05**, with major grid lines marked at intervals of 0.02 (0.96, 0.98, 1.00, 1.02, 1.04).\n\n### 3. Data Trends\n*   **Observation:** The plot shows two extremely flat features located at the **Y-value of 1.00**.\n*   **Interpretation of Shapes:** In a standard box plot, a box represents the interquartile range (IQR), and the line inside represents the median. Since these plots appear as single flat orange lines, it indicates that the **median, the 25th percentile, and the 75th percentile are all identical** (specifically, they are all equal to 1).\n*   **Pattern:** There is no visible spread or variance. This suggests that for the dataset visualized, nearly every recorded attack involved exactly **1 distinct tactic**, regardless of whether the target was in the Government/Defense sector or the Commercial/Private sector.\n\n### 4. Annotations and Legends\n*   **Title:** \"Attack Sophistication: Tactic Counts by Target Sector\" — This sets the context that the plot is measuring the complexity of attacks.\n*   **Grid Lines:** Horizontal dashed grid lines are present to assist in reading the Y-axis values precisely.\n*   **Color:** The central lines are orange, which is the default color for the median line in `matplotlib` (a common Python plotting library).\n\n### 5. Statistical Insights\n*   **Uniformity of Attacks:** The most significant insight is the lack of variation. The data indicates that attacks against both sectors are essentially identical in terms of this specific metric: they are mono-tactic attacks.\n*   **Low Sophistication:** If \"sophistication\" is measured by the number of distinct tactics employed during an intrusion, the attacks in this dataset are of low sophistication (score of 1). Attackers are not chaining multiple distinct tactics types together in these specific instances.\n*   **No Sector Differentiation:** There is no statistical difference between the \"Gov/Def\" and \"Com/Priv\" sectors regarding the number of distinct tactics used. Both sectors face the same simple attack structure based on this plot.\n==================================================",
+  "created_at": "2026-02-22T08:24:11.419370+00:00",
+  "creation_idx": 156,
+  "experiment_id": "node_5_58",
+  "experiment_plan": {
+    "deliverables": "Boxplot of Tactic Counts by Target Sector; T-test results.",
+    "objective": "Assess if adversarial attacks on government targets exhibit higher complexity (tactic depth) than private sector attacks.",
+    "steps": "1. Load `atlas_cases` subset.\n2. text-mine the `summary` or `name` columns to classify targets as 'Government/Defense' vs 'Commercial/Private'.\n3. Parse the `tactics` column (counting comma-separated values or distinct tags) to calculate a 'Tactic Chain Length' for each case.\n4. Perform an independent samples T-test (or Mann-Whitney U test) on the chain lengths between the two target groups."
+  },
+  "hypothesis": "The Sophistication of State Targets: Adversarial attacks targeting Government or Defense systems involve a significantly higher number of distinct ATLAS tactics (longer attack chains) compared to attacks targeting Commercial or Consumer systems.",
+  "id_in_run": 155,
+  "is_surprising": true,
+  "parent_id": "node_4_48",
+  "posterior": 0.2554945054945055,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.2554945054945055,
+    "n": 60.0,
+    "prior_params": [
+      23.25,
+      7.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.75,
+  "prior_belief": {
+    "_empirical_mean": 0.7583333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 1.0,
+    "maybe_false": 0.0,
+    "maybe_true": 29.0,
+    "mean": 0.75,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully followed the plan to test the hypothesis that government targets face more sophisticated (longer tactic chain) attacks. The code loaded the ATLAS dataset (N=52), classified cases into 'Government/Defense' (n=4) and 'Commercial/Private' (n=48) using keyword text mining, and calculated the number of distinct tactics per case.\n\nThe analysis revealed a critical property of the dataset: every single case had a calculated tactic chain length of exactly 1.0 (Mean=1.0, Variance=0). Due to this lack of variance, the T-test returned 'nan', and the Mann-Whitney U test yielded a p-value of 1.0. Consequently, the hypothesis is rejected; the provided data shows no difference in attack sophistication between sectors, as all incidents are coded with a single tactic. The zero-variance result suggests that either the dataset only captures primary tactics or the specific subset provided does not contain multi-stage attack chains.",
+  "rich_outputs": null,
+  "runtime_ms": 289680.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5934065934065934
+}

@@ -1,0 +1,68 @@
+exitcode: 0 (execution succeeded)
+Code output: Using columns: '52_impact_assessment' and '55_independent_eval'
+Unique values in Impact Assessment: <StringArray>
+[nan, 'Planned or in-progress.', 'Yes', 'No', 'YES']
+Length: 5, dtype: str
+Unique values in Independent Eval: <StringArray>
+[                                                                                                    nan,
+                                                                                     'Yes – by the CAIO',
+                                                                                'Planned or in-progress',
+ 'Yes – by another appropriate agency office that was not directly involved in the system’s development',
+               'Yes – by an agency AI oversight board not directly involved in the system’s development',
+                                       'Does not apply, use case is neither safety or rights impacting.',
+                         'Agency CAIO has waived this minimum practice and reported such waiver to OMB.',
+                                                                 'AI is not safety or rights-impacting.',
+                                                                                                  'TRUE']
+Length: 9, dtype: str
+
+Contingency Table (0=No/NA, 1=Yes):
+Independent Eval      0   1
+Impact Assessment          
+0                  1677  19
+1                    37  24
+
+Chi-square Statistic: 344.5137
+P-value: 6.6356e-77
+Phi Coefficient: 0.4428
+
+Result: Statistically significant association found (Reject Null Hypothesis).
+Strength: Moderate association.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Heatmap** visualizing a **Contingency Table** (or Co-occurrence Matrix).
+*   **Purpose:** The plot displays the frequency distribution between two binary categorical variables. It is designed to show how often two specific governance controls ("Has Impact Assessment" and "Has Independent Evaluation") occur together, separately, or not at all within a dataset.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Has Independent Evaluation"
+    *   **Values:** Binary categories **0** (representing the absence of the control) and **1** (representing the presence of the control).
+*   **Y-Axis:**
+    *   **Label:** "Has Impact Assessment"
+    *   **Values:** Binary categories **0** (Absence) and **1** (Presence).
+
+### 3. Data Trends
+*   **Dominant Category (High Concentration):** The vast majority of the data is concentrated in the top-left cell (Intersection of 0, 0). This area is shaded dark blue, indicating a high frequency count.
+*   **Minor Categories (Low Concentration):** The remaining three quadrants are shaded very light blue or white, indicating very low frequency counts relative to the top-left cell.
+*   **Specific Counts:**
+    *   **Neither Control (0, 0):** 1677 occurrences (Highest).
+    *   **Impact Assessment Only (1, 0):** 37 occurrences.
+    *   **Independent Evaluation Only (0, 1):** 19 occurrences.
+    *   **Both Controls (1, 1):** 24 occurrences.
+
+### 4. Annotations and Legends
+*   **Title:** "Co-occurrence of Governance Controls" appears at the top, defining the context of the variables.
+*   **Cell Annotations:** Each cell contains a numerical annotation representing the exact count of observations for that specific combination of variables (1677, 19, 37, 24).
+*   **Color Mapping:** Although no separate legend bar is provided, the visual encoding uses a sequential color scheme where **Dark Blue** represents high values and **White/Light Blue** represents low values.
+
+### 5. Statistical Insights
+*   **Low Adoption Rates:** The most significant insight is that the overwhelming majority of entities in this dataset (**approx. 95.4%**, calculated as 1677 out of 1757 total) possess **neither** an Impact Assessment nor an Independent Evaluation.
+*   **Rare Co-occurrence:** The scenario where an entity possesses both governance controls (Cell 1, 1) is rare, occurring only 24 times (approx. 1.4% of the total).
+*   **Marginal Independence:**
+    *   If an entity has an "Independent Evaluation" (Total = 43), there is a roughly 56% chance ($24/43$) they also have an "Impact Assessment."
+    *   However, if an entity has an "Impact Assessment" (Total = 61), there is only a roughly 39% chance ($24/61$) they also have an "Independent Evaluation."
+*   **Implication:** This suggests that while these two controls are positively associated (having one increases the likelihood of having the other compared to the baseline), the standard operating procedure for the vast majority of the population measured here is to operate without either governance mechanism.
+==================================================

@@ -1,0 +1,23 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Distribution ---
+notice_status        Exempt  Has Notice  No Notice  Unknown
+service_type                                               
+Internal/Non-Public      29          38         22     1603
+Public                   16          14          2       33
+
+Analyzable Rows (Yes/No Notice): 76
+
+--- Contingency Table (Analysis) ---
+notice_status        Has Notice  No Notice
+service_type                              
+Internal/Non-Public          38         22
+Public                       14          2
+
+--- Compliance Rates ---
+Internal/Non-Public: 63.3% (n=60)
+Public: 87.5% (n=16)
+
+--- Chi-Square Results ---
+Chi2: 2.3874
+p-value: 1.2231e-01
+Result: No Significant Difference.

@@ -1,0 +1,17 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID incidents: 1362
+Incidents in target sectors (Healthcare/Financial): 21
+target_sector
+Healthcare    15
+Financial      6
+Name: count, dtype: int64
+Incidents with clear Vision/Language classification: 2
+target_sector  tech_modality  
+Healthcare     Computer Vision    2
+dtype: int64
+
+Contingency Table:
+tech_modality  Computer Vision
+target_sector                 
+Healthcare                   2
+Insufficient data for Chi-Square test (need 2x2 table).

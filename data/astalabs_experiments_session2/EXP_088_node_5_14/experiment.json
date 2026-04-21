@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully categorized 683 AI use cases into 'Security' (183) and 'Social' (500) agency clusters. \n\n1. **Risk Profile**: The analysis confirms the first part of the hypothesis. Security agencies deploy a significantly higher proportion of 'Rights-Impacting' systems (14.2%, n=26) compared to Social agencies (2.0%, n=10), with a Z-score of 6.32 (p < 0.001).\n\n2. **Governance Rigor**: The second part of the hypothesis—that Security agencies show \"no higher rates of Independent Evaluation\"—was **rejected**. Within the subset of Rights-Impacting systems, Security agencies demonstrated a significantly higher compliance rate for Independent Evaluation (57.7%, 15/26) compared to Social agencies, who reported zero independent evaluations for their 10 rights-impacting systems (0.0%). The Z-test (z=3.14, p=0.0017) confirms this difference is statistically significant. \n\nThis suggests that while Security agencies take on more high-risk AI applications, they are also applying more rigorous governance controls (Independent Evaluation) compared to their civilian counterparts in this dataset.",
+  "child_ids": [
+    "node_6_5",
+    "node_6_64"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport os\nimport math\n\n# --- Helper Functions ---\n\ndef norm_cdf(x):\n    return 0.5 * (1 + math.erf(x / math.sqrt(2)))\n\ndef z_test_proportions(count1, nobs1, count2, nobs2):\n    # Calculates two-sided Z-test for proportions\n    if nobs1 == 0 or nobs2 == 0:\n        return 0.0, 1.0\n    \n    p1 = count1 / nobs1\n    p2 = count2 / nobs2\n    p_pool = (count1 + count2) / (nobs1 + nobs2)\n    \n    if p_pool == 0 or p_pool == 1:\n        return 0.0, 1.0\n        \n    se = np.sqrt(p_pool * (1 - p_pool) * (1/nobs1 + 1/nobs2))\n    \n    if se == 0:\n        return 0.0, 1.0\n        \n    z = (p1 - p2) / se\n    p_value = 2 * (1 - norm_cdf(abs(z)))\n    return z, p_value\n\n# --- Experiment Code ---\n\ndef run_experiment():\n    print(\"Starting Agency Risk Appetite Experiment...\\n\")\n    \n    # 1. Load Dataset\n    filename = 'astalabs_discovery_all_data.csv'\n    filepath = filename\n    if not os.path.exists(filepath):\n        filepath = '../' + filename\n        \n    if not os.path.exists(filepath):\n        print(f\"Error: Dataset {filename} not found.\")\n        return\n\n    print(f\"Loading dataset from {filepath}...\")\n    try:\n        df = pd.read_csv(filepath, low_memory=False)\n    except Exception as e:\n        print(f\"Error reading CSV: {e}\")\n        return\n\n    # Filter for EO13960 data\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"Loaded EO13960 subset: {len(df_eo)} rows\")\n\n    # 2. Categorize Agencies\n    security_keywords = ['Department of Defense', 'Homeland Security', 'Department of Justice']\n    social_keywords = ['Health and Human Services', 'Department of Education', 'Veterans Affairs']\n\n    def get_category(agency):\n        if pd.isna(agency):\n            return None\n        agency_str = str(agency)\n        if any(k in agency_str for k in security_keywords):\n            return 'Security'\n        if any(k in agency_str for k in social_keywords):\n            return 'Social'\n        return 'Other'\n\n    df_eo['Agency_Category'] = df_eo['3_agency'].apply(get_category)\n    \n    # Filter for analysis groups\n    df_analysis = df_eo[df_eo['Agency_Category'].isin(['Security', 'Social'])].copy()\n    \n    print(\"\\nAgency Category Distribution:\")\n    print(df_analysis['Agency_Category'].value_counts())\n\n    if df_analysis.empty:\n        print(\"No matching agencies found. Exiting.\")\n        return\n\n    # 3. Analyze Rights-Impacting Systems\n    # Robust check using vectorized string operation\n    df_analysis['is_rights'] = df_analysis['17_impact_type'].astype(str).str.contains('Rights', case=False, na=False)\n\n    print(\"\\n--- Analysis 1: Rights-Impacting Systems ---\")\n    # Groupby to get counts\n    rights_counts = df_analysis.groupby('Agency_Category')['is_rights'].sum()\n    total_counts = df_analysis.groupby('Agency_Category')['is_rights'].count()\n    \n    rights_stats = pd.DataFrame({'Rights_Count': rights_counts, 'Total_Systems': total_counts})\n    rights_stats['Proportion'] = rights_stats['Rights_Count'] / rights_stats['Total_Systems']\n    print(rights_stats)\n\n    # Z-test for Rights-Impacting\n    if 'Security' in rights_stats.index and 'Social' in rights_stats.index:\n        sec_cnt = rights_stats.loc['Security', 'Rights_Count']\n        sec_tot = rights_stats.loc['Security', 'Total_Systems']\n        soc_cnt = rights_stats.loc['Social', 'Rights_Count']\n        soc_tot = rights_stats.loc['Social', 'Total_Systems']\n        \n        z1, p1 = z_test_proportions(sec_cnt, sec_tot, soc_cnt, soc_tot)\n        print(f\"\\nZ-Test (Rights-Impacting - Security vs Social): z = {z1:.4f}, p = {p1:.4e}\")\n        if p1 < 0.05:\n            print(\"Result: Significant difference.\")\n        else:\n            print(\"Result: No significant difference.\")\n    else:\n        print(\"Cannot perform Z-test: Missing Security or Social group.\")\n\n    # 4. Analyze Independent Evaluation (Subset: Rights-Impacting)\n    df_rights_subset = df_analysis[df_analysis['is_rights']].copy()\n    \n    # Robust check for 'Yes' in '55_independent_eval'\n    df_rights_subset['has_eval'] = df_rights_subset['55_independent_eval'].astype(str).str.contains('Yes', case=False, na=False)\n\n    print(\"\\n--- Analysis 2: Independent Evaluation (Rights-Impacting Subset) ---\")\n    if len(df_rights_subset) == 0:\n        print(\"No Rights-Impacting systems found to analyze.\")\n    else:\n        eval_counts = df_rights_subset.groupby('Agency_Category')['has_eval'].sum()\n        eval_total = df_rights_subset.groupby('Agency_Category')['has_eval'].count()\n        \n        eval_stats = pd.DataFrame({'Eval_Yes_Count': eval_counts, 'Total_Rights_Systems': eval_total})\n        eval_stats['Proportion'] = eval_stats['Eval_Yes_Count'] / eval_stats['Total_Rights_Systems']\n        print(eval_stats)\n\n        # Z-test for Independent Eval\n        if 'Security' in eval_stats.index and 'Social' in eval_stats.index:\n            sec_e_cnt = eval_stats.loc['Security', 'Eval_Yes_Count']\n            sec_e_tot = eval_stats.loc['Security', 'Total_Rights_Systems']\n            soc_e_cnt = eval_stats.loc['Social', 'Eval_Yes_Count']\n            soc_e_tot = eval_stats.loc['Social', 'Total_Rights_Systems']\n            \n            if sec_e_tot > 0 and soc_e_tot > 0:\n                z2, p2 = z_test_proportions(sec_e_cnt, sec_e_tot, soc_e_cnt, soc_e_tot)\n                print(f\"\\nZ-Test (Independent Eval - Security vs Social): z = {z2:.4f}, p = {p2:.4e}\")\n                if p2 < 0.05:\n                    print(\"Result: Significant difference.\")\n                else:\n                    print(\"Result: No significant difference.\")\n            else:\n                 print(\"Cannot perform Z-test: One group has 0 systems.\")\n        else:\n            print(\"Insufficient categories for comparison in subset.\")\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting Agency Risk Appetite Experiment...\n\nLoading dataset from astalabs_discovery_all_data.csv...\nLoaded EO13960 subset: 1757 rows\n\nAgency Category Distribution:\nAgency_Category\nSocial      500\nSecurity    183\nName: count, dtype: int64\n\n--- Analysis 1: Rights-Impacting Systems ---\n                 Rights_Count  Total_Systems  Proportion\nAgency_Category                                         \nSecurity                   26            183    0.142077\nSocial                     10            500    0.020000\n\nZ-Test (Rights-Impacting - Security vs Social): z = 6.3234, p = 2.5590e-10\nResult: Significant difference.\n\n--- Analysis 2: Independent Evaluation (Rights-Impacting Subset) ---\n                 Eval_Yes_Count  Total_Rights_Systems  Proportion\nAgency_Category                                                  \nSecurity                     15                    26    0.576923\nSocial                        0                    10    0.000000\n\nZ-Test (Independent Eval - Security vs Social): z = 3.1449, p = 1.6617e-03\nResult: Significant difference.\n",
+  "created_at": "2026-02-22T05:13:49.351228+00:00",
+  "creation_idx": 89,
+  "experiment_id": "node_5_14",
+  "experiment_plan": {
+    "deliverables": "Comparison table of Rights-Impacting ratios; Comparison table of Independent Evaluation rates; Z-test results.",
+    "objective": "Compare the risk profile and governance rigor of security vs. civilian agencies.",
+    "steps": "1. Load `eo13960_scored`. 2. Create an `Agency_Category` variable: Map 'Department of Defense', 'Homeland Security', 'Justice' to 'Security'; map 'Health', 'Education', 'Veterans' to 'Civilian'. 3. Calculate the ratio of 'Rights-Impacting' (`17_impact_type`) systems for each group. 4. For the Rights-Impacting subset, compare rates of `55_independent_eval` (Yes/No). 5. Perform Z-tests for proportions for both metrics."
+  },
+  "hypothesis": "Agency Risk Appetite: Security-focused agencies (DOD, DHS, DOJ) deploy a significantly higher proportion of 'Rights-Impacting' AI systems compared to Social-service agencies (HHS, Education, VA), yet show no higher rates of Independent Evaluation.",
+  "id_in_run": 88,
+  "is_surprising": true,
+  "parent_id": "node_4_23",
+  "posterior": 0.3791208791208791,
+  "posterior_belief": {
+    "_empirical_mean": 0.225,
+    "_type": "boolean_cat",
+    "definitely_false": 6.0,
+    "definitely_true": 0.0,
+    "maybe_false": 54.0,
+    "maybe_true": 0.0,
+    "mean": 0.3791208791208791,
+    "n": 60.0,
+    "prior_params": [
+      21.0,
+      10.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6774193548387096,
+  "prior_belief": {
+    "_empirical_mean": 0.6833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 4.0,
+    "maybe_true": 26.0,
+    "mean": 0.6774193548387096,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and robustly tested the 'Agency Risk Appetite' hypothesis. \n\n**Findings:**\n1. **Risk Profile (Supported):** The analysis confirmed that Security-focused agencies (DOD, DHS, DOJ) deploy a significantly higher proportion of 'Rights-Impacting' AI systems (14.2%, n=26/183) compared to Social-service agencies (HHS, Education, VA) (2.0%, n=10/500). The Z-test (z=6.32, p<0.001) provides strong evidence for this difference.\n\n2. **Governance Rigor (Rejected):** Contrary to the hypothesis which predicted 'no higher rates' of evaluation, Security agencies demonstrated significantly superior governance rigor. Within the subset of rights-impacting systems, Security agencies reported a 57.7% rate of Independent Evaluation (15/26), whereas Social agencies reported 0.0% (0/10). The Z-test (z=3.14, p=0.0017) confirms this is a statistically significant difference.\n\n**Conclusion:** The hypothesis is partially supported (regarding risk profile) but falsified regarding governance. Security agencies are not loosely governing high-risk systems; rather, they appear to be the primary drivers of both high-risk AI adoption and the associated rigorous evaluation practices in this dataset, while Social agencies lag in both high-risk adoption and the implementation of independent evaluations for the few sensitive systems they do possess.",
+  "rich_outputs": null,
+  "runtime_ms": 300410.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.35795817086139664
+}

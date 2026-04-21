@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was successfully executed, though the findings reveal a complete absence of the target variable rather than a difference in proportions.\n\n1. **Data Segmentation**: The code successfully filtered the EO 13960 dataset, identifying 59 distinct 'Rights-Impacting' systems and 18 'Safety-Impacting' systems.\n\n2. **Governance Vacuum**: Contrary to the expectation that rights-impacting systems would have higher consultation rates, the analysis found **zero** documented instances of stakeholder consultation in either group (0/59 and 0/18). Both proportions were 0.0%.\n\n3. **Statistical Inference**: Because both groups had identical zero probabilities, the Z-test returned a p-value of 1.0 (Standard Error = 0). \n\n4. **Conclusion**: The hypothesis is rejected. The data does not show a bias toward rights over safety; instead, it highlights a systemic lack of documented external engagement for *all* high-impact AI systems in this specific subset of the federal inventory.",
+  "child_ids": [
+    "node_7_12"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy.stats import norm\nimport sys\n\ndef run_experiment():\n    print(\"Starting experiment: Rights vs. Safety Consultation Split...\")\n    \n    # 1. Load dataset\n    # Try loading from parent directory first as per instructions, then current\n    file_name = 'astalabs_discovery_all_data.csv'\n    paths = [f'../{file_name}', file_name]\n    df_all = None\n    \n    for p in paths:\n        try:\n            df_all = pd.read_csv(p, low_memory=False)\n            print(f\"Successfully loaded {p}\")\n            break\n        except FileNotFoundError:\n            continue\n            \n    if df_all is None:\n        print(\"Error: Dataset not found in ../ or current directory.\")\n        return\n\n    # 2. Filter for EO 13960 Scored data\n    df = df_all[df_all['source_table'] == 'eo13960_scored'].copy()\n    print(f\"Filtered eo13960_scored subset: {len(df)} rows\")\n\n    # 3. Define Columns\n    col_impact = '17_impact_type'\n    col_consult = '63_stakeholder_consult'\n    \n    # Validate columns exist\n    if col_impact not in df.columns or col_consult not in df.columns:\n        print(f\"Error: Missing columns. Available: {df.columns.tolist()}\")\n        return\n\n    # 4. Filter Groups (Rights vs Safety)\n    # Normalize text to handle potential inconsistencies\n    df['impact_norm'] = df[col_impact].fillna('').astype(str).str.lower().str.strip()\n    \n    # Define masks\n    # Rights-Impacting: Contains 'rights', does NOT contain 'safety'\n    mask_rights = df['impact_norm'].str.contains('rights') & ~df['impact_norm'].str.contains('safety')\n    \n    # Safety-Impacting: Contains 'safety', does NOT contain 'rights'\n    mask_safety = df['impact_norm'].str.contains('safety') & ~df['impact_norm'].str.contains('rights')\n    \n    rights_df = df[mask_rights]\n    safety_df = df[mask_safety]\n    \n    print(f\"Groups Identified:\")\n    print(f\"  - Rights-Impacting (Exclusive): {len(rights_df)}\")\n    print(f\"  - Safety-Impacting (Exclusive): {len(safety_df)}\")\n    \n    if len(rights_df) == 0 or len(safety_df) == 0:\n        print(\"Error: One or both groups have 0 samples. Cannot perform test.\")\n        print(\"Sample Impact Types:\", df['impact_norm'].unique()[:10])\n        return\n\n    # 5. Calculate Consultation Rates\n    # We assume 'Yes' indicates consultation. \n    def parse_consultation(val):\n        if pd.isna(val):\n            return 0\n        val_str = str(val).lower().strip()\n        return 1 if val_str == 'yes' else 0\n\n    rights_consulted = rights_df[col_consult].apply(parse_consultation)\n    safety_consulted = safety_df[col_consult].apply(parse_consultation)\n\n    k1 = rights_consulted.sum()\n    n1 = len(rights_consulted)\n    p1 = k1 / n1 if n1 > 0 else 0\n\n    k2 = safety_consulted.sum()\n    n2 = len(safety_consulted)\n    p2 = k2 / n2 if n2 > 0 else 0\n\n    print(f\"\\nConsultation Statistics:\")\n    print(f\"  - Rights-Impacting: {k1}/{n1} consulted ({p1:.2%})\")\n    print(f\"  - Safety-Impacting: {k2}/{n2} consulted ({p2:.2%})\")\n\n    # 6. Statistical Test (Two-Proportion Z-Test)\n    # Pooled probability\n    p_pool = (k1 + k2) / (n1 + n2)\n    se = np.sqrt(p_pool * (1 - p_pool) * (1/n1 + 1/n2))\n    \n    if se == 0:\n        print(\"Standard Error is 0 (identical proportions or zero variance).\")\n        z_score = 0\n        p_value = 1.0\n    else:\n        z_score = (p1 - p2) / se\n        p_value = 2 * (1 - norm.cdf(abs(z_score)))  # Two-sided p-value\n\n    print(f\"\\nZ-Test Results:\")\n    print(f\"  - Z-Score: {z_score:.4f}\")\n    print(f\"  - P-Value: {p_value:.4e}\")\n    \n    significance = \"Significant\" if p_value < 0.05 else \"Not Significant\"\n    print(f\"  - Conclusion: {significance} difference at alpha=0.05\")\n\n    # 7. Visualization\n    plt.figure(figsize=(8, 6))\n    categories = ['Rights-Impacting', 'Safety-Impacting']\n    values = [p1, p2]\n    colors = ['#3498db', '#e74c3c']\n    \n    bars = plt.bar(categories, values, color=colors, alpha=0.8)\n    plt.ylabel('Proportion of Stakeholder Consultation')\n    plt.title('Stakeholder Consultation: Rights vs. Safety')\n    plt.ylim(0, max(values) * 1.2 if max(values) > 0 else 1)\n    \n    # Add counts and percentages on bars\n    for idx, rect in enumerate(bars):\n        height = rect.get_height()\n        count_text = f\"{height:.1%}\\n(n={k1 if idx==0 else k2})\"\n        plt.text(rect.get_x() + rect.get_width()/2., height, count_text,\n                 ha='center', va='bottom')\n\n    plt.grid(axis='y', linestyle='--', alpha=0.5)\n    plt.tight_layout()\n    plt.show()\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting experiment: Rights vs. Safety Consultation Split...\nSuccessfully loaded astalabs_discovery_all_data.csv\nFiltered eo13960_scored subset: 1757 rows\nGroups Identified:\n  - Rights-Impacting (Exclusive): 59\n  - Safety-Impacting (Exclusive): 18\n\nConsultation Statistics:\n  - Rights-Impacting: 0/59 consulted (0.00%)\n  - Safety-Impacting: 0/18 consulted (0.00%)\nStandard Error is 0 (identical proportions or zero variance).\n\nZ-Test Results:\n  - Z-Score: 0.0000\n  - P-Value: 1.0000e+00\n  - Conclusion: Not Significant difference at alpha=0.05\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n**1. Plot Type**\n*   **Type:** Bar Plot (Column Chart).\n*   **Purpose:** To compare the proportion of stakeholder consultation events between two distinct categories of impact: \"Rights-Impacting\" and \"Safety-Impacting\".\n\n**2. Axes**\n*   **X-axis:**\n    *   **Labels:** Categorical labels representing two scenarios: \"Rights-Impacting\" and \"Safety-Impacting\".\n    *   **Value Range:** N/A (Categorical).\n*   **Y-axis:**\n    *   **Title:** \"Proportion of Stakeholder Consultation\".\n    *   **Value Range:** 0.0 to 1.0 (representing a range from 0% to 100%).\n    *   **Ticks:** Marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n\n**3. Data Trends**\n*   **Tallest/Shortest Bars:** There are no visible bars for either category, indicating values of zero.\n*   **Patterns:** Both categories exhibit identical behavior. The data shows a \"floor\" effect where both the \"Rights-Impacting\" and \"Safety-Impacting\" scenarios have a value of 0.\n*   **Comparison:** There is no difference between the two groups; both are at the absolute minimum of the scale.\n\n**4. Annotations and Legends**\n*   **Annotations:**\n    *   Above the \"Rights-Impacting\" position: Text reads **\"0.0% (n=0)\"**.\n    *   Above the \"Safety-Impacting\" position: Text reads **\"0.0% (n=0)\"**.\n    *   This annotation explicitly states the percentage value is zero and indicates the count ($n$) associated with that proportion is zero.\n*   **Chart Title:** \"Stakeholder Consultation: Rights vs. Safety\".\n*   **Grid Lines:** Horizontal dashed grid lines are present at 0.2 intervals to aid in reading values, though they highlight the emptiness of the chart in this specific instance.\n\n**5. Statistical Insights**\n*   **Absence of Consultation:** The most critical insight is the complete absence of stakeholder consultation in the dataset analyzed. Regardless of whether a scenario was \"Rights-Impacting\" or \"Safety-Impacting,\" the proportion of consultation was 0.0%.\n*   **Sample Count ($n$):** The notation $(n=0)$ likely refers to the number of observed consultations (the numerator). This suggests that out of the total cases reviewed, exactly zero involved stakeholder consultation.\n*   **Conclusion:** The data suggests a potential systemic gap or a specific finding within the study context where stakeholder engagement is non-existent for these specific impact types. Neither safety concerns nor rights concerns appear to be triggers for consultation in this specific dataset.\n==================================================",
+  "created_at": "2026-02-22T09:44:23.486273+00:00",
+  "creation_idx": 185,
+  "experiment_id": "node_6_26",
+  "experiment_plan": {
+    "deliverables": "Comparison of consultation rates; Statistical test results; Analysis of governance focus.",
+    "objective": "Determine if the type of impact (Rights vs. Safety) influences the likelihood of stakeholder consultation.",
+    "steps": "1. Load `eo13960_scored`.\n2. Filter `17_impact_type` into two distinct groups: 'Rights-Impacting' and 'Safety-Impacting' (exclude 'Both' or 'Neither' to ensure clear separation).\n3. Parse `63_stakeholder_consult` into a binary variable.\n4. Perform a Chi-square test or Z-test to compare consultation rates between the two groups."
+  },
+  "hypothesis": "The 'Rights vs. Safety' Consultation Split: AI systems designated as 'Rights-Impacting' exhibit significantly higher rates of 'Stakeholder Consultation' compared to 'Safety-Impacting' systems, indicating a governance bias toward civil liberties over physical safety in consultation processes.",
+  "id_in_run": 184,
+  "is_surprising": true,
+  "parent_id": "node_5_50",
+  "posterior": 0.16758241758241757,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.16758241758241757,
+    "n": 60.0,
+    "prior_params": [
+      15.25,
+      15.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.49193548387096775,
+  "prior_belief": {
+    "_empirical_mean": 0.49166666666666664,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 10.0,
+    "maybe_true": 9.0,
+    "mean": 0.49193548387096775,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 11.0
+  },
+  "review": "The experiment was executed faithfully and without error. The code correctly implemented the filtering logic to isolate exclusive 'Rights-Impacting' and 'Safety-Impacting' groups and performed the statistical comparison as requested.",
+  "rich_outputs": null,
+  "runtime_ms": 190660.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.38922367954626025
+}

@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset found at: astalabs_discovery_all_data.csv
+Total EO 13960 records: 1757
+Records with valid phase: 992
+
+Contingency Table:
+Monitored         No  Yes
+Phase                    
+Operational      574   67
+Pre-Operational  331   20
+
+Monitoring Compliance Rates (%):
+Monitored               No        Yes
+Phase                                
+Operational      89.547582  10.452418
+Pre-Operational  94.301994   5.698006
+
+Chi-Square Test Result:
+Statistic: 5.8273
+P-value: 1.5780e-02
+
+Insight: 10.5% of Operational systems have monitoring vs 5.7% of Pre-Operational systems.
+Conclusion: Significant difference detected between stages.
+ALERT: Major Governance Gap. Less than 50% of operational systems are monitored.

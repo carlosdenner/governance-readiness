@@ -1,0 +1,58 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Threat-Reality Mismatch Experiment...
+AIID Records with Sector info: 201
+ATLAS Records: 52
+
+--- Sector Distribution Comparison ---
+                         AIID_Count  ATLAS_Count  Expected_ATLAS
+Security/Defense                  2         39.0             0.5
+Transportation/Robotics          28          0.0             7.2
+Healthcare                       15          0.0             3.9
+Finance                           6          1.0             1.6
+Info/Tech/Content                96         10.0            24.8
+Other                            54          2.0            14.0
+
+Chi-Square Statistic: 2892.5820
+P-Value: 0.0000e+00
+Result: We REJECT the null hypothesis that ATLAS follows the same sector distribution as AIID.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (or Clustered Bar Chart).
+*   **Purpose:** This chart is designed to compare the distribution of cases across different industry sectors for two distinct datasets: "Real-World" incidents versus "Adversarial Research" focus. Its primary goal is to visualize the discrepancy (mismatch) between where threats occur in reality versus where academic or security research is focused.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Represents different industry sectors.
+    *   **Categories:** Security/Defense, Transportation/Robotics, Healthcare, Finance, Info/Tech/Content, Other.
+    *   **Formatting:** Labels are rotated approximately 45 degrees to prevent overlapping.
+*   **Y-Axis:**
+    *   **Label:** "Percentage of Cases".
+    *   **Range:** The scale runs from 0 to 75 (with increments of 10 visible).
+    *   **Units:** Percentage (%).
+
+### 3. Data Trends
+*   **The "Security/Defense" Anomaly:** This is the most striking feature of the plot. Adversarial Research (Red) focuses overwhelmingly on this sector, comprising approximately **75%** of its cases. In stark contrast, Real-World incidents (Blue) in this sector are negligible, appearing to be around **1%**.
+*   **Real-World Prevalence:** The "Info/Tech/Content" sector dominates the Real-World data, accounting for nearly **50%** (approx. 48%) of actual cases. While research covers this area (approx. 19-20%), it is underrepresented compared to reality.
+*   **Missing Research Coverage:** There are significant gaps in the research dataset.
+    *   **Transportation/Robotics** accounts for roughly **14%** of real-world cases but appears to have **0%** (or near-zero) representation in the adversarial research data shown.
+    *   **Healthcare** follows a similar pattern, with roughly **7-8%** real-world prevalence and no visible research representation.
+*   **"Other" Category:** A significant portion of real-world cases (approx. **27%**) fall into the "Other" category, whereas research rarely focuses here (approx. **4%**).
+*   **Alignment:** "Finance" is the only sector where the two datasets appear somewhat aligned, though both are low volume (approx. 3% for Real-World vs. 2% for Research).
+
+### 4. Annotations and Legends
+*   **Title:** "Threat-Reality Mismatch: Sector Distribution" — clearly indicates the chart's intended message regarding the disconnect between theory and practice.
+*   **Legend (Top Right):**
+    *   **Light Blue:** Represents "Real-World (AIID)" — referring to the AI Incident Database.
+    *   **Salmon/Red:** Represents "Adversarial Research (ATLAS)" — referring to the MITRE ATLAS framework or similar adversarial threat research.
+
+### 5. Statistical Insights
+The plot illustrates a **severe allocation bias** in adversarial machine learning research.
+
+1.  **Inverse Priority:** There is a near-inverse relationship between research interest and actual incident frequency. The sector receiving the most research attention (Security/Defense) has the fewest reported real-world incidents, while the sectors with the most incidents (Info/Tech/Content and 'Other') receive significantly less proportional attention.
+2.  **Research Blind Spots:** The complete lack of visible bars for "Adversarial Research" in critical infrastructure sectors like **Healthcare** and **Transportation/Robotics** suggests a potential vulnerability. If research is not being conducted in these areas, practitioners may be unprepared for the ~20% of real-world incidents occurring there.
+3.  **Conclusion:** The data suggests that current adversarial research models may be overly militarized or theoretical (focusing on defense/security scenarios), while failing to address the practical, everyday failures and attacks occurring in consumer technology, content moderation, and industrial applications.
+==================================================

@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment was successfully executed. The code corrected the previous data parsing issue by implementing a text-analysis heuristic to identify 'Disparity Mitigation' compliance from free-text descriptions, rather than looking for a binary 'Yes'. \n\n**Hypothesis Test Results:**\n1.  **Data Distribution:**\n    -   **Non-Biometric Systems:** 1,701 total. 1,645 had no mitigation, 56 had mitigation (3.29% compliance).\n    -   **Biometric Systems:** 56 total. 53 had no mitigation, 3 had mitigation (5.36% compliance).\n\n2.  **Statistical Test:**\n    -   **Fisher's Exact Test P-value:** 0.4329\n    -   **Chi-Square P-value:** 0.6405\n    -   **Odds Ratio:** 1.6627\n\n3.  **Conclusion:**\n    While Biometric systems showed a slightly higher rate of compliance (5.36% vs 3.29%) and a positive Odds Ratio (1.66), the difference is **not statistically significant** (p > 0.05). The analysis indicates that disparity mitigation practices are rarely documented across the entire federal inventory, regardless of the system type. The hypothesis that biometric systems have a *significantly* higher rate of compliance is **rejected** based on this evidence.",
+  "child_ids": [
+    "node_5_13",
+    "node_5_42"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import fisher_exact, chi2_contingency\n\n# Load dataset\nfilename = 'astalabs_discovery_all_data.csv'\ntry:\n    df = pd.read_csv(filename, low_memory=False)\n    \n    # Filter for EO 13960 data\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"Loaded EO 13960 dataset: {len(df_eo)} rows\")\n\n    # 1. Create 'is_biometric' (Independent Variable)\n    keywords = ['face', 'facial', 'biometric', 'voice', 'recognition']\n    pattern = '|'.join(keywords)\n    df_eo['2_use_case_name'] = df_eo['2_use_case_name'].astype(str)\n    df_eo['is_biometric'] = df_eo['2_use_case_name'].str.contains(pattern, case=False, na=False)\n\n    # 2. Create 'has_mitigation' (Dependent Variable) using text analysis\n    # Logic: Default to True, set to False if text indicates N/A, None, or No mechanism.\n    def check_mitigation(text):\n        if pd.isna(text):\n            return False\n        s = str(text).strip().lower()\n        if s == '' or s == 'nan':\n            return False\n        \n        # Negative indicators at the start or specific phrases\n        if s.startswith('n/a'): return False\n        if s.startswith('none'): return False\n        if s.startswith('no '): return False\n        if s.startswith('not '): return False\n        if 'not applicable' in s: return False\n        if 'no demographic' in s: return False\n        if 'not safety' in s: return False\n        \n        # If it passed all above, we assume it describes a mitigation\n        return True\n\n    df_eo['has_mitigation'] = df_eo['62_disparity_mitigation'].apply(check_mitigation)\n\n    # 3. Generate Contingency Table\n    contingency = pd.crosstab(df_eo['is_biometric'], df_eo['has_mitigation'])\n    \n    # Force 2x2 shape [False, True]\n    contingency = contingency.reindex(index=[False, True], columns=[False, True], fill_value=0)\n    contingency.index = ['Non-Biometric', 'Biometric']\n    contingency.columns = ['No Mitigation', 'Has Mitigation']\n\n    print(\"\\n--- Contingency Table (Counts) ---\")\n    print(contingency)\n\n    # 4. Statistical Testing\n    # Fisher's Exact Test\n    stat, p_val = fisher_exact(contingency)\n    print(f\"\\n--- Fisher's Exact Test Results ---\")\n    print(f\"P-value: {p_val:.4f}\")\n    \n    # Chi-square\n    chi2, p_chi2, dof, expected = chi2_contingency(contingency)\n    print(f\"Chi-Square Statistic: {chi2:.4f}, P-value: {p_chi2:.4f}\")\n\n    # 5. Calculate Odds Ratio & Compliance Rates\n    non_bio_no = contingency.loc['Non-Biometric', 'No Mitigation']\n    non_bio_yes = contingency.loc['Non-Biometric', 'Has Mitigation']\n    bio_no = contingency.loc['Biometric', 'No Mitigation']\n    bio_yes = contingency.loc['Biometric', 'Has Mitigation']\n    \n    non_bio_total = non_bio_no + non_bio_yes\n    bio_total = bio_no + bio_yes\n    \n    print(\"\\n--- Compliance Rates ---\")\n    if non_bio_total > 0:\n        nb_rate = (non_bio_yes / non_bio_total) * 100\n        print(f\"Non-Biometric: {nb_rate:.2f}% ({non_bio_yes}/{non_bio_total})\")\n    \n    if bio_total > 0:\n        b_rate = (bio_yes / bio_total) * 100\n        print(f\"Biometric:     {b_rate:.2f}% ({bio_yes}/{bio_total})\")\n\n    # Odds Ratio\n    # OR = (bio_yes / bio_no) / (non_bio_yes / non_bio_no)\n    if bio_no > 0 and non_bio_yes > 0:\n        or_val = (bio_yes * non_bio_no) / (bio_no * non_bio_yes)\n        print(f\"\\nOdds Ratio: {or_val:.4f}\")\n    else:\n        print(\"\\nOdds Ratio: Undefined (division by zero)\")\n\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loaded EO 13960 dataset: 1757 rows\n\n--- Contingency Table (Counts) ---\n               No Mitigation  Has Mitigation\nNon-Biometric           1645              56\nBiometric                 53               3\n\n--- Fisher's Exact Test Results ---\nP-value: 0.4329\nChi-Square Statistic: 0.2181, P-value: 0.6405\n\n--- Compliance Rates ---\nNon-Biometric: 3.29% (56/1701)\nBiometric:     5.36% (3/56)\n\nOdds Ratio: 1.6627\n",
+  "created_at": "2026-02-22T02:49:20.826740+00:00",
+  "creation_idx": 38,
+  "experiment_id": "node_4_10",
+  "experiment_plan": {
+    "deliverables": "Unique values of mitigation column, 2x2 Contingency table (guaranteed shape), Fisher's Exact Test p-value, and Odds Ratio.",
+    "objective": "Investigate if biometric use cases are better governed regarding bias mitigation than non-biometric cases, with robust handling for sparse compliance data.",
+    "steps": "1. Load the `astalabs_discovery_all_data.csv` dataset and filter for rows where `source_table` is 'eo13960_scored'.\n2. Print the unique values of the column `62_disparity_mitigation` to verify the exact string representation of positive cases.\n3. Create a boolean variable `is_biometric` by searching the `2_use_case_name` column for the keywords ['Face', 'Facial', 'Biometric', 'Voice', 'Recognition'] (case-insensitive).\n4. Create a boolean variable `has_mitigation` by checking if `62_disparity_mitigation` equals 'Yes' (ensure case-insensitive comparison and strip whitespace).\n5. Generate a contingency table using `pd.crosstab` crossing `is_biometric` (rows) and `has_mitigation` (columns).\n6. CRITICAL: Reindex the contingency table to ensure it has indices `[False, True]` and columns `[False, True]` with `fill_value=0`. This prevents the `ValueError` experienced previously if a category is missing.\n7. Rename the indices to ['Non-Biometric', 'Biometric'] and columns to ['No Mitigation', 'Mitigation'].\n8. Perform a Fisher's Exact Test (appropriate for potentially small cell counts) to test for independence.\n9. Calculate and print the Odds Ratio and the compliance percentage for both groups."
+  },
+  "hypothesis": "Biometric Bias Awareness: AI systems involving biometric data (e.g., Facial Recognition) have a significantly higher rate of 'Disparity Mitigation' compliance compared to non-biometric systems, reflecting heightened awareness of bias risks in this domain.",
+  "id_in_run": 37,
+  "is_surprising": true,
+  "parent_id": "node_3_10",
+  "posterior": 0.36813186813186816,
+  "posterior_belief": {
+    "_empirical_mean": 0.18333333333333332,
+    "_type": "boolean_cat",
+    "definitely_false": 16.0,
+    "definitely_true": 0.0,
+    "maybe_false": 44.0,
+    "maybe_true": 0.0,
+    "mean": 0.36813186813186816,
+    "n": 60.0,
+    "prior_params": [
+      22.5,
+      8.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7258064516129032,
+  "prior_belief": {
+    "_empirical_mean": 0.7333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 1.0,
+    "maybe_true": 29.0,
+    "mean": 0.7258064516129032,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented. The code successfully adapted to the data quality issues encountered in previous attempts by implementing a heuristic text analysis function to correctly identify 'Disparity Mitigation' compliance from free-text descriptions. This allowed for a valid statistical comparison.",
+  "rich_outputs": null,
+  "runtime_ms": 349810.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.4292095001772421
+}

@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 Scored subset shape: (1757, 196)
+Data shape after classification and filtering: (36, 198)
+Service Type Counts:
+ service_type
+Public Service    35
+Internal/Other     1
+Name: count, dtype: int64
+Notice Status Counts:
+ notice_status
+No Notice     19
+Has Notice    17
+Name: count, dtype: int64
+
+Contingency Table:
+notice_status   Has Notice  No Notice
+service_type                         
+Internal/Other           0          1
+Public Service          17         18
+
+Public Service Notice Rate: 48.57% (17/35)
+Internal/Other Notice Rate: 0.00% (0/1)
+
+Chi-Square Test Results:
+Chi2 Statistic: 0.0000
+P-value: 1.0000e+00
+Conclusion: FAIL TO REJECT Null Hypothesis. No significant difference detected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Chart.
+*   **Purpose:** The chart is designed to compare the prevalence (percentage) of "AI Notice Implementation" between two distinct categories of systems: Public Service and Internal/Other.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Title:** The axis represents categories of AI implementation. The specific labels are "Public Service" and "Internal/Other".
+*   **Y-Axis:**
+    *   **Label/Title:** "Percentage with AI Notice (%)".
+    *   **Value Range:** The axis is marked with intervals of 10, ranging from **0 to 50**.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Public Service" category is the dominant bar, reaching a height representing **48.6%**.
+*   **Shortest Bar:** The "Internal/Other" category is non-existent visually, sitting flat on the x-axis with a value of **0.0%**.
+*   **Pattern:** The chart displays a binary trend where nearly half of the public-facing services have AI notices, while internal systems in this dataset show a complete absence of such notices.
+
+### 4. Annotations and Legends
+*   **Title:** The main title is "Transparency Gap: AI Notice Implementation Public Service vs. Internal Systems," which sets the context for the comparison.
+*   **Data Labels:** There are precise numerical annotations placed directly above the bars to indicate exact values:
+    *   "48.6%" above the Public Service bar.
+    *   "0.0%" above the Internal/Other bar position.
+*   **Legend:** There is no separate legend box; the categories are identified directly by the x-axis labels.
+
+### 5. Statistical Insights
+*   **The "Transparency Gap":** The plot visualizes the concept mentioned in the title. There is a massive disparity (a gap of 48.6 percentage points) between how AI is disclosed to the public versus how it is disclosed internally.
+*   **External vs. Internal Policy:** The data suggests that while organizations (or the entities surveyed) are making an effort to inform the public about AI usage (approaching 50% adoption), there is zero transparency regarding AI usage within internal systems or "other" categories.
+*   **Internal Opacity:** The 0.0% statistic is significant. It implies that in the sampled data, not a single internal system included a notice regarding the use of Artificial Intelligence, indicating total opacity in that specific sector.
+==================================================

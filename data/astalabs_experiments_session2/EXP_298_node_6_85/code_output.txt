@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+ATLAS cases loaded: 52
+
+Sector Inference Results:
+inferred_sector
+Digital     26
+Physical    12
+Name: count, dtype: int64
+Unclassified cases dropped: 14
+
+Contingency Table (Sector vs Has Impact):
+has_impact       False  True 
+inferred_sector              
+Digital              7     19
+Physical             5      7
+
+Fisher's Exact Test Results:
+Odds Ratio: 0.5158
+P-value: 0.4605
+Result: No statistically significant association found.
+
+Physical Sector Impact Rate: 7/12 (58.33%)
+Digital Sector Impact Rate: 19/26 (73.08%)

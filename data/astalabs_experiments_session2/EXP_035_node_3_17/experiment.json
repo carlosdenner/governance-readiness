@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully tested the 'Vendor Transparency Deficit' hypothesis by analyzing 956 valid records from the EO 13960 dataset. The code classified systems into 'Commercial/COTS' (n=81) and 'Custom/General' (n=875) based on the `10_commercial_ai` field, and evaluated code accessibility using the `38_code_access` field.\n\nThe results provide strong statistical support for the hypothesis:\n- **Commercial/COTS systems** had a code access rate of **44.44%**.\n- **Custom/General systems** had a significantly higher code access rate of **64.34%**.\n\nA Chi-Square test of independence yielded a statistic of 11.71 and a **p-value of 0.00062**, confirming that the difference is statistically significant (p < 0.05). This finding suggests that reliance on commercial AI vendors introduces a tangible transparency barrier, with government-developed or general systems being roughly 1.45 times more likely to allow code inspection than their commercial counterparts.",
+  "child_ids": [
+    "node_4_37",
+    "node_4_46"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for EO 13960 records\ndf_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n\nprint(f\"EO 13960 Records: {len(df_eo)}\")\n\n# --- Variable Construction ---\n\n# 1. Independent Variable: System Type (Commercial vs Custom)\n# Logic: '10_commercial_ai' containing 'None of the above' is treated as Custom/General.\n# Any specific commercial category is treated as Commercial.\n\ndef classify_type(val):\n    if pd.isna(val):\n        return np.nan\n    val_str = str(val).lower().strip()\n    if 'none of the above' in val_str:\n        return 'Custom/General'\n    else:\n        return 'Commercial/COTS'\n\ndf_eo['system_type'] = df_eo['10_commercial_ai'].apply(classify_type)\n\n# 2. Dependent Variable: Code Access\n# Logic: Explicit 'Yes' vs 'No'. NaNs are excluded from the test.\n\ndef classify_access(val):\n    if pd.isna(val):\n        return np.nan\n    val_str = str(val).lower().strip()\n    if 'yes' in val_str:\n        return 'Yes'\n    elif 'no' in val_str:\n        return 'No'\n    return np.nan\n\ndf_eo['code_access'] = df_eo['38_code_access'].apply(classify_access)\n\n# Filter for valid records (excluding NaNs in either variable)\nvalid_df = df_eo.dropna(subset=['system_type', 'code_access']).copy()\n\nprint(f\"\\nValid Records for Analysis: {len(valid_df)}\")\nprint(\"\\n--- System Type Distribution (Valid Records) ---\")\nprint(valid_df['system_type'].value_counts())\n\nprint(\"\\n--- Code Access Distribution (Valid Records) ---\")\nprint(valid_df['code_access'].value_counts())\n\n# --- Statistical Analysis ---\n\n# Contingency Table\ncontingency = pd.crosstab(valid_df['system_type'], valid_df['code_access'])\n# Ensure columns are ordered No, Yes for consistency\nif 'No' not in contingency.columns: contingency['No'] = 0\nif 'Yes' not in contingency.columns: contingency['Yes'] = 0\ncontingency = contingency[['No', 'Yes']]\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency)\n\n# Calculate Rates\ncomm_row = contingency.loc['Commercial/COTS']\ncustom_row = contingency.loc['Custom/General']\n\ncomm_total = comm_row.sum()\ncustom_total = custom_row.sum()\n\ncomm_rate = comm_row['Yes'] / comm_total if comm_total > 0 else 0\ncustom_rate = custom_row['Yes'] / custom_total if custom_total > 0 else 0\n\nprint(f\"\\nCommercial Code Access Rate: {comm_rate:.2%} ({comm_row['Yes']}/{comm_total})\")\nprint(f\"Custom/General Code Access Rate: {custom_rate:.2%} ({custom_row['Yes']}/{custom_total})\")\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Interpret Result\nalpha = 0.05\nif p < alpha:\n    print(\"Result: Statistically Significant difference detected.\")\nelse:\n    print(\"Result: No statistically significant difference detected.\")\n\n# --- Visualization ---\nplt.figure(figsize=(8, 6))\nbar_labels = ['Commercial/COTS', 'Custom/General']\nbar_values = [comm_rate, custom_rate]\ncolors = ['#d62728', '#1f77b4']\n\nbars = plt.bar(bar_labels, bar_values, color=colors, alpha=0.8)\n\nplt.ylabel('Proportion with Code Access')\nplt.title('Code Access: Commercial vs Custom AI (EO 13960)')\nplt.ylim(0, 1.1)\nplt.grid(axis='y', linestyle='--', alpha=0.5)\n\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 0.02,\n             f'{height:.1%}', ha='center', va='bottom', fontsize=12, fontweight='bold')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: EO 13960 Records: 1757\n\nValid Records for Analysis: 956\n\n--- System Type Distribution (Valid Records) ---\nsystem_type\nCustom/General     875\nCommercial/COTS     81\nName: count, dtype: int64\n\n--- Code Access Distribution (Valid Records) ---\ncode_access\nYes    599\nNo     357\nName: count, dtype: int64\n\n--- Contingency Table ---\ncode_access       No  Yes\nsystem_type              \nCommercial/COTS   45   36\nCustom/General   312  563\n\nCommercial Code Access Rate: 44.44% (36/81)\nCustom/General Code Access Rate: 64.34% (563/875)\n\nChi-Square Statistic: 11.7096\nP-value: 6.2178e-04\nResult: Statistically Significant difference detected.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Plot.\n*   **Purpose:** The plot compares the proportion of code access available between two specific categories of Artificial Intelligence software: \"Commercial/COTS\" (Commercial Off-The-Shelf) and \"Custom/General.\"\n\n### 2. Axes\n*   **X-axis:**\n    *   **Labels:** The axis features categorical labels for the two groups being compared: \"Commercial/COTS\" and \"Custom/General.\"\n*   **Y-axis:**\n    *   **Title:** \"Proportion with Code Access.\"\n    *   **Units:** The axis uses decimal proportions (0.0 to 1.0), representing percentages from 0% to 100%.\n    *   **Range:** The visible scale ranges from **0.0 to 1.1** (with the top tick mark at 1.0), encompassing the full range of possible probabilities.\n\n### 3. Data Trends\n*   **Tallest Bar:** The \"Custom/General\" category (blue bar) is the tallest, indicating a higher frequency of code access.\n*   **Shortest Bar:** The \"Commercial/COTS\" category (red bar) is the shortest, indicating lower code availability.\n*   **Pattern:** There is a clear disparity between the two categories, with Custom/General AI solutions providing significantly higher code accessibility compared to commercial off-the-shelf solutions.\n\n### 4. Annotations and Legends\n*   **Title:** \"Code Access: Commercial vs Custom AI (EO 13960)\" indicates the data relates to compliance or metrics associated with Executive Order 13960 (likely regarding AI use in government).\n*   **Value Labels:**\n    *   The Commercial/COTS bar is annotated with **44.4%**.\n    *   The Custom/General bar is annotated with **64.3%**.\n*   **Grid:** Horizontal dashed grid lines are present at intervals of 0.2 to assist in reading the bar heights against the y-axis.\n\n### 5. Statistical Insights\n*   **Magnitude of Difference:** There is a **19.9 percentage point difference** between the two categories (64.3% - 44.4%).\n*   **Interpretation:** Custom or General AI software is roughly **1.45 times more likely** to have code access available compared to Commercial Off-The-Shelf (COTS) software.\n*   **Contextual Insight:** This suggests that proprietary restrictions inherent to commercial software significantly limit code transparency compared to custom-built or general-purpose AI solutions within the context of the dataset (presumably federal or regulated AI inventories).\n==================================================",
+  "created_at": "2026-02-22T02:43:27.407146+00:00",
+  "creation_idx": 36,
+  "experiment_id": "node_3_17",
+  "experiment_plan": {
+    "deliverables": "Contingency table of Vendor Type vs. Code Access; Chi-Square statistic and p-value; Bar chart comparing transparency rates.",
+    "objective": "Compare the rate of code access availability between commercial and non-commercial AI procurements in the EO 13960 dataset.",
+    "steps": "1. Filter the dataset for `eo13960_scored` records.\n2. Create a binary group based on `10_commercial_ai` ('Yes' vs. 'No'/'Custom').\n3. Create a binary outcome from `38_code_access` ('Yes' vs. others).\n4. Calculate the proportion of systems with code access in each group.\n5. Perform a Chi-Square test of independence to assess statistical significance."
+  },
+  "hypothesis": "The Vendor Transparency Deficit: Government AI systems procured from commercial vendors are significantly less likely to provide code access compared to custom-developed systems, creating a transparency barrier.",
+  "id_in_run": 35,
+  "is_surprising": false,
+  "parent_id": "node_2_4",
+  "posterior": 0.9945054945054945,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9945054945054945,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully validated the 'Vendor Transparency Deficit' hypothesis. Analyzing 956 valid records from the EO 13960 dataset, the study found a statistically significant difference in code accessibility between commercial and custom/general AI systems (Chi-Square p=0.0006). Commercial/COTS systems (n=81) demonstrated a code access rate of only 44.4%, compared to 64.3% for Custom/General systems (n=875). This confirms that procuring commercial AI introduces a measurable transparency barrier, with custom-developed systems being approximately 1.45 times more likely to allow code inspection.",
+  "rich_outputs": null,
+  "runtime_ms": 327970.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.012761432116270831
+}

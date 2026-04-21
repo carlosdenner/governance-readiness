@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded from step3_incident_coding.csv. Rows: 52
+Filtered dataset size: 6
+Split distribution in filtered set:
+trust_integration_split
+integration-dominant    4
+trust-dominant          2
+Name: count, dtype: int64
+Failure category distribution in filtered set:
+failure_category
+Prevention    6
+Name: count, dtype: int64
+
+Contingency Table:
+failure_category         Prevention
+trust_integration_split            
+integration-dominant              4
+trust-dominant                    2
+
+Contingency table is not 2x2 (likely due to zero counts in one category). Cannot perform standard 2x2 Fisher's Exact Test.
+Shape is (2, 1)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot is designed to compare the frequency (count) of a specific failure category across two different distinct groups or "competency splits."
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Competency Split"
+    *   **Labels:** The axis represents categorical data with two specific groups: "integration-dominant" and "trust-dominant".
+*   **Y-Axis:**
+    *   **Title:** "Count"
+    *   **Range:** The axis spans from 0.0 to 4.2 (approximately), with tick marks at intervals of 0.5 (0.0, 0.5, 1.0, ..., 4.0).
+    *   **Units:** Frequency/Number of occurrences.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "integration-dominant" category corresponds to the tallest bar, reaching a count of exactly **4.0**.
+*   **Shortest Bar:** The "trust-dominant" category corresponds to the shorter bar, reaching a count of exactly **2.0**.
+*   **Pattern:** There is a clear descending trend from left to right, showing that the "integration-dominant" split has a significantly higher count compared to the "trust-dominant" split.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Failure Mode Distribution by Competency Split" – This clearly scopes the chart as an analysis of failures relative to competency configurations.
+*   **Legend:** Located in the top-right corner, titled "Failure Category." It identifies the data represented by the sky-blue bars as **"Prevention"**.
+
+### 5. Statistical Insights
+*   **Relative Frequency:** The "Prevention" failure mode occurs twice as often in the "integration-dominant" setting compared to the "trust-dominant" setting (a 2:1 ratio).
+*   **Distribution:**
+    *   **Integration-dominant:** Represents approximately 67% (4 out of 6) of the total recorded failures shown in this view.
+    *   **Trust-dominant:** Represents approximately 33% (2 out of 6) of the total recorded failures.
+*   **Implication:** This suggests that "Prevention" failures are more strongly associated with systems or scenarios characterized as "integration-dominant" rather than those that are "trust-dominant."
+==================================================

@@ -1,0 +1,52 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading astalabs_discovery_all_data.csv...
+Using column 'tactics' for analysis (n=52).
+Total analyzed cases: 104
+Cases with Exfiltration: 15
+Cases with Impact: 36
+
+--- Co-occurrence Results ---
+Exfiltration Cases: 5/15 (33.33%) also use Evasion
+Impact Cases:       14/36 (38.89%) also use Evasion
+
+Fisher's Exact Test (H1: Exfil > Impact for Evasion co-occurrence)
+Odds Ratio: 0.7857
+P-value: 0.7529
+
+Jaccard Similarity (Exfiltration <-> Evasion): 0.1515
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the analysis:
+
+**1. Plot Type**
+*   **Type:** Bar Chart.
+*   **Purpose:** The plot compares a numerical metric ("Proportion Involving Evasion Tactics") across two distinct categories of adversarial cases ("Exfiltration Cases" and "Impact Cases"). It is designed to contrast the sophistication (specifically the use of stealth/evasion) between attacks focused on data theft versus those focused on destruction.
+
+**2. Axes**
+*   **X-axis:**
+    *   **Labels:** The axis features two categorical labels: "Exfiltration Cases" and "Impact Cases".
+    *   **Range:** Two discrete categories.
+*   **Y-axis:**
+    *   **Title:** "Proportion Involving Evasion Tactics".
+    *   **Range:** The numerical scale runs from **0.0 to 1.0** (representing 0% to 100%), with tick marks every 0.2 units. The visible plot area extends slightly beyond 1.0 to approximately 1.1.
+    *   **Units:** The axis uses decimal proportions, while the data labels convert these to percentages.
+
+**3. Data Trends**
+*   **Tallest Bar:** The **"Impact Cases"** (red bar) is the tallest, indicating a higher prevalence of evasion tactics in this category.
+*   **Shortest Bar:** The **"Exfiltration Cases"** (blue bar) is the shortest.
+*   **Pattern:** There is a visible, though not massive, difference between the two categories. Counter to what might be assumed (that data theft requires more stealth), the data shows that destructive/impact-oriented cases actually utilize evasion tactics more frequently in this dataset.
+
+**4. Annotations and Legends**
+*   **Title:** "Adversarial Tech Sophistication: Stealth vs. Destruction" sets the context of the comparison.
+*   **Data Labels:**
+    *   Above the "Exfiltration Cases" bar: **33.3%**
+    *   Above the "Impact Cases" bar: **38.9%**
+    *   These annotations provide the exact values, making it easier to read than estimating from the Y-axis.
+*   **Color Coding:** The bars are color-coded (Blue for Exfiltration, Red for Impact) to visually distinguish the two categories, though there is no separate legend box.
+
+**5. Statistical Insights**
+*   **Prevalence of Evasion:** Evasion tactics are a significant component of both attack types, appearing in over one-third of all cases for both categories.
+*   **Comparative Insight:** Impact cases involve evasion tactics at a higher rate (**38.9%**) compared to Exfiltration cases (**33.3%**). This suggests that adversaries aiming for destruction or disruption (Impact) are slightly more likely to employ sophisticated evasion techniques than those aiming solely to steal data (Exfiltration).
+*   **Sophistication Gap:** The gap between the two is **5.6 percentage points**. While Exfiltration implies a need for "Stealth," the data suggests that "Destruction" campaigns are actually more sophisticated regarding evasion, perhaps to ensure the payload is delivered and executed before detection.
+==================================================

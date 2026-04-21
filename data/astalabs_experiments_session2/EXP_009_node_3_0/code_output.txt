@@ -1,0 +1,72 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded AIID Incidents: 1362 rows
+Data points after cleaning: 58
+Autonomy Distribution:
+ Autonomy_Clean
+High      21
+Low       20
+Medium    17
+Name: count, dtype: int64
+Harm Distribution:
+ Harm_Clean
+Severe      41
+Moderate     9
+Minor        8
+Name: count, dtype: int64
+
+Contingency Table:
+ Harm_Clean      Minor  Moderate  Severe
+Autonomy_Clean                         
+Low                 2         3      15
+Medium              3         3      11
+High                3         3      15
+
+Chi-Square Test Results:
+Chi2 Statistic: 0.6093, p-value: 9.6202e-01
+Result: No statistically significant relationship found.
+
+Row Percentages (%):
+ Harm_Clean      Minor  Moderate  Severe
+Autonomy_Clean                         
+Low              10.0      15.0    75.0
+Medium           17.6      17.6    64.7
+High             14.3      14.3    71.4
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Plot.
+*   **Purpose:** This plot is designed to compare the relative percentage distribution of incident severity categories (Minor, Moderate, Severe) across three different levels of AI autonomy (Low, Medium, High). It emphasizes the proportion of each severity type within each group rather than the total count of incidents.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Categories:** Three distinct categorical groups labeled "Low," "Medium," and "High."
+*   **Y-Axis:**
+    *   **Title:** "Proportion of Incidents"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Increments:** Ticks are marked every 0.2 units (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Severe Incidents (Dark Red):** This category dominates all three autonomy levels. In every column, the "Severe" segment occupies the largest portion of the bar, consistently representing over 60% of the incidents.
+    *   **Low Autonomy:** Visually appears to have the highest proportion of severe incidents (starting at approx. 0.25 on the y-axis, extending to 1.0).
+    *   **Medium Autonomy:** Appears to have the lowest proportion of severe incidents relative to the other groups (starting higher up the axis, around 0.35).
+*   **Minor Incidents (White/Cream):** This is the smallest category across all groups.
+    *   **Medium Autonomy:** Displays the largest proportion of minor incidents (approx. 18%).
+    *   **Low Autonomy:** Displays the smallest proportion of minor incidents (approx. 10%).
+*   **Moderate Incidents (Orange):** This segment remains relatively consistent but is slightly larger in the "Medium" category compared to "Low" or "High."
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Harm Severity Distribution by AI Autonomy Level" positioned at the top center.
+*   **Legend:** A box located to the right of the chart titled "Harm Severity," defining the color codes:
+    *   **White:** Minor
+    *   **Orange:** Moderate
+    *   **Dark Red:** Severe
+
+### 5. Statistical Insights
+*   **High Severity Prevalence:** The most significant insight is that regardless of the AI's autonomy level (Low, Medium, or High), the majority of recorded incidents result in "Severe" harm. This suggests that when failures occur in this dataset, they tend to be catastrophic rather than minor.
+*   **Non-Linear Progression:** There is no linear correlation shown between Autonomy Level and Severity. One might expect severity to increase strictly as autonomy increases, but the data shows that "Medium" autonomy actually has a safer profile (larger proportion of Minor/Moderate incidents) than both "Low" and "High."
+*   **Risk Profile:** "Low" autonomy appears to have the most dangerous proportional profile, with the smallest percentage of Minor incidents and the largest percentage of Severe incidents (roughly 75% of the bar).
+==================================================

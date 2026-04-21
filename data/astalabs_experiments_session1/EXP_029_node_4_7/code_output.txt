@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded dataset with 52 records.
+
+--- unique values in trust_integration_split ---
+<StringArray>
+['both', 'trust-dominant', 'integration-dominant']
+Length: 3, dtype: str
+
+Filtered subset size: 6
+group
+Integration    4
+Trust          2
+Name: count, dtype: int64
+
+--- Contingency Table ---
+failure_type  Prevention
+group                   
+Integration            4
+Trust                  2
+
+--- Full Table for Stats ---
+failure_type  Detection/Response  Prevention
+group                                       
+Integration                    0           4
+Trust                          0           2
+
+Fisher's Exact Test Results:
+Odds Ratio: nan
+P-value: 1.0000
+Conclusion: No statistically significant association (likely due to small sample size).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot (specifically designed as a grouped bar chart, though only one group has visible data).
+*   **Purpose:** The plot compares the count of incidents categorized by "Failure Mode" (Prevention vs. Detection/Response) across different "Dominant Readiness Gaps" (Integration and Trust).
+
+**2. Axes**
+*   **X-axis:**
+    *   **Title:** "Dominant Readiness Gap"
+    *   **Labels:** The axis features categorical variables: "Integration" and "Trust".
+*   **Y-axis:**
+    *   **Title:** "Incident Count"
+    *   **Range:** The values range from 0.0 to a maximum tick of 4.0, with intervals of 0.5.
+
+**3. Data Trends**
+*   **Dominant Category:** The "Integration" category represents the highest number of incidents.
+*   **Comparison:**
+    *   **Integration:** Shows a count of **4.0** incidents related to "Prevention".
+    *   **Trust:** Shows a count of **2.0** incidents related to "Prevention".
+*   **Missing/Zero Values:** There are no visible bars for the "Detection/Response" failure mode (Pink/Red) for either category, indicating a count of zero for this specific failure mode in this dataset.
+*   **Pattern:** The chart indicates that "Prevention" failures are twice as common in scenarios with an "Integration" readiness gap compared to those with a "Trust" readiness gap.
+
+**4. Annotations and Legends**
+*   **Chart Title:** "Failure Mode by Readiness Dominance" is displayed at the top center.
+*   **Legend:** Located in the top right corner with the title "Failure Mode".
+    *   **Pink/Light Red:** Represents "Detection/Response".
+    *   **Blue/Light Blue:** Represents "Prevention".
+
+**5. Statistical Insights**
+*   **Exclusive Failure Mode:** Within the scope of this data, 100% of the recorded incidents are classified as "Prevention" failures. There were no "Detection/Response" incidents recorded for these specific readiness gaps.
+*   **Risk Area:** The "Integration" readiness gap appears to be a more significant driver of Prevention failures (4 incidents) than the "Trust" gap (2 incidents). This suggests that efforts to improve system readiness should prioritize addressing Integration gaps to reduce the overall incident count.
+==================================================

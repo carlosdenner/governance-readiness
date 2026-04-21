@@ -1,0 +1,64 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+--- Failure Category Distribution (Before Filtering for Hypothesis) ---
+Failure_Category
+Robustness Failure    80
+Other                 41
+Mixed/Ambiguous        3
+Operator Error         2
+Name: count, dtype: int64
+
+--- Final Analysis Dataset Summary ---
+Autonomy_Class  Failure_Category  
+High Autonomy   Robustness Failure    17
+Low Autonomy    Operator Error         2
+                Robustness Failure    63
+dtype: int64
+
+--- Chi-Square Test Results ---
+Chi-Square Statistic: 0.0000
+P-value: 1.0000e+00
+
+STDERR:
+<ipython-input-1-24126a99e51e>:98: Pandas4Warning: Starting with pandas version 4.0 all arguments of sum will be keyword-only.
+  contingency_pct = contingency_table.div(contingency_table.sum(1), axis=0) * 100
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis of the plot:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** This plot compares the proportional distribution of two specific failure types ("Operator Error" and "Robustness Failure") across two distinct categories of system autonomy ("High Autonomy" and "Low Autonomy"). The stacking allows the viewer to see the part-to-whole relationship, where the total height represents 100% of incidents for that category.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Autonomy Level"
+    *   **Labels:** Two categorical labels are presented vertically: "High Autonomy" and "Low Autonomy".
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Incidents (%)"
+    *   **Range:** The axis spans from 0 to slightly over 100, with tick marks at intervals of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Dominant Trend:** "Robustness Failure" (represented in yellow) is the overwhelmingly dominant failure mode in both autonomy settings.
+*   **High Autonomy:**
+    *   **Robustness Failure:** Comprises the entirety of the incidents (tallest segment).
+    *   **Operator Error:** Is non-existent in this category (shortest segment/non-visible).
+*   **Low Autonomy:**
+    *   **Robustness Failure:** Still comprises the vast majority of incidents.
+    *   **Operator Error:** Represents a very small fraction of the total incidents.
+
+### 4. Annotations and Legends
+*   **Legend:** Located on the top right, titled "Failure Type".
+    *   **Purple Square:** Represents "Operator Error".
+    *   **Yellow Square:** Represents "Robustness Failure".
+*   **Annotations:**
+    *   **High Autonomy Bar:** Labeled with "100.0%" in the yellow section and "0.0%" at the baseline.
+    *   **Low Autonomy Bar:** Labeled with "96.9%" in the yellow section and "3.1%" in the purple section.
+*   **Title:** The chart is titled "Distribution of Failure Types by Autonomy Level".
+
+### 5. Statistical Insights
+*   **Elimination of Operator Error:** The most significant insight is that moving from "Low Autonomy" to "High Autonomy" completely eliminates "Operator Error" in this dataset, dropping from 3.1% to 0.0%.
+*   **Persistence of System Fragility:** Regardless of the autonomy level, the system's own robustness is the primary bottleneck. Robustness failures account for nearly all incidents (96.9% to 100%), suggesting that while automation removes human error, it does not necessarily solve intrinsic system reliability issues.
+*   **Impact of Autonomy:** The transition to high autonomy effectively shifts the failure profile entirely onto the system itself, removing the human operator as a variable in failure causation.
+==================================================

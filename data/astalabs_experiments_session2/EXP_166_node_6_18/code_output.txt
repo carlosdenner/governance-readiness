@@ -1,0 +1,57 @@
+exitcode: 0 (execution succeeded)
+Code output: Valid analysis rows: 57
+
+--- Compliance Statistics ---
+                  count      mean   sum  compliance_pct
+Agency_Category                                        
+Civilian/Service     43  0.930233  40.0       93.023256
+Defense/Intel        14  0.928571  13.0       92.857143
+
+--- Contingency Table (0=No Notice, 1=Notice) ---
+Notice_Compliance  0.0  1.0
+Agency_Category            
+Civilian/Service     3   40
+Defense/Intel        1   13
+
+Using Fisher's Exact Test (small sample size)...
+
+--- Fisher's Exact Results ---
+p-value: 1.0000e+00
+Result: No Statistically Significant Difference.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot with Error Bars.
+*   **Purpose:** The plot compares the mean "Compliance Rate" between two distinct categorical groups: "Civilian/Service" agencies and "Defense/Intel" agencies. The error bars are included to indicate the variability, uncertainty, or confidence intervals associated with the data.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Label:** "Agency Category"
+    *   **Categories:** The axis displays two discrete categories: "Civilian/Service" and "Defense/Intel".
+*   **Y-axis:**
+    *   **Label:** "Compliance Rate"
+    *   **Range:** The visible scale ranges from **0.0 to 1.0** (representing 0% to 100%), with tick marks every 0.2 units. The graph space extends slightly above 1.0 to accommodate the error bars.
+    *   **Units:** The axis uses decimal notation (0.0–1.0) to represent proportions/rates, which correspond to the percentage values annotated on the bars.
+
+### 3. Data Trends
+*   **Bar Heights:**
+    *   The **Civilian/Service** bar (blue) shows a compliance rate of **93.0%**.
+    *   The **Defense/Intel** bar (orange) shows a compliance rate of **92.9%**.
+*   **Comparison:** The heights of the two bars are nearly identical, indicating an extremely minimal difference between the two agency categories.
+*   **Variability:** Both bars feature error bars. The error bar for the "Defense/Intel" category appears to have a slightly wider range (extending higher and lower) compared to the "Civilian/Service" category, suggesting slightly higher variability or a wider confidence interval for the Defense/Intel data.
+
+### 4. Annotations and Legends
+*   **Title:** "AI Public Notice Compliance: Defense vs Civilian" – This sets the context that the data relates to adherence to public notice requirements for Artificial Intelligence systems.
+*   **Data Labels:** Specific percentage values are annotated directly above the bars:
+    *   **"93.0%"** above the Civilian/Service bar.
+    *   **"92.9%"** above the Defense/Intel bar.
+*   **Error Bars:** The black "I" shaped lines represent the margin of error or standard deviation/error, indicating the precision of the mean estimates.
+
+### 5. Statistical Insights
+*   **Negligible Difference:** There is virtually no difference in compliance rates between the two groups. The difference is only **0.1%** (93.0% vs. 92.9%).
+*   **High Compliance:** Both sectors demonstrate a high level of compliance, exceeding 90%.
+*   **Statistical Significance:** Given the significant overlap of the error bars and the nearly identical means, it is highly likely that the difference between Civilian and Defense agencies is **statistically insignificant**. This suggests that agency type is not a predictor for AI public notice compliance; both perform equally well.
+==================================================

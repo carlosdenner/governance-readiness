@@ -1,0 +1,60 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Contingency Table (Source vs Documentation) ---
+                    No Docs  Has Docs
+procurement_source                   
+Internal                 76       363
+Commercial              182       299
+
+Internal Systems with Docs:   82.69% (N=439)
+Commercial Systems with Docs: 62.16% (N=481)
+
+Chi-Square Statistic: 46.9084
+P-value: 7.4383e-12
+
+Interpretation (alpha=0.05):
+Result: Statistically SIGNIFICANT difference found.
+Hypothesis SUPPORTED: Commercial systems have significantly LOWER documentation rates.
+Odds Ratio (Commercial / Internal): 0.3440
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% stacked bar chart).
+*   **Purpose:** The chart compares the proportional distribution of a categorical variable (Documentation Status) across two distinct groups (Procurement Sources: Internal vs. Commercial). It allows for an easy visual comparison of the ratio of documented to undocumented systems between the two sources.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Procurement Source"
+    *   **Categories:** Two discrete categories labeled "Internal" and "Commercial".
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Systems"
+    *   **Range:** 0.0 to approximately 1.15 (though the data effectively tops out at 1.0 or 100%).
+    *   **Units:** Decimals representing proportions (0.0 to 1.0).
+
+### 3. Data Trends
+*   **Internal Source:**
+    *   **Dominant Trend:** The vast majority of systems procured internally have data documentation. The blue "Has Docs" segment is the tallest, accounting for **82.7%** of the bar.
+    *   **Minority Trend:** Only a small fraction (**17.3%**) lack documentation.
+*   **Commercial Source:**
+    *   **Dominant Trend:** A majority still have documentation (**62.2%**), but the proportion is noticeably smaller compared to the Internal source.
+    *   **Minority Trend:** A significant portion (**37.8%**) lack documentation.
+*   **Comparison:** The visual pattern shows that the red segment ("No Docs") is more than twice as large in the "Commercial" column as it is in the "Internal" column, indicating a higher prevalence of undocumented systems in the commercial sector.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Data Documentation Availability: Commercial vs. Internal AI"
+*   **Legend:** Located in the top right corner, titled "Documentation Status".
+    *   **Red (Salmon color):** Represents "No Docs".
+    *   **Blue (Cyan color):** Represents "Has Docs".
+*   **Bar Annotations:** Each segment of the bars is annotated with its specific percentage value in bold black text:
+    *   Internal / No Docs: **17.3%**
+    *   Internal / Has Docs: **82.7%**
+    *   Commercial / No Docs: **37.8%**
+    *   Commercial / Has Docs: **62.2%**
+
+### 5. Statistical Insights
+*   **Documentation Gap:** There is a **20.5 percentage point gap** in documentation availability between the two sources. Internal AI systems are significantly more likely to be documented (82.7%) than Commercial AI systems (62.2%).
+*   **Risk Assessment:** The likelihood of encountering a system *without* documentation is roughly **2.2 times higher** for Commercial systems (37.8%) compared to Internal systems (17.3%).
+*   **Conclusion:** The data suggests that internal procurement or development processes enforce stricter documentation standards than those found in the commercial market for AI systems.
+==================================================

@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Privacy Shield Paradox' hypothesis using the EO 13960 dataset (n=1,757). The analysis examined whether the presence of Personally Identifiable Information (PII) acts as a predictor for the completion of Impact Assessments.\n\n**Findings:**\n1.  **Low Baseline Compliance:** Impact Assessments are rare across the entire inventory, present in only 3.5% (61/1,757) of all systems.\n2.  **Significant Disparity:** Despite the low baseline, a strong distinction exists based on data sensitivity:\n    *   **PII Systems:** 10.5% (18/171) have completed an impact assessment.\n    *   **Non-PII Systems:** Only 2.7% (43/1,586) have completed one.\n3.  **Statistical Strength:** The Chi-square test confirms this relationship is highly significant ($X^2$ = 25.85, p < 0.001).\n4.  **Magnitude of Effect:** The Odds Ratio of 4.22 indicates that systems handling PII are more than four times as likely to undergo an impact assessment compared to those that do not.\n\n**Conclusion:**\nThe hypothesis is **supported**. The data suggests that existing privacy regulations (likely the Privacy Act of 1974 and E-Government Act of 2002) act as a 'shield' or primary gateway for AI governance. Systems that trigger these established legal frameworks receive significantly more scrutiny, while non-PII systems—regardless of their potential for other types of harm—are largely left unassessed.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy.stats import chi2_contingency\nimport os\n\ndef run_experiment():\n    print(\"Starting Privacy Shield Paradox Experiment...\\n\")\n    \n    # 1. Load dataset\n    filename = 'astalabs_discovery_all_data.csv'\n    if os.path.exists(filename):\n        filepath = filename\n    elif os.path.exists(f'../{filename}'):\n        filepath = f'../{filename}'\n    else:\n        print(f\"Error: {filename} not found.\")\n        return\n\n    try:\n        df = pd.read_csv(filepath, low_memory=False)\n    except Exception as e:\n        print(f\"Failed to load CSV: {e}\")\n        return\n\n    # 2. Filter for 'eo13960_scored'\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"EO 13960 Subset Shape: {df_eo.shape}\")\n\n    if df_eo.empty:\n        print(\"No data in EO 13960 subset.\")\n        return\n\n    # Helper function for robust string conversion\n    def robust_contains_yes(val):\n        s = str(val).lower().strip()\n        # Check if it starts with yes or is just yes (handling potential verbose answers)\n        # The prompt says: 1 if 'Yes', 0 otherwise. \n        # Usually these fields contain \"Yes\", \"No\", \"Not Applicable\" or verbose explanations starting with Yes.\n        # We will check if \"yes\" is in the string to be inclusive, or starts with it.\n        if 'yes' in s:\n            return 1\n        return 0\n\n    # 3. Create binary variable 'has_pii'\n    if '29_contains_pii' not in df_eo.columns:\n        print(\"Error: Column '29_contains_pii' not found.\")\n        return\n    \n    df_eo['has_pii'] = df_eo['29_contains_pii'].apply(robust_contains_yes)\n\n    # 4. Create binary variable 'has_impact_assessment'\n    if '52_impact_assessment' not in df_eo.columns:\n        print(\"Error: Column '52_impact_assessment' not found.\")\n        return\n\n    df_eo['has_impact_assessment'] = df_eo['52_impact_assessment'].apply(robust_contains_yes)\n\n    # 5. Generate Contingency Table\n    # Rows: Has PII (0, 1)\n    # Cols: Has Impact Assessment (0, 1)\n    contingency_table = pd.crosstab(\n        df_eo['has_pii'], \n        df_eo['has_impact_assessment'], \n        rownames=['Has PII'], \n        colnames=['Has Impact Assessment']\n    )\n\n    print(\"\\n--- Contingency Table ---\")\n    print(contingency_table)\n    \n    # Ensure table is 2x2 for consistent OR calc\n    # Reindex to ensure all keys exist\n    contingency_table = contingency_table.reindex(index=[0, 1], columns=[0, 1], fill_value=0)\n\n    # 6. Perform Chi-square test\n    chi2, p, dof, expected = chi2_contingency(contingency_table)\n    \n    # Calculate Odds Ratio\n    # OR = (a*d) / (b*c)\n    # a = PII=0, IA=0\n    # b = PII=0, IA=1\n    # c = PII=1, IA=0\n    # d = PII=1, IA=1\n    \n    a = contingency_table.loc[0, 0]\n    b = contingency_table.loc[0, 1]\n    c = contingency_table.loc[1, 0]\n    d = contingency_table.loc[1, 1]\n    \n    if b * c > 0:\n        odds_ratio = (a * d) / (b * c)\n    else:\n        odds_ratio = float('inf')\n\n    # 7. Print Results\n    print(\"\\n--- Statistical Results ---\")\n    print(f\"Chi-square Statistic: {chi2:.4f}\")\n    print(f\"P-value: {p:.4e}\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\n    \n    # Interpretation\n    print(\"\\n--- Interpretation ---\")\n    if p < 0.05:\n        print(\"Result: Statistically Significant\")\n        if odds_ratio > 1:\n            print(\"Conclusion: Systems handling PII are MORE likely to have an Impact Assessment.\")\n        else:\n            print(\"Conclusion: Systems handling PII are LESS likely to have an Impact Assessment.\")\n    else:\n        print(\"Result: Not Statistically Significant\")\n        print(\"Conclusion: No significant association between PII and Impact Assessments.\")\n\n    # Descriptive Stats\n    total_n = len(df_eo)\n    pii_n = df_eo['has_pii'].sum()\n    ia_n = df_eo['has_impact_assessment'].sum()\n    \n    print(f\"\\nTotal Analyzed: {total_n}\")\n    print(f\"Systems with PII: {pii_n} ({pii_n/total_n:.1%})\")\n    print(f\"Systems with Impact Assessment: {ia_n} ({ia_n/total_n:.1%})\")\n    \n    if pii_n > 0:\n        ia_rate_pii = d / pii_n\n        print(f\"Impact Assessment Rate (Given PII): {ia_rate_pii:.1%}\")\n    if (total_n - pii_n) > 0:\n        ia_rate_no_pii = b / (total_n - pii_n)\n        print(f\"Impact Assessment Rate (Given No PII): {ia_rate_no_pii:.1%}\")\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting Privacy Shield Paradox Experiment...\n\nEO 13960 Subset Shape: (1757, 196)\n\n--- Contingency Table ---\nHas Impact Assessment     0   1\nHas PII                        \n0                      1543  43\n1                       153  18\n\n--- Statistical Results ---\nChi-square Statistic: 25.8473\nP-value: 3.6953e-07\nOdds Ratio: 4.2216\n\n--- Interpretation ---\nResult: Statistically Significant\nConclusion: Systems handling PII are MORE likely to have an Impact Assessment.\n\nTotal Analyzed: 1757\nSystems with PII: 171 (9.7%)\nSystems with Impact Assessment: 61 (3.5%)\nImpact Assessment Rate (Given PII): 10.5%\nImpact Assessment Rate (Given No PII): 2.7%\n",
+  "created_at": "2026-02-22T09:52:30.709973+00:00",
+  "creation_idx": 189,
+  "experiment_id": "node_5_73",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistic, p-value, and Odds Ratio comparing impact assessment rates between PII and non-PII systems.",
+    "objective": "Determine if the presence of PII is a predictor for the completion of Impact Assessments.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` and filter for `source_table` = 'eo13960_scored'.\n2. Create a binary variable `has_pii` from column `29_contains_pii` (1 if 'Yes', 0 otherwise).\n3. Create a binary variable `has_impact_assessment` from column `52_impact_assessment` (1 if 'Yes', 0 otherwise).\n4. Generate a contingency table for `has_pii` vs `has_impact_assessment`.\n5. Perform a Chi-square test of independence and calculate the Odds Ratio.\n6. Interpret if PII systems are statistically more compliant with impact assessment requirements."
+  },
+  "hypothesis": "The Privacy Shield Paradox: AI systems processing Personally Identifiable Information (PII) are significantly more likely to have undergone a general Impact Assessment than non-PII systems, suggesting that established privacy regulations (e.g., Privacy Act) act as the primary driver/gateway for broader AI governance compliance in the federal government.",
+  "id_in_run": 188,
+  "is_surprising": false,
+  "parent_id": "node_4_33",
+  "posterior": 0.9725274725274725,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9725274725274725,
+    "n": 60.0,
+    "prior_params": [
+      28.5,
+      2.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9193548387096774,
+  "prior_belief": {
+    "_empirical_mean": 0.9333333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 22.0,
+    "maybe_false": 0.0,
+    "maybe_true": 8.0,
+    "mean": 0.9193548387096774,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and faithfully implemented the analysis plan. After resolving initial file path and data type errors (specifically handling NaN/float values in text columns), the code correctly filtered the EO 13960 dataset and generated the required binary variables. The statistical analysis (Chi-square test and Odds Ratio) was performed correctly on the 2x2 contingency table. The results are statistically significant and directly support the hypothesis, providing clear quantitative evidence for the 'Privacy Shield Paradox'.",
+  "rich_outputs": null,
+  "runtime_ms": 307220.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.06380716058135416
+}

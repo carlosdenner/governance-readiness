@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Data shape after filtering for valid Assessments: (126, 198)
+
+Contingency Table (Rows: Assessment, Cols: Mitigation):
+Has_Mitigation  No  Yes
+Has_Assessment         
+No              53   12
+Yes             40   21
+
+% of Systems WITH Assessment that have Mitigation: 34.43%
+% of Systems WITHOUT Assessment that have Mitigation: 18.46%
+
+Chi-Square Statistic: 3.3642
+P-Value: 6.6628e-02
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The plot compares the relative percentage distribution of a binary variable ("Has Disparity Mitigation") across two distinct groups defined by another variable ("Has Impact Assessment"). It aims to show the relationship between performing impact assessments and having disparity mitigation controls in place.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Has Impact Assessment".
+    *   **Categories:** Two discrete categories: "No" (left column) and "Yes" (right column).
+*   **Y-Axis:**
+    *   **Label:** "Percentage".
+    *   **Range:** 0 to 100.
+    *   **Units:** Percent (%).
+
+### 3. Data Trends
+*   **Group "No" (No Impact Assessment):**
+    *   The vast majority (**81.5%**) do **not** have disparity mitigation controls.
+    *   Only a small minority (**18.5%**) **do** have disparity mitigation controls.
+*   **Group "Yes" (Has Impact Assessment):**
+    *   A majority (**65.6%**) still do **not** have disparity mitigation controls.
+    *   However, a significant portion (**34.4%**) **do** have disparity mitigation controls.
+*   **Overall Trend:** The presence of disparity mitigation ("Yes" - blue section) increases significantly when an impact assessment is performed. The blue section nearly doubles in size from the "No" column to the "Yes" column.
+
+### 4. Annotations and Legends
+*   **Title:** "Impact of Assessment on Disparity Mitigation Controls" is displayed at the top.
+*   **Legend:** Located at the bottom center. It defines the colors within the stacked bars:
+    *   **Pink:** "No" (indicating no Disparity Mitigation).
+    *   **Blue:** "Yes" (indicating presence of Disparity Mitigation).
+*   **Data Labels:** Each segment of the bars is annotated with its specific percentage value (e.g., 81.5%, 18.5%, 65.6%, 34.4%) for precise reading.
+
+### 5. Statistical Insights
+*   **Positive Correlation:** There is a clear positive association between conducting an impact assessment and having disparity mitigation controls. Entities that perform an impact assessment are nearly **twice as likely** ($34.4\%$ vs. $18.5\%$) to have disparity mitigation measures in place compared to those that do not.
+*   **Gap in Action:** Despite the improvement, even among those who conduct impact assessments, the majority ($65.6\%$) still report having **no** disparity mitigation. This suggests that while assessments may drive awareness or some action, they do not automatically lead to the implementation of mitigation controls in most cases.
+*   **Baseline Behavior:** Without an impact assessment, the implementation of disparity mitigation is very low (less than 1 in 5).
+==================================================

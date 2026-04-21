@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 Dataset Size: 1757
+
+Constructed 'is_public_service':
+is_public_service
+False    1692
+True       65
+Name: count, dtype: int64
+
+Constructed 'is_commercial':
+is_commercial
+False    1404
+True      353
+Name: count, dtype: int64
+
+--- Raw Contingency Table ---
+is_commercial      False  True 
+is_public_service              
+False               1348    344
+True                  56      9
+
+--- Labeled Contingency Table ---
+                Custom/Gov-Built  Commercial/COTS
+Internal/Admin              1348              344
+Public Service                56                9
+
+Chi-Square Statistic: 1.2606
+P-value: 2.6155e-01
+
+Fisher Exact Odds Ratio: 0.6298
+Fisher P-value: 2.6824e-01
+Result: Public-facing systems are 1.59x LESS likely to use Commercial AI.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% stacked bar chart).
+*   **Purpose:** This plot compares the proportional composition of AI procurement methods ("Custom/Gov-Built" vs. "Commercial/COTS") across two different categories of service ("Internal/Admin" and "Public Service").
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** "Service Type"
+    *   **Labels:** The axis displays two categorical variables: "Internal/Admin" and "Public Service".
+*   **Y-axis:**
+    *   **Title:** "Proportion"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Units:** The values are decimal proportions (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Dominant Category:** In both service types, the "Custom/Gov-Built" procurement method (represented by the grey bar) makes up the vast majority of the proportion, significantly overshadowing "Commercial/COTS" (blue bar).
+*   **Internal/Admin:** The "Custom/Gov-Built" portion appears to sit right at the **0.80** mark, meaning approximately **80%** of AI adoption in this sector is custom or government-built, leaving roughly **20%** for commercial/COTS solutions.
+*   **Public Service:** The "Custom/Gov-Built" portion is noticeably taller than in the Internal/Admin column, reaching approximately **0.86** to **0.87**. This indicates a higher reliance (approx. **86-87%**) on custom solutions for public-facing services compared to internal administrative functions. Conversely, the commercial portion is smaller (approx. **13-14%**).
+
+### 4. Annotations and Legends
+*   **Title:** "Commercial AI Adoption: Public Service vs Internal" clearly sets the context of the comparison.
+*   **Legend:** Located in the upper right corner, titled "Procurement".
+    *   **Light Grey:** Represents "Custom/Gov-Built".
+    *   **Blue:** Represents "Commercial/COTS" (Commercial Off-The-Shelf).
+
+### 5. Statistical Insights
+*   **Preference for Custom Solutions:** Across the board, there is a strong preference for building AI solutions internally or customizing them specifically for government use rather than buying off-the-shelf commercial products.
+*   **Service Type Variance:** While both sectors favor custom builds, **Public Service** applications are even less likely to use commercial AI than **Internal/Admin** applications.
+    *   *Potential Interpretation:* Internal administrative tasks (like payroll or HR) are often standardized across industries, making Commercial/COTS products more viable (approx. 20% adoption). However, Public Service delivery likely involves unique regulatory requirements, privacy concerns, or specialized workflows that necessitate bespoke, government-built solutions (reducing commercial adoption to roughly 14%).
+==================================================

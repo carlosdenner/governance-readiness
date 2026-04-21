@@ -1,0 +1,35 @@
+exitcode: 0 (execution succeeded)
+Code output: Found dataset at: step3_incident_coding.csv
+
+=== Dataset Statistics ===
+Total rows: 52
+
+Distribution of 'trust_integration_split':
+trust_integration_split
+both                    46
+integration-dominant     4
+trust-dominant           2
+Name: count, dtype: int64
+
+Distribution of 'failure_mode':
+failure_mode
+prevention_failure    51
+detection_failure      1
+Name: count, dtype: int64
+
+Subset size (excluding 'Both'): 6
+
+Subset Failure Category Distribution:
+failure_category
+Prevention    6
+Name: count, dtype: int64
+
+=== Contingency Table (Split vs Failure Category) ===
+failure_category         Prevention
+trust_integration_split            
+integration-dominant              4
+trust-dominant                    2
+
+Skipping statistical test: Contingency table dimensions are insufficient (need at least 2x2).
+Observed dimensions: (2, 1)
+This indicates a lack of variance in one or both variables within the subset.

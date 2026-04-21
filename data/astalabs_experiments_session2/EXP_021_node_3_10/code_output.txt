@@ -1,0 +1,74 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Malice by Sector analysis (Attempt 5)...
+Loaded AIID Incidents: 1362 rows
+
+Rows retained for analysis: 61
+Group Counts:
+sector_group
+Safety-Critical/Civilian    43
+Security/Gov                18
+Name: count, dtype: int64
+Intentionality Counts:
+is_intentional
+False    60
+True      1
+Name: count, dtype: int64
+
+--- Contingency Table ---
+                          Unintentional  Intentional
+sector_group                                        
+Safety-Critical/Civilian             43            0
+Security/Gov                         17            1
+
+Fisher's Exact Test Results:
+P-value: 2.9508e-01
+Odds Ratio: inf
+
+--- Conditional Probabilities (%) ---
+                          Unintentional  Intentional
+sector_group                                        
+Safety-Critical/Civilian     100.000000     0.000000
+Security/Gov                  94.444444     5.555556
+
+Intentionality Rate - Security/Gov: 5.56%
+Intentionality Rate - Safety/Civilian: 0.00%
+CONCLUSION: The difference is NOT statistically significant. Hypothesis Rejected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** This plot compares the total count of incidents across two different sector groups ("Safety-Critical/Civilian" and "Security/Gov") while simultaneously breaking down the composition of those incidents by "Intentionality" (Unintentional vs. Intentional).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Sector Group"
+    *   **Categories:** Two distinct groups are represented: "Safety-Critical/Civilian" and "Security/Gov".
+*   **Y-Axis:**
+    *   **Label:** "Incident Count"
+    *   **Range:** The axis is numeric, ranging from 0 to roughly 43 (though the tick marks go up to 40 in increments of 5).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Safety-Critical/Civilian" sector has the highest total number of incidents (43 total).
+*   **Shortest Bar:** The "Security/Gov" sector has a significantly lower total number of incidents (18 total).
+*   **Pattern of Intentionality:**
+    *   **Unintentional Dominance:** In both sectors, "Unintentional" incidents (represented by the blue portion) make up the vast majority of cases.
+    *   **Safety-Critical/Civilian:** This sector shows exclusively unintentional incidents (43 count) with zero intentional incidents.
+    *   **Security/Gov:** This sector is largely unintentional (17 count) but contains a very small fraction of intentional incidents (1 count).
+
+### 4. Annotations and Legends
+*   **Title:** "Harm Intentionality by Sector Group" appears at the top center.
+*   **Legend:** Located in the upper right corner, titled "Intentionality". It distinguishes the data series by color:
+    *   **Blue:** Unintentional
+    *   **Red:** Intentional
+*   **Data Labels:**
+    *   **Safety-Critical/Civilian:** Annotated with "43" in the blue section and "0" at the top, indicating counts for unintentional and intentional respectively.
+    *   **Security/Gov:** Annotated with "17" in the blue section and "1" in the red section.
+
+### 5. Statistical Insights
+*   **Prevalence of Unintentional Harm:** The data overwhelmingly suggests that reported harm in these sectors is accidental. Out of a total of 61 incidents recorded in the chart, 60 are unintentional ($\approx 98.4\%$).
+*   **Sector Risk Profile:** The "Safety-Critical/Civilian" sector reports more than double the number of incidents compared to the "Security/Gov" sector (43 vs. 18).
+*   **Uniqueness of Intentional Harm:** Intentional harm is an outlier event in this dataset. It appears only once and is specific to the "Security/Gov" sector. The "Safety-Critical/Civilian" sector appears to be free of intentional harm incidents in this specific data sample.
+==================================================

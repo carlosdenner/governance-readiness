@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully executed and addressed the previous parsing error by implementing heuristic text analysis to identify substantive disparity mitigation descriptions. Out of 1620 analyzed AI systems, 62 were identified as having affirmative mitigation measures. \n\nContrary to the hypothesis that legacy (Operational) systems would lag in governance, the analysis revealed that Operational systems were significantly *more* likely to report disparity mitigation (6.05%) compared to Pre-Operational systems (2.36%). The Chi-square test (statistic=13.36, p<0.001) confirms this difference is statistically significant. The Odds Ratio of 2.66 indicates that an operational system has over twice the odds of having reported mitigation measures compared to one in development. This suggests that systems in active use may be subject to stricter scrutiny or have had more time to implement controls than those still in early planning/acquisition phases.",
+  "child_ids": [
+    "node_6_8",
+    "node_6_51"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport numpy as np\nimport sys\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    except:\n        print(\"Error: Dataset not found.\")\n        sys.exit(1)\n\n# Filter for relevant source table\nsubset = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Subset size: {len(subset)}\")\n\n# Define columns\nstage_col = '16_dev_stage'\nmitigation_col = '62_disparity_mitigation'\n\n# -- Data Cleaning & Categorization --\n\n# 1. Categorize Development Stage\ndef categorize_stage(val):\n    if pd.isna(val):\n        return np.nan\n    val = str(val).lower()\n    # Operational keywords\n    if any(x in val for x in ['operation', 'maintenance', 'use', 'production', 'deployed', 'mission']):\n        return 'Operational'\n    # Pre-Operational keywords\n    elif any(x in val for x in ['development', 'acquisition', 'plan', 'design', 'pilot', 'test', 'initiat', 'implement']):\n        return 'Pre-Operational'\n    return 'Other'\n\nsubset['stage_category'] = subset[stage_col].apply(categorize_stage)\n\n# 2. Categorize Disparity Mitigation\n# Logic: Treat explicit \"N/A\", \"No\", \"None\", or Null as 0. Treat substantive descriptions as 1.\ndef categorize_mitigation(val):\n    if pd.isna(val):\n        return 0\n    val_str = str(val).strip().lower()\n    \n    # Check for negatives\n    if val_str.startswith(('n/a', 'no ', 'none', 'not applicable', 'not safety')):\n        return 0\n    if val_str == 'no':\n        return 0\n    \n    # Check for positives (heuristics based on text analysis)\n    # If it's not N/A and has some length, it's likely a description of a control or process\n    if len(val_str) > 3:\n        return 1\n        \n    return 0\n\nsubset['mitigation_binary'] = subset[mitigation_col].apply(categorize_mitigation)\n\n# Filter analysis set\nanalysis_df = subset[subset['stage_category'].isin(['Operational', 'Pre-Operational'])].copy()\nprint(f\"Analysis set size: {len(analysis_df)}\")\nprint(\"Stage distribution:\\n\", analysis_df['stage_category'].value_counts())\nprint(\"Mitigation distribution:\\n\", analysis_df['mitigation_binary'].value_counts())\n\n# -- Analysis --\n\n# Contingency Table\ncontingency = pd.crosstab(analysis_df['stage_category'], analysis_df['mitigation_binary'])\nprint(\"\\nContingency Table (Count):\")\nprint(contingency)\n\n# Check if we have both 0 and 1 columns\nif 1 not in contingency.columns:\n    print(\"\\nError: No positive mitigation cases found in the filtered dataset. Cannot perform Chi-square test.\")\n    # Debug print to see what text triggered this if any\n    print(\"Sample of mitigation text that mapped to 0:\")\n    print(subset[subset['mitigation_binary']==0][mitigation_col].head(5))\n    sys.exit(0)\n\nif 0 not in contingency.columns:\n    # Unlikely given the data, but possible\n    contingency[0] = 0\n\n# Reorder columns for consistency [0, 1]\ncontingency = contingency[[0, 1]]\ncontingency.columns = ['No Mitigation', 'Has Mitigation']\n\n# Calculate percentages\nprops = contingency.div(contingency.sum(axis=1), axis=0) * 100\nprint(\"\\nContingency Table (Percentages):\")\nprint(props)\n\n# Chi-square test\nchi2, p, dof, expected = stats.chi2_contingency(contingency)\nprint(f\"\\nChi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\n# Odds Ratio\ntry:\n    # OR = (Op_Yes / Op_No) / (Pre_Yes / Pre_No)\n    op_yes = contingency.loc['Operational', 'Has Mitigation']\n    op_no = contingency.loc['Operational', 'No Mitigation']\n    pre_yes = contingency.loc['Pre-Operational', 'Has Mitigation']\n    pre_no = contingency.loc['Pre-Operational', 'No Mitigation']\n    \n    # Add small epsilon if 0 to avoid division by zero error\n    if op_no == 0: op_no = 0.5\n    if pre_no == 0: pre_no = 0.5\n    if pre_yes == 0: pre_yes = 0.5\n    \n    odds_op = op_yes / op_no\n    odds_pre = pre_yes / pre_no\n    odds_ratio = odds_op / odds_pre\n    \n    print(f\"\\nOdds (Operational): {odds_op:.4f}\")\n    print(f\"Odds (Pre-Operational): {odds_pre:.4f}\")\n    print(f\"Odds Ratio (Operational / Pre-Operational): {odds_ratio:.4f}\")\nexcept Exception as e:\n    print(f\"\\nError calculating OR: {e}\")\n\n# Interpret\nif p < 0.05:\n    print(\"\\nConclusion: Statistically significant difference.\")\n    if props.loc['Operational', 'Has Mitigation'] < props.loc['Pre-Operational', 'Has Mitigation']:\n        print(\"Direction: Operational systems are LESS likely to report mitigation (Supporting Hypothesis).\")\n    else:\n        print(\"Direction: Operational systems are MORE likely to report mitigation (Refuting Hypothesis).\")\nelse:\n    print(\"\\nConclusion: No statistically significant difference.\")",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Subset size: 1757\nAnalysis set size: 1620\nStage distribution:\n stage_category\nPre-Operational    975\nOperational        645\nName: count, dtype: int64\nMitigation distribution:\n mitigation_binary\n0    1558\n1      62\nName: count, dtype: int64\n\nContingency Table (Count):\nmitigation_binary    0   1\nstage_category            \nOperational        606  39\nPre-Operational    952  23\n\nContingency Table (Percentages):\n                 No Mitigation  Has Mitigation\nstage_category                                \nOperational          93.953488        6.046512\nPre-Operational      97.641026        2.358974\n\nChi-square Statistic: 13.3571\nP-value: 2.5745e-04\n\nOdds (Operational): 0.0644\nOdds (Pre-Operational): 0.0242\nOdds Ratio (Operational / Pre-Operational): 2.6638\n\nConclusion: Statistically significant difference.\nDirection: Operational systems are MORE likely to report mitigation (Refuting Hypothesis).\n",
+  "created_at": "2026-02-22T05:45:34.517147+00:00",
+  "creation_idx": 99,
+  "experiment_id": "node_5_22",
+  "experiment_plan": {
+    "deliverables": "Contingency table, p-value, and compliance percentages per stage.",
+    "objective": "Assess whether development stage correlates with bias mitigation compliance.",
+    "steps": "1. Filter dataset for 'eo13960_scored'.\n2. Group '16_dev_stage' into 'Operational' (e.g., 'Use', 'Operation', 'Maintenance') and 'Pre-Operational' (e.g., 'Development', 'Acquisition', 'Planning').\n3. Convert '62_disparity_mitigation' to binary (Yes=1, No=0).\n4. Create a contingency table comparing Development Stage vs. Disparity Mitigation.\n5. Run a Chi-square test and calculate the compliance percentage for each group."
+  },
+  "hypothesis": "Legacy Governance Debt: Operational AI systems (those in 'Operation and Maintenance') are significantly less likely to report compliance with newer 'Disparity Mitigation' requirements compared to systems currently in 'Development' or 'Acquisition' phases, indicating a governance gap in legacy systems.",
+  "id_in_run": 98,
+  "is_surprising": true,
+  "parent_id": "node_4_27",
+  "posterior": 0.25274725274725274,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25274725274725274,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the previous data parsing issues were resolved. The code correctly filtered the 'eo13960_scored' dataset, categorized development stages, and applied heuristic text analysis to identify affirmative disparity mitigation efforts (overcoming the lack of standardized 'Yes' values). The findings refute the 'Legacy Governance Debt' hypothesis: Operational systems were significantly more likely to report disparity mitigation compliance (6.05%) compared to Pre-Operational systems (2.36%) (Chi-square p < 0.001, OR = 2.66). This suggests that active deployment status correlates with higher documented governance controls, likely due to operational requirements, whereas pre-operational systems (often in early planning) may not yet have reached the mitigation implementation stage.",
+  "rich_outputs": null,
+  "runtime_ms": 231770.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.587025877348458
+}

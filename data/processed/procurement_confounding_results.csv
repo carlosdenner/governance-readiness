@@ -1,0 +1,8 @@
+safeguard,prevalence_pct,n_positive,OR_bivariate,OR_controls,CI_controls_lo,CI_controls_hi,OR_full,CI_full_lo,CI_full_hi,p_bivariate,p_controls,p_full
+Code Access,82.7,916,0.815,0.221,0.138,0.353,0.556,0.268,1.153,0.1992,0.0,0.1146
+Impact Assessment,8.2,91,0.65,0.425,0.251,0.721,0.289,0.15,0.556,0.061,0.0015,0.0002
+Independent Eval,10.5,116,0.984,0.918,0.567,1.484,1.253,0.684,2.293,0.9364,0.7256,0.4653
+Post-Deploy Monitor,13.0,144,0.753,0.604,0.395,0.923,0.604,0.353,1.034,0.1233,0.0199,0.0662
+Appeal Process,12.4,137,0.745,0.587,0.379,0.908,0.65,0.374,1.127,0.1173,0.0168,0.125
+Disparity Mitigation,9.0,100,0.817,0.666,0.416,1.067,0.667,,,0.3471,0.091,
+Real-World Testing,12.8,142,0.773,0.641,0.417,0.986,0.638,0.373,1.09,0.1634,0.0428,0.1003

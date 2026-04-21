@@ -1,0 +1,25 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Privacy Shield Paradox Experiment...
+
+EO 13960 Subset Shape: (1757, 196)
+
+--- Contingency Table ---
+Has Impact Assessment     0   1
+Has PII                        
+0                      1543  43
+1                       153  18
+
+--- Statistical Results ---
+Chi-square Statistic: 25.8473
+P-value: 3.6953e-07
+Odds Ratio: 4.2216
+
+--- Interpretation ---
+Result: Statistically Significant
+Conclusion: Systems handling PII are MORE likely to have an Impact Assessment.
+
+Total Analyzed: 1757
+Systems with PII: 171 (9.7%)
+Systems with Impact Assessment: 61 (3.5%)
+Impact Assessment Rate (Given PII): 10.5%
+Impact Assessment Rate (Given No PII): 2.7%

@@ -1,0 +1,24 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+AIID Incidents found: 1362
+Using text columns for mining: ['title', 'description', 'summary']
+
+Classified Incidents for Analysis: 540 (out of 1362)
+
+--- Contingency Table ---
+Harm_Type        Intangible (Economic/Reputational)  Tangible (Physical/Safety)
+Incident_Nature                                                                
+Accidental                                      341                         163
+Intentional                                      25                          11
+
+--- Row Percentages (Nature -> Harm Distribution) ---
+Harm_Type        Intangible (Economic/Reputational)  Tangible (Physical/Safety)
+Incident_Nature                                                                
+Accidental                                     67.7                        32.3
+Intentional                                    69.4                        30.6
+
+--- Chi-Square Test Results ---
+Chi2 Statistic: 0.0014
+P-value: 0.97055
+
+Result: No Statistically Significant Association.

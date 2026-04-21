@@ -1,0 +1,67 @@
+exitcode: 0 (execution succeeded)
+Code output: Analyzing intersection of 'Sector of Deployment' and 'Tangible Harm'...
+Rows with both Sector and Harm data: 201
+Final Analysis Set (Top 5 Sectors, Valid Harm Class): 90
+
+Contingency Table (Sector vs Harm Class):
+Harm_Class                                          Intangible  Tangible
+Sector of Deployment                                                    
+Arts, entertainment and recreation, information...           9         4
+human health and social work activities                      2         7
+information and communication                               35         7
+transportation and storage                                   2        15
+wholesale and retail trade                                   4         5
+
+Chi-Square Statistic: 32.0168
+P-value: 0.0000
+Result: Significant relationship found between Sector and Harm Type.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Annotated Heatmap / Confusion Matrix-style visualization.
+*   **Purpose:** The plot visualizes the frequency distribution of two distinct types of harm ("Tangible" and "Intangible") across five different industry sectors. It uses color intensity (varying shades of blue) to represent the magnitude of the values, making it easy to spot clusters, highs, and lows.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Title:** "Sector"
+    *   **Labels:** Five specific industry categories:
+        1.  Arts, entertainment and recreation, information and communication
+        2.  human health and social work activities
+        3.  information and communication
+        4.  transportation and storage
+        5.  wholesale and retail trade
+*   **X-Axis:**
+    *   **Title:** "Harm Category"
+    *   **Labels:** "Intangible" and "Tangible".
+*   **Value Ranges:**
+    *   The axes represent categorical data rather than numerical ranges.
+    *   The **Color Scale (Legend)** on the right represents the numerical count, ranging from approximately **2 to 35**.
+
+### 3. Data Trends
+*   **Highest Value (Area of High Concentration):** The most significant data point is the intersection of **"information and communication"** and **"Intangible"** harm, with a count of **35**. This single cell contains the highest density in the entire dataset, indicated by the darkest blue color.
+*   **Secondary High:** The **"transportation and storage"** sector shows a notable concentration in **"Tangible"** harm with a count of **15**.
+*   **Lowest Values:** The lowest counts (2) are found in:
+    *   "human health and social work activities" (Intangible)
+    *   "transportation and storage" (Intangible)
+*   **Sector Patterns:**
+    *   **Information and Communication:** Heavily skewed toward **Intangible** harm (35 vs 7).
+    *   **Transportation and Storage:** Heavily skewed toward **Tangible** harm (15 vs 2).
+    *   **Wholesale and Retail Trade:** Relatively balanced distribution (4 Intangible vs 5 Tangible).
+
+### 4. Annotations and Legends
+*   **Title:** "Tangible vs Intangible Harm Distribution by Sector" is displayed at the top.
+*   **Color Bar:** A vertical bar on the right side indicates the scale of the values. Lighter shades of blue represent lower counts (bottom of scale ~2-5), while darker shades represent higher counts (top of scale ~35).
+*   **Cell Annotations:** Each cell contains a number indicating the exact count of incidents/reports for that specific sector and harm category pairing.
+
+### 5. Statistical Insights
+*   **Dataset Dominance:** The **"information and communication"** sector accounts for the largest portion of the data presented (Total: 42 incidents), comprising nearly half of the visible data points.
+*   **Nature of Harm:**
+    *   **Intangible Harm** is the dominant category overall (Sum: 52), largely driven by the high volume in the Information sector.
+    *   **Tangible Harm** (Sum: 38) is less frequent overall but is the primary concern for the Transportation sector.
+*   **Correlation with Industry Nature:** The data reflects logical industry risks:
+    *   The **Transportation** sector, involving physical goods and vehicles, shows significantly higher **Tangible** (physical) harm.
+    *   The **Information and Communication** sector, dealing with data and digital services, shows significantly higher **Intangible** (likely reputational, privacy, or data-related) harm.
+==================================================

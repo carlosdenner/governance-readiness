@@ -1,0 +1,50 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Contingency Table ---
+         No Impact Assessment  Has Impact Assessment
+No ATO                   1110                      9
+Has ATO                   586                     52
+
+
+--- Chi-Square Results ---
+Chi-square Statistic: 63.2583
+P-value: 1.8130e-15
+Odds Ratio: 10.9443
+
+Compliance Rate (Has ATO): 8.15%
+Compliance Rate (No ATO): 0.80%
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (or Bar Chart).
+*   **Purpose:** The plot compares the percentage of documented impact assessments between two distinct categorical groups: those with "No ATO" and those with "Has ATO". It is designed to visualize the disparity in compliance rates based on ATO status.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label/Categories:** The axis represents categorical data with two groups: **"No ATO"** and **"Has ATO"**.
+    *   **Range:** Categorical.
+*   **Y-Axis:**
+    *   **Label:** "Percentage with Documented Impact Assessment".
+    *   **Units:** Percentage (%).
+    *   **Value Range:** The axis displays tick marks from **0 to 8**, with the vertical space extending slightly higher (likely to a maximum of 10) to accommodate the tallest bar.
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"Has ATO"** category is represented by the tallest bar (green), indicating a higher value.
+*   **Shortest Bar:** The **"No ATO"** category is represented by the shortest bar (red), indicating a very low value.
+*   **Pattern:** There is a significant positive correlation between having an ATO and having a documented impact assessment. The visual difference suggests that entities with an ATO are much more likely to be compliant than those without.
+
+### 4. Annotations and Legends
+*   **Bar Labels:**
+    *   Above the "No ATO" bar, the specific value **0.8%** is annotated in bold.
+    *   Above the "Has ATO" bar, the specific value **8.2%** is annotated in bold.
+*   **Color Coding:**
+    *   **Red ("No ATO"):** Likely used to signify a "warning," "poor performance," or negative status regarding compliance.
+    *   **Green ("Has ATO"):** Likely used to signify "good," "safe," or positive status relative to the other category.
+
+### 5. Statistical Insights
+*   **Relative Performance:** Entities that have an ATO ("Authority to Operate," typically) are more than **10 times (10.25x)** more likely to have a documented impact assessment compared to those without an ATO ($8.2\% / 0.8\% \approx 10.25$).
+*   **Absolute Performance:** despite the "Has ATO" group performing significantly better relatively, the absolute compliance rate is still quite low. An **8.2%** compliance rate indicates that even among those with an ATO, **91.8%** of the population *lacks* a documented impact assessment.
+*   **Conclusion:** While obtaining an ATO status is strongly associated with better documentation practices, the overall adherence to documenting impact assessments is critically low across both groups.
+==================================================

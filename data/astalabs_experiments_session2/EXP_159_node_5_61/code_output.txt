@@ -1,0 +1,55 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from: astalabs_discovery_all_data.csv
+Subset 'eo13960_scored' loaded. Rows: 1757
+Rows with valid Opt-Out status: 121
+
+Contingency Table:
+has_opt_out  No  Yes
+visibility          
+Internal     15   68
+Public       24   14
+
+Chi-Square: 22.2372, p-value: 2.4096e-06
+Opt-Out Rate (Public): 36.84%
+Opt-Out Rate (Internal): 81.93%
+Relative Risk (Public/Internal): 0.45x
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Horizontal 100% Stacked Bar Chart.
+*   **Purpose:** This chart compares the proportional distribution of a binary variable ("Has Opt-Out?") across two different categories of system visibility ("Internal" and "Public"). It is designed to visualize how the presence of an opt-out mechanism varies depending on whether a system is internal or public.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Percentage"
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Increments:** Ticks are marked every 20 units (0, 20, 40, 60, 80, 100).
+*   **Y-Axis:**
+    *   **Label:** "Visibility"
+    *   **Categories:** The axis displays two categorical groups: "Internal" (bottom) and "Public" (top).
+*   **Title:** "Opt-Out Implementation by System Visibility"
+
+### 3. Data Trends
+*   **Internal Systems:**
+    *   This category shows a high adoption rate for opt-out mechanisms. The **"Yes"** segment (Green) is the dominant portion, accounting for **81.9%**.
+    *   The **"No"** segment (Red) is the minority, representing only **18.1%**.
+*   **Public Systems:**
+    *   This category shows the inverse trend. The **"No"** segment (Red) is the dominant portion at **63.2%**.
+    *   The **"Yes"** segment (Green) represents the minority at **36.8%**.
+*   **Overall Pattern:** There is a stark contrast between the two categories. Internal systems are overwhelmingly likely to have an opt-out implementation, whereas public systems are more likely *not* to have one.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner with the title "Has Opt-Out?".
+    *   **Red:** Represents "No".
+    *   **Green:** Represents "Yes".
+*   **Data Labels:** Each bar segment contains white text indicating the exact percentage value (e.g., "18.1%", "81.9%").
+*   **Reference Line:** A grey, vertical dashed line runs through the x-axis at the **50% mark**. This serves as a visual anchor to easily distinguish which segment constitutes the majority for each bar.
+
+### 5. Statistical Insights
+*   **Visibility Correlation:** System visibility is a strong predictor of opt-out implementation. There is a significant discrepancy between the two groups; the "Yes" rate drops by **45.1 percentage points** (from 81.9% to 36.8%) when moving from Internal to Public systems.
+*   **Majority Inversion:** The 50% threshold line highlights a complete inversion of the majority. For Internal systems, the majority (approx. 4 out of 5) allow opting out. For Public systems, the majority (approx. 2 out of 3) do *not* allow opting out.
+*   **Implication:** This suggests that privacy controls or user agency (via opt-outs) are prioritized or technically easier to enforce within internal-facing systems compared to public-facing ones.
+==================================================

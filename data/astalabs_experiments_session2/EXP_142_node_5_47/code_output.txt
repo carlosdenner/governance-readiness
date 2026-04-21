@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: File not found at '../astalabs_discovery_all_data.csv', trying local directory...
+Dataset filtered. EO 13960 records: 1757
+
+Records after filtering for valid development method (Contractor vs In-house): 920
+Distribution by Category:
+dev_category
+Contractor    481
+In-house      439
+Name: count, dtype: int64
+
+Contingency Table (Appeal Process vs Dev Method):
+has_appeal     No  Yes
+dev_category          
+Contractor    459   22
+In-house      404   35
+
+Chi-square Statistic: 3.9962
+P-value: 4.5604e-02
+
+Proportions (%):
+has_appeal           No       Yes
+dev_category                     
+Contractor    95.426195  4.573805
+In-house      92.027335  7.972665
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the analysis:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The plot compares the distribution of a binary categorical variable ("Has Appeal Process") across two different groups ("Development Method"). It visualizes the relative proportion of systems that do or do not have an appeal process within each development category.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Development Method".
+    *   **Categories:** Two discrete categories are displayed: "Contractor" and "In-house".
+*   **Y-Axis:**
+    *   **Title:** "Percentage".
+    *   **Range:** 0 to 100 (representing 0% to 100%).
+    *   **Ticks:** Increments of 20 (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Dominant Trend (No Appeal Process):** Across both development methods, the vast majority of cases do **not** have an appeal process. This is represented by the large red segments taking up most of the bar height.
+    *   For **Contractor** developed projects, **95.4%** do not have an appeal process.
+    *   For **In-house** developed projects, **92.0%** do not have an appeal process.
+*   **Minor Trend (Yes Appeal Process):** A very small minority of projects include an appeal process, represented by the green segments at the top of the bars.
+    *   **Contractor:** 4.6%
+    *   **In-house:** 8.0%
+
+### 4. Annotations and Legends
+*   **Title:** "Presence of Appeal Process by Development Method" (Centered at the top).
+*   **Legend:** Located in the top right corner with the title "Has Appeal Process".
+    *   **Red:** Corresponds to "No".
+    *   **Green:** Corresponds to "Yes".
+*   **Data Labels:** White percentage text is overlaid directly onto the bars to provide precise values (e.g., "95.4%", "4.6%", "92.0%", "8.0%").
+
+### 5. Statistical Insights
+*   **Overwhelming Absence of Appeals:** There is a significant lack of appeal processes in the systems analyzed. Regardless of who developed the system, over 90% lack this feature. This suggests that implementing an appeal mechanism is generally not a standard requirement or priority in this domain.
+*   **Comparison of Methods:** While both numbers are low, systems developed **In-house** are nearly twice as likely to have an appeal process (8.0%) compared to those developed by **Contractors** (4.6%). This could indicate that internal teams may have slightly more awareness of or incentive to include user recourse mechanisms, or that contractor specifications rarely include this requirement.
+==================================================

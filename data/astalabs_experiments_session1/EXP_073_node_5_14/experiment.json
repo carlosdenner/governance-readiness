@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully loaded 'step2_competency_statements.csv' and tested the hypothesis that evidence confidence correlates with architectural control density. \n\n**Key Findings:**\n- **Descriptive Statistics:** The 'High' confidence group (n=36) had a mean control count of 1.86 (SD=0.64), while the 'Medium/Low' confidence group (n=6) had a nearly identical mean of 1.83 (SD=0.75). The dataset is heavily skewed toward high-confidence evidence.\n- **Hypothesis Test:** The Welch's t-test yielded a t-statistic of 0.0854 and a p-value of 0.9346.\n- **Conclusion:** With a p-value far exceeding 0.05, the hypothesis is **rejected**. The data demonstrates that the density of technical controls mapped to a requirement is independent of the strength of the supporting literature evidence. Both well-supported and emerging requirements receive a similar level of architectural prescription.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport numpy as np\n\n# Attempt to load the dataset using the current directory\nfilename = 'step2_competency_statements.csv'\ntry:\n    df = pd.read_csv(filename)\n    print(f\"Successfully loaded {filename}\")\nexcept FileNotFoundError:\n    # Fallback to checking one level up if current dir fails, though previous error suggests current dir is correct context\n    try:\n        df = pd.read_csv('../' + filename)\n        print(f\"Successfully loaded ../{filename}\")\n    except FileNotFoundError:\n        print(f\"Error: Could not find {filename} in current or parent directory.\")\n        raise\n\n# Helper function to count controls in the 'applicable_controls' column\n# The column contains semicolon-separated values\ndef count_controls(val):\n    if pd.isna(val) or str(val).strip() == '':\n        return 0\n    # Split by semicolon, strip whitespace, and filter out empty strings\n    items = [x.strip() for x in str(val).split(';') if x.strip()]\n    return len(items)\n\n# Apply the counting function\ndf['control_count'] = df['applicable_controls'].apply(count_controls)\n\n# Normalize the 'confidence' column to handle potential case inconsistencies\ndf['confidence_norm'] = df['confidence'].astype(str).str.lower().str.strip()\n\n# Create the two groups: High vs Medium/Low\ngroup_high = df[df['confidence_norm'] == 'high']['control_count']\ngroup_others = df[df['confidence_norm'].isin(['medium', 'low'])]['control_count']\n\n# Calculate Descriptive Statistics\nmean_high = group_high.mean()\nstd_high = group_high.std()\nn_high = len(group_high)\n\nmean_others = group_others.mean()\nstd_others = group_others.std()\nn_others = len(group_others)\n\nprint(\"\\n--- Descriptive Statistics ---\")\nprint(f\"High Confidence (N={n_high}): Mean = {mean_high:.4f}, Std Dev = {std_high:.4f}\")\nprint(f\"Medium/Low Confidence (N={n_others}): Mean = {mean_others:.4f}, Std Dev = {std_others:.4f}\")\n\n# Perform Welch's Independent Samples T-test (does not assume equal variance)\nt_stat, p_val = stats.ttest_ind(group_high, group_others, equal_var=False)\n\nprint(\"\\n--- Hypothesis Test Results ---\")\nprint(f\"T-statistic: {t_stat:.4f}\")\nprint(f\"P-value: {p_val:.4f}\")\n\n# Interpretation\nalpha = 0.05\nif p_val < alpha:\n    print(\"Conclusion: The difference is statistically significant (Reject H0).\")\nelse:\n    print(\"Conclusion: The difference is NOT statistically significant (Fail to reject H0).\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Successfully loaded step2_competency_statements.csv\n\n--- Descriptive Statistics ---\nHigh Confidence (N=36): Mean = 1.8611, Std Dev = 0.6393\nMedium/Low Confidence (N=6): Mean = 1.8333, Std Dev = 0.7528\n\n--- Hypothesis Test Results ---\nT-statistic: 0.0854\nP-value: 0.9346\nConclusion: The difference is NOT statistically significant (Fail to reject H0).\n",
+  "created_at": "2026-02-20T23:54:24.710954+00:00",
+  "creation_idx": 74,
+  "experiment_id": "node_5_14",
+  "experiment_plan": {
+    "deliverables": "1. Descriptive statistics (mean, std) for High vs. Medium/Low confidence groups.\n2. T-test results (t-statistic, p-value).\n3. Conclusion on statistical significance.",
+    "objective": "Correlate the strength of literature evidence with the density of architectural mappings by comparing control counts between high and low/medium confidence groups.",
+    "steps": "1. Load the dataset 'step2_competency_statements.csv'.\n2. Create a new variable 'control_count' for each row by counting the number of semicolon-separated items in the 'applicable_controls' column.\n3. Create two groups based on the 'confidence' column: Group A ('High') and Group B ('Medium' or 'Low').\n4. Calculate the mean and standard deviation of 'control_count' for both groups.\n5. Perform an independent samples t-test (Welch's t-test) to compare the means of Group A and Group B.\n6. Print the group statistics, t-statistic, and p-value."
+  },
+  "hypothesis": "Competencies supported by 'High' confidence literature evidence map to a significantly higher number of architecture controls than those with 'Medium' or 'Low' confidence, implying that well-understood requirements are more technically prescriptive.",
+  "id_in_run": 73,
+  "is_surprising": true,
+  "parent_id": "node_4_22",
+  "posterior": 0.16942148760330578,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.16942148760330578,
+    "n": 90.0,
+    "prior_params": [
+      20.5,
+      10.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6612903225806451,
+  "prior_belief": {
+    "_empirical_mean": 0.6666666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 2.0,
+    "maybe_true": 22.0,
+    "mean": 0.6612903225806451,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 6.0
+  },
+  "review": "The experiment was faithfully implemented and the hypothesis was tested sufficiently. The code successfully loaded 'step2_competency_statements.csv', correctly quantified the architectural control density by parsing the 'applicable_controls' column, and performed a robust Welch's Independent Samples T-test to account for the unequal sample sizes (High n=36 vs. Med/Low n=6).\n\n**Hypothesis:** The hypothesis that 'High' confidence competencies map to a significantly higher number of architecture controls was **rejected**.\n\n**Findings:**\n1. **Descriptive Statistics:** The mean control count for 'High' confidence competencies (Mean = 1.86, SD = 0.64) was virtually identical to that of 'Medium/Low' confidence competencies (Mean = 1.83, SD = 0.75).\n2. **Significance:** The t-test yielded a t-statistic of 0.0854 and a p-value of 0.9346. This p-value is far above the significance threshold of 0.05, indicating no statistical difference.\n3. **Implication:** The density of technical prescription (number of controls) is independent of the strength of the supporting literature evidence. Emerging or less-referenced requirements are mapped to architecture controls with the same granularity as well-established requirements.",
+  "rich_outputs": null,
+  "runtime_ms": 200380.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.5708609152132793
+}

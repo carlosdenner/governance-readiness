@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Current Working Directory: /data
+Files in parent directory: ['bin', '.uv', 'run', 'lib', 'tmp', '__modal', 'srv', 'etc', 'dev', 'opt', 'lib64', 'sys', 'sbin', 'root', 'var', 'home', 'boot', 'media', 'mnt', 'usr', 'proc', 'data']
+Successfully loaded step3_tactic_frequency.csv
+Dataset Shape: (16, 6)
+Columns: ['tactic_id', 'tactic_name', 'incident_count', 'bundle', 'sub_competency_id', 'competency_domain']
+
+=== Descriptive Statistics ===
+Integration Readiness (n=7): Mean=29.14, Median=33.00, Std=26.59
+Trust Readiness       (n=9): Mean=21.89, Median=17.00, Std=11.82
+
+=== Mann-Whitney U Test Results ===
+U-statistic: 32.0
+P-value: 1.00000
+Result: No Statistically Significant Difference
+
+STDERR:
+<ipython-input-1-721bddaa5e02>:61: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot([integration_data, trust_data], labels=['Integration Readiness', 'Trust Readiness'], patch_artist=True)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (or Box-and-Whisker Plot).
+*   **Purpose:** This plot visualizes the distribution of numerical data ("Incident Count") across distinct categorical groups ("Bundles"). It displays key statistical summaries such as the median, quartiles, and range, allowing for a comparison of central tendency and variability between the groups.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Incident Count"
+    *   **Units:** Integer count (frequency of incidents).
+    *   **Range:** The axis is scaled from 0 to 80, with major tick marks every 10 units.
+*   **X-Axis:**
+    *   **Labels:** Represents the specific bundles being analyzed: "Integration Readiness" and "Trust Readiness".
+    *   **Range:** Categorical (two distinct categories).
+
+### 3. Data Trends
+*   **Integration Readiness (Left Box):**
+    *   **Spread:** Exhibits a high degree of variability. The data ranges from a minimum near 2 to a maximum near 77.
+    *   **Interquartile Range (IQR):** The box (representing the middle 50% of data) is tall, stretching from approximately 7 to 39.
+    *   **Median:** The central orange line indicates a median value of approximately 33.
+*   **Trust Readiness (Right Box):**
+    *   **Spread:** Shows much lower variability compared to the Integration Readiness bundle. The main data range (excluding the outlier) is roughly 11 to 34.
+    *   **Interquartile Range (IQR):** The box is compact, ranging from approximately 15 to 24.
+    *   **Median:** The median value is significantly lower, sitting at approximately 17.
+    *   **Outliers:** There is a single distinct outlier (represented by the open circle) located at approximately 47.
+
+### 4. Annotations and Legends
+*   **Title:** "Incident Count Frequency by Bundle" clearly defines the scope of the analysis.
+*   **Grid Lines:** Horizontal dashed grid lines are included at intervals of 10 to assist in estimating the y-values of the box plot elements.
+*   **Colors:** The boxes are shaded blue, and the median is highlighted in orange for contrast. No separate legend is required as the x-axis labels identify the categories.
+
+### 5. Statistical Insights
+*   **Higher Volume in Integration Readiness:** The "Integration Readiness" bundle generally experiences a higher frequency of incidents. Its median (~33) is nearly double that of the "Trust Readiness" bundle (~17).
+*   **Volatility:** "Integration Readiness" is significantly more volatile and unpredictable. The large range (0–77) suggests that while some instances have very few incidents, others have extremely high counts. In contrast, "Trust Readiness" is more consistent and predictable.
+*   **Skewness:** The "Integration Readiness" distribution appears right-skewed, indicated by the long upper whisker and the concentration of the lower quartile near the bottom of the scale.
+*   **Anomalies:** While "Trust Readiness" is generally stable, the presence of the outlier at 47 indicates a rare event where incident counts spiked significantly above the norm for that category.
+==================================================

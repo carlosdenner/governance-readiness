@@ -1,0 +1,61 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+EO 13960 Records: 1757
+AIID Incidents: 1362
+Using EO Column: 8_topic_area
+Using AIID Column: Sector of Deployment
+
+--- Sector Share Comparison ---
+                            EO_Share  AIID_Share
+norm_sector                                     
+General Gov / Other        55.207740    7.709251
+Healthcare                 13.261241    1.101322
+Labor & Social Services     9.049516    0.000000
+Commerce                    5.293113    1.174743
+Defense & Security          4.894707    1.321586
+Science & Tech              4.723961    0.000000
+Other                       2.333523   85.242291
+Education                   2.276608    0.954479
+Energy                      2.162777    0.000000
+Transportation              0.739898    2.055800
+Agriculture & Environment   0.056915    0.000000
+Finance                     0.000000    0.440529
+
+Spearman Correlation: 0.2883
+P-value: 0.3635
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Scatter Plot.
+*   **Purpose:** The plot is designed to compare two distinct metrics across various sectors: the share of government investment/use cases (x-axis) versus the share of real-world incidents (y-axis). It aims to visualize the alignment (or mismatch) between where resources are allocated and where risks/incidents actually occur.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Government Investment Share (EO 13960) %.
+    *   **Range:** 0 to roughly 90 (ticks are marked at intervals of 20).
+    *   **Meaning:** Represents the percentage of government use cases or investment allocated to a specific sector.
+*   **Y-Axis:**
+    *   **Label:** Real-World Incident Share (AIID) %.
+    *   **Range:** -5 to 90 (ticks are marked at intervals of 20).
+    *   **Meaning:** Represents the percentage of recorded real-world incidents attributed to that specific sector.
+
+### 3. Data Trends
+*   **The "Other" Outlier (Top Left):** There is a massive outlier labeled "Other" located at approximately **(0%, 85%)**. This indicates that the vast majority of real-world incidents fall into a category that has effectively 0% of the specific government investment share as categorized by EO 13960.
+*   **The "General Gov / Other" Outlier (Bottom Right):** Another significant outlier is "General Gov / Other," located at approximately **(55%, 8%)**. This suggests that while more than half of the government investment/use cases are in this sector, it accounts for a very small fraction of real-world incidents.
+*   **The Low-Value Cluster (Bottom Left):** The majority of specific sectors (Transportation, Defense & Security, Healthcare, Energy, Environment, Social Services) are clustered tightly in the bottom left corner. They have relatively low investment shares (mostly under 15%) and near-zero incident shares relative to the "Other" category.
+*   **Lack of Correlation:** The data points do not follow the diagonal line, indicating a lack of linear correlation between investment and incident frequency.
+
+### 4. Annotations and Legends
+*   **Title:** "Risk-Investment Mismatch: Gov Use Cases vs. Real-World Incidents" – clearly stating the chart's thesis.
+*   **Reference Line:** A red dashed diagonal line labeled **"Perfect Alignment"** runs from (0,0) to roughly (85,85). Points falling on this line would indicate that the percentage of investment exactly matches the percentage of incidents.
+*   **Point Labels:** Blue dots are labeled with their respective sectors. Due to crowding in the bottom left, labels like "Defense & Security," "Healthcare," and "Energy" overlap significantly.
+
+### 5. Statistical Insights
+*   **Significant Mismatch:** The chart demonstrates a profound disconnect between government focus and real-world risk. The title "Risk-Investment Mismatch" is strongly supported by the data.
+*   **Blind Spot in Investment:** Over 80% of incidents ("Other") differ from the categories receiving government attention. This suggests that either the government's classification system fails to capture where risks are materializing, or incidents are occurring in domains the government is not actively monitoring/funding under this specific executive order.
+*   **Disproportionate "General Gov" Spending:** The "General Gov / Other" category appears over-indexed in terms of use cases/investment relative to the risk it seemingly generates (based on the AIID incident data). It consumes >50% of the share but yields <10% of the incidents.
+*   **Low Incident Rates in Regulated Sectors:** Traditional high-stakes sectors like Defense, Healthcare, and Transportation show very low incident shares in this dataset, despite varying levels of investment.
+==================================================

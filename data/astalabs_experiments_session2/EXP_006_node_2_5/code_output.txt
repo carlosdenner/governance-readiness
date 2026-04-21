@@ -1,0 +1,77 @@
+exitcode: 0 (execution succeeded)
+Code output: Analyzing top 8 sectors and top 8 failure types.
+Data points after filtering: 28
+
+Cramer's V: 0.5599
+P-value: 1.2529e-01
+
+Dominant Failure Mode per Sector (highest positive residual):
+  - Arts, entertainment and recreation, information and communication: Generalization Failure, Context Misidentification (Residual: 1.34)
+  - human health and social work activities: Hardware Failure (Residual: 3.47)
+  - information and communication: Distributional Bias (Residual: 1.87)
+  - information and communication, Arts, entertainment and recreation: Misinformation Generation Hazard, Unsafe Exposure or Access (Residual: 2.27)
+  - law enforcement: Harmful Application (Residual: 1.70)
+  - transportation and storage: Latency Issues (Residual: 2.27)
+  - wholesale and retail trade: Harmful Application (Residual: 1.70)
+
+STDERR:
+<ipython-input-1-39009af4353a>:111: UserWarning: Tight layout not applied. tight_layout cannot make Axes height small enough to accommodate all Axes decorations.
+  plt.tight_layout()
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is a detailed analysis of the plots:
+
+### 1. Plot Type
+*   **Composite Visualization:** The image contains two vertically stacked **Heatmaps**.
+*   **Top Plot:** A **Contingency Table Heatmap** displaying raw counts (frequencies) of occurrences. Its purpose is to show the absolute volume of intersections between two categorical variables.
+*   **Bottom Plot:** A **Pearson Residuals Heatmap**. Its purpose is to visualize the strength and direction of the association between the variables, highlighting which combinations occur more or less frequently than would be expected by chance.
+
+### 2. Axes
+*   **Y-Axis (Both Plots):**
+    *   **Label:** "Sector"
+    *   **Categories:** The axis lists various industry sectors, including "law enforcement," "transportation and storage," "wholesale and retail trade," "human health and social work activities," and distinct categories involving "information and communication" (sometimes combined with "Arts, entertainment...").
+*   **X-Axis (Both Plots):**
+    *   **Label:** "Technical Failure Type"
+    *   **Categories:** The axis lists specific failure types, such as "Context Misidentification," "Distributional Bias," "Generalization Failure," "Hardware Failure," "Harmful Application," and "Latency Issues."
+    *   *Note:* The labels on the top plot are partially cut off at the bottom but correspond directly to the legible labels in the bottom plot.
+*   **Value Ranges:**
+    *   **Top Plot (Color Bar):** Ranges from **0 to 8** (Counts).
+    *   **Bottom Plot (Color Bar):** Ranges approximately from **-1 to +3.5** (Pearson Residual scores).
+
+### 3. Data Trends
+**Top Plot (Contingency Table):**
+*   **Sparse Matrix:** The majority of the cells contain values of **0** or **1** (light yellow), indicating that most specific sector/failure combinations are rare or unobserved in this dataset.
+*   **High Frequency Cluster:** There is a notable cluster in the **"information and communication"** sector row.
+    *   **Highest Value:** The intersection of "information and communication" and **"Distributional Bias"** has the highest count of **8** (dark blue).
+    *   **Secondary High Value:** The intersection with **"Generalization Failure"** has a count of **3** (teal).
+
+**Bottom Plot (Pearson Residuals):**
+*   **Strong Positive Associations (Red):** These cells indicate relationships that are stronger than random chance.
+    *   **Highest Association:** "human health and social work activities" vs. "Hardware Failure" has the highest residual of **3.47** (dark red).
+    *   **Other Strong Associations:**
+        *   "transportation and storage" vs. "Latency Issues" (**2.27**)
+        *   "information and communication, Arts..." vs. "Misinformation Generation..." (**2.27**)
+        *   "information and communication" vs. "Distributional Bias" (**1.87**)
+        *   "law enforcement" vs. "Harmful Application" (**1.70**)
+*   **Negative Associations (Blue/Grey):** These indicate combinations that happen less often than expected.
+    *   "information and communication" vs. "Harmful Application" (**-1.18**)
+    *   "transportation and storage" vs. "Distributional Bias" (**-1.13**)
+
+### 4. Annotations and Legends
+*   **Titles:**
+    *   Top: "Contingency Table: Sector vs Technical Failure (Top 8x8)" indicating this is a subset of the most relevant categories.
+    *   Bottom: "Pearson Residuals (Association Strength)".
+*   **Color Legends:**
+    *   **Top:** A sequential color map (Yellow $\to$ Blue) representing magnitude of counts.
+    *   **Bottom:** A diverging color map (Blue $\to$ White $\to$ Red). Blue indicates negative residuals (under-represented), White is neutral, and Red indicates positive residuals (over-represented).
+*   **Cell Annotations:** Every cell is annotated with its exact value (integer for the top plot, float with two decimal places for the bottom).
+
+### 5. Statistical Insights
+*   **Volume vs. Significance:** While the "information and communication" sector has the highest raw volume of failures (specifically "Distributional Bias" with 8 counts), the **Pearson Residuals** plot reveals that other sectors have statistically stronger associations with specific failures despite lower counts.
+*   **Specific Risk Profiles:**
+    *   **Healthcare:** Even though failures may be rare in raw numbers, the sector has a very specific vulnerability to **Hardware Failures** (Residual 3.47).
+    *   **Transportation:** This sector is disproportionately associated with **Latency Issues** (Residual 2.27) and **Generalization Failures** (Count 2, Residual 0.80).
+    *   **Retail & Law Enforcement:** Both show a higher-than-expected association with **Harmful Applications**.
+*   **Bias Concentration:** "Distributional Bias" is heavily concentrated in the "information and communication" sector, both in raw numbers and statistical strength, while being under-represented in "transportation and storage."
+==================================================

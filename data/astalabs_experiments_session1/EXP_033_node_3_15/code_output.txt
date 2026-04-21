@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step3_incident_coding.csv
+Dataset shape: (52, 22)
+
+=== Technique Count Statistics by Failure Mode ===
+                    count      mean  median      std  min  max
+failure_mode                                                  
+detection_failure       1  1.000000     1.0      NaN    1    1
+prevention_failure     51  7.666667     7.0  2.81188    3   16
+
+=== Kruskal-Wallis H-test ===
+H-statistic: 2.9316
+P-value: 0.0869
+Conclusion: No significant difference in attack complexity between failure modes.
+
+STDERR:
+<ipython-input-1-09d2363696c9>:62: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(groups, labels=group_names)
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).
+*   **Purpose:** This plot compares the distribution of a quantitative variable ("Technique Count") across two different categorical groups ("detection_failure" and "prevention_failure"). It visualizes the median, quartiles, range, and outliers for each group.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Failure Mode"
+    *   **Categories:** The axis displays two discrete categories: `detection_failure` and `prevention_failure`.
+*   **Y-Axis:**
+    *   **Label:** "Technique Count (Complexity)"
+    *   **Range:** The visual scale extends from roughly 0 to 17.
+    *   **Units:** Integer counts representing the number of techniques involved in an attack.
+    *   **Ticks:** Major grid lines mark every 2 units (2, 4, 6, ..., 16).
+
+### 3. Data Trends
+*   **"detection_failure" Category:**
+    *   **Pattern:** The plot for this category appears as a single flattened line (the median line).
+    *   **Value:** It sits at the value of **1**.
+    *   **Spread:** There is effectively zero variance shown here. The minimum, maximum, and median are all identical. This indicates that all recorded "detection_failure" events involved an attack complexity of exactly 1 technique.
+*   **"prevention_failure" Category:**
+    *   **Spread:** This category shows a significantly wider distribution of data.
+    *   **Median:** The central orange line indicates a median technique count of approximately **7**.
+    *   **Interquartile Range (IQR):** The box (representing the middle 50% of the data) ranges from a count of roughly **6 (Q1)** to **9 (Q3)**.
+    *   **Whiskers:** The bottom whisker extends down to **3**, and the top whisker extends up to **12**.
+    *   **Outliers:** There are three distinct outliers plotted as circles above the top whisker, located at values of **14, 15, and 16**.
+
+### 4. Annotations and Legends
+*   **Title:** "Distribution of Attack Complexity (Technique Count) by Failure Mode" appears at the top, summarizing the chart's content.
+*   **Grid Lines:** Horizontal dashed grey lines are included to assist in reading the Y-axis values across the plot area.
+*   **Colors:** The boxes are outlined in black with orange horizontal lines representing the medians. Outliers are represented by empty circles.
+
+### 5. Statistical Insights
+*   **Complexity Correlation:** There is a stark statistical difference between the two failure modes. **Detection failures** are associated with extremely low-complexity attacks (single technique), whereas **prevention failures** occur against attacks with much higher complexity (median of 7 techniques).
+*   **Variability:** The "detection_failure" mode is highly predictable regarding complexity (no variance), while "prevention_failure" is highly variable, suggesting that prevention mechanisms fail under a wide variety of stress loads, ranging from 3 techniques to 16.
+*   **Extreme Cases:** The presence of outliers only in the "prevention_failure" group (at 14, 15, and 16) suggests that as attack complexity becomes extreme, the likelihood of a prevention failure persists, whereas detection failures do not appear to be recorded at these high complexities in this dataset.
+==================================================

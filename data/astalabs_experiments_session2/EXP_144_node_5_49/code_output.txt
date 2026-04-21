@@ -1,0 +1,69 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from context_crosswalk_evidence.json...
+Processing 42 requirements...
+Found 23 NIST requirements.
+Found 9 EU AI Act requirements.
+Ignored 10 requirements from other sources (e.g., ISO, OWASP). Sample ignored: ['OWASP-1', 'OWASP-2', 'OWASP-3']
+
+--- Descriptive Statistics ---
+NIST AI RMF: Mean = 1.87, Median = 2.0, Max = 3, Min = 1
+EU AI Act:   Mean = 1.78, Median = 2.0, Max = 3, Min = 1
+
+--- Statistical Test Results ---
+Test: Mann-Whitney U Test
+Hypothesis: EU requirements map to a different number of controls than NIST.
+U-Statistic: 96.5
+P-Value: 0.7630
+Conclusion: No statistically significant difference detected.
+
+STDERR:
+<ipython-input-1-15ace3087cf3>:109: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  plt.boxplot(data_to_plot, labels=labels, patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** This is a **Box Plot** (also known as a box-and-whisker plot).
+*   **Purpose:** It compares the distribution of a quantitative variable ("Number of Mapped Controls per Requirement") across two different categorical groups ("NIST AI RMF" and "EU AI Act"). It allows for a visual comparison of central tendency (median/mean), variability (interquartile range), and overall range (min/max).
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Number of Mapped Controls per Requirement"
+    *   **Range:** The axis is marked from **1.00 to 3.00**, with grid lines at intervals of 0.25.
+    *   **Units:** Count (integer values representing controls).
+*   **X-Axis:**
+    *   **Labels:** Two specific regulatory frameworks are compared:
+        1.  **NIST AI RMF** (National Institute of Standards and Technology AI Risk Management Framework)
+        2.  **EU AI Act** (European Union Artificial Intelligence Act)
+    *   **Context:** The axis represents categorical groups.
+
+### 3. Data Trends
+*   **Similar Distributions:** Both frameworks exhibit remarkably similar distributions.
+    *   **Range:** Both plots show a total range (whiskers) extending from a minimum of **1** to a maximum of **3**.
+    *   **Interquartile Range (IQR):** For both categories, the main "box" (representing the middle 50% of the data) spans from **1.0 to 2.0**.
+    *   **Medians:** The red line indicating the median is situated at **2.0** for both groups.
+*   **Box Structure:**
+    *   The bottom of the box (25th percentile) aligns with the bottom whisker at 1.0, suggesting a concentration of data at the lower end of the scale.
+    *   The top of the box (75th percentile) is at 2.0.
+
+### 4. Annotations and Legends
+*   **Mean Values:**
+    *   **NIST AI RMF:** Annotated with **"Mean: 1.9"**.
+    *   **EU AI Act:** Annotated with **"Mean: 1.8"**.
+    *   This textual annotation provides the arithmetic average, offering a slightly more precise comparison than the visual median lines, which appear identical.
+*   **Sample Size (n):**
+    *   **NIST AI RMF:** **n=23**. This indicates that 23 requirements or data points were analyzed for this framework.
+    *   **EU AI Act:** **n=9**. This indicates a much smaller sample size of 9 requirements.
+*   **Visual Styling:**
+    *   **Red Lines:** Represent the median.
+    *   **Light Blue Box:** Represents the Interquartile Range (IQR) from the 25th to the 75th percentile.
+
+### 5. Statistical Insights
+*   **Uniformity of Density:** The plot suggests that, architecturally, both the NIST AI RMF and the EU AI Act have a very similar "density" of controls. On average, both frameworks map approximately **2 controls per requirement**.
+*   **Slight Variation in Averages:** While the medians are identical (2.0), the NIST AI RMF has a marginally higher mean (1.9 vs 1.8). However, this difference (0.1) is negligible, reinforcing the similarity between the two.
+*   **Sample Size Disparity:** There is a significant difference in the amount of data analyzed (**n=23** vs **n=9**). While the distributions look similar, the statistical confidence in the EU AI Act distribution is lower due to the small sample size.
+*   **Capping at 3:** Neither framework appears to require more than 3 mapped controls for any single requirement in this dataset, indicating a relatively low complexity of control mapping per individual requirement.
+*   **Skew:** Since the means (1.9 and 1.8) are slightly lower than the medians (2.0), the data is slightly left-skewed, meaning there is a pull toward the lower bound (1 control per requirement).
+==================================================

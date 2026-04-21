@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment was successfully executed and provided conclusive evidence to reject the 'Autonomy-Harm Escalation' hypothesis. By mapping 'Autonomy3' to High Autonomy (n=53) and 'Autonomy1/2' to Low Autonomy (n=129), the analysis compared the rates of definitive tangible (physical) harm.\n\n1. **Identical Risk Profiles**: Contrary to the hypothesis that high autonomy increases physical danger, the rates of tangible harm were statistically identical between groups: 35.8% for High Autonomy (19/53) versus 35.7% for Low Autonomy (46/129).\n\n2. **Statistical Significance**: Fisher's Exact Test yielded a p-value of 1.00 and an Odds Ratio of 1.01, indicating zero statistical association between the level of autonomy and the likelihood of physical harm in this dataset.\n\n3. **Interpretation**: The data suggests that the 'physicality' of a system (whether it can cause physical harm) is likely a function of its domain (e.g., robotics, autonomous vehicles) rather than its level of decision-making independence. A human-in-the-loop system is just as likely to be involved in a physical incident as a fully autonomous one within the reported cases.",
+  "child_ids": [
+    "node_8_4"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nfrom scipy import stats\nimport matplotlib.pyplot as plt\n\n# Load dataset\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    # Fallback if file is in parent directory (standard for some envs)\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\n# Clean and Prepare Data\n# We only analyze rows where both Autonomy and Harm are coded\nanalysis_df = aiid_df.dropna(subset=['Autonomy Level', 'Tangible Harm'])\n\n# Exclude 'unclear' values\nanalysis_df = analysis_df[\n    (analysis_df['Autonomy Level'] != 'unclear') & \n    (analysis_df['Tangible Harm'] != 'unclear')\n]\n\n# Mapping Functions\ndef map_autonomy(val):\n    # Autonomy3 is typically 'System is autonomous' (High)\n    if val == 'Autonomy3':\n        return 'High'\n    # Autonomy1 ('System is human-in-the-loop') and Autonomy2 ('System is human-supervised') (Low)\n    elif val in ['Autonomy1', 'Autonomy2']:\n        return 'Low'\n    return None\n\ndef map_harm(val):\n    # Hypothesis focuses on 'Tangible Harm' (Physical injury/death)\n    # We define 'Tangible' as cases where it definitively occurred.\n    if val == 'tangible harm definitively occurred':\n        return 'Tangible (Physical)'\n    else:\n        # Includes near-misses, issues, no tangible harm\n        return 'Intangible/None'\n\n# Apply mappings\nanalysis_df['Autonomy_Group'] = analysis_df['Autonomy Level'].apply(map_autonomy)\nanalysis_df['Harm_Group'] = analysis_df['Tangible Harm'].apply(map_harm)\n\n# Drop any rows that failed mapping (though previous filter should catch them)\nanalysis_df = analysis_df.dropna(subset=['Autonomy_Group', 'Harm_Group'])\n\n# Generate Summary Stats\nprint(f\"Total Incidents Analyzed: {len(analysis_df)}\")\nprint(analysis_df['Autonomy_Group'].value_counts())\n\n# Create Contingency Table\ncontingency = pd.crosstab(analysis_df['Autonomy_Group'], analysis_df['Harm_Group'])\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency)\n\n# Calculate Rates\nhigh_auto_total = contingency.loc['High'].sum() if 'High' in contingency.index else 0\nhigh_auto_tangible = contingency.loc['High', 'Tangible (Physical)'] if 'High' in contingency.index and 'Tangible (Physical)' in contingency.columns else 0\nrate_high = high_auto_tangible / high_auto_total if high_auto_total > 0 else 0\n\nlow_auto_total = contingency.loc['Low'].sum() if 'Low' in contingency.index else 0\nlow_auto_tangible = contingency.loc['Low', 'Tangible (Physical)'] if 'Low' in contingency.index and 'Tangible (Physical)' in contingency.columns else 0\nrate_low = low_auto_tangible / low_auto_total if low_auto_total > 0 else 0\n\nprint(f\"\\nHigh Autonomy Tangible Harm Rate: {rate_high:.1%} ({high_auto_tangible}/{high_auto_total})\")\nprint(f\"Low Autonomy Tangible Harm Rate:  {rate_low:.1%} ({low_auto_tangible}/{low_auto_total})\")\n\n# Statistical Test\n# Fisher's Exact Test is appropriate given the relatively small sample sizes in some cells\nif contingency.size == 4:\n    odds_ratio, p_value = stats.fisher_exact(contingency.loc[['High', 'Low'], ['Tangible (Physical)', 'Intangible/None']])\n    print(f\"\\nFisher's Exact Test P-value: {p_value:.5f}\")\n    print(f\"Odds Ratio: {odds_ratio:.2f}\")\n    \n    if p_value < 0.05:\n        print(\"Result: Significant correlation found.\")\n    else:\n        print(\"Result: No significant correlation found.\")\nelse:\n    print(\"\\nInsufficient data structure for 2x2 statistical test.\")\n\n# Visualization\nplt.figure(figsize=(8, 5))\nplt.bar(['High Autonomy', 'Low Autonomy'], [rate_high, rate_low], color=['#d62728', '#1f77b4'])\nplt.ylabel('Rate of Tangible Harm')\nplt.title('Tangible Harm Rates by Autonomy Level')\nplt.ylim(0, 1.0)\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Total Incidents Analyzed: 182\nAutonomy_Group\nLow     129\nHigh     53\nName: count, dtype: int64\n\n--- Contingency Table ---\nHarm_Group      Intangible/None  Tangible (Physical)\nAutonomy_Group                                      \nHigh                         34                   19\nLow                          83                   46\n\nHigh Autonomy Tangible Harm Rate: 35.8% (19/53)\nLow Autonomy Tangible Harm Rate:  35.7% (46/129)\n\nFisher's Exact Test P-value: 1.00000\nOdds Ratio: 1.01\nResult: No significant correlation found.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot (or Bar Chart).\n*   **Purpose:** This plot is designed to compare a quantitative variable (\"Rate of Tangible Harm\") across two distinct categorical groups (\"High Autonomy\" and \"Low Autonomy\").\n\n### 2. Axes\n*   **Y-Axis:**\n    *   **Label:** \"Rate of Tangible Harm\"\n    *   **Range:** The axis spans from **0.0 to 1.0**, representing a probability or percentage (0% to 100%).\n    *   **Ticks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n*   **X-Axis:**\n    *   **Label:** The axis does not have a collective label (e.g., \"Autonomy Level\"), but the categories are clearly labeled as **\"High Autonomy\"** and **\"Low Autonomy\"**.\n\n### 3. Data Trends\n*   **Values:**\n    *   **High Autonomy (Red Bar):** The height of the bar indicates a rate of tangible harm of approximately **0.36 to 0.37**.\n    *   **Low Autonomy (Blue Bar):** The height of the bar indicates a rate of tangible harm of approximately **0.35 to 0.36**.\n*   **Comparison:** The two bars are nearly identical in height. The \"High Autonomy\" group shows a negligibly higher rate of tangible harm compared to the \"Low Autonomy\" group. The difference appears visually minimal (likely less than 0.02 or 2%).\n\n### 4. Annotations and Legends\n*   **Title:** The chart is titled **\"Tangible Harm Rates by Autonomy Level,\"** clearly defining the subject of the comparison.\n*   **Color Coding:** Distinct colors are used to differentiate the categories visually:\n    *   **Red:** High Autonomy\n    *   **Blue:** Low Autonomy\n*   There is no separate legend box, as the x-axis labels serve to identify the data points directly.\n\n### 5. Statistical Insights\n*   **Equivalence of Risk:** Based strictly on this visualization, the level of autonomy (High vs. Low) appears to have little to no impact on the rate of tangible harm. Both scenarios result in a harm rate hovering around 36%.\n*   **Magnitude:** The absolute rate of harm is substantial but stays below the midpoint (0.5), residing in the lower-middle quartile of the scale.\n*   **Research Implication:** If the goal of the underlying study was to prove that High Autonomy systems are safer (or more dangerous) than Low Autonomy systems, this data does not support a significant difference. It suggests that factors other than the autonomy level itself may be driving the rate of tangible harm.\n==================================================",
+  "created_at": "2026-02-22T13:43:38.650268+00:00",
+  "creation_idx": 268,
+  "experiment_id": "node_7_12",
+  "experiment_plan": {
+    "deliverables": "Proportion comparison, Z-test/Chi-square results, and an interpretation of the physical risk of autonomy.",
+    "objective": "Determine if higher autonomy correlates with physical danger in reported incidents.",
+    "steps": "1. Load `aiid_incidents`. 2. Parse `Autonomy Level` into 'High' (e.g., Autonomous, High) and 'Low' (e.g., Low, Human-in-the-loop). 3. Categorize `Tangible Harm` into 'Physical' (Death, Injury) and 'Non-Physical' (Financial, Reputation, None). 4. Perform a Chi-square test or Z-test comparing the proportion of Physical Harm in High vs. Low autonomy groups."
+  },
+  "hypothesis": "The 'Autonomy-Harm' Escalation: AI systems with 'High' autonomy levels are significantly more likely to be associated with 'Tangible Harm' (Physical injury/death) in incident reports compared to 'Low' autonomy systems, which primarily cause 'Intangible Harm'.",
+  "id_in_run": 267,
+  "is_surprising": true,
+  "parent_id": "node_6_26",
+  "posterior": 0.25274725274725274,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25274725274725274,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and rigorously tested the 'Autonomy-Harm Escalation' hypothesis. The implementation correctly handled the specific taxonomy of the AIID dataset ('Autonomy1-3' and 'Tangible Harm' status) after initial debugging. The statistical analysis using Fisher's Exact Test was appropriate for the sample sizes involved.\n\nFindings:\n1.  **Hypothesis Rejection**: The results definitively reject the hypothesis that higher autonomy levels correlate with higher rates of tangible (physical) harm. \n2.  **Identical Rates**: The analysis revealed a striking parity in risk profiles: High Autonomy systems had a physical harm rate of 35.8% (19/53), while Low Autonomy systems had a rate of 35.7% (46/129).\n3.  **Statistical Inference**: With a p-value of 1.00 and an Odds Ratio of 1.01, the data indicates that within the reported incidents, the level of autonomy is not a discriminator for physical safety risk.",
+  "rich_outputs": null,
+  "runtime_ms": 290760.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.587025877348458
+}

@@ -1,0 +1,17 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded EO 13960 dataset: 1757 rows
+
+--- Contingency Table (Counts) ---
+               No Mitigation  Has Mitigation
+Non-Biometric           1645              56
+Biometric                 53               3
+
+--- Fisher's Exact Test Results ---
+P-value: 0.4329
+Chi-Square Statistic: 0.2181, P-value: 0.6405
+
+--- Compliance Rates ---
+Non-Biometric: 3.29% (56/1701)
+Biometric:     5.36% (3/56)
+
+Odds Ratio: 1.6627

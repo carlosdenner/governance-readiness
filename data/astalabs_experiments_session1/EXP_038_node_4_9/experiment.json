@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully validated the hypothesis that attack complexity (measured by technique count) is strongly correlated with the breadth of organizational competency gaps. Analysis of the 52 MITRE ATLAS incidents in `step3_incident_coding.csv` revealed a strong, statistically significant positive correlation (Pearson r=0.83, p<0.001; Spearman rho=0.76, p<0.001). The data shows that as attacks become more complex (Mean techniques = 7.54), they expose a significantly higher number of missing sub-competencies (Mean gaps = 4.81), rather than failing on a single control. This supports the theoretical proposition that complex AI adversarial chains leverage systemic organizational fragility, requiring a defense-in-depth approach that is currently lacking in the observed cases.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy import stats\nimport os\n\n# Define the file path\nfilename = 'step3_incident_coding.csv'\n\n# Check if file exists in current directory or up one level\nif os.path.exists(filename):\n    filepath = filename\nelif os.path.exists(os.path.join('..', filename)):\n    filepath = os.path.join('..', filename)\nelse:\n    # Fallback to the list of files provided in the prompt context to find where they might be\n    # Assuming they are in the current working directory based on previous turns usually\n    filepath = filename\n\nprint(f\"Loading dataset from: {filepath}\")\n\ntry:\n    df = pd.read_csv(filepath)\n    \n    # Verify required columns exist\n    required_columns = ['technique_count', 'sub_competency_ids']\n    missing_cols = [col for col in required_columns if col not in df.columns]\n    if missing_cols:\n        print(f\"Error: Missing columns {missing_cols}\")\n        # Attempt to calculate technique_count if missing but techniques_used exists\n        if 'technique_count' in missing_cols and 'techniques_used' in df.columns:\n            print(\"Calculated technique_count from techniques_used.\")\n            df['technique_count'] = df['techniques_used'].fillna('').apply(lambda x: len(x.split(';')) if x else 0)\n        else:\n            raise ValueError(f\"Cannot proceed without columns: {missing_cols}\")\n\n    # Calculate Gap Breadth (count of sub_competency_ids)\n    # Handle NaNs and empty strings\n    def count_gaps(val):\n        if pd.isna(val) or val == '':\n            return 0\n        # Split by semicolon, strip whitespace, remove empty strings\n        items = [x.strip() for x in str(val).split(';') if x.strip()]\n        return len(items)\n\n    df['gap_breadth'] = df['sub_competency_ids'].apply(count_gaps)\n\n    # Extract vectors\n    x = df['technique_count']\n    y = df['gap_breadth']\n\n    # Statistical Analysis\n    pearson_corr, pearson_p = stats.pearsonr(x, y)\n    spearman_corr, spearman_p = stats.spearmanr(x, y)\n\n    print(\"\\n--- Statistical Analysis ---\")\n    print(f\"N = {len(df)}\")\n    print(f\"Technique Count: Mean={x.mean():.2f}, Std={x.std():.2f}, Min={x.min()}, Max={x.max()}\")\n    print(f\"Gap Breadth:     Mean={y.mean():.2f}, Std={y.std():.2f}, Min={y.min()}, Max={y.max()}\")\n    print(\"\\nCorrelation Results:\")\n    print(f\"Pearson correlation:  r={pearson_corr:.4f}, p={pearson_p:.4f}\")\n    print(f\"Spearman correlation: rho={spearman_corr:.4f}, p={spearman_p:.4f}\")\n\n    # Visualization\n    plt.figure(figsize=(10, 6))\n    \n    # Scatter plot with jitter to handle overlapping points (since data is discrete counts)\n    x_jitter = x + np.random.normal(0, 0.1, size=len(x))\n    y_jitter = y + np.random.normal(0, 0.1, size=len(y))\n    \n    plt.scatter(x_jitter, y_jitter, alpha=0.6, label='Incident Data (Jittered)')\n\n    # Regression Line\n    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)\n    line_x = np.array([x.min(), x.max()])\n    line_y = slope * line_x + intercept\n    plt.plot(line_x, line_y, color='red', label=f'Regression (r={r_value:.2f})')\n\n    plt.title('Attack Complexity vs. Competency Gap Breadth')\n    plt.xlabel('Technique Count (Complexity)')\n    plt.ylabel('Gap Breadth (Missing Sub-competencies)')\n    plt.legend()\n    plt.grid(True, linestyle='--', alpha=0.5)\n    \n    plt.show()\n\nexcept Exception as e:\n    print(f\"An error occurred: {e}\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step3_incident_coding.csv\n\n--- Statistical Analysis ---\nN = 52\nTechnique Count: Mean=7.54, Std=2.93, Min=1, Max=16\nGap Breadth:     Mean=4.81, Std=1.40, Min=1, Max=9\n\nCorrelation Results:\nPearson correlation:  r=0.8320, p=0.0000\nSpearman correlation: rho=0.7613, p=0.0000\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Scatter plot with an overlaid linear regression line.\n*   **Purpose:** The plot visualizes the relationship and correlation between two variables: \"Attack Complexity\" (independent variable) and \"Competency Gap Breadth\" (dependent variable).\n\n### 2. Axes\n*   **X-Axis (Horizontal):**\n    *   **Title:** \"Technique Count (Complexity)\"\n    *   **Unit/Context:** Represents a count of techniques used, serving as a proxy for complexity.\n    *   **Range:** The axis ticks range from 2 to 16. The data points span from approximately x=1 to x=16.\n*   **Y-Axis (Vertical):**\n    *   **Title:** \"Gap Breadth (Missing Sub-competencies)\"\n    *   **Unit/Context:** Represents a count or score of missing sub-competencies.\n    *   **Range:** The axis ticks range from 1 to 9. The data points span from y=1 to roughly y=9.\n\n### 3. Data Trends\n*   **Direction:** There is a clear **positive trend**. As the technique count (complexity) increases, the gap breadth (missing sub-competencies) also increases.\n*   **Clustering:** The majority of the data points are clustered in the middle range, roughly between a technique count of 4 and 10, with gap breadths ranging between 3 and 6.\n*   **Distribution:** The data points are somewhat spread out vertically at specific x-values (e.g., at x=6 and x=9), indicating variance in the gap breadth for attacks of similar complexity.\n*   **Extremes:**\n    *   The lowest data point is at approximately (1, 1).\n    *   The highest data point is at approximately (16, 9).\n\n### 4. Annotations and Legends\n*   **Main Title:** \"Attack Complexity vs. Competency Gap Breadth\" positioned at the top center.\n*   **Legend (Top Left):**\n    *   **Blue Circle:** Labeled \"Incident Data (Jittered)\". \"Jittered\" implies that a small amount of random noise was added to the data points to prevent them from overlapping perfectly, allowing the viewer to see the density of data at discrete integer coordinates.\n    *   **Red Line:** Labeled \"Regression (r=0.83)\". This indicates the red line is a linear fit model for the data.\n*   **Grid:** A light gray, dashed grid is provided to help estimate values for individual data points.\n\n### 5. Statistical Insights\n*   **Strong Positive Correlation:** The correlation coefficient ($r$) is stated as **0.83**. In statistics, an $r$ value close to 1.0 indicates a strong positive linear relationship. This suggests that Attack Complexity is a strong predictor of Competency Gap Breadth.\n*   **Interpretation:** The data indicates that as an attack becomes more complex (utilizing a higher count of techniques), the \"Competency Gap\" (the number of missing sub-competencies required to defend or respond) widens significantly.\n*   **Linear Fit:** The red regression line passes centrally through the cloud of data points, suggesting that a linear model is a reasonably good fit for describing the relationship between these two variables.\n==================================================",
+  "created_at": "2026-02-20T22:41:27.704287+00:00",
+  "creation_idx": 39,
+  "experiment_id": "node_4_9",
+  "experiment_plan": {
+    "deliverables": "Correlation coefficient, p-value, and scatter plot of Technique Count vs. Gap Breadth.",
+    "objective": "Determine if multi-step attacks expose a wider range of organizational deficits than simpler attacks.",
+    "steps": "1. Load 'step3_incident_coding.csv'.\n2. Extract 'technique_count' (numerical).\n3. Parse 'sub_competency_ids' to calculate the 'Gap Breadth' (count of distinct IDs listed per row).\n4. Perform a Pearson (or Spearman) correlation test between Technique Count and Gap Breadth.\n5. Generate a scatter plot with a regression line."
+  },
+  "hypothesis": "The complexity of an AI attack, measured by the number of adversarial techniques employed, is positively correlated with the breadth of the organizational competency gap (number of missing sub-competencies).",
+  "id_in_run": 38,
+  "is_surprising": true,
+  "parent_id": "node_3_7",
+  "posterior": 0.8987603305785123,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 90.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.8987603305785123,
+    "n": 90.0,
+    "prior_params": [
+      18.75,
+      12.25
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.6048387096774194,
+  "prior_belief": {
+    "_empirical_mean": 0.6083333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 8.0,
+    "maybe_true": 21.0,
+    "mean": 0.6048387096774194,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment was executed perfectly. The code correctly loaded the incident dataset, parsed the necessary columns to calculate 'Gap Breadth', and performed the requested statistical correlation tests. The results (Pearson r=0.83, p<0.001) provide very strong evidence supporting the hypothesis.",
+  "rich_outputs": null,
+  "runtime_ms": 169650.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.3411242054323254
+}

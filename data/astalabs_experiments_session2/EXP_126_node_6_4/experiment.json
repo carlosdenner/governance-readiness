@@ -1,0 +1,57 @@
+{
+  "analysis": "The experiment successfully tested the 'Legacy Governance Debt' hypothesis using the EO 13960 dataset.\n\n1. **Data Recovery**: The updated mapping logic successfully categorized 1,079 systems, identifying 600 'Legacy (Reused)' and 479 'New (Custom)' systems, overcoming the previous data loss issue.\n\n2. **Statistical Results**: The Chi-square test yielded a statistic of 0.1072 with a p-value of 0.7433, which is well above the 0.05 threshold for significance.\n\n3. **Hypothesis Evaluation**: The hypothesis is **rejected**. There is no statistically significant difference in the implementation of appeal processes between legacy and new systems. Contrary to the expectation of 'governance debt', legacy systems actually showed a slightly higher (though statistically indistinguishable) implementation rate (7.2%) compared to new systems (6.5%).\n\n4. **Key Insight**: The primary finding is a systemic lack of recourse mechanisms across the entire federal AI portfolio. With both groups showing <8% implementation rates, the issue appears to be a general governance gap regarding user rights rather than a problem specific to legacy technical debt.",
+  "child_ids": [
+    "node_7_2"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport sys\n\n# Load dataset\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n    except:\n        print(\"Error: Dataset not found.\")\n        sys.exit(1)\n\n# Filter for EO 13960 data\neo_df = df[df['source_table'] == 'eo13960_scored'].copy()\n\nprint(f\"Loaded {len(eo_df)} records from EO 13960 source.\")\n\ncol_reuse = '49_existing_reuse'\ncol_appeal = '65_appeal_process'\n\n# --- MAPPING LOGIC ---\n\ndef map_system_type(val):\n    if pd.isna(val):\n        return 'Unknown'\n    val_str = str(val).lower().strip()\n    \n    # Explicit 'New' indicators\n    if val_str.startswith('none') or val_str == 'no':\n        return 'New (Custom)'\n    \n    # Explicit 'Legacy/Reuse' keywords found in unique values\n    legacy_keywords = [\n        're-use', 'reused', 'use of', 'built on', 'prior', \n        'shared', 'leveraged', 'used external'\n    ]\n    if any(k in val_str for k in legacy_keywords):\n        return 'Legacy (Reused)'\n    \n    # If it's not explicitly None/No and contains description, treat as potential custom or ambiguous\n    # But looking at unique values, most 'None' capture the custom ones.\n    # Let's mark others as Unknown to be safe, or check if we missed any.\n    return 'Unknown'\n\ndef map_appeal(val):\n    if pd.isna(val):\n        return 'No Appeal Process'\n    val_str = str(val).lower().strip()\n    if val_str.startswith('yes'):\n        return 'Has Appeal Process'\n    return 'No Appeal Process'\n\n# Apply mappings\neo_df['system_type'] = eo_df[col_reuse].apply(map_system_type)\neo_df['appeal_status'] = eo_df[col_appeal].apply(map_appeal)\n\n# Filter out Unknown system types\neo_df_clean = eo_df[eo_df['system_type'] != 'Unknown'].copy()\n\nprint(\"\\n--- Group Counts ---\")\nprint(eo_df_clean['system_type'].value_counts())\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(eo_df_clean['system_type'], eo_df_clean['appeal_status'])\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Calculate Percentages\nsummary = contingency_table.div(contingency_table.sum(axis=1), axis=0) * 100\nprint(\"\\n--- Implementation Rates (% with Appeal Process) ---\")\nprint(summary['Has Appeal Process'])\n\n# Chi-Square Test\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4e}\")\n\nalpha = 0.05\nif p < alpha:\n    print(\"Result: Statistically Significant Difference (Reject Null Hypothesis)\")\nelse:\n    print(\"Result: No Statistically Significant Difference (Fail to Reject Null Hypothesis)\")\n\n# Visualization\nax = summary['Has Appeal Process'].plot(kind='bar', color=['orange', 'skyblue'], figsize=(8, 6))\nplt.title('Appeal Process Implementation by System Origin')\nplt.ylabel('Percentage with Appeal Process (%)')\nplt.xlabel('System Origin')\nplt.xticks(rotation=0)\nplt.ylim(0, 20) # Focusing on the lower range if rates are low\n\nfor p_val, rect in zip(summary['Has Appeal Process'], ax.patches):\n    height = rect.get_height()\n    ax.text(rect.get_x() + rect.get_width() / 2, height + 0.5, f\"{p_val:.1f}%\", ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loaded 1757 records from EO 13960 source.\n\n--- Group Counts ---\nsystem_type\nLegacy (Reused)    600\nNew (Custom)       479\nName: count, dtype: int64\n\n--- Contingency Table ---\nappeal_status    Has Appeal Process  No Appeal Process\nsystem_type                                           \nLegacy (Reused)                  43                557\nNew (Custom)                     31                448\n\n--- Implementation Rates (% with Appeal Process) ---\nsystem_type\nLegacy (Reused)    7.166667\nNew (Custom)       6.471816\nName: Has Appeal Process, dtype: float64\n\nChi-Square Statistic: 0.1072\nP-value: 7.4331e-01\nResult: No Statistically Significant Difference (Fail to Reject Null Hypothesis)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot (Vertical Bar Chart).\n*   **Purpose:** The plot is designed to compare the prevalence (percentage) of appeal process implementation across two distinct categories of system origins: Legacy (Reused) systems and New (Custom) systems.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"System Origin\"\n    *   **Labels:** Two categorical variables: \"Legacy (Reused)\" and \"New (Custom)\".\n*   **Y-Axis:**\n    *   **Title:** \"Percentage with Appeal Process (%)\"\n    *   **Value Range:** The axis ranges from 0.0 to 20.0.\n    *   **Units:** Percentage (%).\n\n### 3. Data Trends\n*   **Tallest Bar:** The \"Legacy (Reused)\" category is the highest, represented by an orange bar reaching **7.2%**.\n*   **Shortest Bar:** The \"New (Custom)\" category is the lowest, represented by a light blue bar reaching **6.5%**.\n*   **Pattern:** There is a slight disparity between the two categories, but the values are relatively close to one another. Both categories show that the implementation of an appeal process is a minority occurrence (both under 10%).\n\n### 4. Annotations and Legends\n*   **Title:** \"Appeal Process Implementation by System Origin\" appears at the top center.\n*   **Bar Annotations:** Specific percentage values are annotated directly above each bar (\"7.2%\" and \"6.5%\"), allowing for precise reading of the data without relying solely on the y-axis grid lines.\n*   **Color Coding:** The plot uses orange for \"Legacy (Reused)\" and light blue for \"New (Custom)\" to visually distinguish the categories, though a separate legend box is not provided (nor necessary, given the x-axis labels).\n\n### 5. Statistical Insights\n*   **Low Adoption Rates:** The most significant insight is that the implementation of appeal processes is rare across the board. Regardless of whether a system is Legacy or New, fewer than 8% of them include an appeal process.\n*   **Legacy Advantage:** Legacy (Reused) systems are slightly more likely (by a margin of 0.7%) to have an appeal process implemented compared to New (Custom) systems. This could suggest that older, established systems have had more time to mature and incorporate governance or recourse mechanisms, or that reused components inherit these processes from previous iterations.\n*   **Marginal Difference:** The difference between 7.2% and 6.5% is statistically small, suggesting that the origin of the system (New vs. Legacy) is not a strong predictor for the presence of an appeal process.\n==================================================",
+  "created_at": "2026-02-22T06:57:49.126567+00:00",
+  "creation_idx": 127,
+  "experiment_id": "node_6_4",
+  "experiment_plan": {
+    "deliverables": "Contingency table, Chi-square statistic, p-value, and comparison of proportions.",
+    "objective": "Investigate if legacy/reused systems suffer from a 'governance debt' regarding user rights.",
+    "steps": "1. Filter for 'eo13960_scored'.\n2. Create binary 'Is_Legacy' from '49_existing_reuse' (Yes vs No/NaN).\n3. Create binary 'Has_Appeal' from '65_appeal_process' (Yes vs No/NaN).\n4. Perform a Chi-square test of independence.\n5. Compare the percentages of Appeal Process implementation between Legacy and New systems."
+  },
+  "hypothesis": "Legacy Governance Debt: AI systems marked as 'Existing/Reused' have a statistically lower implementation rate of user-centric recourse controls (specifically 'Appeal Process') compared to 'New/Custom' systems.",
+  "id_in_run": 126,
+  "is_surprising": true,
+  "parent_id": "node_5_9",
+  "posterior": 0.25274725274725274,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25274725274725274,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the 'Legacy Governance Debt' hypothesis using the EO 13960 dataset.\n\n1. **Data Recovery**: The updated mapping logic successfully categorized 1,079 systems, identifying 600 'Legacy (Reused)' and 479 'New (Custom)' systems, overcoming the previous data loss issue.\n\n2. **Statistical Results**: The Chi-square test yielded a statistic of 0.1072 with a p-value of 0.7433, which is well above the 0.05 threshold for significance.\n\n3. **Hypothesis Evaluation**: The hypothesis is **rejected**. There is no statistically significant difference in the implementation of appeal processes between legacy and new systems. Contrary to the expectation of 'governance debt', legacy systems actually showed a slightly higher (though statistically indistinguishable) implementation rate (7.2%) compared to new systems (6.5%).\n\n4. **Key Insight**: The primary finding is a systemic lack of recourse mechanisms across the entire federal AI portfolio. With both groups showing <8% implementation rates, the issue appears to be a general governance gap regarding user rights rather than a problem specific to legacy technical debt.",
+  "rich_outputs": null,
+  "runtime_ms": 226650.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.587025877348458
+}

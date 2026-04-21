@@ -1,0 +1,47 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting 'Shadow AI' Hypothesis Test...
+
+Dataset loaded successfully from current directory.
+EO 13960 subset shape: (1757, 196)
+
+Top 10 Raw '16_dev_stage' values:
+16_dev_stage
+Operation and Maintenance         627
+Acquisition and/or Development    351
+Initiated                         329
+Implementation and Assessment     275
+Retired                           133
+Planned                            20
+In production                      14
+In mission                          4
+Name: count, dtype: int64
+
+Stage Group Distribution:
+stage_group
+Operational    641
+Development    371
+Name: count, dtype: int64
+
+Contingency Table (Counts):
+             No ATO (Non-Compliant)  Has ATO (Compliant)
+stage_group                                             
+Development                     231                  140
+Operational                     308                  333
+
+Compliance Analysis:
+             count  non_compliant_count  non_compliance_rate
+stage_group                                                 
+Development    371                  231             0.622642
+Operational    641                  308             0.480499
+
+Chi-Square Test of Independence:
+Statistic: 18.5058, p-value: 1.6938e-05
+
+Risk of Non-Compliance (Operational): 48.05%
+Risk of Non-Compliance (Development): 62.26%
+Risk Ratio (Op / Dev): 0.7717
+
+--- Interpretation ---
+EVIDENCE OF SHADOW AI: 48.0% of Operational systems lack a valid ATO.
+The difference in compliance rates between stages is statistically significant.
+Operational systems are significantly MORE compliant than Development systems (Expected).

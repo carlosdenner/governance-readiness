@@ -1,0 +1,70 @@
+exitcode: 0 (execution succeeded)
+Code output: Data points for analysis: 180
+Autonomy counts:
+autonomy_bin
+Low     128
+High     52
+Name: count, dtype: int64
+Harm Scale counts:
+harm_bin
+Individual    113
+Collective     67
+Name: count, dtype: int64
+
+Contingency Table (Count):
+harm_bin      Collective  Individual
+autonomy_bin                        
+High                  25          27
+Low                   42          86
+
+Proportions (Row-wise):
+harm_bin      Collective  Individual
+autonomy_bin                        
+High            0.480769    0.519231
+Low             0.328125    0.671875
+
+Chi-Square Statistic: 3.0629
+P-value: 0.0801
+
+Conclusion: Fail to Reject Null Hypothesis. No significant association found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the analysis of the provided plot, here are the detailed findings:
+
+### 1. Plot Type
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** The chart is designed to compare the relative proportions of two categories of harm ("Individual" and "Collective") across two distinct levels of AI autonomy ("High" and "Low"). By stacking the bars to a total height of 1.0, it facilitates a direct comparison of the composition of incidents rather than absolute counts.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** "Autonomy Level"
+    *   **Categories:** The axis displays categorical data with two specific groups: "High" and "Low".
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Incidents"
+    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **High Autonomy Level:**
+    *   The distribution is nearly balanced but leans slightly towards Individual harm.
+    *   **Individual Harm (Blue):** Comprises **0.52** (52%) of incidents.
+    *   **Collective Harm (Red):** Comprises **0.48** (48%) of incidents.
+*   **Low Autonomy Level:**
+    *   There is a clear dominance of Individual harm over Collective harm.
+    *   **Individual Harm (Blue):** Comprises **0.67** (67%) of incidents.
+    *   **Collective Harm (Red):** Comprises **0.33** (33%) of incidents.
+*   **Comparison:** As the autonomy level shifts from Low to High, the proportion of "Collective" harm increases significantly (from 0.33 to 0.48), while "Individual" harm decreases proportionally.
+
+### 4. Annotations and Legends
+*   **Title:** "Harm Distribution Scale by AI Autonomy Level" describes the chart's content.
+*   **Legend:** Located at the top right, titled "Harm Scale."
+    *   **Red:** Represents "Collective" harm.
+    *   **Blue:** Represents "Individual" harm.
+*   **Data Labels:** White numerical annotations are placed centrally within each bar segment, indicating the exact proportion for that specific category (e.g., "0.52", "0.48").
+
+### 5. Statistical Insights
+*   **Prevalence of Individual Harm:** Across both autonomy levels, "Individual" harm is the majority category (exceeding 0.50 in both cases). This suggests that regardless of autonomy level, AI incidents are more likely to impact individuals rather than collectives.
+*   **Autonomy and Collective Risk:** There is a positive correlation between higher AI autonomy and the scale of collective harm. When AI systems operate with **High Autonomy**, the risk of collective harm is nearly equal to that of individual harm (48% vs 52%). In contrast, **Low Autonomy** systems are twice as likely to cause individual harm (67%) as they are to cause collective harm (33%).
+*   **Implication:** This suggests that as AI systems become more autonomous, the nature of the risks they pose shifts from isolated incidents affecting specific users to broader issues affecting groups or society at large.
+==================================================

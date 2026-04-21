@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment tested the hypothesis that 'Human-in-the-Loop Approval Gates' is a signature control for the 'Trust Readiness' bundle. The analysis of `step2_crosswalk_matrix.csv` (n=42) revealed that this control is rarely used (3 occurrences total). Contrary to the hypothesis, all 3 instances were associated with 'Integration Readiness' requirements, while 'Trust Readiness' had zero mappings to this control. Fisher's Exact Test yielded a p-value of 0.2387, indicating the difference is not statistically significant due to the small sample size of the control's usage. However, the complete absence of this control in the Trust bundle (0/19) definitively rejects the hypothesis that it serves as a primary differentiator for Trust. The data suggests this specific control is currently conceptualized as an engineering/integration safeguard (e.g., deployment gates) rather than a governance/trust policy mechanism in this specific framework.",
+  "child_ids": [
+    "node_6_6",
+    "node_6_8"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nimport os\n\n# [debug]\nprint(\"Current working directory:\", os.getcwd())\n\n# Define file path based on instructions\nfilename = 'step2_crosswalk_matrix.csv'\nfilepath = f\"../{filename}\"\n\nif not os.path.exists(filepath):\n    # Fallback to current directory if not found in parent\n    filepath = filename\n\nprint(f\"Loading dataset from: {filepath}\")\n\ntry:\n    df = pd.read_csv(filepath)\n    print(\"Dataset loaded successfully.\")\nexcept FileNotFoundError:\n    print(f\"Error: File {filename} not found.\")\n    exit(1)\n\n# Target Columns\nbundle_col = 'bundle'\ncontrol_col = 'Human-in-the-Loop Approval Gates'\n\n# Check if columns exist\nif control_col not in df.columns:\n    print(f\"Column '{control_col}' not found. Available columns:\")\n    print(df.columns.tolist())\n    exit(1)\n\n# Preprocess: Convert control column to boolean (True if 'X' or non-null/non-empty, False otherwise)\n# Looking at previous exploration, 'X' indicates presence.\ndf['has_hitl'] = df[control_col].notna() & (df[control_col].astype(str).str.strip() != '')\n\n# Create Contingency Table\ncontingency_table = pd.crosstab(df[bundle_col], df['has_hitl'])\ncontingency_table.columns = ['No HITL', 'Has HITL']\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Perform Fisher's Exact Test\n# Fisher's exact test requires a 2x2 table. \n# Ensure we have both bundles and both presence/absence states if possible, though crosstab handles available data.\nif contingency_table.shape == (2, 2):\n    odds_ratio, p_value = stats.fisher_exact(contingency_table)\n    print(f\"\\nFisher's Exact Test Results:\")\n    print(f\"Odds Ratio: {odds_ratio:.4f}\")\n    print(f\"P-value: {p_value:.4f}\")\n    \n    alpha = 0.05\n    if p_value < alpha:\n        print(\"Result: Statistically Significant association between Bundle and HITL Control.\")\n    else:\n        print(\"Result: No statistically significant association found.\")\nelse:\n    print(\"\\nContingency table is not 2x2. Cannot perform Fisher's Exact Test.\")\n    print(\"Shape:\", contingency_table.shape)\n\n# Visualization\nplt.figure(figsize=(8, 6))\nsns.heatmap(contingency_table, annot=True, fmt='d', cmap='Blues', cbar=False)\nplt.title('Association: Bundle vs Human-in-the-Loop Control')\nplt.ylabel('Competency Bundle')\nplt.xlabel('Has Human-in-the-Loop Approval Gates?')\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Current working directory: /data\nLoading dataset from: step2_crosswalk_matrix.csv\nDataset loaded successfully.\n\n--- Contingency Table ---\n                       No HITL  Has HITL\nbundle                                  \nIntegration Readiness       20         3\nTrust Readiness             19         0\n\nFisher's Exact Test Results:\nOdds Ratio: 0.0000\nP-value: 0.2387\nResult: No statistically significant association found.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Heatmap (specifically visualizing a **Contingency Table** or Confusion Matrix).\n*   **Purpose:** The plot visualizes the frequency distribution and association between two categorical variables: \"Competency Bundle\" and the presence of \"Human-in-the-Loop (HITL) Approval Gates.\" It allows for quick identification of the most and least common combinations of these factors.\n\n### 2. Axes\n*   **Y-Axis (Vertical):**\n    *   **Title/Label:** \"Competency Bundle\"\n    *   **Categories:** The axis is divided into two categories: \"Integration Readiness\" (top) and \"Trust Readiness\" (bottom).\n*   **X-Axis (Horizontal):**\n    *   **Title/Label:** \"Has Human-in-the-Loop Approval Gates?\"\n    *   **Categories:** The axis is divided into two categories: \"No HITL\" (left) and \"Has HITL\" (right).\n*   **Value Ranges:** The axes represent categorical data rather than numerical ranges. The quantitative data is represented within the cells, ranging from a count of **0 to 20**.\n\n### 3. Data Trends\n*   **High Values (Dark Blue Areas):**\n    *   The highest concentration of data is found in the **\"No HITL\"** column.\n    *   **Integration Readiness + No HITL:** This is the most frequent combination with a count of **20**.\n    *   **Trust Readiness + No HITL:** This is the second most frequent combination with a count of **19**.\n*   **Low Values (Light Blue/White Areas):**\n    *   The **\"Has HITL\"** column contains significantly fewer data points.\n    *   **Integration Readiness + Has HITL:** A low count of **3**.\n    *   **Trust Readiness + Has HITL:** The lowest possible value, **0**.\n*   **Overall Trend:** There is a strong skew towards \"No HITL.\" Regardless of the Competency Bundle, the vast majority of cases do not have Human-in-the-Loop approval gates.\n\n### 4. Annotations and Legends\n*   **Title:** \"Association: Bundle vs Human-in-the-Loop Control\" – This clearly defines the two variables being compared.\n*   **Cell Annotations:** Each cell contains a number (20, 3, 19, 0) representing the exact count of observations for that specific intersection of categories.\n*   **Color Scale:** While there is no explicit legend bar, the plot uses a sequential color scheme (white to dark blue), where darker blue indicates a higher frequency count and white indicates zero.\n\n### 5. Statistical Insights\n*   **Dominance of \"No HITL\":** Out of the total dataset (sum of all cells = 42), **39 cases (approx. 93%)** fall under the \"No HITL\" category. Only 3 cases have HITL approval gates.\n*   **Exclusive Association:** The \"Trust Readiness\" bundle appears to be exclusively associated with \"No HITL\" in this dataset, as there are zero recorded instances of Trust Readiness combined with HITL.\n*   **Bundle Distribution:** The distribution between the two bundles is relatively balanced, with \"Integration Readiness\" having a total of 23 cases (20+3) and \"Trust Readiness\" having 19 cases (19+0).\n*   **Implication:** This data suggests that within the context of this experiment or survey, Human-in-the-Loop control is rarely applied to these competency bundles, particularly for Trust Readiness.\n==================================================",
+  "created_at": "2026-02-20T23:13:31.887762+00:00",
+  "creation_idx": 54,
+  "experiment_id": "node_5_8",
+  "experiment_plan": {
+    "deliverables": "Heatmap of the contingency table and Fisher's Exact Test results.",
+    "objective": "Test the specificity of the 'Human-in-the-Loop' control to the Trust bundle.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Create a contingency table comparing 'bundle' (Trust/Integration) vs the binary presence of the column 'Human-in-the-Loop Approval Gates' (X or empty).\n3. Perform Fisher's Exact Test to determine if the association is significant."
+  },
+  "hypothesis": "The 'Human-in-the-Loop Approval Gates' control is significantly more likely to be associated with 'Trust Readiness' requirements than 'Integration Readiness' requirements, serving as a signature control for Trust.",
+  "id_in_run": 53,
+  "is_surprising": true,
+  "parent_id": "node_4_14",
+  "posterior": 0.22520661157024793,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.22520661157024793,
+    "n": 90.0,
+    "prior_params": [
+      27.25,
+      3.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8790322580645161,
+  "prior_belief": {
+    "_empirical_mean": 0.8916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 17.0,
+    "maybe_false": 0.0,
+    "maybe_true": 13.0,
+    "mean": 0.8790322580645161,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully tested the hypothesis that 'Human-in-the-Loop Approval Gates' serves as a signature control for 'Trust Readiness'. The analysis of `step2_crosswalk_matrix.csv` (n=42) revealed that this control is used sparingly (only 3 times total). Contrary to the hypothesis, all 3 instances were associated with 'Integration Readiness', while 'Trust Readiness' had zero associations. Fisher's Exact Test yielded a p-value of 0.2387, indicating the difference is not statistically significant due to the low frequency of the control, but the complete absence of the control in the Trust bundle (0/19 vs 3/23) definitively rejects the hypothesis. The data suggests that in this framework, human approval gates are treated as integration/deployment checkpoints rather than trust/governance mechanisms.",
+  "rich_outputs": null,
+  "runtime_ms": 150370.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.758827314124969
+}

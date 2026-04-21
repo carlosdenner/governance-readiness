@@ -1,0 +1,21 @@
+exitcode: 0 (execution succeeded)
+Code output: Subset size: 1757
+
+--- Value Counts ---
+Public Systems (is_public=1): 255
+Internal Systems (is_public=0): 1502
+Systems with Notice (has_notice=1): 71
+
+--- Contingency Table ---
+          No Notice  Has Notice
+Internal       1457          45
+Public          229          26
+
+Internal Compliance: 3.00% (n=1502)
+Public Compliance:   10.20% (n=255)
+
+--- Chi-Square Test Results ---
+Chi2: 27.3161
+p-value: 1.7276e-07
+Result: Significant difference found.
+Hypothesis Supported: Public systems are more likely to have notice.

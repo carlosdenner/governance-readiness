@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Autonomy-Physicality Link' hypothesis using the AIID dataset. After mapping 135 valid incidents into 'High' (Autonomy3) and 'Low' (Autonomy1/2) autonomy levels and categorizing harms as 'Physical' or 'Intangible', the analysis found virtually no difference in the nature of harm between the two groups.\n\n**Findings:**\n1.  **Physical Harm Rates:**\n    -   **High Autonomy:** 48.7% (19/39 incidents involved physical harm).\n    -   **Low Autonomy:** 47.9% (46/96 incidents involved physical harm).\n2.  **Statistical Test:**\n    -   Chi-Square Statistic: 0.0000\n    -   p-value: 1.0000\n\n**Conclusion:**\nThe hypothesis that high-autonomy systems are more likely to cause physical harm is **rejected**. The data reveals that incidents involving high-autonomy systems (e.g., autonomous vehicles) and low-autonomy systems (e.g., decision support) share an almost identical distribution of physical vs. intangible harm types (~48% physical) within this dataset. The level of autonomy appears uncorrelated with the domain of harm (physical vs. intangible).",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport numpy as np\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport sys\n\n# Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept:\n    try:\n        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    except:\n        print(\"Dataset not found.\")\n        sys.exit(1)\n\n# Filter for AIID incidents\naiid_df = df[df['source_table'] == 'aiid_incidents'].copy()\n\n# 1. Map Autonomy\n# Autonomy3 = High\n# Autonomy1, Autonomy2 = Low\ndef map_autonomy(val):\n    if pd.isna(val): return np.nan\n    if val == 'Autonomy3': return 'High'\n    if val in ['Autonomy1', 'Autonomy2']: return 'Low'\n    return np.nan\n\naiid_df['autonomy_group'] = aiid_df['Autonomy Level'].apply(map_autonomy)\n\n# 2. Map Harm\n# Physical: 'tangible harm definitively occurred'\n# Intangible: 'yes' in Special Interest Intangible Harm AND NOT Physical\ndef map_harm(row):\n    tangible = str(row['Tangible Harm'])\n    intangible = str(row['Special Interest Intangible Harm'])\n    \n    is_physical = 'tangible harm definitively occurred' in tangible\n    is_intangible = 'yes' == intangible.lower()\n    \n    if is_physical:\n        return 'Physical'\n    elif is_intangible:\n        return 'Intangible'\n    else:\n        return np.nan\n\naiid_df['harm_group'] = aiid_df.apply(map_harm, axis=1)\n\n# 3. Filter for valid rows\nanalysis_df = aiid_df.dropna(subset=['autonomy_group', 'harm_group'])\n\nprint(f\"Valid incidents for analysis: {len(analysis_df)}\")\nprint(\"Distribution:\")\nprint(analysis_df.groupby(['autonomy_group', 'harm_group']).size())\n\nif len(analysis_df) < 5:\n    print(\"Insufficient data for statistical testing.\")\n    sys.exit(0)\n\n# 4. Chi-Square Test\ncontingency = pd.crosstab(analysis_df['autonomy_group'], analysis_df['harm_group'])\nprint(\"\\nContingency Table:\")\nprint(contingency)\n\nchi2, p, dof, expected = stats.chi2_contingency(contingency)\nprint(f\"\\nChi-Square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4f}\")\n\n# 5. Plotting\n# Calculate proportion of Physical harm\nprops = contingency.div(contingency.sum(axis=1), axis=0)\nphysical_props = props['Physical'] if 'Physical' in props.columns else pd.Series([0,0], index=['High', 'Low'])\n\nplt.figure(figsize=(8, 6))\nbars = plt.bar(physical_props.index, physical_props.values, color=['#d62728', '#1f77b4'])\nplt.ylabel('Proportion of Incidents Involving Physical Harm')\nplt.title('Physical Harm Rates by Autonomy Level')\nplt.ylim(0, 1.0)\n\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height, \n             f'{height:.1%}', ha='center', va='bottom')\n\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Valid incidents for analysis: 135\nDistribution:\nautonomy_group  harm_group\nHigh            Intangible    20\n                Physical      19\nLow             Intangible    50\n                Physical      46\ndtype: int64\n\nContingency Table:\nharm_group      Intangible  Physical\nautonomy_group                      \nHigh                    20        19\nLow                     50        46\n\nChi-Square Statistic: 0.0000\nP-value: 1.0000\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Vertical Bar Chart.\n*   **Purpose:** The plot is designed to compare the proportion of incidents involving physical harm between two distinct categories of autonomy: \"High\" and \"Low\". It allows for a direct visual comparison of rates across these two groups.\n\n### 2. Axes\n*   **Y-Axis:**\n    *   **Title/Label:** \"Proportion of Incidents Involving Physical Harm\".\n    *   **Units:** The axis is scaled as a proportion (decimal), ranging from **0.0 to 1.0** (equivalent to 0% to 100%).\n    *   **Ticks:** The axis is marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).\n*   **X-Axis:**\n    *   **Categories:** The axis displays two discrete categories representing the Autonomy Level: **\"High\"** and **\"Low\"**.\n\n### 3. Data Trends\n*   **Tallest Bar:** The bar representing **\"High\"** autonomy is the tallest, indicating a slightly higher rate of physical harm incidents.\n*   **Shortest Bar:** The bar representing **\"Low\"** autonomy is the shortest.\n*   **Pattern:** The most notable trend is the similarity between the two values. There is very little variance between the groups; the heights of the red and blue bars are nearly identical visually.\n\n### 4. Annotations and Legends\n*   **Value Annotations:** Exact percentage values are annotated on top of each bar to provide precision beyond the y-axis scale:\n    *   The **\"High\"** autonomy bar is labeled **48.7%**.\n    *   The **\"Low\"** autonomy bar is labeled **47.9%**.\n*   **Color Coding:**\n    *   The \"High\" category is represented by a **red** bar.\n    *   The \"Low\" category is represented by a **blue** bar.\n\n### 5. Statistical Insights\n*   **Marginal Difference:** The difference in physical harm rates between \"High\" and \"Low\" autonomy levels is extremely small, at only **0.8%** ($48.7\\% - 47.9\\%$).\n*   **Parity of Risk:** The data suggests that, within the context of this specific dataset, the level of autonomy does not significantly correlate with a drastic change in the proportion of incidents that result in physical harm. Both levels result in physical harm in roughly half of the recorded incidents.\n*   **Implication:** If the goal of high autonomy systems is to drastically reduce the rate of physical harm in incidents compared to low autonomy systems, this data (in isolation) suggests that goal has not yet been achieved, or that the severity profile of incidents is similar across both autonomy levels. Conversely, it also shows that high autonomy does not introduce a massive *new* risk of physical harm compared to lower levels.\n==================================================",
+  "created_at": "2026-02-22T12:47:35.835413+00:00",
+  "creation_idx": 251,
+  "experiment_id": "node_6_58",
+  "experiment_plan": {
+    "deliverables": "Contingency table, p-value, and comparative bar chart data (proportions).",
+    "objective": "Investigate the correlation between system autonomy levels and the domain of harm caused in incidents.",
+    "steps": "1. Load `astalabs_discovery_all_data.csv` (AIID subset).\n2. Normalize `Autonomy Level`: Group into 'High' (High, Full) and 'Low' (Low, Human-in-the-loop, No).\n3. Normalize `Harm Domain`: Group into 'Physical' vs. 'Intangible' (Societal, Economic, etc.).\n4. Filter out 'Unknown' values.\n5. Run a Chi-square test of independence.\n6. Compare the proportion of Physical harm in High vs Low autonomy groups."
+  },
+  "hypothesis": "The Autonomy-Physicality Link: High-autonomy AI systems (e.g., autonomous vehicles/robots) are statistically more likely to cause 'Physical' harm, whereas lower-autonomy systems (decision support) are associated with 'Intangible' harm (bias/economic loss).",
+  "id_in_run": 250,
+  "is_surprising": true,
+  "parent_id": "node_5_60",
+  "posterior": 0.29945054945054944,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.29945054945054944,
+    "n": 60.0,
+    "prior_params": [
+      27.25,
+      3.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8790322580645161,
+  "prior_belief": {
+    "_empirical_mean": 0.8916666666666667,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 17.0,
+    "maybe_false": 0.0,
+    "maybe_true": 13.0,
+    "mean": 0.8790322580645161,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed and the code faithfully implemented the analysis plan. After correcting for data coding issues in the previous attempt (handling specific values like 'Autonomy3' and verbose harm descriptions), the analysis successfully classified 135 AI incidents into 'High' (n=39) and 'Low' (n=96) autonomy levels.\n\n**Hypothesis Test Results:**\n1.  **Physical Harm Rates:** \n    -   **High Autonomy:** 48.72% (19/39) involved physical harm.\n    -   **Low Autonomy:** 47.92% (46/96) involved physical harm.\n2.  **Statistical Test:** \n    -   Chi-Square Statistic: 0.0000\n    -   p-value: 1.0000\n\n**Conclusion:**\nThe hypothesis that high-autonomy systems are disproportionately linked to physical harm is **rejected**. The data shows a remarkable parity: incidents involving high-autonomy systems (e.g., autonomous vehicles/robots) and low-autonomy systems (e.g., human-in-the-loop decision support) exhibit nearly identical rates of physical vs. intangible harm (~48% physical) within this dataset. This suggests that the severity or domain of harm is not strictly a function of the system's autonomy level.",
+  "rich_outputs": null,
+  "runtime_ms": 276680.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.69549805033676
+}

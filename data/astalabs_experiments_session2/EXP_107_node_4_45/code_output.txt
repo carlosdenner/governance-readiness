@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset from astalabs_discovery_all_data.csv...
+EO 13960 Scored rows: 1757
+
+Sample Sizes:
+  GenAI: 263
+  Traditional Predictive: 432
+
+--- Analyzing Notice (Q59) ---
+  GenAI: 0/263 (0.0%)
+  Predictive: 0/432 (0.0%)
+  Fisher's Exact Test p-value: 1.0000
+
+--- Analyzing Consent (Q67) ---
+  GenAI: 8/263 (3.0%)
+  Predictive: 22/432 (5.1%)
+  Fisher's Exact Test p-value: 0.2491
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (Clustered Bar Chart).
+*   **Purpose:** The plot is designed to compare compliance rates between two different types of Artificial Intelligence—**GenAI (Emerging)** and **Predictive (Traditional)**—across two specific governance categories: **Notice** and **Consent**.
+
+### 2. Axes
+*   **Y-Axis:**
+    *   **Label:** "Compliance Rate (%)"
+    *   **Range:** 0 to 100.
+    *   **Scale:** Linear scale in increments of 20.
+*   **X-Axis:**
+    *   **Labels:** Categorical variables representing specific survey questions or compliance criteria: "Notice (Q59)" and "Consent (Q67)".
+
+### 3. Data Trends
+*   **Notice (Q59):**
+    *   Both the GenAI (Red) and Predictive AI (Blue) bars are non-visible or effectively at zero. This indicates a near-total lack of compliance or affirmative responses for this specific metric for both AI types.
+*   **Consent (Q67):**
+    *   The bars are visible but extremely low relative to the Y-axis scale (0-100%).
+    *   The **Predictive (Traditional)** bar (Blue) appears slightly taller than the **GenAI (Emerging)** bar (Red), roughly hovering around the 5% mark.
+    *   Despite the slight visual difference, both values are very low, indicating poor compliance performance for consent mechanisms in both technologies.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top-right corner.
+    *   **Red Box:** Represents "GenAI (Emerging)".
+    *   **Blue Box:** Represents "Predictive (Traditional)".
+*   **Annotations (p-values):** Statistical significance values are placed above each group of bars.
+    *   **Above Notice (Q59):** "**p=1.000**"
+    *   **Above Consent (Q67):** "**p=0.249**"
+
+### 5. Statistical Insights
+*   **Statistical Significance:**
+    *   **Notice (Q59):** A p-value of **1.000** indicates that there is absolutely no statistical difference between GenAI and Predictive AI regarding the "Notice" compliance rate. This reinforces the visual observation that both are likely at exactly 0%.
+    *   **Consent (Q67):** A p-value of **0.249** is well above the standard threshold for statistical significance (typically p < 0.05). This means that although the blue bar looks slightly higher than the red bar, the difference is not statistically significant and could be due to random chance.
+*   **Overall Conclusion:** The title "Governance Lag" is strongly supported by the data. The primary insight is not a disparity between the two AI types, but rather that **both** GenAI and Traditional AI have remarkably low compliance rates (near 0% for Notice and <5% for Consent) in these specific governance areas. Neither technology is currently meeting these standards effectively.
+==================================================

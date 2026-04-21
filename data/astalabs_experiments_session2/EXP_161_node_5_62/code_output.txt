@@ -1,0 +1,81 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Data Loading ---
+Total EO 13960 records: 1757
+
+Unique values in '16_dev_stage':
+<StringArray>
+[ 'Implementation and Assessment', 'Acquisition and/or Development',
+                      'Initiated',                        'Retired',
+      'Operation and Maintenance',                  'In production',
+                     'In mission',                        'Planned',
+                              nan]
+Length: 9, dtype: str
+
+Unique values in '29_contains_pii':
+<StringArray>
+['No', 'Yes', nan, ' ']
+Length: 4, dtype: str
+
+Records after filtering for valid Stage and PII info: 652
+
+Contingency Table (Stage vs Has PII):
+has_pii      False  True 
+stage_group              
+Development    122     27
+Operational    391    112
+
+Proportions by Stage:
+             Total With_PII Proportion
+stage_group                           
+Development    149       27   0.181208
+Operational    503      112   0.222664
+
+--- Statistical Test Results (Chi-Square) ---
+Chi2 Statistic: 0.9435
+P-value: 3.3137e-01
+Result: No significant difference found.
+Operational PII Rate: 22.27%
+Development PII Rate: 18.12%
+Direction: Operational systems have a HIGHER rate of PII usage.
+
+STDERR:
+<ipython-input-1-12caf8b617ca>:104: FutureWarning: 
+
+Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+
+  sns.barplot(x=results.index, y='Proportion', data=results.reset_index(), palette='viridis')
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot is designed to compare the prevalence of Personally Identifiable Information (PII) across two distinct groups of systems based on their lifecycle stage ("Development" vs. "Operational").
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** `stage_group`
+    *   **Categories:** Two categorical values are presented: "Development" and "Operational".
+*   **Y-Axis:**
+    *   **Label:** "Proportion of Systems Containing PII"
+    *   **Range:** The axis is scaled from 0.0 to 1.0 (representing 0% to 100%).
+    *   **Ticks:** Major ticks mark every 0.2 increment (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Operational" group has the taller bar, indicating a higher proportion of systems containing PII.
+*   **Shortest Bar:** The "Development" group has the shorter bar.
+*   **Pattern:** There is an upward trend in PII usage when moving from the Development stage to the Operational stage. Despite the difference, both bars remain in the lower quartile of the total possible range (below 0.25).
+
+### 4. Annotations and Legends
+*   **Bar Annotations:** Specific percentage values are annotated directly above each bar to provide precise data points:
+    *   **Development:** 18.1%
+    *   **Operational:** 22.3%
+*   **Color Coding:** Although there is no separate legend box, the bars are distinct in color (dark blue for Development and green for Operational) to visually distinguish the categories.
+
+### 5. Statistical Insights
+*   **Prevalence in Production:** Operational systems are more likely to contain PII compared to development systems. Specifically, 22.3% of operational systems contain PII versus 18.1% of development systems.
+*   **Gap Analysis:** There is a **4.2 percentage point difference** between the two stages. This represents a relative increase of approximately 23% in PII prevalence when shifting from development to operation.
+*   **Risk Assessment:** While it is expected that Operational systems handle real user data, the fact that nearly 1 in 5 (18.1%) Development systems contain PII is a notable finding. In many security frameworks, development environments are expected to use synthetic or anonymized data to reduce data breach risks.
+*   **Overall Density:** The majority of systems in both lifecycle stages do *not* contain PII (81.9% of Development and 77.7% of Operational systems are PII-free).
+==================================================

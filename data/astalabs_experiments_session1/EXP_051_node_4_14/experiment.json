@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment tested the hypothesis that higher confidence scores in competency statements are driven by a higher volume of bibliographic evidence. The analysis of 'step2_competency_statements.csv' (n=42) revealed that 'High' confidence statements (n=36) have a mean citation count of 2.19, while 'Medium' confidence statements (n=6) have a mean of 2.17. The Kruskal-Wallis H-test yielded a p-value of 0.8651, indicating no statistically significant difference between the groups. Consequently, the hypothesis is rejected. The data suggests that confidence ratings in this dataset are determined by qualitative factors (e.g., source authority, directness of the requirement mapping) rather than the sheer quantity of citations, as the volume of evidence is uniform across confidence levels (median = 2 citations).",
+  "child_ids": [
+    "node_5_8",
+    "node_5_13"
+  ],
+  "code": "import pandas as pd\nimport re\nimport matplotlib.pyplot as plt\nfrom scipy import stats\n\n# Load dataset\ntry:\n    df = pd.read_csv('../step2_competency_statements.csv')\nexcept FileNotFoundError:\n    # Fallback if running in a different environment structure, though instruction says one level above\n    try:\n        df = pd.read_csv('step2_competency_statements.csv')\n    except FileNotFoundError:\n        print(\"Error: Could not find step2_competency_statements.csv\")\n        exit(1)\n\n# Feature Engineering: Count citations in 'evidence_summary'\n# Pattern looks for strings like [#21], [#1], etc.\ndef count_citations(text):\n    if pd.isna(text):\n        return 0\n    return len(re.findall(r'\\[#\\d+\\]', str(text)))\n\ndf['citation_count'] = df['evidence_summary'].apply(count_citations)\n\n# Descriptive Statistics\nprint(\"=== Citation Counts by Confidence Level ===\")\ngroup_stats = df.groupby('confidence')['citation_count'].agg(['count', 'mean', 'median', 'std', 'min', 'max'])\nprint(group_stats)\n\n# Prepare data for statistical test\n# We define a logical order for the groups\nordered_levels = ['High', 'Medium', 'Low']\ngroups = []\nlabels = []\n\nfor level in ordered_levels:\n    if level in df['confidence'].unique():\n        data = df[df['confidence'] == level]['citation_count']\n        groups.append(data)\n        labels.append(level)\n\n# Check for any other labels not in High/Medium/Low\nother_levels = [x for x in df['confidence'].unique() if x not in ordered_levels]\nfor level in other_levels:\n    data = df[df['confidence'] == level]['citation_count']\n    groups.append(data)\n    labels.append(level)\n\n# Statistical Test: Kruskal-Wallis H-test\n# Used instead of ANOVA due to potentially small sample sizes and count data (non-normality)\nprint(\"\\n=== Statistical Test Results ===\")\nif len(groups) > 1:\n    stat, p_value = stats.kruskal(*groups)\n    print(f\"Test: Kruskal-Wallis H-test\")\n    print(f\"Statistic: {stat:.4f}\")\n    print(f\"P-value: {p_value:.4f}\")\n    \n    if p_value < 0.05:\n        print(\"Result: Significant difference found (p < 0.05).\")\n    else:\n        print(\"Result: No significant difference found (p >= 0.05).\")\nelse:\n    print(\"Insufficient groups for statistical testing.\")\n\n# Visualization\nplt.figure(figsize=(8, 6))\nplt.boxplot(groups, labels=labels)\nplt.title('Evidence Density: Citation Counts vs. Confidence Level')\nplt.ylabel('Number of Citations per Statement')\nplt.xlabel('Confidence Level')\nplt.grid(axis='y', linestyle='--', alpha=0.7)\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: === Citation Counts by Confidence Level ===\n            count      mean  median       std  min  max\nconfidence                                             \nhigh           36  2.194444     2.0  0.467177    1    3\nmedium          6  2.166667     2.0  0.408248    2    3\n\n=== Statistical Test Results ===\nTest: Kruskal-Wallis H-test\nStatistic: 0.0289\nP-value: 0.8651\nResult: No significant difference found (p >= 0.05).\n\nSTDERR:\n<ipython-input-1-ed92a45699ca>:71: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.\n  plt.boxplot(groups, labels=labels)\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Box Plot (also known as a Box-and-Whisker Plot).\n*   **Purpose:** This plot visualizes the distribution of \"Number of Citations per Statement\" across two categorical groups (\"high\" and \"medium\" confidence levels). It displays the central tendency (median), dispersion (spread), and outliers for each category.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Confidence Level\"\n    *   **Labels:** Two categorical variables: **\"high\"** and **\"medium\"**.\n*   **Y-Axis:**\n    *   **Title:** \"Number of Citations per Statement\"\n    *   **Value Range:** The axis ticks range from **1.00 to 3.00**, with intervals of 0.25. The data appears to be discrete integer values (1, 2, 3).\n\n### 3. Data Trends\n*   **Central Tendency (Medians):** For both the \"high\" and \"medium\" confidence levels, the median line (represented by the orange bar) is located exactly at **2.0**.\n*   **Distribution Shape (The Boxes):** The \"boxes\" (which typically represent the Interquartile Range, from the 25th to 75th percentile) appear as flat lines. This indicates extremely low variance; specifically, it suggests that the 25th percentile, the median, and the 75th percentile are all the same value (2 citations). The vast majority of statements in this dataset have exactly 2 citations.\n*   **Outliers:**\n    *   **High Confidence:** There are visible outliers (represented by open circles) at **3.0** and **1.0**. This indicates that while most high-confidence statements have 2 citations, a few have 1 or 3.\n    *   **Medium Confidence:** There is a visible outlier at **3.0**. Unlike the \"high\" category, there is no visible outlier at 1.0, suggesting the minimum citation count for the \"medium\" group in this specific dataset is likely 2.\n\n### 4. Annotations and Legends\n*   **Title:** \"Evidence Density: Citation Counts vs. Confidence Level\" appears at the top, summarizing the plot's intent.\n*   **Grid:** Dashed horizontal grid lines are present at every 0.25 interval to assist in reading the Y-axis values.\n*   **Markers:**\n    *   **Orange Lines:** Represent the median of the data.\n    *   **Black Circles:** Represent outlier data points that fall outside the typical distribution range.\n\n### 5. Statistical Insights\n*   **Uniformity of Evidence:** There is a remarkable consistency in \"Evidence Density\" regardless of confidence level. Whether a statement is marked as \"high\" or \"medium\" confidence, the most probable number of supporting citations is **2**.\n*   **Lack of Correlation:** The plot suggests that a higher confidence level is **not** driven by a higher quantity of citations. If quantity were the driving factor, we would expect the \"high\" box to be shifted higher up the Y-axis compared to the \"medium\" box. Instead, they are identical in central tendency.\n*   **Discrete Data:** The data is discrete and tightly clustered. The lack of visible whiskers and the flattened boxes suggest the data consists almost entirely of the integer 2, with rare deviations to 1 or 3.\n*   **Variance:** The \"high\" confidence group actually shows slightly *more* variance at the lower end (presence of statements with only 1 citation) compared to the \"medium\" group shown here.\n==================================================",
+  "created_at": "2026-02-20T23:10:38.992771+00:00",
+  "creation_idx": 52,
+  "experiment_id": "node_4_14",
+  "experiment_plan": {
+    "deliverables": "Boxplot of citation counts by confidence level and ANOVA/Kruskal-Wallis results.",
+    "objective": "Validate if confidence scores correlate with evidence density.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. Create a 'citation_count' column by using regex to count occurrences of citation markers (e.g., '[#XX]') in the 'evidence_summary' column.\n3. Convert 'confidence' to an ordinal scale or keep as categorical (High/Medium/Low).\n4. Perform a One-Way ANOVA or Kruskal-Wallis test to compare 'citation_count' across confidence levels.\n5. If significant, perform post-hoc tests (e.g., Tukey's HSD) to identify which groups differ."
+  },
+  "hypothesis": "Competency statements rated with 'High' confidence are supported by a significantly larger volume of bibliographic evidence (citations) than those rated 'Medium' or 'Low'.",
+  "id_in_run": 51,
+  "is_surprising": true,
+  "parent_id": "node_3_3",
+  "posterior": 0.19008264462809918,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 90.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.19008264462809918,
+    "n": 90.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 3.0,
+    "maybe_false": 1.0,
+    "maybe_true": 25.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment pipeline was faithfully implemented. The final experiment rejected the hypothesis that 'High' confidence competency statements have more citations than 'Medium' ones (Kruskal-Wallis p=0.8651); evidence volume is uniform (median=2) across groups. \n\nOverall, the analysis of the 5-step pipeline reveals:\n1. **Holistic Failures**: AI incidents do not separate cleanly into 'Trust' or 'Integration' gaps but involve both simultaneously (88% of cases).\n2. **Prevention Dominance**: 98% of analyzed failures are 'Prevention Failures', making specific attack techniques (like Prompt Injection) poor predictors of failure mode.\n3. **Qualitative Confidence**: Competency confidence scores are likely driven by source authority rather than citation quantity.\n\nThe data suggests the research artifacts are internally consistent but reflect a specific worldview where AI security requires unified, preventative governance and engineering controls.",
+  "rich_outputs": null,
+  "runtime_ms": 171100.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.6404780999953865
+}

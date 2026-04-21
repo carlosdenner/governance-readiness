@@ -1,0 +1,16 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded.
+AIID Incidents: 1362
+Using Tech Column: Known AI Technology
+Using Harm Column: Tangible Harm
+Sample values in Tangible Harm: <StringArray>
+[                 'no tangible harm, near-miss, or issue',
+                    'tangible harm definitively occurred',
+   'imminent risk of tangible harm (near miss) did occur',
+ 'non-imminent risk of tangible harm (an issue) occurred',
+                                                'unclear']
+Length: 5, dtype: str
+
+Incidents remaining after filtering for Allocative/Societal harms: 0
+Series([], Name: count, dtype: int64)
+No data available for analysis after filtering. Check harm column values.

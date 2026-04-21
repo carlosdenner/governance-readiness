@@ -1,0 +1,56 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Transparency Rates by Agency Type ---
+                  Total Systems  Systems with Notice  Notice Rate
+Agency_Type                                                      
+Civilian                   1574                   60     0.038119
+Defense/Security            183                   11     0.060109
+
+
+--- Contingency Table (0=No Notice, 1=Notice) ---
+Has_Notice           0   1
+Agency_Type               
+Civilian          1514  60
+Defense/Security   172  11
+
+
+--- Chi-square Test Results ---
+Statistic: 1.5166
+P-value: 2.1814e-01
+
+Statistically Significant: False
+No significant difference in transparency rates.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Bar Plot (Vertical).
+*   **Purpose:** The plot compares a single metric (proportion of compliance) across two distinct categorical groups: "Civilian" agencies and "Defense/Security" agencies.
+
+### 2. Axes
+*   **X-axis:**
+    *   **Title:** `Agency_Type`
+    *   **Labels:** Two distinct categories are represented: "Civilian" and "Defense/Security".
+*   **Y-axis:**
+    *   **Title:** "Proportion of Systems with Public Notice"
+    *   **Range:** The axis is scaled from 0.0 to 1.0, representing a proportion from 0% to 100%.
+    *   **Units:** The axis uses decimal proportions (0.0, 0.2, 0.4, etc.), while the data annotations convert these to percentages.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Defense/Security" category represents the higher value.
+*   **Shortest Bar:** The "Civilian" category represents the lower value.
+*   **Pattern:** Both bars are extremely short relative to the total y-axis scale of 1.0. This indicates that the measured values are very small fractions of the whole. There is a slight upward trend moving from Civilian to Defense/Security.
+
+### 4. Annotations and Legends
+*   **Title:** "Public AI Notice Compliance: Civilian vs Defense" – clear indication of the subject matter.
+*   **Data Labels:** There are explicit percentage annotations placed above each bar to provide exact values:
+    *   Civilian: **3.8%**
+    *   Defense/Security: **6.0%**
+*   **Color Coding:** The bars are colored differently (Blue for Civilian, Red for Defense/Security) to visually distinguish the categories, though a separate legend is not strictly necessary due to the x-axis labels.
+
+### 5. Statistical Insights
+*   **Low Overall Compliance:** The most significant insight is the remarkably low compliance rate across *both* sectors. With the y-axis scaled to 1.0 (100%), the vast amount of empty white space highlights that over 90% of systems in both categories do not have public notices.
+*   **Sector Comparison:** Defense/Security agencies show a slightly higher compliance rate (6.0%) compared to Civilian agencies (3.8%). While the Defense sector's compliance is roughly 1.5 times that of the Civilian sector in relative terms, the absolute difference is small (2.2 percentage points).
+*   **Conclusion:** While Defense/Security agencies are technically performing better on this metric, neither sector has achieved significant penetration regarding public AI notices based on this data.
+==================================================

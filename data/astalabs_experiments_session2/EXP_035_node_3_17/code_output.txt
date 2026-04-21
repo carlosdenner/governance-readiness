@@ -1,0 +1,63 @@
+exitcode: 0 (execution succeeded)
+Code output: EO 13960 Records: 1757
+
+Valid Records for Analysis: 956
+
+--- System Type Distribution (Valid Records) ---
+system_type
+Custom/General     875
+Commercial/COTS     81
+Name: count, dtype: int64
+
+--- Code Access Distribution (Valid Records) ---
+code_access
+Yes    599
+No     357
+Name: count, dtype: int64
+
+--- Contingency Table ---
+code_access       No  Yes
+system_type              
+Commercial/COTS   45   36
+Custom/General   312  563
+
+Commercial Code Access Rate: 44.44% (36/81)
+Custom/General Code Access Rate: 64.34% (563/875)
+
+Chi-Square Statistic: 11.7096
+P-value: 6.2178e-04
+Result: Statistically Significant difference detected.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot compares the proportion of code access available between two specific categories of Artificial Intelligence software: "Commercial/COTS" (Commercial Off-The-Shelf) and "Custom/General."
+
+### 2. Axes
+*   **X-axis:**
+    *   **Labels:** The axis features categorical labels for the two groups being compared: "Commercial/COTS" and "Custom/General."
+*   **Y-axis:**
+    *   **Title:** "Proportion with Code Access."
+    *   **Units:** The axis uses decimal proportions (0.0 to 1.0), representing percentages from 0% to 100%.
+    *   **Range:** The visible scale ranges from **0.0 to 1.1** (with the top tick mark at 1.0), encompassing the full range of possible probabilities.
+
+### 3. Data Trends
+*   **Tallest Bar:** The "Custom/General" category (blue bar) is the tallest, indicating a higher frequency of code access.
+*   **Shortest Bar:** The "Commercial/COTS" category (red bar) is the shortest, indicating lower code availability.
+*   **Pattern:** There is a clear disparity between the two categories, with Custom/General AI solutions providing significantly higher code accessibility compared to commercial off-the-shelf solutions.
+
+### 4. Annotations and Legends
+*   **Title:** "Code Access: Commercial vs Custom AI (EO 13960)" indicates the data relates to compliance or metrics associated with Executive Order 13960 (likely regarding AI use in government).
+*   **Value Labels:**
+    *   The Commercial/COTS bar is annotated with **44.4%**.
+    *   The Custom/General bar is annotated with **64.3%**.
+*   **Grid:** Horizontal dashed grid lines are present at intervals of 0.2 to assist in reading the bar heights against the y-axis.
+
+### 5. Statistical Insights
+*   **Magnitude of Difference:** There is a **19.9 percentage point difference** between the two categories (64.3% - 44.4%).
+*   **Interpretation:** Custom or General AI software is roughly **1.45 times more likely** to have code access available compared to Commercial Off-The-Shelf (COTS) software.
+*   **Contextual Insight:** This suggests that proprietary restrictions inherent to commercial software significantly limit code transparency compared to custom-built or general-purpose AI solutions within the context of the dataset (presumably federal or regulated AI inventories).
+==================================================

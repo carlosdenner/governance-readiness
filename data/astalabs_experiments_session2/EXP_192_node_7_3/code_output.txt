@@ -1,0 +1,59 @@
+exitcode: 0 (execution succeeded)
+Code output: Loaded 1362 AIID incidents.
+
+Analysis Subset: 47 incidents in target sectors.
+Sector_Group
+Health/Transport    28
+Admin/Finance       19
+Name: count, dtype: int64
+
+Contingency Table (0=No Bias, 1=Bias):
+Is_Bias            0
+Sector_Group        
+Admin/Finance     19
+Health/Transport  28
+
+Descriptive Statistics:
+                  Total  Bias_Count  Bias_Rate
+Sector_Group                                  
+Admin/Finance        19           0        0.0
+Health/Transport     28           0        0.0
+
+Chi-square Test Results:
+Statistic: 0.0000
+P-value: 1.0000
+Result: No significant difference found (Fail to Reject Null).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Bar Plot.
+*   **Purpose:** The plot is designed to compare the rate or proportion of bias/discrimination incidents across different professional sector groups (Admin/Finance vs. Health/Transport).
+
+**2. Axes**
+*   **X-axis:**
+    *   **Labels:** Categorical labels for sector groups: "Admin/Finance" and "Health/Transport".
+    *   **Range:** Two discrete categories.
+*   **Y-axis:**
+    *   **Title:** "Proportion of Incidents Involving Bias".
+    *   **Value Range:** 0.00 to 0.10.
+    *   **Units:** Proportions (decimal format, representing percentages from 0% to 10%).
+
+**3. Data Trends**
+*   **Pattern:** The most distinct trend is the complete absence of visible bars. Both categories show a value of 0.
+*   **Highs/Lows:** There are no "tallest" bars; both categories are tied at the lowest possible value (0.0).
+*   **Comparison:** There is no variation between the two sector groups regarding the proportion of incidents involving bias; both are identical at zero.
+
+**4. Annotations and Legends**
+*   **Annotations:** There are text annotations placed directly above the x-axis labels for each category providing precise data:
+    *   **Admin/Finance:** "0.0% (n=0/19)" – This indicates that out of a sample size of 19, there were 0 incidents.
+    *   **Health/Transport:** "0.0% (n=0/28)" – This indicates that out of a sample size of 28, there were 0 incidents.
+*   **Legend:** There is no separate legend required as the categories are labeled directly on the x-axis.
+
+**5. Statistical Insights**
+*   **Absence of Incidents:** The data reveals that no bias or discrimination incidents occurred or were reported in either the "Admin/Finance" or "Health/Transport" sector groups within the timeframe or dataset analyzed.
+*   **Sample Size Context:** While the incident rate is 0% for both, the sample sizes differ slightly. The Admin/Finance group had a sample size ($n$) of 19, and the Health/Transport group had a larger sample size ($n$) of 28.
+*   **Conclusion:** Based on this specific dataset, neither sector shows a higher prevalence of bias incidents, as the phenomenon was essentially non-existent in the observed samples.
+==================================================

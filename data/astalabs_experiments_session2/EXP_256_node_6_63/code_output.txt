@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Loading dataset...
+EO 13960 subset shape: (1757, 196)
+
+Contingency Table (Impact vs Independent Eval):
+has_indep_eval         No  Yes
+impact_group                  
+High Impact           194   33
+Low/Moderate Impact  1471   20
+
+Percentages:
+has_indep_eval              No        Yes
+impact_group                             
+High Impact          85.462555  14.537445
+Low/Moderate Impact  98.658618   1.341382
+
+Chi-square Statistic: 110.3715
+P-value: 8.1243e-26
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** This plot compares a numerical variable (the proportion of independent evaluations) across two distinct categorical groups (High Impact vs. Low/Moderate Impact AI systems).
+
+**2. Axes**
+*   **X-axis:**
+    *   **Title:** "Impact Level"
+    *   **Categories:** Two distinct categories are displayed: "High Impact" and "Low/Moderate Impact".
+*   **Y-axis:**
+    *   **Title:** "Proportion with Independent Evaluation"
+    *   **Range:** The axis ranges from **0.00 to 0.17** (approximate visual cap), with grid lines marked every **0.02 units** (0.00, 0.02, ... 0.16).
+    *   **Units:** The axis uses decimal proportions (0.14 = 14%), though specific data points are annotated as percentages.
+
+**3. Data Trends**
+*   **Tallest Bar:** The "High Impact" category is the tallest, colored in red, reaching a value of **0.145** (or 14.5%).
+*   **Shortest Bar:** The "Low/Moderate Impact" category is the shortest, colored in blue, reaching a value of **0.013** (or 1.3%).
+*   **Pattern:** There is a drastic disparity between the two categories. The independent evaluation rate drops significantly as the impact level of the AI system decreases.
+
+**4. Annotations and Legends**
+*   **Value Labels:** Specific percentage values are annotated in bold text directly above each bar:
+    *   **14.5%** above the High Impact bar.
+    *   **1.3%** above the Low/Moderate Impact bar.
+*   **Grid Lines:** Horizontal dashed grid lines are included to assist in estimating the height of the bars relative to the Y-axis.
+*   **Color Coding:** The bars are distinct in color (Red for High Impact, Blue for Low/Moderate), emphasizing the contrast between the two groups.
+
+**5. Statistical Insights**
+*   **Significant Disparity:** High Impact AI systems are more than **11 times** more likely ($14.5 / 1.3 \approx 11.15$) to undergo independent evaluation compared to Low/Moderate Impact systems.
+*   **Low Absolute Rates:** Despite the "High Impact" label, the absolute rate of independent evaluation is still quite low. Fewer than **1 in 6** (14.5%) high-impact systems are independently evaluated.
+*   **Minimal Oversight for Lower Impact:** For Low/Moderate impact systems, independent evaluation is virtually non-existent at just 1.3%.
+==================================================

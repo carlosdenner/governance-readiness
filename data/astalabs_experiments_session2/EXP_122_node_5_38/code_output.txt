@@ -1,0 +1,94 @@
+exitcode: 0 (execution succeeded)
+Code output: Dataset loaded successfully.
+Loaded 'eo13960_scored' with 1757 rows.
+Using columns: '17_impact_type' and '63_stakeholder_consult'
+
+--- Value Analysis ---
+Unique values in 17_impact_type:
+17_impact_type
+Neither               1491
+Both                   150
+Rights-Impacting\n      59
+Safety-impacting        13
+Safety-Impacting         5
+Name: count, dtype: int64
+
+--- Consultation Mapping Check ---
+  63_stakeholder_consult Consulted
+0                    NaN        No
+1                    NaN        No
+2                    NaN        No
+3                    NaN        No
+4                    NaN        No
+5                    NaN        No
+6                    NaN        No
+7                    NaN        No
+8                    NaN        No
+9                    NaN        No
+Consulted
+No     1573
+Yes     145
+Name: count, dtype: int64
+
+Final dataset size for analysis (Rights vs Safety): 77
+Distribution by Group:
+Group
+Rights-Impacting    59
+Safety-Impacting    18
+Name: count, dtype: int64
+
+--- Contingency Table (Group x Consulted) ---
+Consulted         No  Yes
+Group                    
+Rights-Impacting  35   24
+Safety-Impacting  18    0
+
+--- Proportions ---
+Consulted              No      Yes
+Group                             
+Rights-Impacting  0.59322  0.40678
+Safety-Impacting  1.00000  0.00000
+
+--- Statistical Test Results ---
+Chi-square Statistic: 8.8261
+P-value: 0.002970
+Result: Statistically significant difference found.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is a detailed analysis:
+
+**1. Plot Type**
+*   **Type:** 100% Stacked Bar Chart.
+*   **Purpose:** This chart is used to compare the relative proportions of a categorical variable (whether stakeholders were consulted: Yes/No) across two different groups (Impact Category: Rights-Impacting vs. Safety-Impacting). It normalizes the data so the total height of each bar represents 100% (or a proportion of 1.0).
+
+**2. Axes**
+*   **X-axis:**
+    *   **Label:** "Impact Category"
+    *   **Categories:** Two discrete categories are displayed: "Rights-Impacting" and "Safety-Impacting".
+*   **Y-axis:**
+    *   **Label:** "Proportion"
+    *   **Range:** The axis ranges from 0.0 to 1.0, representing percentages from 0% to 100%.
+    *   **Ticks:** Increments of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+**3. Data Trends**
+*   **Rights-Impacting Category:**
+    *   This bar is split between two outcomes.
+    *   Approximately 60% (0.6 proportion) of the data falls into the "No" category (Salmon/Red).
+    *   Approximately 40% (0.4 proportion) of the data falls into the "Yes" category (Green).
+*   **Safety-Impacting Category:**
+    *   This bar is entirely monochromatic.
+    *   100% (1.0 proportion) of the data falls into the "No" category.
+    *   There is no visible green section, indicating a 0% proportion for "Yes".
+
+**4. Annotations and Legends**
+*   **Chart Title:** "Stakeholder Consultation by Impact Type" – located at the top center.
+*   **Legend:** Located to the right of the plot with the title "Consulted".
+    *   **Red (Salmon):** Represents "No" (Stakeholders were not consulted).
+    *   **Green:** Represents "Yes" (Stakeholders were consulted).
+
+**5. Statistical Insights**
+*   **Complete Lack of Consultation in Safety Contexts:** The most striking insight is that for the "Safety-Impacting" category, the proportion of stakeholder consultation is effectively zero. Every instance recorded in this dataset for safety impacts indicates that stakeholders were not consulted.
+*   **Minority Consultation in Rights Contexts:** In "Rights-Impacting" scenarios, consultation does occur, but it is still the minority practice. Roughly 60% of these cases proceeded without stakeholder consultation, compared to roughly 40% where consultation happened.
+*   **Overall Trend:** There is a clear negative trend regarding stakeholder engagement. Regardless of the impact type, the majority of cases result in "No" consultation. However, "Rights-Impacting" projects are significantly more likely to involve stakeholders than "Safety-Impacting" projects, which appear to have no engagement at all in this dataset.
+==================================================

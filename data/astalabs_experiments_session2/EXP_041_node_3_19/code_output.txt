@@ -1,0 +1,65 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+--- Analysis: Monitoring Post-Deployment ---
+Monitor_Bin     0.0  1.0
+Stage_Group             
+Legacy (O&M)     11   67
+New (Dev/Plan)   23   39
+Legacy Compliance: 85.90% (n=78)
+New    Compliance: 62.90% (n=62)
+Chi-Square p-value: 0.00314
+
+--- Analysis: Real-World Testing ---
+Test_Bin        0.0  1.0
+Stage_Group             
+Legacy (O&M)      7   71
+New (Dev/Plan)   47   15
+Legacy Compliance: 91.03% (n=78)
+New    Compliance: 24.19% (n=62)
+Chi-Square p-value: 0.00000
+
+--- Conclusion ---
+Monitoring Post-Deployment: Significant difference. Legacy systems show Higher compliance.
+Real-World Testing: Significant difference. Legacy systems show Higher compliance.
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Grouped Bar Chart (also known as a Clustered Bar Chart).
+*   **Purpose:** The plot is designed to compare quantitative values (Compliance Rate) across two categorical variables: the stage of development (x-axis) and the status/age of the system (Legacy vs. New).
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Label:** Development Stages.
+    *   **Categories:** "Monitoring Post-Deployment" and "Real-World Testing."
+*   **Y-Axis:**
+    *   **Label:** "Compliance Rate (1=Yes, 0=No/Partial)."
+    *   **Units:** The unit is a ratio or probability ranging from 0 to 1.
+    *   **Range:** The visual axis spans from 0.0 to approximately 1.15, with tick marks at 0.0, 0.2, 0.4, 0.6, 0.8, and 1.0.
+
+### 3. Data Trends
+*   **Legacy (O&M) Dominance:** In both development stages presented, the "Legacy (O&M)" group (represented by red bars) demonstrates a significantly higher compliance rate compared to the "New (Dev/Plan)" group (represented by blue bars).
+*   **Monitoring Post-Deployment:**
+    *   **Legacy:** Shows a high compliance rate, approximately **0.85**.
+    *   **New:** Shows a moderate compliance rate, approximately **0.62**.
+*   **Real-World Testing:**
+    *   **Legacy:** Shows the highest compliance rate on the chart, appearing to be slightly above **0.90**.
+    *   **New:** Shows the lowest compliance rate on the chart, appearing to be roughly **0.25**.
+*   **Largest Disparity:** The gap between Legacy and New systems is most drastic in the "Real-World Testing" category.
+
+### 4. Annotations and Legends
+*   **Legend:** Located in the top right corner.
+    *   **Red/Deep Pink:** Represents "Legacy (O&M)" (Operations & Maintenance).
+    *   **Blue:** Represents "New (Dev/Plan)" (Development/Planning).
+*   **Annotations (Statistical Significance):**
+    *   Above the **Monitoring Post-Deployment** group, there is an annotation reading **"p=0.003 (*)"**.
+    *   Above the **Real-World Testing** group, there is an annotation reading **"p=0.000 (*)"**.
+    *   The **(*)** symbol is a standard convention used to denote that the p-value has met a specific threshold for statistical significance (usually p < 0.05).
+
+### 5. Statistical Insights
+*   **Significant Difference in Compliance:** The presence of p-values (p=0.003 and p=0.000) indicates that the difference in compliance rates between "Legacy" and "New" systems is statistically significant in both categories. The difference is not due to random chance.
+*   **Legacy Systems Outperform New Systems:** Contrary to what might be expected in some technological contexts (where newer usually equals better), "Legacy" systems currently in the Operations & Maintenance phase are complying with Governance EO 13960 at a much higher rate than "New" systems currently in the planning or development phase.
+*   **Critical Gap in Testing:** The extremely low p-value (0.000) and the visual disparity in the "Real-World Testing" category suggest a systemic issue or bottleneck where new projects in the development pipeline are failing to meet governance standards during the testing phase, whereas established systems have largely satisfied these requirements.
+==================================================

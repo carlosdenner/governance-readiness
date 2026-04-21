@@ -1,0 +1,62 @@
+exitcode: 0 (execution succeeded)
+Code output: === Contingency Table (Gap Type vs Period) ===
+Period                Pre-2023  Post-2023
+Gap_Type                                 
+Both                        18         28
+Integration-Dominant         0          4
+Trust-Dominant               1          1
+
+=== Chi-Square Test Results ===
+Chi2 Statistic: 2.5926
+P-value: 0.2735
+Degrees of Freedom: 2
+Result: No significant shift detected (Fail to reject H0)
+
+=== Column Percentages (Distribution per Period) ===
+Period                Pre-2023  Post-2023
+Gap_Type                                 
+Both                     94.74      84.85
+Integration-Dominant      0.00      12.12
+Trust-Dominant            5.26       3.03
+
+
+=== Plot Analysis (figure 1) ===
+Based on the visual analysis of the provided plot, here is the detailed breakdown:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart (specifically a 100% Stacked Bar Chart).
+*   **Purpose:** To compare the proportional distribution of three different "Gap Types" across two distinct time periods (Pre-2023 and Post-2023), showing how the composition of incidents has shifted over time while normalizing the total volume to 100%.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Period"
+    *   **Labels:** Two categorical time bins: "Pre-2023" and "Post-2023".
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Incidents (%)"
+    *   **Range:** 0 to 100.
+    *   **Increments:** Ticks are marked every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **"Both" Category (Dark Purple):**
+    *   This is the dominant category in both periods.
+    *   **Pre-2023:** Occupies approximately 95% of the incidents.
+    *   **Post-2023:** Decreases noticeably to approximately 85% of the incidents.
+*   **"Integration-Dominant" Category (Teal):**
+    *   **Pre-2023:** This category is virtually non-existent or 0% (no teal segment is visible).
+    *   **Post-2023:** Shows a significant emergence, occupying the segment roughly between 85% and 97% on the Y-axis (approximately 12% of the total).
+*   **"Trust-Dominant" Category (Yellow):**
+    *   **Pre-2023:** Occupies the top segment, roughly 5% (from ~95% to 100%).
+    *   **Post-2023:** Occupies a slightly smaller top segment, roughly 3% (from ~97% to 100%).
+
+### 4. Annotations and Legends
+*   **Plot Title:** "Proportional Distribution of Competency Gap Types (Pre vs Post 2023)" - Located at the top center.
+*   **Legend:** A box located to the right of the plot titled "**Gap Type**" maps colors to categories:
+    *   **Purple:** "Both"
+    *   **Teal:** "Integration-Dominant"
+    *   **Yellow:** "Trust-Dominant"
+
+### 5. Statistical Insights
+*   **Shift in Composition:** There is a distinct shift in the nature of competency gaps after 2023. While incidents involving "Both" types of gaps remain the majority, their dominance has waned to allow for the rise of specific "Integration-Dominant" issues.
+*   **Emergence of a New Trend:** The most statistically significant finding is the appearance of "Integration-Dominant" gaps in the Post-2023 era. This category went from being unobservable in the Pre-2023 data to representing a substantial minority share (approx. 1/8th of incidents) in the Post-2023 data.
+*   **Stability of Trust Issues:** Purely "Trust-Dominant" issues have remained a small minority throughout both periods, potentially shrinking slightly in the more recent period.
+==================================================

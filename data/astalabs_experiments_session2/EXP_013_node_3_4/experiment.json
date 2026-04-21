@@ -1,0 +1,59 @@
+{
+  "analysis": "The experiment successfully analyzed the relationship between Generative AI systems and 'Defense Evasion' tactics within the ATLAS dataset (n=52). \n\n1. **Data Classification**: \n   - **Generative AI**: 13 cases identified.\n   - **Non-Generative AI**: 39 cases identified.\n   - **Defense Evasion**: Successfully flagged using the corrected identifier (`defense_evasion`), fixing the issue from the previous attempt.\n\n2. **Statistical Results**:\n   - **Contingency Table**:\n     - Non-GenAI: 18 with Defense Evasion (46.1%), 21 without.\n     - GenAI: 5 with Defense Evasion (38.5%), 8 without.\n   - **Fisher's Exact Test**: p-value = 0.7519 (> 0.05).\n   - **Odds Ratio**: 0.7292.\n\n3. **Conclusion**: The analysis yielded no statistically significant difference in the prevalence of 'Defense Evasion' tactics between Generative AI and Non-Generative AI systems. The hypothesis that Generative AI is significantly more prone to Defense Evasion is **not supported** by this dataset; in fact, the observed proportion was slightly lower for GenAI, though statistically indistinguishable from random chance.",
+  "child_ids": [
+    "node_4_6",
+    "node_4_42",
+    "node_4_52"
+  ],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport numpy as np\n\n# Load dataset\ntry:\n    df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\n\n# Filter for ATLAS cases\natlas_df = df[df['source_table'] == 'atlas_cases'].copy()\nprint(f\"Loaded {len(atlas_df)} ATLAS cases.\")\n\n# 1. Flag Generative AI systems\n# Keywords: LLM, GPT, chat, gen, diffusion.\ngenai_keywords = ['llm', 'gpt', 'chat', 'generative', 'diffusion', 'foundation model', 'transformer', 'bert']\n\ndef check_genai(row):\n    text = (str(row['name']) + ' ' + str(row['summary'])).lower()\n    for kw in genai_keywords:\n        if kw in text:\n            return True\n    return False\n\natlas_df['is_genai'] = atlas_df.apply(check_genai, axis=1)\n\n# 2. Flag 'Defense Evasion' tactics\n# The tactics column contains strings like '{{defense_evasion.id}}'.\n# We look for 'defense_evasion' (case insensitive).\ndef check_defense_evasion(val):\n    if pd.isna(val):\n        return False\n    return 'defense_evasion' in str(val).lower()\n\natlas_df['has_defense_evasion'] = atlas_df['tactics'].apply(check_defense_evasion)\n\n# 3. Generate Contingency Table\n# Rows: GenAI vs Non-GenAI\n# Cols: Defense Evasion vs No Defense Evasion\ncontingency_table = pd.crosstab(atlas_df['is_genai'], atlas_df['has_defense_evasion'])\n\n# Ensure the table is 2x2 even if some categories are missing\n# We expect index [False, True] and columns [False, True]\ncontingency_table = contingency_table.reindex(index=[False, True], columns=[False, True], fill_value=0)\n\n# Rename for clarity\ncontingency_table.index = ['Non-GenAI', 'GenAI']\ncontingency_table.columns = ['No Defense Evasion', 'Has Defense Evasion']\n\nprint(\"\\nContingency Table (Frequency of Defense Evasion Tactics):\")\nprint(contingency_table)\n\n# 4. Fisher's Exact Test\noddsratio, pvalue = stats.fisher_exact(contingency_table)\nprint(f\"\\nFisher's Exact Test p-value: {pvalue:.4f}\")\nprint(f\"Odds Ratio: {oddsratio:.4f}\")\n\n# Interpretation\nalpha = 0.05\nif pvalue < alpha:\n    print(\"Result: Statistically significant difference in Defense Evasion prevalence.\")\nelse:\n    print(\"Result: No statistically significant difference found.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loaded 52 ATLAS cases.\n\nContingency Table (Frequency of Defense Evasion Tactics):\n           No Defense Evasion  Has Defense Evasion\nNon-GenAI                  21                   18\nGenAI                       8                    5\n\nFisher's Exact Test p-value: 0.7519\nOdds Ratio: 0.7292\nResult: No statistically significant difference found.\n",
+  "created_at": "2026-02-22T01:37:18.318882+00:00",
+  "creation_idx": 14,
+  "experiment_id": "node_3_4",
+  "experiment_plan": {
+    "deliverables": "Frequency table of Tactics by AI Type; Fisher's Exact Test p-value.",
+    "objective": "Distinguish the adversarial threat landscape of Generative vs Predictive AI.",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'atlas_cases'.\n2. Text-mine the 'summary' or 'name' columns to flag 'Generative AI' (keywords: LLM, GPT, chat, gen, diffusion) vs 'Other'.\n3. Extract lists of tactics from the 'tactics' column.\n4. Create a binary flag for the presence of 'Defense Evasion' (or specific tactic IDs like AML.T00XX).\n5. Compare the proportion of Defense Evasion incidents between GenAI and Other groups using a Fisher's Exact Test (due to small sample size)."
+  },
+  "hypothesis": "Generative AI Vulnerability Profile: In ATLAS cases, systems identifiable as 'Generative AI' (via keywords) are significantly more prone to 'Defense Evasion' tactics (e.g., jailbreaking) compared to Non-GenAI systems, which cluster around 'Exfiltration' or 'Collection' tactics.",
+  "id_in_run": 13,
+  "is_surprising": true,
+  "parent_id": "node_2_7",
+  "posterior": 0.4423076923076923,
+  "posterior_belief": {
+    "_empirical_mean": 0.25,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 60.0,
+    "maybe_true": 0.0,
+    "mean": 0.4423076923076923,
+    "n": 60.0,
+    "prior_params": [
+      25.25,
+      5.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.8145161290322581,
+  "prior_belief": {
+    "_empirical_mean": 0.825,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 9.0,
+    "maybe_false": 0.0,
+    "maybe_true": 21.0,
+    "mean": 0.8145161290322581,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was faithfully implemented and successfully executed. The code correctly loaded the ATLAS dataset, classified cases into Generative AI (n=13) and Non-Generative AI (n=39) using text-mining keywords, and accurately identified 'Defense Evasion' tactics after correcting for data formatting issues (handling the underscore in 'defense_evasion'). \n\n**Hypothesis Test Results**:\nThe hypothesis that Generative AI is significantly more prone to 'Defense Evasion' was **not supported**.\n- **Descriptive Statistics**: Defense Evasion tactics were observed in 38.5% (5/13) of Generative AI cases versus 46.2% (18/39) of Non-Generative AI cases.\n- **Statistical Test**: Fisher's Exact Test yielded a p-value of 0.7519 and an Odds Ratio of 0.7292, indicating no statistically significant difference between the two groups.\n\nThe analysis sufficiently tested the proposed relationship and found no evidence to support the claim that Defense Evasion is a unique or elevated vulnerability profile for Generative AI in the current ATLAS dataset.",
+  "rich_outputs": null,
+  "runtime_ms": 231340.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.44665012406947896
+}

@@ -1,0 +1,22 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded step2_crosswalk_matrix.csv. Shape: (42, 24)
+
+Contingency Table:
+Rows: Audit Logging & Telemetry (0, 1)
+Cols: Incident Response & Recovery Playbooks (0, 1)
+Incident Response & Recovery Playbooks   0  1
+Audit Logging & Telemetry                    
+0                                       39  2
+1                                        1  0
+
+Counts: Neither=39, IR_only=2, Audit_only=1, Both=0
+
+Fisher's Exact Test Results:
+Odds Ratio: 0.0000
+P-value: 1.0000
+
+Jaccard Index (Intersection over Union): 0.0000
+
+Conclusion:
+Fail to Reject Null: No statistically significant association found.
+Overlap: Low/Negligible

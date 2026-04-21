@@ -1,0 +1,32 @@
+exitcode: 0 (execution succeeded)
+Code output: Successfully loaded astalabs_discovery_all_data.csv
+EO 13960 Scored Data Shape: (1757, 196)
+
+--- Commercial Classification ---
+is_commercial
+0    1404
+1     353
+Name: count, dtype: int64
+Sample of Commercial descriptions:
+['Improving the quality of written communications using AI tools.', 'Creating visually appealing presentations using AI-driven design suggestions.', 'Improving the quality of written communications using AI tools.']
+
+--- Code Access Classification ---
+has_code_access
+0    1155
+1     602
+Name: count, dtype: int64
+
+--- Contingency Table ---
+            No Access  Has Access
+Custom            838         566
+Commercial        317          36
+
+Chi-square Statistic: 112.2473
+P-value: 3.1541e-26
+
+Odds of Access (Custom): 0.6754
+Odds of Access (Commercial): 0.1136
+Odds Ratio (Custom vs Commercial): 5.9474
+
+Result is statistically significant.
+Custom systems are 5.95 times more likely to grant code access than Commercial systems.

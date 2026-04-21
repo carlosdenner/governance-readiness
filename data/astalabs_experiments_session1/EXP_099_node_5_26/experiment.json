@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully validated the hypothesis that 'GOVERN' functions align with 'Trust Readiness' while operational functions ('MAP', 'MEASURE', 'MANAGE') align with 'Integration Readiness'.\n\n**Statistical Results:**\n- **Dataset:** `step2_crosswalk_matrix.csv` (n=27 filtered records).\n- **Chi-Square Test:** $\\chi^2 = 5.65$, $p = 0.0175$.\n- **Conclusion:** The relationship is statistically significant ($p < 0.05$), rejecting the null hypothesis of independence.\n\n**Distribution:**\n- **Strategic Functions (GOVERN):** 91% (10/11) mapped to **Trust Readiness**, strongly confirming the strategic nature of trust governance.\n- **Operational Functions:** 62.5% (10/16) mapped to **Integration Readiness**, confirming the engineering focus of mapping and measuring, though a significant minority (37.5%) still involves trust competencies.\n\n**Visualization:**\nThe stacked bar chart visually confirms this split, with the 'Strategic' category overwhelmingly dominated by Trust Readiness, while the 'Operational' category shows a clear but less exclusive preference for Integration Readiness. This confirms the framework's structural logic: high-level governance requires policy/trust competencies, while implementation requires integration/engineering competencies.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nimport os\n\n# Handle file loading with path check\nfilename = 'step2_crosswalk_matrix.csv'\nfile_path = f\"../{filename}\" if os.path.exists(f\"../{filename}\") else filename\n\nprint(f\"Loading dataset from: {file_path}\")\ndf = pd.read_csv(file_path)\n\n# 2. Create standardized function variable\n# 'GOVERN' and 'GOVERNANCE' -> 'Strategic'\n# 'MAP', 'MEASURE', 'MANAGE' -> 'Operational'\ndef classify_function(func):\n    if pd.isna(func):\n        return None\n    func = str(func).upper().strip()\n    if func in ['GOVERN', 'GOVERNANCE']:\n        return 'Strategic'\n    elif func in ['MAP', 'MEASURE', 'MANAGE']:\n        return 'Operational'\n    else:\n        return 'Other'\n\ndf['function_category'] = df['function'].apply(classify_function)\n\n# Filter for only Strategic and Operational to test the specific hypothesis\nanalysis_df = df[df['function_category'].isin(['Strategic', 'Operational'])].copy()\n\nprint(f\"\\nData filtered for analysis (n={len(analysis_df)}):\")\nprint(analysis_df['function_category'].value_counts())\n\n# 3. Create Contingency Table\ncontingency_table = pd.crosstab(analysis_df['function_category'], analysis_df['bundle'])\n\nprint(\"\\nContingency Table (Observed):\")\nprint(contingency_table)\n\n# 4. Perform Chi-square test\nchi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n\nprint(\"\\n=== Chi-Square Test Results ===\")\nprint(f\"Chi-square Statistic: {chi2:.4f}\")\nprint(f\"P-value: {p:.4f}\")\nprint(f\"Degrees of Freedom: {dof}\")\nprint(\"Expected Frequencies:\")\nprint(expected)\n\n# Interpretation\nalpha = 0.05\nif p < alpha:\n    print(\"\\nResult: Statistically Significant. The variables are dependent.\")\nelse:\n    print(\"\\nResult: Not Statistically Significant. The variables are independent.\")\n\n# 5. Visualization\nplt.figure(figsize=(10, 6))\n# Calculate proportions for stacked bar\ncross_tab_prop = pd.crosstab(index=analysis_df['function_category'],\n                             columns=analysis_df['bundle'],\n                             normalize=\"index\")\n\ncross_tab_prop.plot(kind='bar', stacked=True, color=['#4c72b0', '#55a868'], figsize=(10, 6))\n\nplt.title('Proportion of Readiness Bundles by Framework Function Category')\nplt.xlabel('Function Category')\nplt.ylabel('Proportion')\nplt.legend(title='Competency Bundle', bbox_to_anchor=(1.05, 1), loc='upper left')\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: step2_crosswalk_matrix.csv\n\nData filtered for analysis (n=27):\nfunction_category\nOperational    16\nStrategic      11\nName: count, dtype: int64\n\nContingency Table (Observed):\nbundle             Integration Readiness  Trust Readiness\nfunction_category                                        \nOperational                           10                6\nStrategic                              1               10\n\n=== Chi-Square Test Results ===\nChi-square Statistic: 5.6485\nP-value: 0.0175\nDegrees of Freedom: 1\nExpected Frequencies:\n[[6.51851852 9.48148148]\n [4.48148148 6.51851852]]\n\nResult: Statistically Significant. The variables are dependent.\n\n\n=== Plot Analysis (figure 2) ===\nBased on the provided plot image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Stacked Bar Chart (specifically a 100% Stacked Bar Chart).\n*   **Purpose:** The plot visualizes the relative composition of \"Readiness Bundles\" within two distinct \"Function Categories.\" It allows for a direct comparison of the proportion of each bundle type across the different categories.\n\n### 2. Axes\n*   **X-axis:**\n    *   **Label:** \"Function Category\"\n    *   **Values:** Two categorical variables: \"Operational\" and \"Strategic\".\n*   **Y-axis:**\n    *   **Label:** \"Proportion\"\n    *   **Range:** 0.0 to 1.0 (representing 0% to 100%).\n    *   **Units:** The values represent a fractional share of the whole (dimensionless ratio).\n\n### 3. Data Trends\n*   **Operational Category:**\n    *   This category is dominated by the blue segment (**Integration Readiness**), which makes up approximately **62%** (0.62) of the bar.\n    *   The green segment (**Trust Readiness**) comprises the remaining portion, approximately **38%**.\n*   **Strategic Category:**\n    *   This category shows a striking inversion compared to the Operational category. It is overwhelmingly dominated by the green segment (**Trust Readiness**).\n    *   The green segment appears to take up over **90%** of the bar.\n    *   The blue segment (**Integration Readiness**) is very minor, representing less than **10%** (approx. 0.09) of the total.\n\n### 4. Annotations and Legends\n*   **Title:** \"Proportion of Readiness Bundles by Framework Function Category\" appears at the top, clearly defining the chart's subject.\n*   **Legend:** Located to the right of the plot, titled \"**Competency Bundle**.\"\n    *   **Blue Box:** Represents \"Integration Readiness.\"\n    *   **Green Box:** Represents \"Trust Readiness.\"\n\n### 5. Statistical Insights\n*   **Inverse Relationship:** There is a clear inverse relationship between the function category and the type of readiness required.\n*   **Operational Focus:** Operational functions rely heavily on **Integration Readiness**. This suggests that day-to-day operations are more dependent on the technical ability to connect and integrate systems or processes.\n*   **Strategic Focus:** Strategic functions are almost entirely composed of **Trust Readiness**. This implies that high-level strategy and long-term planning are fundamentally driven by trust-based competencies rather than technical integration capabilities.\n==================================================",
+  "created_at": "2026-02-21T00:47:10.648974+00:00",
+  "creation_idx": 100,
+  "experiment_id": "node_5_26",
+  "experiment_plan": {
+    "deliverables": "1. Contingency table.\n2. Chi-square test results.\n3. Stacked bar chart.",
+    "objective": "To validate the alignment between standard AI RMF functions and the derived Trust/Integration bundles.",
+    "steps": "1. Load 'step2_crosswalk_matrix.csv'.\n2. Create a standardized function variable: group 'GOVERN' and 'GOVERNANCE' as 'Strategic', and 'MAP', 'MEASURE', 'MANAGE' as 'Operational'.\n3. Create a contingency table of Standardized Function vs. Bundle.\n4. Perform a Chi-square test of independence.\n5. Visualize the relationship with a stacked bar chart."
+  },
+  "hypothesis": "The 'GOVERN' function requirements are significantly more likely to map to 'Trust Readiness' competencies, while 'MAP', 'MEASURE', and 'MANAGE' functions are significantly more likely to map to 'Integration Readiness', confirming the strategic vs. operational split of the framework.",
+  "id_in_run": 99,
+  "is_surprising": true,
+  "parent_id": "node_4_7",
+  "posterior": 0.9421487603305785,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 90.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9421487603305785,
+    "n": 90.0,
+    "prior_params": [
+      24.0,
+      7.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7741935483870968,
+  "prior_belief": {
+    "_empirical_mean": 0.7833333333333333,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 4.0,
+    "maybe_false": 0.0,
+    "maybe_true": 26.0,
+    "mean": 0.7741935483870968,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment successfully validated the hypothesis that 'GOVERN' functions align significantly with 'Trust Readiness' while operational functions ('MAP', 'MEASURE', 'MANAGE') align with 'Integration Readiness'. The implementation faithfully followed the plan by classifying the functions into 'Strategic' and 'Operational' categories and performing a Chi-square test on the filtered dataset (n=27). The statistical results (Chi-square = 5.6485, p = 0.0175) indicate a significant dependency between the framework function and the readiness bundle, rejecting the null hypothesis. Specifically, Strategic functions were overwhelmingly associated with Trust Readiness (91%, 10/11), while Operational functions showed a preference for Integration Readiness (62.5%, 10/16). The visualization and analysis confirm the strategic vs. operational split of the framework.",
+  "rich_outputs": null,
+  "runtime_ms": 181400.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.19492811738990026
+}

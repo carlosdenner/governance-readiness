@@ -1,0 +1,66 @@
+exitcode: 0 (execution succeeded)
+Code output: Total AIID Incidents: 1362
+Incidents with identified Sector & Harm: 207
+Sector Breakdown in Analysis Set:
+derived_sector
+Transportation    109
+Financial          98
+Name: count, dtype: int64
+
+Contingency Table (Sector vs Harm Type):
+derived_harm    Non-Physical  Physical
+derived_sector                        
+Financial                 92         6
+Transportation            30        79
+
+Chi-Square Statistic: 91.1611
+p-value: 1.3244e-21
+
+Harm Type Distribution by Sector (%):
+derived_harm    Non-Physical  Physical
+derived_sector                        
+Financial              93.88      6.12
+Transportation         27.52     72.48
+
+Financial Incidents causing Non-Physical Harm: 93.9%
+Transportation Incidents causing Physical Harm: 72.5%
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Stacked Bar Chart.
+*   **Purpose:** To compare the proportional composition of "Harm Type" (Physical vs. Non-Physical) across two distinct sectors (Financial and Transportation). It allows for an easy comparison of the percentage breakdown of incidents within each category.
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Title:** "Sector"
+    *   **Labels:** Two categorical variables: "Financial" and "Transportation" (labels are oriented vertically).
+*   **Y-Axis:**
+    *   **Title:** "Percentage of Incidents"
+    *   **Range:** 0 to 100.
+    *   **Units:** Percentage (%).
+    *   **Increments:** Ticks are marked every 20 units (0, 20, 40, 60, 80, 100).
+
+### 3. Data Trends
+*   **Financial Sector:**
+    *   **Pattern:** This sector is overwhelmingly dominated by "Non-Physical" harm.
+    *   **Values:** The "Non-Physical" segment (yellow/orange) appears to occupy approximately **90-95%** of the bar, while the "Physical" segment (red) represents a very small minority (approx. 5-10%).
+*   **Transportation Sector:**
+    *   **Pattern:** This sector shows the opposite trend, with "Physical" harm being the dominant type.
+    *   **Values:** The "Physical" segment (red) occupies the majority of the bar, approximately **70-75%**. The "Non-Physical" segment (yellow/orange) comprises the remaining ~25-30%.
+
+### 4. Annotations and Legends
+*   **Chart Title:** "Harm Fingerprints: Physical vs Non-Physical Harm by Sector" – located at the top center.
+*   **Legend:** Located on the right side of the plot.
+    *   **Title:** "Harm Type"
+    *   **Keys:**
+        *   **Non-Physical:** Represented by the Yellow/Orange color.
+        *   **Physical:** Represented by the Red color.
+
+### 5. Statistical Insights
+*   **Sector Contrast:** There is a stark dichotomy between the two sectors. The **Financial** sector's risk profile is almost entirely non-physical (likely financial loss, fraud, or data theft), whereas the **Transportation** sector carries a high risk of physical harm (likely accidents or injuries).
+*   **Risk Profiles:** If one were to assign a "fingerprint" to these industries based on harm, the Financial sector is defined by intangible impact, while the Transportation sector is defined primarily by tangible, bodily impact.
+*   **Magnitude:** The dominance of physical harm in transportation is significant (roughly 3 times larger than non-physical harm in that sector), but it is not as absolute as the dominance of non-physical harm in the financial sector (which appears to be nearly 10 times larger than physical harm in that sector).
+==================================================

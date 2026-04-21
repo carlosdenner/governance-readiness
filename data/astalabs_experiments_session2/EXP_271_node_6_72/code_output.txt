@@ -1,0 +1,76 @@
+exitcode: 0 (execution succeeded)
+Code output: --- Classification Results ---
+Robotics/AV Samples: 133
+Generative/LLM Samples: 535
+Total Classified: 668
+
+--- Severity Statistics (Median) ---
+Robotics/AV: 1.0
+Generative/LLM: 0.0
+
+--- Hypothesis Test (Mann-Whitney U) ---
+Null: Severity(Robotics) <= Severity(GenAI)
+Alternative: Severity(Robotics) > Severity(GenAI)
+U-Statistic: 44603.0
+P-Value: 5.42404e-08
+
+--- Detailed Counts ---
+severity_score    0   1   2   3
+tech_category                  
+Generative/LLM  364  57  85  29
+Robotics/AV      65   4  37  27
+
+STDERR:
+<ipython-input-1-767356daee9b>:104: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  axes[1].boxplot(data_to_plot, labels=['Robotics/AV', 'Generative/LLM'], patch_artist=True,
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+The image contains two distinct subplots side-by-side:
+*   **Left Subplot:** A **Stacked Bar Plot**. Its purpose is to compare the relative proportions of different categorical levels (Severity Scores) within two distinct groups (Technologies).
+*   **Right Subplot:** A **Box Plot** (or Box-and-Whisker Plot). Its purpose is to visualize the statistical distribution (median, quartiles, and range) of the numerical severity scores for the two technology groups.
+
+### 2. Axes
+**Left Plot (Stacked Bar):**
+*   **X-axis:** Labeled **"Technology"**. Categories are "Generative/LLM" and "Robotics/AV".
+*   **Y-axis:** Labeled **"Proportion"**. The range is **0.0 to 1.0**, representing 0% to 100% of the total cases for each technology.
+
+**Right Plot (Box Plot):**
+*   **X-axis:** Implicitly labeled by category. Categories are **"Robotics/AV"** and **"Generative/LLM"**.
+*   **Y-axis:** Labeled **"Severity Score (0-3)"**. The range is **-0.1 to 3.1** (visual buffer), covering the discrete score values of 0, 1, 2, and 3.
+
+### 3. Data Trends
+**Left Plot (Stacked Bar Trends):**
+*   **Generative/LLM:** This column is dominated by the lowest severity score (0: None/Unclear), which takes up roughly 70% of the bar. The highest severity (3: Death/Severe) represents a very small fraction (approx. 5%).
+*   **Robotics/AV:** This column shows a much more even distribution across severity levels. While score 0 is still significant (approx. 50%), there is a substantial proportion of score 2 (Property/Injury) and score 3 (Death/Severe). The "Death/Severe" portion is visibly much larger here (approx. 20%) compared to the LLM group.
+
+**Right Plot (Box Plot Trends):**
+*   **Robotics/AV:**
+    *   **Median:** The median line is at **1.0**.
+    *   **Spread:** The Interquartile Range (the blue box) spans from 0.0 to 2.0. The whiskers extend fully to 3.0, indicating a wide variance in incident severity.
+*   **Generative/LLM:**
+    *   **Median:** The median line is at **0.0** (indicated by the orange line at the bottom of the box).
+    *   **Spread:** The box spans from 0.0 to 1.0.
+    *   **Outliers:** There is a distinct outlier circle at **3.0**, indicating that while severe incidents are rare for LLMs, they do occur.
+
+### 4. Annotations and Legends
+*   **Legend (Left Plot):** A legend titled **"Severity Score"** is provided in the bottom left corner, mapping colors to severity levels:
+    *   **Dark Purple/Blue:** 0: None/Unclear
+    *   **Light Blue:** 1: Intangible
+    *   **Light Orange:** 2: Property/Injury
+    *   **Dark Red:** 3: Death/Severe
+*   **Titles:**
+    *   Left: "Proportion of Severity Levels by Tech"
+    *   Right: "Distribution of Severity Scores"
+*   **Gridlines:** The right plot uses horizontal gridlines to assist in reading specific score values.
+
+### 5. Statistical Insights
+The plots suggest a fundamental difference in the risk profiles of the two technologies:
+
+1.  **Physical vs. Non-Physical Risk:** **Robotics/AV** technologies are associated with significantly higher physical risks. The stacked bar chart shows that roughly half of the incidents recorded for Robotics/AV involve property damage, injury, or death (scores 2 and 3). In contrast, **Generative/LLM** incidents are overwhelmingly categorized as "None/Unclear" or "Intangible."
+2.  **Severity Distribution:** The box plot confirms that the "average" (median) incident for Robotics/AV has a severity score of 1, whereas the median for Generative/LLM is 0.
+3.  **High-Severity Frequency:** While both technologies *can* result in maximum severity incidents (score 3), they are outliers for Generative AI but a common component of the distribution for Robotics/AV (representing roughly 20% of its cases).
+==================================================

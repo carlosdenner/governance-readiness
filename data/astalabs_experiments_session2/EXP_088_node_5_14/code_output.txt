@@ -1,0 +1,29 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting Agency Risk Appetite Experiment...
+
+Loading dataset from astalabs_discovery_all_data.csv...
+Loaded EO13960 subset: 1757 rows
+
+Agency Category Distribution:
+Agency_Category
+Social      500
+Security    183
+Name: count, dtype: int64
+
+--- Analysis 1: Rights-Impacting Systems ---
+                 Rights_Count  Total_Systems  Proportion
+Agency_Category                                         
+Security                   26            183    0.142077
+Social                     10            500    0.020000
+
+Z-Test (Rights-Impacting - Security vs Social): z = 6.3234, p = 2.5590e-10
+Result: Significant difference.
+
+--- Analysis 2: Independent Evaluation (Rights-Impacting Subset) ---
+                 Eval_Yes_Count  Total_Rights_Systems  Proportion
+Agency_Category                                                  
+Security                     15                    26    0.576923
+Social                        0                    10    0.000000
+
+Z-Test (Independent Eval - Security vs Social): z = 3.1449, p = 1.6617e-03
+Result: Significant difference.

@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment was successfully executed and produced statistically significant results that refute the initial hypothesis. By implementing robust string parsing to handle the descriptive text fields in the 'eo13960_scored' dataset, the code successfully extracted a valid sample of 121 AI systems. The Chi-Square test yielded a p-value of 2.41e-06, indicating a strong correlation between system visibility and opt-out availability. However, the direction of this relationship is the inverse of the hypothesis: Internal-facing systems demonstrated a significantly higher opt-out rate (81.9%) compared to Public-facing systems (36.8%). This suggests that while internal users (likely federal employees) retain agency, public-facing systems often lack opt-out mechanisms, possibly due to their mandatory nature (e.g., law enforcement, border security, benefit adjudication) or statutory limitations identified in the data.",
+  "child_ids": [
+    "node_6_35",
+    "node_6_87"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nimport scipy.stats as stats\nimport os\n\ndef run_experiment():\n    # Load dataset\n    file_path = '../astalabs_discovery_all_data.csv'\n    if not os.path.exists(file_path):\n        file_path = 'astalabs_discovery_all_data.csv'\n    \n    print(f\"Loading dataset from: {file_path}\")\n    try:\n        df = pd.read_csv(file_path, low_memory=False)\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        return\n\n    # Filter for eo13960_scored\n    df_eo = df[df['source_table'] == 'eo13960_scored'].copy()\n    print(f\"Subset 'eo13960_scored' loaded. Rows: {len(df_eo)}\")\n\n    # Columns\n    col_svc = '26_public_service'\n    col_info = '27_public_info'\n    col_opt = '67_opt_out'\n\n    # Robust Cleaning Functions\n    def is_public_indicator(val):\n        # Logic: If it contains descriptive text (longer than 'No'), it's likely a public use case description.\n        # If it is 'No', 'N/A', or empty, it is not.\n        if pd.isna(val):\n            return False\n        s = str(val).strip()\n        if not s:\n            return False\n        s_lower = s.lower()\n        if s_lower in ['no', 'n/a', 'none', 'false', '0']:\n            return False\n        # If it's a long string description (e.g., 'Enabling trusted travelers...'), it implies Yes.\n        return True\n\n    def parse_opt_out(val):\n        if pd.isna(val):\n            return None\n        s = str(val).strip().lower()\n        if s.startswith('yes'):\n            return 'Yes'\n        if s.startswith('no') or s.startswith('n/a') or 'waived' in s:\n            return 'No'\n        return None # 'Other' or ambiguous\n\n    # Apply cleaning\n    df_eo['is_public_svc'] = df_eo[col_svc].apply(is_public_indicator)\n    df_eo['is_public_info'] = df_eo[col_info].apply(is_public_indicator)\n    \n    # Define Visibility\n    # Public if either service description or info description is present\n    df_eo['visibility'] = np.where(df_eo['is_public_svc'] | df_eo['is_public_info'], 'Public', 'Internal')\n\n    # Parse Opt-Out\n    df_eo['has_opt_out'] = df_eo[col_opt].apply(parse_opt_out)\n\n    # Filter valid data\n    df_clean = df_eo.dropna(subset=['has_opt_out'])\n    print(f\"Rows with valid Opt-Out status: {len(df_clean)}\")\n    \n    # Contingency Table\n    ct = pd.crosstab(df_clean['visibility'], df_clean['has_opt_out'])\n    print(\"\\nContingency Table:\")\n    print(ct)\n\n    if ct.empty or ct.shape != (2, 2):\n        print(\"Warning: Contingency table is not 2x2. Check data distribution.\")\n        # If 2x2 is not formed, fill missing cols/rows with 0 for robust plotting if possible\n        for v in ['Public', 'Internal']:\n            if v not in ct.index: ct.loc[v] = [0, 0]\n        for c in ['No', 'Yes']:\n            if c not in ct.columns: ct[c] = 0\n        ct = ct.loc[['Internal', 'Public'], ['No', 'Yes']]\n        print(\"Adjusted Table:\")\n        print(ct)\n\n    # Statistics\n    chi2, p, dof, ex = stats.chi2_contingency(ct)\n    print(f\"\\nChi-Square: {chi2:.4f}, p-value: {p:.4e}\")\n\n    # Calculate Opt-Out Rates\n    try:\n        rate_public = ct.loc['Public', 'Yes'] / ct.loc['Public'].sum()\n        rate_internal = ct.loc['Internal', 'Yes'] / ct.loc['Internal'].sum()\n        print(f\"Opt-Out Rate (Public): {rate_public:.2%}\")\n        print(f\"Opt-Out Rate (Internal): {rate_internal:.2%}\")\n        \n        rr = rate_public / rate_internal if rate_internal > 0 else float('inf')\n        print(f\"Relative Risk (Public/Internal): {rr:.2f}x\")\n    except Exception as e:\n        print(f\"Could not calculate rates: {e}\")\n\n    # Plot\n    ct_pct = ct.div(ct.sum(axis=1), axis=0) * 100\n    ax = ct_pct.plot(kind='barh', stacked=True, color=['#d9534f', '#5cb85c'], figsize=(10, 6))\n    \n    plt.title('Opt-Out Implementation by System Visibility')\n    plt.xlabel('Percentage')\n    plt.ylabel('Visibility')\n    plt.axvline(50, color='gray', linestyle='--', alpha=0.5)\n    \n    # Annotate\n    for c in ax.containers:\n        # format labels, skip if 0\n        labels = [f'{v:.1f}%' if v > 0 else '' for v in c.datavalues]\n        ax.bar_label(c, labels=labels, label_type='center', color='white', weight='bold')\n    \n    plt.legend(title='Has Opt-Out?', bbox_to_anchor=(1.05, 1), loc='upper left')\n    plt.tight_layout()\n    plt.show()\n\nif __name__ == \"__main__\":\n    run_experiment()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading dataset from: astalabs_discovery_all_data.csv\nSubset 'eo13960_scored' loaded. Rows: 1757\nRows with valid Opt-Out status: 121\n\nContingency Table:\nhas_opt_out  No  Yes\nvisibility          \nInternal     15   68\nPublic       24   14\n\nChi-Square: 22.2372, p-value: 2.4096e-06\nOpt-Out Rate (Public): 36.84%\nOpt-Out Rate (Internal): 81.93%\nRelative Risk (Public/Internal): 0.45x\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided plot, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Horizontal 100% Stacked Bar Chart.\n*   **Purpose:** This chart compares the proportional distribution of a binary variable (\"Has Opt-Out?\") across two different categories of system visibility (\"Internal\" and \"Public\"). It is designed to visualize how the presence of an opt-out mechanism varies depending on whether a system is internal or public.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Label:** \"Percentage\"\n    *   **Range:** 0 to 100 (representing 0% to 100%).\n    *   **Increments:** Ticks are marked every 20 units (0, 20, 40, 60, 80, 100).\n*   **Y-Axis:**\n    *   **Label:** \"Visibility\"\n    *   **Categories:** The axis displays two categorical groups: \"Internal\" (bottom) and \"Public\" (top).\n*   **Title:** \"Opt-Out Implementation by System Visibility\"\n\n### 3. Data Trends\n*   **Internal Systems:**\n    *   This category shows a high adoption rate for opt-out mechanisms. The **\"Yes\"** segment (Green) is the dominant portion, accounting for **81.9%**.\n    *   The **\"No\"** segment (Red) is the minority, representing only **18.1%**.\n*   **Public Systems:**\n    *   This category shows the inverse trend. The **\"No\"** segment (Red) is the dominant portion at **63.2%**.\n    *   The **\"Yes\"** segment (Green) represents the minority at **36.8%**.\n*   **Overall Pattern:** There is a stark contrast between the two categories. Internal systems are overwhelmingly likely to have an opt-out implementation, whereas public systems are more likely *not* to have one.\n\n### 4. Annotations and Legends\n*   **Legend:** Located in the top right corner with the title \"Has Opt-Out?\".\n    *   **Red:** Represents \"No\".\n    *   **Green:** Represents \"Yes\".\n*   **Data Labels:** Each bar segment contains white text indicating the exact percentage value (e.g., \"18.1%\", \"81.9%\").\n*   **Reference Line:** A grey, vertical dashed line runs through the x-axis at the **50% mark**. This serves as a visual anchor to easily distinguish which segment constitutes the majority for each bar.\n\n### 5. Statistical Insights\n*   **Visibility Correlation:** System visibility is a strong predictor of opt-out implementation. There is a significant discrepancy between the two groups; the \"Yes\" rate drops by **45.1 percentage points** (from 81.9% to 36.8%) when moving from Internal to Public systems.\n*   **Majority Inversion:** The 50% threshold line highlights a complete inversion of the majority. For Internal systems, the majority (approx. 4 out of 5) allow opting out. For Public systems, the majority (approx. 2 out of 3) do *not* allow opting out.\n*   **Implication:** This suggests that privacy controls or user agency (via opt-outs) are prioritized or technically easier to enforce within internal-facing systems compared to public-facing ones.\n==================================================",
+  "created_at": "2026-02-22T08:35:13.463655+00:00",
+  "creation_idx": 160,
+  "experiment_id": "node_5_61",
+  "experiment_plan": {
+    "deliverables": "Contingency table; Chi-Square p-value; Bar chart showing Opt-Out rates for Public vs Internal systems.",
+    "objective": "Verify if public visibility drives the implementation of user agency controls.",
+    "steps": "1. Load 'eo13960_scored'.\n2. Define 'Public Facing' using column '26_public_service' (Yes/No) or '27_public_info'.\n3. Define 'Has Opt-Out' using column '67_opt_out' (Yes/No).\n4. Run a Chi-Square test to see if Public Facing systems have a higher rate of Opt-Out compliance.\n5. Calculate the relative risk or likelihood ratio."
+  },
+  "hypothesis": "Public-Facing Transparency Correlation: AI systems marked as 'Publicly Accessible' are statistically more likely to implement 'Opt-Out' mechanisms than internal-only systems.",
+  "id_in_run": 159,
+  "is_surprising": true,
+  "parent_id": "node_4_11",
+  "posterior": 0.25274725274725274,
+  "posterior_belief": {
+    "_empirical_mean": 0.0,
+    "_type": "boolean_cat",
+    "definitely_false": 60.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.25274725274725274,
+    "n": 60.0,
+    "prior_params": [
+      23.0,
+      8.0
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7419354838709677,
+  "prior_belief": {
+    "_empirical_mean": 0.75,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 30.0,
+    "mean": 0.7419354838709677,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully executed. The programmer correctly implemented the feedback to use robust string parsing, allowing for the extraction of 121 valid data points from the descriptive text fields in the 'eo13960_scored' dataset. The analysis was rigorous, employing a Chi-Square test (p < 0.001) and calculating relative risk. The results refute the original hypothesis: contrary to the expectation that public visibility drives user agency, Internal systems demonstrated a significantly higher Opt-Out rate (81.9%) compared to Public systems (36.8%). The generated visualization clearly communicates this inverse relationship.",
+  "rich_outputs": null,
+  "runtime_ms": 302480.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.587025877348458
+}

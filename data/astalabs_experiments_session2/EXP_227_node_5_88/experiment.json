@@ -1,0 +1,55 @@
+{
+  "analysis": "The experiment successfully tested the 'Commercial Obscurity' hypothesis using the corrected data columns identified in the previous debug step. \n\n1. **Data Processing**: The analysis utilized `22_dev_method` to distinguish between 'Commercial' (contracting resources, n=394) and 'Custom/Internal' (in-house, n=400) systems, and `38_code_access` to measure transparency. The final analysis set included 794 valid cases.\n\n2. **Findings**: \n   - **Descriptive Statistics**: Systems developed in-house ('Custom/Internal') had a transparency rate of **8.00%** (32/400), whereas commercially procured systems had a significantly lower transparency rate of **2.79%** (11/394).\n   - **Statistical Significance**: The Chi-Square test yielded a statistic of 9.5185 and a **p-value of 0.0020**, which is well below the significance threshold of 0.05.\n\n3. **Conclusion**: The results provide strong statistical evidence to **support** the hypothesis. Federal AI systems procured from commercial vendors are significantly less likely to provide open access to their source code compared to systems developed internally by agencies.",
+  "child_ids": [],
+  "code": "import pandas as pd\nimport scipy.stats as stats\nimport sys\n\nprint(\"Starting Commercial Obscurity hypothesis test (Attempt 2)...\\n\")\n\n# 1. Load dataset\ntry:\n    df = pd.read_csv('../astalabs_discovery_all_data.csv', low_memory=False)\nexcept FileNotFoundError:\n    try:\n        df = pd.read_csv('astalabs_discovery_all_data.csv', low_memory=False)\n    except FileNotFoundError:\n        print(\"Error: Dataset not found.\")\n        sys.exit(1)\n\n# Filter for 'eo13960_scored'\ndf = df[df['source_table'] == 'eo13960_scored'].copy()\nprint(f\"Loaded {len(df)} rows from EO 13960 dataset.\")\n\n# 2. Define Variables and Mappings\ncol_dev_method = '22_dev_method'\ncol_code_access = '38_code_access'\n\n# Check columns\nif col_dev_method not in df.columns or col_code_access not in df.columns:\n    print(f\"Error: Columns '{col_dev_method}' or '{col_code_access}' missing.\")\n    sys.exit(1)\n\n# Mapping for Procurement (Independent Variable)\ndef map_procurement(val):\n    s = str(val).strip()\n    if pd.isna(val) or s.lower() == 'nan':\n        return None\n    if s == 'Developed with contracting resources.':\n        return 'Commercial'\n    elif s == 'Developed in-house.':\n        return 'Custom/Internal'\n    # Exclude 'Developed with both...' and 'Data not reported...' to ensure clean groups\n    return None\n\n# Mapping for Code Access (Dependent Variable)\n# 'Transparent' = Publicly Available\n# 'Opaque' = No access, or Internal access only (not public)\ndef map_transparency(val):\n    s = str(val).strip()\n    if pd.isna(val) or s.lower() == 'nan':\n        return None # Missing data, exclude\n    \n    # Strict check for Public availability\n    if 'publicly available' in s.lower():\n        return 'Transparent'\n    \n    # All other non-missing values are Opaque (Restricted/Closed)\n    # Includes: 'No – agency does not have access...', 'Yes – agency has access... but it is not public', 'Yes', 'YES'\n    return 'Opaque'\n\n# Apply mappings\ndf['Procurement_Type'] = df[col_dev_method].apply(map_procurement)\ndf['Code_Transparency'] = df[col_code_access].apply(map_transparency)\n\n# Filter for valid rows (where both fields are not None)\ndf_analysis = df.dropna(subset=['Procurement_Type', 'Code_Transparency']).copy()\n\nprint(f\"\\nAnalysis set size after filtering: {len(df_analysis)}\")\n\n# 3. Generate Statistics\n\n# Contingency Table\ncontingency_table = pd.crosstab(df_analysis['Procurement_Type'], df_analysis['Code_Transparency'])\n\nprint(\"\\n--- Contingency Table ---\")\nprint(contingency_table)\n\n# Percentages\nrow_sums = contingency_table.sum(axis=1)\npercentages = contingency_table.div(row_sums, axis=0) * 100\n\nprint(\"\\n--- Percentages (Row-wise) ---\")\nprint(percentages.round(2))\n\n# 4. Statistical Test (Chi-Square)\nif contingency_table.size > 0 and contingency_table.sum().sum() > 0:\n    chi2, p, dof, expected = stats.chi2_contingency(contingency_table)\n    print(\"\\n--- Chi-Square Test Results ---\")\n    print(f\"Chi-square statistic: {chi2:.4f}\")\n    print(f\"p-value: {p:.4e}\")\n    print(f\"Degrees of freedom: {dof}\")\n    \n    alpha = 0.05\n    if p < alpha:\n        print(\"\\nResult: Statistically SIGNIFICANT difference found.\")\n        \n        # Check directionality\n        comm_trans = percentages.loc['Commercial', 'Transparent'] if 'Transparent' in percentages.columns else 0\n        cust_trans = percentages.loc['Custom/Internal', 'Transparent'] if 'Transparent' in percentages.columns else 0\n        \n        print(f\"Commercial Transparency: {comm_trans:.2f}%\")\n        print(f\"Custom/Internal Transparency: {cust_trans:.2f}%\")\n        \n        if comm_trans < cust_trans:\n            print(\"The data SUPPORTS the hypothesis: Commercial systems are less transparent.\")\n        else:\n            print(\"The data CONTRADICTS the hypothesis direction.\")\n    else:\n        print(\"\\nResult: No statistically significant difference found (Fail to reject Null).\")\nelse:\n    print(\"\\nInsufficient data for Chi-Square test.\")\n",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Starting Commercial Obscurity hypothesis test (Attempt 2)...\n\nLoaded 1757 rows from EO 13960 dataset.\n\nAnalysis set size after filtering: 794\n\n--- Contingency Table ---\nCode_Transparency  Opaque  Transparent\nProcurement_Type                      \nCommercial            383           11\nCustom/Internal       368           32\n\n--- Percentages (Row-wise) ---\nCode_Transparency  Opaque  Transparent\nProcurement_Type                      \nCommercial          97.21         2.79\nCustom/Internal     92.00         8.00\n\n--- Chi-Square Test Results ---\nChi-square statistic: 9.5185\np-value: 2.0341e-03\nDegrees of freedom: 1\n\nResult: Statistically SIGNIFICANT difference found.\nCommercial Transparency: 2.79%\nCustom/Internal Transparency: 8.00%\nThe data SUPPORTS the hypothesis: Commercial systems are less transparent.\n",
+  "created_at": "2026-02-22T11:40:26.032817+00:00",
+  "creation_idx": 228,
+  "experiment_id": "node_5_88",
+  "experiment_plan": {
+    "deliverables": "Frequency table, Chi-square results, and comparative percentages.",
+    "objective": "Evaluate the impact of commercial procurement on AI transparency (code availability).",
+    "steps": "1. Load 'astalabs_discovery_all_data.csv' and filter for 'eo13960_scored'.\n2. Define two groups based on '10_commercial_ai': 'Commercial' (Yes) vs 'Custom/Internal' (No).\n3. Binarize '38_code_access' into 'Transparent' (Open Source/Available) vs 'Opaque' (No/Closed/Restricted).\n4. Perform a Chi-square test of independence.\n5. Compute the percentage of transparent projects in each group."
+  },
+  "hypothesis": "Commercial Obscurity: Federal AI systems procured from commercial vendors are significantly less likely to provide 'Open' code access compared to systems developed internally by agencies or via custom code, creating a transparency barrier.",
+  "id_in_run": 227,
+  "is_surprising": false,
+  "parent_id": "node_4_42",
+  "posterior": 0.9945054945054945,
+  "posterior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 60.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9945054945054945,
+    "n": 60.0,
+    "prior_params": [
+      30.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.9838709677419355,
+  "prior_belief": {
+    "_empirical_mean": 1.0,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 30.0,
+    "maybe_false": 0.0,
+    "maybe_true": 0.0,
+    "mean": 0.9838709677419355,
+    "n": 30.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 0.0
+  },
+  "review": "The experiment was successfully re-executed using the correct independent variable (`22_dev_method`) identified in the debugging phase. The analysis confirms the hypothesis: federal AI systems procured from commercial vendors are significantly less likely to provide open code access compared to systems developed in-house.\n\n**Key Findings:**\n- **Sample Size:** 794 valid cases from the EO 13960 dataset were analyzed.\n- **Descriptive Statistics:** Systems developed in-house (`Custom/Internal`) showed a transparency rate of **8.00%** (32/400), whereas commercially procured systems (`Commercial`) had a significantly lower transparency rate of **2.79%** (11/394).\n- **Statistical Significance:** A Chi-Square test of independence yielded a statistic of 9.5185 and a **p-value of 0.0020** (p < 0.05), indicating a statistically significant relationship.\n- **Conclusion:** The data supports the hypothesis that commercial procurement creates a 'transparency barrier,' reducing the likelihood of public code availability by approximately 65% relative to internal development.",
+  "rich_outputs": null,
+  "runtime_ms": 228000.0,
+  "status": "SUCCEEDED",
+  "surprise": 0.012761432116270831
+}

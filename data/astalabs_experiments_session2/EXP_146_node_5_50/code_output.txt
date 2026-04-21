@@ -1,0 +1,49 @@
+exitcode: 0 (execution succeeded)
+Code output: 
+--- Descriptive Statistics ---
+               eval_count  total  proportion
+risk_tier                                   
+High Risk              33    227    0.145374
+Standard Risk          20   1491    0.013414
+
+Z-test Statistic: 10.7118
+P-value (one-sided): 4.4799e-27
+Result: REJECT Null Hypothesis. High Risk systems DO have statistically higher evaluation rates.
+Interpretation: Governance is scaling with risk (Risk-Proportionate).
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided image, here is the detailed analysis:
+
+### 1. Plot Type
+*   **Type:** Vertical Bar Plot.
+*   **Purpose:** The plot compares the frequency (proportion) of independent evaluations occurring between two distinct categories of impact types: "High Risk" and "Standard Risk."
+
+### 2. Axes
+*   **X-Axis:**
+    *   **Labels:** Categorical labels representing the risk tiers: **"High Risk"** and **"Standard Risk"**.
+    *   **Value Range:** N/A (Categorical).
+*   **Y-Axis:**
+    *   **Title:** "Proportion with Independent Evaluation".
+    *   **Units:** The values represent a ratio/decimal (0.00 to 1.00), effectively representing percentages.
+    *   **Value Range:** The displayed axis ticks range from **0.000 to 0.175** (0% to 17.5%).
+
+### 3. Data Trends
+*   **Tallest Bar:** The **"High Risk"** category (colored salmon/red) has a significantly higher proportion of independent evaluations. The bar reaches a height of approximately 0.145.
+*   **Shortest Bar:** The **"Standard Risk"** category (colored sky blue) has a very low proportion of independent evaluations, reaching a height of approximately 0.013.
+*   **Comparison:** There is a stark contrast between the two groups. The "High Risk" group is subject to independent evaluation at a rate more than 10 times higher than the "Standard Risk" group.
+
+### 4. Annotations and Legends
+*   **Bar Annotations:**
+    *   **High Risk:** Annotated with **"14.5%"** and a sample size of **"(n=227)"**.
+    *   **Standard Risk:** Annotated with **"1.3%"** and a sample size of **"(n=1491)"**.
+*   **Statistical Annotation:** A box at the top center displays the result of a statistical hypothesis test:
+    *   **"p-value: 4.4799e-27"**
+    *   **"(Significant)"**
+
+### 5. Statistical Insights
+*   **Statistical Significance:** The p-value ($4.48 \times 10^{-27}$) is extremely close to zero, far below standard alpha levels (e.g., 0.05 or 0.01). This indicates that the difference in evaluation rates between High Risk and Standard Risk groups is **statistically significant** and not due to random chance.
+*   **Effect Size:** There is a substantial effect size. High Risk items have a **14.5%** probability of undergoing independent evaluation, compared to only **1.3%** for Standard Risk items.
+*   **Sample Size Context:** It is notable that the "Standard Risk" group has a much larger sample size ($n=1491$) compared to the "High Risk" group ($n=227$). Despite the smaller sample size for the High Risk group, the signal is strong enough to yield a highly significant p-value.
+*   **Conclusion:** The data strongly suggests that the risk tier is a primary determinant for whether an independent evaluation is conducted, with high-risk items being prioritized for scrutiny.
+==================================================

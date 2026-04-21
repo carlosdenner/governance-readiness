@@ -1,0 +1,53 @@
+exitcode: 0 (execution succeeded)
+Code output: Starting experiment: Rights vs. Safety Consultation Split...
+Successfully loaded astalabs_discovery_all_data.csv
+Filtered eo13960_scored subset: 1757 rows
+Groups Identified:
+  - Rights-Impacting (Exclusive): 59
+  - Safety-Impacting (Exclusive): 18
+
+Consultation Statistics:
+  - Rights-Impacting: 0/59 consulted (0.00%)
+  - Safety-Impacting: 0/18 consulted (0.00%)
+Standard Error is 0 (identical proportions or zero variance).
+
+Z-Test Results:
+  - Z-Score: 0.0000
+  - P-Value: 1.0000e+00
+  - Conclusion: Not Significant difference at alpha=0.05
+
+
+=== Plot Analysis (figure 1) ===
+Based on the provided plot image, here is the detailed analysis:
+
+**1. Plot Type**
+*   **Type:** Bar Plot (Column Chart).
+*   **Purpose:** To compare the proportion of stakeholder consultation events between two distinct categories of impact: "Rights-Impacting" and "Safety-Impacting".
+
+**2. Axes**
+*   **X-axis:**
+    *   **Labels:** Categorical labels representing two scenarios: "Rights-Impacting" and "Safety-Impacting".
+    *   **Value Range:** N/A (Categorical).
+*   **Y-axis:**
+    *   **Title:** "Proportion of Stakeholder Consultation".
+    *   **Value Range:** 0.0 to 1.0 (representing a range from 0% to 100%).
+    *   **Ticks:** Marked at intervals of 0.2 (0.0, 0.2, 0.4, 0.6, 0.8, 1.0).
+
+**3. Data Trends**
+*   **Tallest/Shortest Bars:** There are no visible bars for either category, indicating values of zero.
+*   **Patterns:** Both categories exhibit identical behavior. The data shows a "floor" effect where both the "Rights-Impacting" and "Safety-Impacting" scenarios have a value of 0.
+*   **Comparison:** There is no difference between the two groups; both are at the absolute minimum of the scale.
+
+**4. Annotations and Legends**
+*   **Annotations:**
+    *   Above the "Rights-Impacting" position: Text reads **"0.0% (n=0)"**.
+    *   Above the "Safety-Impacting" position: Text reads **"0.0% (n=0)"**.
+    *   This annotation explicitly states the percentage value is zero and indicates the count ($n$) associated with that proportion is zero.
+*   **Chart Title:** "Stakeholder Consultation: Rights vs. Safety".
+*   **Grid Lines:** Horizontal dashed grid lines are present at 0.2 intervals to aid in reading values, though they highlight the emptiness of the chart in this specific instance.
+
+**5. Statistical Insights**
+*   **Absence of Consultation:** The most critical insight is the complete absence of stakeholder consultation in the dataset analyzed. Regardless of whether a scenario was "Rights-Impacting" or "Safety-Impacting," the proportion of consultation was 0.0%.
+*   **Sample Count ($n$):** The notation $(n=0)$ likely refers to the number of observed consultations (the numerator). This suggests that out of the total cases reviewed, exactly zero involved stakeholder consultation.
+*   **Conclusion:** The data suggests a potential systemic gap or a specific finding within the study context where stakeholder engagement is non-existent for these specific impact types. Neither safety concerns nor rights concerns appear to be triggers for consultation in this specific dataset.
+==================================================

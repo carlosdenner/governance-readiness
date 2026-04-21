@@ -1,0 +1,58 @@
+{
+  "analysis": "The experiment successfully analyzed the architectural density of competency bundles using 'step2_competency_statements.csv'. The hypothesis that 'Trust Readiness' statements map to a significantly higher number of architecture controls was **rejected**. \n\n**Findings:**\n1.  **Directionality:** Contrary to the hypothesis, 'Integration Readiness' statements actually had a higher mean control density (2.00 controls/statement) compared to 'Trust Readiness' (1.68 controls/statement).\n2.  **Statistical Significance:** The difference was not statistically significant. The Mann-Whitney U test yielded a p-value of 0.0902, and Welch's T-test yielded p=0.1308, both exceeding the standard alpha of 0.05.\n\n**Conclusion:** There is no statistical evidence to support the claim that governance (Trust) competencies are more architecturally diffuse than engineering (Integration) competencies. In fact, the data suggests a slight (though non-significant) trend where engineering competencies map to a denser set of specific controls.",
+  "child_ids": [
+    "node_4_5",
+    "node_4_28"
+  ],
+  "code": "import pandas as pd\nimport numpy as np\nimport matplotlib.pyplot as plt\nfrom scipy import stats\nimport os\n\n# [debug] Check current directory and parent directory contents if needed, but per instructions assume ../ exists\n# Load dataset\nfilename = 'step2_competency_statements.csv'\nfilepath = f'../{filename}'\n\n# Fallback if running in an environment where file is in current dir\nif not os.path.exists(filepath):\n    if os.path.exists(filename):\n        filepath = filename\n    else:\n        # Start debug print\n        print(f\"File not found at {filepath} or {filename}\")\n        # End debug print\n\nprint(f\"Loading {filepath}...\")\ntry:\n    df = pd.read_csv(filepath)\nexcept Exception as e:\n    print(f\"Error loading file: {e}\")\n    exit(1)\n\n# Parse 'applicable_controls' to count number of controls per statement\n# Format is semicolon separated string\ndef count_controls(val):\n    if pd.isna(val) or str(val).strip() == '':\n        return 0\n    # Split by semicolon and filter empty strings\n    return len([x for x in str(val).split(';') if x.strip()])\n\ndf['control_count'] = df['applicable_controls'].apply(count_controls)\n\n# Group data by bundle\ntrust_data = df[df['bundle'] == 'Trust Readiness']['control_count']\nintegration_data = df[df['bundle'] == 'Integration Readiness']['control_count']\n\n# Calculate statistics\nstats_summary = df.groupby('bundle')['control_count'].agg(['mean', 'median', 'std', 'count', 'sem'])\nprint(\"\\n=== Architectural Density Statistics (Controls per Statement) ===\")\nprint(stats_summary)\n\n# Perform Statistical Test\n# Shapiro-Wilk test for normality\n_, p_trust_norm = stats.shapiro(trust_data)\n_, p_int_norm = stats.shapiro(integration_data)\n\nprint(f\"\\nNormality Check (Shapiro-Wilk): Trust (p={p_trust_norm:.4f}), Integration (p={p_int_norm:.4f})\")\n\n# Use Mann-Whitney U Test (Non-parametric) as count data is often non-normal\nu_stat, p_val_mw = stats.mannwhitneyu(trust_data, integration_data, alternative='two-sided')\n\n# Use Welch's T-test (for comparison, robust to unequal variances)\nt_stat, p_val_t = stats.ttest_ind(trust_data, integration_data, equal_var=False)\n\nprint(\"\\n=== Hypothesis Test Results ===\")\nprint(f\"Mann-Whitney U Test: U={u_stat}, p={p_val_mw:.4f}\")\nprint(f\"Welch's T-Test: t={t_stat:.4f}, p={p_val_t:.4f}\")\n\n# Interpretation\nif p_val_mw < 0.05:\n    print(\"Result: Statistically significant difference in control density found.\")\nelse:\n    print(\"Result: No statistically significant difference in control density found.\")\n\n# Visualization: Bar Chart with Error Bars (SEM)\nplt.figure(figsize=(8, 6))\n\nbundles = stats_summary.index\nmeans = stats_summary['mean']\nsems = stats_summary['sem']\n\ncolors = ['#1f77b4', '#ff7f0e'] # Blue for Integration, Orange for Trust usually, but let's just map them\nbar_colors = ['skyblue' if 'Integration' in b else 'salmon' for b in bundles]\n\nbars = plt.bar(bundles, means, yerr=sems, capsize=10, color=bar_colors, alpha=0.8)\n\nplt.title('Average Architecture Control Density by Competency Bundle')\nplt.ylabel('Avg. Number of Controls per Statement')\nplt.xlabel('Competency Bundle')\nplt.grid(axis='y', linestyle='--', alpha=0.3)\n\n# Add value labels\nfor bar in bars:\n    height = bar.get_height()\n    plt.text(bar.get_x() + bar.get_width()/2., height + 0.1,\n             f'{height:.2f}',\n             ha='center', va='bottom')\n\nplt.tight_layout()\nplt.show()",
+  "code_output": "exitcode: 0 (execution succeeded)\nCode output: Loading step2_competency_statements.csv...\n\n=== Architectural Density Statistics (Controls per Statement) ===\n                           mean  median       std  count       sem\nbundle                                                            \nIntegration Readiness  2.000000     2.0  0.522233     23  0.108893\nTrust Readiness        1.684211     2.0  0.749269     19  0.171894\n\nNormality Check (Shapiro-Wilk): Trust (p=0.0005), Integration (p=0.0000)\n\n=== Hypothesis Test Results ===\nMann-Whitney U Test: U=158.5, p=0.0902\nWelch's T-Test: t=-1.5519, p=0.1308\nResult: No statistically significant difference in control density found.\n\n\n=== Plot Analysis (figure 1) ===\nBased on the provided image, here is the detailed analysis:\n\n### 1. Plot Type\n*   **Type:** Bar Plot with Error Bars.\n*   **Purpose:** The plot compares the mean values of \"Architecture Control Density\" across two distinct categories (\"Competency Bundles\"). The inclusion of error bars indicates the variability or uncertainty associated with these mean measurements.\n\n### 2. Axes\n*   **X-Axis:**\n    *   **Title:** \"Competency Bundle\"\n    *   **Labels:** Two categorical groups: \"Integration Readiness\" and \"Trust Readiness\".\n*   **Y-Axis:**\n    *   **Title:** \"Avg. Number of Controls per Statement\"\n    *   **Units:** Count/Ratio (Controls per Statement).\n    *   **Value Range:** The axis is scaled from **0.00 to roughly 2.20**, with tick marks at intervals of **0.25** (0.00, 0.25, 0.50, ..., 2.00).\n\n### 3. Data Trends\n*   **Tallest Bar:** The **\"Integration Readiness\"** bundle (colored light blue) is the tallest, reaching an average value of **2.00**.\n*   **Shortest Bar:** The **\"Trust Readiness\"** bundle (colored salmon/light red) is shorter, with an average value of **1.68**.\n*   **Comparison:** There is a clear visible difference between the two categories. The \"Integration Readiness\" bundle has a higher average control density compared to \"Trust Readiness.\"\n*   **Variability:** Both bars feature error bars (whiskers). The error bars appear roughly similar in absolute length, suggesting comparable variance or standard error between the two datasets, though the \"Trust Readiness\" error bar extends noticeably further relative to its mean.\n\n### 4. Annotations and Legends\n*   **Value Labels:** The exact mean values are annotated directly above the error bars for clarity:\n    *   **2.00** for Integration Readiness.\n    *   **1.68** for Trust Readiness.\n*   **Grid Lines:** Horizontal dashed grid lines are included to assist with visual estimation of bar heights against the Y-axis.\n*   **Legend:** There is no separate legend box; the bars are distinguished by color and labeled directly on the X-axis.\n\n### 5. Statistical Insights\n*   **Control Density Disparity:** The data suggests that **Integration Readiness** requires or possesses a higher density of architecture controls per statement compared to **Trust Readiness**. Specifically, Integration Readiness has approximately **19% more controls per statement** on average than Trust Readiness ($2.00$ vs $1.68$).\n*   **Significance:** While the exact statistical metric for the error bars (e.g., Standard Deviation, Standard Error, or 95% Confidence Interval) is not specified, the visual separation between the top of the \"Trust Readiness\" error bar and the mean of the \"Integration Readiness\" bar suggests a likely meaningful difference between the two groups. However, the error bars do overlap slightly in vertical range (the bottom of the blue error bar and the top of the red error bar appear to occupy similar Y-values around 1.85–1.90), implying that while the means are different, the population distributions may have some overlap.\n==================================================",
+  "created_at": "2026-02-20T22:12:33.460679+00:00",
+  "creation_idx": 24,
+  "experiment_id": "node_3_9",
+  "experiment_plan": {
+    "deliverables": "Bar chart of average control count by bundle, Statistical test summary.",
+    "objective": "Analyze the architectural density of different competency bundles.",
+    "steps": "1. Load 'step2_competency_statements.csv'.\n2. For each row, count the number of items in the 'applicable_controls' column (split by semicolon).\n3. Group the data by 'bundle' (Trust vs Integration).\n4. Calculate descriptive statistics (mean, median) for control counts in each bundle.\n5. Perform a T-test or Mann-Whitney U test to determine if the difference in control density is statistically significant."
+  },
+  "hypothesis": "Trust Readiness competency statements map to a significantly higher number of unique architecture controls per statement than Integration Readiness statements, indicating that governance competencies are architecturally more diffuse/cross-cutting.",
+  "id_in_run": 23,
+  "is_surprising": true,
+  "parent_id": "node_2_3",
+  "posterior": 0.19117647058823528,
+  "posterior_belief": {
+    "_empirical_mean": 0.016666666666666666,
+    "_type": "boolean_cat",
+    "definitely_false": 84.0,
+    "definitely_true": 0.0,
+    "maybe_false": 6.0,
+    "maybe_true": 0.0,
+    "mean": 0.19117647058823528,
+    "n": 90.0,
+    "prior_params": [
+      21.25,
+      7.75
+    ],
+    "uncertain": 0.0
+  },
+  "prior": 0.7327586206896551,
+  "prior_belief": {
+    "_empirical_mean": 0.7410714285714286,
+    "_type": "boolean_cat",
+    "definitely_false": 0.0,
+    "definitely_true": 0.0,
+    "maybe_false": 0.0,
+    "maybe_true": 27.0,
+    "mean": 0.7327586206896551,
+    "n": 28.0,
+    "prior_params": [
+      0.5,
+      0.5
+    ],
+    "uncertain": 1.0
+  },
+  "review": "The experiment successfully tested the hypothesis regarding architectural control density. The analysis of 42 competency statements revealed that, contrary to the hypothesis, 'Integration Readiness' statements actually mapped to a higher average number of architecture controls (Mean=2.00) compared to 'Trust Readiness' statements (Mean=1.68). The statistical analysis (Mann-Whitney U test: U=158.5, p=0.0902; Welch's T-test: p=0.1308) indicated that this difference is not statistically significant at the p<0.05 level. Therefore, the hypothesis that governance competencies are more architecturally diffuse (mapping to more controls) is rejected; the data suggests a non-significant trend in the opposite direction, where engineering competencies are slightly denser in their control mapping.",
+  "rich_outputs": null,
+  "runtime_ms": 180130.0,
+  "status": "SUCCEEDED",
+  "surprise": -0.628557981081106
+}
